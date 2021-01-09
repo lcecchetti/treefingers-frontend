@@ -1,7 +1,7 @@
 import { MdAccountCircle } from 'react-icons/md';
 import { getImageThumbnail } from 'lib/helper/media';
 
-const UserAvatar = ({ imageProfile, firstName, lastName }) => {
+const Avatar = ({ imageProfile, firstName, lastName }) => {
 
   const initials = firstName?.charAt(0) + lastName?.charAt(0);
 
@@ -11,4 +11,4 @@ const UserAvatar = ({ imageProfile, firstName, lastName }) => {
   );
 };
 
-export default UserAvatar;
+export default Avatar;

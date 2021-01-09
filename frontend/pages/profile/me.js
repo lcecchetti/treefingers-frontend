@@ -1,4 +1,4 @@
-import ProfileLayout from 'components/Layout/Profile';
+import { ProfileLayout } from 'components/layout';
 import { gql, useQuery } from '@apollo/client';
 
 /**
