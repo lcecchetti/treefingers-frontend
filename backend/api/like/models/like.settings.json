@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "likes",
+  "info": {
+    "name": "like"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "chapter": {
+      "model": "chapter",
+      "via": "likes"
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "likes"
+    },
+    "story": {
+      "model": "story",
+      "via": "likes"
+    }
+  }
+}

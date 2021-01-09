@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "chapters",
+  "info": {
+    "name": "chapter"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "author": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "chapters"
+    },
+    "story": {
+      "model": "story",
+      "via": "chapters"
+    },
+    "likes": {
+      "via": "chapter",
+      "collection": "like"
+    }
+  }
+}

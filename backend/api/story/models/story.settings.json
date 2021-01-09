@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stories",
+  "info": {
+    "name": "story",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "author": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "stories"
+    },
+    "chapters": {
+      "via": "story",
+      "collection": "chapter"
+    },
+    "likes": {
+      "via": "story",
+      "collection": "like"
+    }
+  }
+}
