@@ -1,5 +1,5 @@
-import DefaultLayout from 'components/Layout/Default';
-import Register from 'components/Auth/Register';
+import { DefaultLayout } from 'components/layout';
+import { Register } from 'components/auth';
 
 const RegisterPage = () => {
   return (

@@ -1,5 +1,5 @@
-import DefaultLayout from 'components/Layout/Default';
-import Logout from 'components/Auth/Logout';
+import { DefaultLayout } from 'components/layout';
+import { Logout } from 'components/auth';
 
 const LogoutPage = () => {
   return (

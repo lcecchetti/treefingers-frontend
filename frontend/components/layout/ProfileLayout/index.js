@@ -1,7 +1,7 @@
-import ProfileSidebar from 'components/Profile/Sidebar';
+import ProfileSidebar from 'components/profile/ProfileSidebar';
 import withAuthentication from 'lib/auth/withAuthentication';
 
-const LayoutProfile = ({ children }) => {
+const ProfileLayout = ({ children }) => {
 
   return (
     <div>
@@ -19,4 +19,4 @@ const LayoutProfile = ({ children }) => {
   )
 };
 
-export default withAuthentication(LayoutProfile);
+export default withAuthentication(ProfileLayout);

@@ -1,5 +1,5 @@
-import DefaultLayout from 'components/Layout/Default';
-import Login from 'components/Auth/Login';
+import { DefaultLayout } from 'components/layout';
+import { Login } from 'components/auth';
 
 const LoginPage = () => {
   return (

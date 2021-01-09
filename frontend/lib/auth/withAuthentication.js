@@ -22,7 +22,7 @@ const withAuthentication = Page => {
     useEffect(() => {
       if (error) {
         // redirect to login
-        router.replace('/auth/signin');
+        router.replace('/auth/login');
       }
     }, [error]);
 

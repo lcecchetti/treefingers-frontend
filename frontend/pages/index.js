@@ -1,4 +1,4 @@
-import DefaultLayout from 'components/Layout/Default';
+import { DefaultLayout } from 'components/layout';
 
 const HomePage = () => {
   return (
