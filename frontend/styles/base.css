@@ -1,0 +1,6 @@
+@layer base {
+  html,
+  body {
+    @apply text-base bg-base;
+  }
+}
