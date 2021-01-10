@@ -1,5 +1,5 @@
 import { DefaultLayout } from 'components/layout';
-import { Button, Container, Heading } from 'components/ui';
+import { Button, Container, Heading, Text } from 'components/ui';
 
 const UiPage = () => {
   return (
@@ -7,13 +7,16 @@ const UiPage = () => {
       <Heading variant="h1">Ui demo page</Heading>
 
       <div>
-        <Heading variant="h2">Headings</Heading>
+        <Heading variant="h2">typography</Heading>
         <Heading variant="h1">Lorem ipsum dolor sit amet</Heading>
         <Heading variant="h2">Lorem ipsum dolor sit amet</Heading>
         <Heading variant="h3">Lorem ipsum dolor sit amet</Heading>
         <Heading variant="h4">Lorem ipsum dolor sit amet</Heading>
         <Heading variant="h5">Lorem ipsum dolor sit amet</Heading>
         <Heading variant="h6">Lorem ipsum dolor sit amet</Heading>
+
+        <Text variant="p">Lorem ipsum dolor sit amet</Text>
+        <Text variant="span">Lorem ipsum dolor sit amet</Text>
       </div>
 
       <div>
