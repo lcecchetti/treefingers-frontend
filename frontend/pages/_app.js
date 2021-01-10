@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Threefingers</title>
+        <title>treefingers.space</title>
         <meta name="theme-color" content="#000" />
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>

@@ -1,22 +1,35 @@
 import clsx from 'clsx';
 import { Spinner } from 'components/ui';
 
-const Button = ({ children, className, loading, variant, disabled }) => {
+const Button = ({ children, className, loading, variant, as, Icon, ...rest }) => {
+
+  const Component = as ?? 'button';
 
   return (
-    <button 
-      class={clsx('', className)} 
-      disabled={disabled}>
+    <Component
+      class={clsx(
+        'rounded-full py-2 px-4 inline-flex items-center transition-colors focus:outline-none',
+        {
+          ['bg-primary text-primary-contrast active:bg-primary-dark disabled:bg-primary-light']: !variant,
+          ['bg-secondary text-secondary-constrast active:bg-secondary-dark disabled:bg-secondary-light']: variant === 'secondary',
+          ['bg-primary-contrast text-primary border-primary border-2 disabled:border-primary-light disabled:text-primary-light active:bg-primary active:text-primary-contrast']: variant === 'outlined',
+        },
+        className
+      )}
+      {...rest}>
+
+      {Icon &&
+        <Icon className="ml-2 inline-block" />
+      }
 
       {children}
 
       {loading &&
-        <Spinner />
+        <Spinner className="ml-2 inline-block" />
       }
 
-    </button>
+    </Component>
   )
 };
 
 export default Button;
-

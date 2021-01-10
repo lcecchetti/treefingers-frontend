@@ -1,11 +1,11 @@
 import Link from 'next/link';
 
-const Copyright = () => {
+const Copyright = ({ className }) => {
 
   return (
-    <span>
+    <span className={className}>
       {'© '}
-      <Link color="inherit" href="/"><a>UNHOME.ME</a></Link>
+      <Link color="inherit" href="/"><a>treefingers.space</a></Link>
       {' '}
       {new Date().getFullYear()}
       {'.'}
