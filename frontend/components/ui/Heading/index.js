@@ -6,7 +6,6 @@ const Heading = ({ children, className, variant, as, ...rest }) => {
   switch (variant) {
     case 'pageTitle':
       variant = 'h1';
-      break;
     case 'pageSubtitle':
     case 'title':
       variant = 'h2';
@@ -17,7 +16,7 @@ const Heading = ({ children, className, variant, as, ...rest }) => {
   }
 
   // pick component
-  const Component = as ?? variant;
+  const Component = as ?? variant ?? 'h1';
 
   return (
     <Component
