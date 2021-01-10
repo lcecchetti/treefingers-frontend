@@ -25,17 +25,6 @@ module.exports = {
       },
       error: '#B91C1C',
     },
-
-    // custom spacing
-    spacing: {
-      0: 0,
-      px: '1px',
-      1: '0.25rem',
-      2: '0.50rem',
-      4: '1rem',
-      6: '1.5rem',
-      8: '2rem',
-    },
     extend: {
       textColor: {
         // base font color
@@ -48,7 +37,10 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ['active', 'disabled'],
+      textColor: ['active', 'disabled'],
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),

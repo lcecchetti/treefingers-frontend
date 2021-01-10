@@ -1,9 +1,15 @@
+import { Container } from 'components/ui';
+import { Copyright } from 'components/common';
+
 const Footer = () => {
 
   return (
-    <div>
-      FOOTER
-    </div>
+    <Container>
+      <div>
+        FOOTER
+      </div>
+      <Copyright className="block" />
+    </Container>
   );
 };
 
