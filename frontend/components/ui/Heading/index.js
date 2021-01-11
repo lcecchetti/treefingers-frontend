@@ -26,7 +26,7 @@ const Heading = ({ children, className, variant, as, ...rest }) => {
           ['text-5xl mb-2']: variant === 'h1',
           ['text-3xl mb-2']: variant === 'h2',
           ['text-2xl mb-2']: variant === 'h3',
-          ['text-lg mb-1']: variant === 'h4' || variant == 'h5' || variant == 'h6',
+          ['text-lg mb-1']: ['h4, h5, h6'].includes(variant),
         },
         className
       )}
