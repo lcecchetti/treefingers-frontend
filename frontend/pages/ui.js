@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { DefaultLayout } from 'components/layout';
-import { Button, Container, FormField, Heading, Text } from 'components/ui';
+import { Button, Container, FormField, Heading, Text, Link } from 'components/ui';
 
 
 const UiSection = ({ children, className, title }) => {
@@ -27,6 +27,8 @@ const UiPage = () => {
 
         <Text variant="p">Lorem ipsum dolor sit amet</Text>
         <Text variant="span">Lorem ipsum dolor sit amet</Text>
+
+        <Link className="block my-2" href="#">This is a link</Link>
       </UiSection>
 
       <UiSection title="Buttons">
@@ -39,6 +41,7 @@ const UiPage = () => {
         <Button variant="outlined">Button</Button>
         <Button variant="outlined" loading>Button</Button>
         <Button variant="outlined" disabled>Button</Button>
+        <Button as={Link} href="#">This is a link</Button>
       </UiSection>
 
 
