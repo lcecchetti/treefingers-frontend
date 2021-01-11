@@ -1,13 +1,23 @@
+import clsx from 'clsx';
 import { DefaultLayout } from 'components/layout';
-import { Button, Container, Heading, Text } from 'components/ui';
+import { Button, Container, FormField, Heading, Text } from 'components/ui';
+
+
+const UiSection = ({ children, className, title }) => {
+  return (
+    <div className={clsx('mb-6', className)}>
+      <Heading variant="h2">{title}</Heading>
+      {children}
+    </div>
+  );
+}
 
 const UiPage = () => {
   return (
     <Container>
       <Heading variant="h1">Ui demo page</Heading>
 
-      <div>
-        <Heading variant="h2">typography</Heading>
+      <UiSection title="Typography">
         <Heading variant="h1">Lorem ipsum dolor sit amet</Heading>
         <Heading variant="h2">Lorem ipsum dolor sit amet</Heading>
         <Heading variant="h3">Lorem ipsum dolor sit amet</Heading>
@@ -17,10 +27,9 @@ const UiPage = () => {
 
         <Text variant="p">Lorem ipsum dolor sit amet</Text>
         <Text variant="span">Lorem ipsum dolor sit amet</Text>
-      </div>
+      </UiSection>
 
-      <div>
-        <Heading variant="h2">Buttons</Heading>
+      <UiSection title="Buttons">
         <Button>Button</Button>
         <Button loading>Button</Button>
         <Button disabled>Button</Button>
@@ -30,7 +39,18 @@ const UiPage = () => {
         <Button variant="outlined">Button</Button>
         <Button variant="outlined" loading>Button</Button>
         <Button variant="outlined" disabled>Button</Button>
-      </div>
+      </UiSection>
+
+
+      <UiSection title="Inputs">
+        <div className="w-1/3">
+          <FormField type="text" placeholder="Placeholder" label="label" />
+          <FormField type="number" placeholder="Placeholder" label="label" />
+          <FormField type="date" placeholder="Placeholder" label="label" />
+          <FormField type="textarea" placeholder="Placeholder" label="label" />
+          <FormField type="select" label="label" options={[{ value: 1 }, { value: 2 }, { value: 3, selected: true }]} />
+        </div>
+      </UiSection>
     </Container>
   );
 };
