@@ -12,7 +12,7 @@ const Link = ({ className, children, target, hreflang, rel, ...rest }) => {
         {children}
       </a>
     </NextLink>
-  )
+  );
 };
 
 export default Link;

@@ -17,7 +17,7 @@ const Text = ({ children, className, variant, as, ...rest }) => {
 
       {children}
     </Component>
-  )
+  );
 };
 
 export default Text;

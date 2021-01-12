@@ -6,7 +6,7 @@ const Container = ({ className, children }) => {
     <div className={clsx('lg:container mx-auto px-md', className)}>
       {children}
     </div>
-  )
+  );
 };
 
 export default Container;

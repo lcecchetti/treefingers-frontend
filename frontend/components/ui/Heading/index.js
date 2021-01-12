@@ -34,7 +34,7 @@ const Heading = ({ children, className, variant, as, ...rest }) => {
 
       {children}
     </Component>
-  )
+  );
 };
 
 export default Heading;
