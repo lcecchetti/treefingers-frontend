@@ -3,19 +3,12 @@ import { Text } from 'components/ui';
 
 const FormField = ({ className, fieldClassName, labelClassName, type, name, label, options, error, ...rest }) => {
 
-  let Component;
+  const componentMap = {
+    'select': 'select',
+    'textarea': 'textarea',
+  };
 
-  // pick component
-  switch (type) {
-    case 'select':
-      Component = 'select';
-      break;
-    case 'textarea':
-      Component = 'textarea';
-      break;
-    default:
-      Component = 'input';
-  }
+  const Component = componentMap[type] ?? 'input';
 
   return (
     <fieldset className={clsx(
