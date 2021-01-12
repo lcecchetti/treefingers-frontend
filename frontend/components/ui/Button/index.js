@@ -8,7 +8,7 @@ const Button = ({ children, className, loading, variant, as, Icon, ...rest }) =>
   return (
     <Component
       className={clsx(
-        'rounded-full no-underline py-2 px-4 inline-flex items-center transition-colors focus:outline-none',
+        'rounded-full no-underline py-sm px-md inline-flex items-center transition-colors focus:outline-none',
         {
           ['bg-primary text-primary-contrast hover:text-primary-contrast active:bg-primary-dark disabled:bg-primary-light']: !variant,
           ['bg-secondary text-secondary-constrast hover:text-secondary-constrast active:bg-secondary-dark disabled:bg-secondary-light']: variant === 'secondary',

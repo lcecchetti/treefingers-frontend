@@ -23,10 +23,10 @@ const Heading = ({ children, className, variant, as, ...rest }) => {
       class={clsx(
         '',
         {
-          ['text-5xl mb-2']: variant === 'h1',
-          ['text-3xl mb-2']: variant === 'h2',
-          ['text-2xl mb-2']: variant === 'h3',
-          ['text-lg mb-1']: ['h4, h5, h6'].includes(variant),
+          ['text-5xl mb-sm']: variant === 'h1',
+          ['text-3xl mb-sm']: variant === 'h2',
+          ['text-2xl mb-sm']: variant === 'h3',
+          ['text-lg mb-xs']: ['h4, h5, h6'].includes(variant),
         },
         className
       )}
