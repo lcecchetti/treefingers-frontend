@@ -5,7 +5,7 @@ import { Button, Container, FormField, Heading, Text, Link } from 'components/ui
 
 const UiSection = ({ children, className, title }) => {
   return (
-    <div className={clsx('mb-6', className)}>
+    <div className={clsx('mb-lg', className)}>
       <Heading variant="h2">{title}</Heading>
       {children}
     </div>
@@ -28,7 +28,7 @@ const UiPage = () => {
         <Text variant="p">Lorem ipsum dolor sit amet</Text>
         <Text variant="span">Lorem ipsum dolor sit amet</Text>
 
-        <Link className="block my-2" href="#">This is a link</Link>
+        <Link className="block my-sm" href="#">This is a link</Link>
       </UiSection>
 
       <UiSection title="Buttons">

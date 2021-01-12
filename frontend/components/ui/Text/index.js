@@ -8,7 +8,7 @@ const Text = ({ children, className, variant, as, ...rest }) => {
     <Component
       class={clsx(
         {
-          ['mb-2']: variant === 'p',
+          ['mb-sm']: variant === 'p',
           ['']: variant === 'span',
         },
         className
