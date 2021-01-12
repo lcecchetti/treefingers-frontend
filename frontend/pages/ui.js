@@ -48,6 +48,7 @@ const UiPage = () => {
       <UiSection title="Inputs">
         <div className="w-1/3">
           <FormField type="text" placeholder="Placeholder" label="label" />
+          <FormField type="text" placeholder="Placeholder" label="label" error="An error has occurred" />
           <FormField type="number" placeholder="Placeholder" label="label" />
           <FormField type="date" placeholder="Placeholder" label="label" />
           <FormField type="textarea" placeholder="Placeholder" label="label" />
