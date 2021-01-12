@@ -60,7 +60,7 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
         </Text>
       }
     </fieldset >
-  )
+  );
 };
 
 export default FormField;

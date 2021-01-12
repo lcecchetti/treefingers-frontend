@@ -29,7 +29,7 @@ const Button = ({ children, className, loading, variant, as, Icon, ...rest }) =>
       }
 
     </Component>
-  )
+  );
 };
 
 export default Button;
