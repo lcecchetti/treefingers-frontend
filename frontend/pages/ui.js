@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { DefaultLayout } from 'components/layout';
-import { Button, Container, FormField, Heading, Text, Link } from 'components/ui';
+import { Button, Container, FormField, Text, Link } from 'components/ui';
 
 
 const UiSection = ({ children, className, title }) => {
   return (
     <div className={clsx('mb-lg', className)}>
-      <Heading variant="h2">{title}</Heading>
+      <Text variant="h2">{title}</Text>
       {children}
     </div>
   );
@@ -15,17 +15,18 @@ const UiSection = ({ children, className, title }) => {
 const UiPage = () => {
   return (
     <Container>
-      <Heading variant="h1">Ui demo page</Heading>
+      <Text variant="h1">Ui demo page</Text>
 
       <UiSection title="Typography">
-        <Heading variant="h1">Lorem ipsum dolor sit amet</Heading>
-        <Heading variant="h2">Lorem ipsum dolor sit amet</Heading>
-        <Heading variant="h3">Lorem ipsum dolor sit amet</Heading>
-        <Heading variant="h4">Lorem ipsum dolor sit amet</Heading>
-        <Heading variant="h5">Lorem ipsum dolor sit amet</Heading>
-        <Heading variant="h6">Lorem ipsum dolor sit amet</Heading>
+        <Text variant="h1">Lorem ipsum dolor sit amet</Text>
+        <Text variant="h2">Lorem ipsum dolor sit amet</Text>
+        <Text variant="h3">Lorem ipsum dolor sit amet</Text>
+        <Text variant="h4">Lorem ipsum dolor sit amet</Text>
+        <Text variant="h5">Lorem ipsum dolor sit amet</Text>
+        <Text variant="h6">Lorem ipsum dolor sit amet</Text>
 
         <Text variant="p">Lorem ipsum dolor sit amet</Text>
+        <Text variant="label">Lorem ipsum dolor sit amet</Text>
         <Text variant="span">Lorem ipsum dolor sit amet</Text>
 
         <Link className="block my-sm" href="#">This is a link</Link>
@@ -33,6 +34,8 @@ const UiPage = () => {
 
       <UiSection title="Buttons">
         <Button>Button</Button>
+        <Button size="sm">Button</Button>
+        <Button size="lg" loading>Button</Button>
         <Button loading>Button</Button>
         <Button disabled>Button</Button>
         <Button variant="secondary">Button</Button>

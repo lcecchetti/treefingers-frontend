@@ -1,31 +1,54 @@
 import clsx from 'clsx';
 import { Spinner } from 'components/ui';
 
-const Button = ({ children, className, loading, variant, as, Icon, ...rest }) => {
+const Button = ({ children, className, loading, variant = 'primary', size = 'md', as, Icon, ...rest }) => {
 
   const Component = as ?? 'button';
+
+  const style = {
+    root: 'rounded-full inline-flex items-center justify-center transition-colors focus:outline-none',
+    variant: {
+      primary: 'bg-primary text-primary-contrast active:bg-primary-dark disabled:bg-primary-light',
+      secondary: 'bg-secondary text-secondary-constrast active:bg-secondary-dark disabled:bg-secondary-light',
+      outlined: 'bg-primary-contrast text-primary border-primary border-2 disabled:border-primary-light disabled:text-primary-light disabled:line-through active:bg-primary active:text-primary-contrast',
+    },
+    size: {
+      sm: 'text-xs py-sm px-sm',
+      md: 'py-sm px-md',
+      lg: 'text-xl py-md px-xl',
+    },
+    iconSize: {
+      sm: '',
+      md: '',
+      lg: 'text-2xl',
+    },
+  };
 
   return (
     <Component
       className={clsx(
-        'rounded-full no-underline py-sm px-md inline-flex items-center transition-colors focus:outline-none',
-        {
-          ['bg-primary text-primary-contrast hover:text-primary-contrast active:bg-primary-dark disabled:bg-primary-light']: !variant,
-          ['bg-secondary text-secondary-constrast hover:text-secondary-constrast active:bg-secondary-dark disabled:bg-secondary-light']: variant === 'secondary',
-          ['bg-primary-contrast text-primary hover:text-primary border-primary border-2 disabled:border-primary-light disabled:text-primary-light active:bg-primary active:text-primary-contrast']: variant === 'outlined',
-        },
+        style.root,
+        style.variant[variant],
+        style.size[size],
         className
       )}
+      styleAsLink={false}
       {...rest}>
 
       {Icon &&
-        <Icon className="ml-2 inline-block" />
+        <Icon className={clsx(
+          'mr-sm inline-block',
+          style.iconSize[size],
+        )} />
       }
 
       {children}
 
       {loading &&
-        <Spinner className="ml-2 inline-block" />
+        <Spinner className={clsx(
+          'ml-sm inline-block',
+          style.iconSize[size],
+        )} />
       }
 
     </Component>

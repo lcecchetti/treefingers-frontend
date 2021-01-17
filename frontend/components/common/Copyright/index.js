@@ -1,15 +1,15 @@
-import Link from 'next/link';
+import { Text, Link } from 'components/ui';
 
 const Copyright = ({ className }) => {
 
   return (
-    <span className={className}>
+    <Text variant="span" className={className}>
       {'© '}
-      <Link color="inherit" href="/"><a>treefingers.space</a></Link>
+      <Link href="/"><a>treefingers.space</a></Link>
       {' '}
       {new Date().getFullYear()}
       {'.'}
-    </span>
+    </Text>
   );
 };
 
