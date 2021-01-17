@@ -1,13 +1,11 @@
-import { Button, Container } from "components/ui";
-import Link from "next/link";
+import { Button, Container } from 'components/ui';
+import { Logo } from 'components/common';
 
 const Header = () => {
 
   return (
     <Container>
-      <div>
-        LOGO
-      </div>
+      <Logo main />
       <div>
         <Button>Login</Button>
       </div>
