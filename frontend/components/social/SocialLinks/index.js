@@ -24,7 +24,7 @@ const SocialLinks = () => {
   return (
     <ul>
       {socials.map((socialProps, index) => (
-        <SocialLink key={index.toString()} {...socialProps} />
+        <SocialLink key={index} {...socialProps} />
       ))}
     </ul>
   );

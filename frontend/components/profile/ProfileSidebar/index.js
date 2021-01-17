@@ -26,7 +26,7 @@ const ProfileSidebar = () => {
         <nav>
           <ul>
             {navData.map((item, index) => (
-              <li key={item.label}>
+              <li key={index}>
                 <Link href={item.href}><a>{item.label}</a></Link>
               </li>
             ))}

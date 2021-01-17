@@ -1,2 +1,2 @@
 # treefingers
-A co-telling stories place.
+A space for stories co-telling.

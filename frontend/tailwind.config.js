@@ -44,6 +44,7 @@ module.exports = {
     extend: {
       backgroundColor: ['active', 'disabled'],
       textColor: ['active', 'disabled'],
+      textDecoration: ['disabled'],
     },
   },
   plugins: [
