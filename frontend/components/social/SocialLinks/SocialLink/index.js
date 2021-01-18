@@ -1,11 +1,11 @@
-import Link from 'next/link';
+import { Link } from 'components/ui';
 
-const SocialLink = ({ label, href, Icon }) => {
+const SocialLink = ({ href, Icon }) => {
 
   return (
     <li>
       <Link href={href}>
-        <a><Icon /></a>
+        <Icon className="text-2xl" />
       </Link>
     </li>
   );

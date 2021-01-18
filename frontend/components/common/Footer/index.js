@@ -1,14 +1,13 @@
 import { Container } from 'components/ui';
 import { Copyright } from 'components/common';
+import { SocialLinks } from 'components/social';
 
 const Footer = () => {
 
   return (
-    <Container>
-      <div>
-        FOOTER
-      </div>
-      <Copyright className="block" />
+    <Container className="flex justify-between">
+      <SocialLinks />
+      <Copyright />
     </Container>
   );
 };
