@@ -1,20 +1,20 @@
 import { useState } from 'react';
-import Link from 'next/link';
-import { MdLockOutline } from 'react-icons/md';
+import { MdAccountCircle } from 'react-icons/md';
 import { useRouter } from 'next/router';
 import { useApolloClient, useMutation, gql } from '@apollo/client';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
 import useAuthToken from 'lib/auth/useAuthToken';
+import { Text, Button, Link, FormField } from 'components/ui';
 
 /**
  * Sign up mutation
  * @type {gql}
  */
 const MUTATION_SIGN_UP = gql`
-  mutation SignUpMutation($email: String!, $password: String!) {
-    register(input: { username: $email, email: $email, password: $password }) {
+  mutation SignUpMutation($username: String!, $email: String!, $password: String!) {
+    register(input: { username: $username, email: $email, password: $password }) {
       jwt
     }
   }
@@ -34,9 +34,9 @@ export default function SignUp() {
    */
   async function handleSubmit(values) {
     try {
-      await client.resetStore();
       const { data } = await signUp({
         variables: {
+          username: values.username,
           email: values.email,
           password: values.password,
         },
@@ -54,13 +54,11 @@ export default function SignUp() {
   };
 
   return (
-    <div>
-      <div>
-        <MdLockOutline />
-      </div>
-      <h1>
-        Sign up
-      </h1>
+    <div className="md:max-w-sm mx-auto p-md">
+      <Text variant="pageTitle" className="flex justify-between items-center">
+        Register
+        <MdAccountCircle />
+      </Text>
       <Formik
         initialValues={{
           email: '',
@@ -74,39 +72,40 @@ export default function SignUp() {
       >
         {({ isSubmitting }) => (
           <Form noValidate>
-            <div>
-              <div>
-                <Field
-                  placeholder="Email address"
-                  label="Email Address"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                />
-              </div>
-              <div>
-                <Field
-                  placeholder="password"
-                  name="password"
-                  label="Password"
-                  type="password"
-                  autoComplete="current-password"
-                />
-              </div>
-            </div>
-            {!!apiError && <p>{apiError}</p>}
-            <button
+            <Field
+              as={FormField}
+              label="Email"
+              type="email"
+              name="email"
+              autoComplete="email"
+            />
+            <Field
+              as={FormField}
+              label="Username"
+              type="text"
+              name="username"
+              autoComplete="username"
+            />
+            <Field
+              as={FormField}
+              name="password"
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+            />
+
+            {!!apiError && <Text variant="p" className="text-error">{apiError}</Text>}
+            <Button
               type="submit"
               disabled={isSubmitting}
+              className="my-md w-full"
             >
               Register
-            </button>
-            <div>
-              <div>
-                <Link href="/auth/signin">
-                  <a>Already have an account? Login</a>
-                </Link>
-              </div>
+            </Button>
+            <div className="text-right">
+              <Link href="/auth/signin">
+                <a>Already have an account? Login</a>
+              </Link>
             </div>
           </Form>
         )}

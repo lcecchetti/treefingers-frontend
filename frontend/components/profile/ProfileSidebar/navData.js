@@ -8,7 +8,7 @@ export default [
     'href': '/#',
   },
   {
-    'label': 'Sign out',
-    'href': '/auth/signout',
+    'label': 'Logout',
+    'href': '/auth/logout',
   },
 ];

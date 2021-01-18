@@ -12,21 +12,8 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
 
   return (
     <fieldset className={clsx(
-      'mb-sm',
       className,
     )}>
-      {!!label &&
-        <Text variant="label"
-          className={clsx(
-            'block',
-            error && 'text-error',
-            labelClassName
-          )}
-          for={name}>
-          {label}
-        </Text>
-      }
-
       <Component className={clsx(
         'border-0 border-b-2 border-primary w-full focus:outline-none focus:border-primary-dark focus:ring-0',
         {
@@ -49,6 +36,18 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
         }
 
       </Component>
+
+      {!!label &&
+        <Text variant="label"
+          className={clsx(
+            'block',
+            error && 'text-error',
+            labelClassName
+          )}
+          for={name}>
+          {label}
+        </Text>
+      }
 
       {!!error &&
         <Text className="text-error text-xs" variant="span">

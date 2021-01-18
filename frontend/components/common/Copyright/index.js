@@ -5,7 +5,7 @@ const Copyright = ({ className }) => {
   return (
     <Text variant="span" className={className}>
       {'© '}
-      <Link href="/"><a>treefingers.space</a></Link>
+      <Link href="/">Treefingers</Link>
       {' '}
       {new Date().getFullYear()}
       {'.'}

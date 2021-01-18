@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import Link from 'next/link';
 import { gql, useMutation } from '@apollo/client';
 import { parseError } from 'lib/apollo/error';
 import { useRouter } from 'next/router';
 import useAuthToken from 'lib/auth/useAuthToken';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { Text, Link, FormField, Button } from 'components/ui';
+import { MdLockOutline } from 'react-icons/md';
 
 /**
  * Sign in mutation
@@ -51,13 +52,11 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <div>
-        <span>Icon</span>
-      </div>
-      <h1>
-        Sign in
-      </h1>
+    <div className="md:max-w-sm mx-auto p-md">
+      <Text variant="pageTitle" className="flex justify-between items-center">
+        Login
+        <MdLockOutline />
+      </Text>
 
       <Formik
         initialValues={{
@@ -73,38 +72,32 @@ export default function Login() {
         {({ isSubmitting }) => (
           <Form>
             <Field
+              as={FormField}
               name="email"
-              type="text"
-              placeholder="email"
+              type="email"
+              label="Email"
               autoComplete="email"
               autoFocus
             />
             <Field
+              as={FormField}
               name="password"
               type="password"
-              placeholder="password"
+              label="Password"
               autoComplete="current-password"
             />
             {!!apiError &&
-              <p>{apiError}</p>
+              <Text variant="p" className="text-error">{apiError}</Text>
             }
-            <button
-              type="submit"
+            <Button
+              atype="submit"
               disabled={isSubmitting}
-            >
+              className="my-md w-full">
               Login
-            </button>
-            <div>
-              <div>
-                <Link href="/#">
-                  <a>Forgot password?</a>
-                </Link>
-              </div>
-              <div>
-                <Link href="/auth/register">
-                  <a>Don't have an account? Register</a>
-                </Link>
-              </div>
+            </Button>
+            <div className="flex flex-row justify-between">
+              <Link href="/#" className="text-left text-xs">Forgot password?</Link>
+              <Link href="/auth/register" className="text-right text-xs">Don't have an account?<br />Register</Link>
             </div>
           </Form>
         )}

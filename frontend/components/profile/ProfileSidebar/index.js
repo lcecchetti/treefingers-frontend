@@ -10,8 +10,7 @@ const QUERY_SELF = gql`
   query self {
     self {
       id
-      firstName
-      lastName
+      username
     }
   }
 `;
@@ -21,7 +20,7 @@ const ProfileSidebar = () => {
 
   return (
     <div>
-      <h6>Welcome, {data?.self?.firstName} {data?.self?.lastName}!</h6>
+      <h6>Welcome, {data?.self?.username}!</h6>
       <div>
         <nav>
           <ul>
