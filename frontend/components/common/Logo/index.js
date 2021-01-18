@@ -9,7 +9,7 @@ const Logo = ({ className, main }) => {
   return (
     <Link href="/" styleAsLink={false}>
       <Text variant="h1" as={isHomePage && main ? 'h1' : 'span'} className={className}>
-        Treefingers.space
+        Treefingers
       </Text>
     </Link>
   );

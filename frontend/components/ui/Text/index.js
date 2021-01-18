@@ -6,6 +6,7 @@ const Text = ({ children, className, variant = 'p', as, ...rest }) => {
   switch (variant) {
     case 'pageTitle':
       variant = 'h1';
+      break;
     case 'pageSubtitle':
     case 'title':
       variant = 'h2';
@@ -20,12 +21,12 @@ const Text = ({ children, className, variant = 'p', as, ...rest }) => {
 
   return (
     <Component
-      class={clsx(
+      className={clsx(
         {
-          ['text-5xl mb-sm block']: variant === 'h1',
-          ['text-3xl mb-sm block']: variant === 'h2',
-          ['text-2xl mb-sm block']: variant === 'h3',
-          ['text-lg mb-xs block']: ['h4', 'h5', 'h6'].includes(variant),
+          ['text-4xl md:text-5xl mb-md block']: variant === 'h1',
+          ['text-3xl md:text-3xl mb-sm block']: variant === 'h2',
+          ['text-2xl md:text-2xl mb-sm block']: variant === 'h3',
+          ['text-xl mb-xs block']: ['h4', 'h5', 'h6'].includes(variant),
           ['mb-sm block']: variant === 'p',
         },
         className

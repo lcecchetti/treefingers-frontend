@@ -14,7 +14,8 @@ const Link = ({ className, children, target, hreflang, rel, styleAsLink = true, 
         )}
         target={target}
         hreflang={hreflang}
-        rel={rel}>
+        rel={rel}
+      >
         {children}
       </a>
     </NextLink>
