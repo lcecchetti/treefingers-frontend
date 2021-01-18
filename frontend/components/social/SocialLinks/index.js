@@ -22,7 +22,7 @@ const socials = [
 const SocialLinks = () => {
 
   return (
-    <ul>
+    <ul className="flex justify-between gap-md">
       {socials.map((socialProps, index) => (
         <SocialLink key={index} {...socialProps} />
       ))}

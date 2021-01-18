@@ -23,8 +23,8 @@ const Header = () => {
     <Container>
       <div className="flex flex-row items-center justify-between my-md">
         <Logo main className="bold" />
-        <ul className="flex flex-row">
-          <li className="mx-xs">
+        <ul className="flex flex-row gap-sm">
+          <li>
             <Button as={Link} href={data ? '/profile/me' : '/auth/login'}>
               {data &&
                 `Welcome, ${data.self?.username}!`
