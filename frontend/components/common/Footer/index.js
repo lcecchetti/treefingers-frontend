@@ -5,7 +5,7 @@ import { SocialLinks } from 'components/social';
 const Footer = () => {
 
   return (
-    <Container className="flex justify-between">
+    <Container className="flex justify-between my-md">
       <SocialLinks />
       <Copyright />
     </Container>
