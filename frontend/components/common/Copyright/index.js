@@ -1,15 +1,12 @@
-import { Text, Link } from 'components/ui';
+import { Link } from 'components/ui';
+import clsx from 'clsx';
 
 const Copyright = ({ className }) => {
 
   return (
-    <Text variant="span" className={className}>
-      {'© '}
-      <Link href="/">Treefingers</Link>
-      {' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Text>
+    <Link className={clsx('no-underline', className)} href="/">
+      © Treefingers {new Date().getFullYear()}.
+    </Link>
   );
 };
 
