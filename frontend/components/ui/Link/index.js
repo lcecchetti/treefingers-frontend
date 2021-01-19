@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import NextLink from 'next/link';
 
-const Link = ({ className, children, target, hreflang, rel, styleAsLink = true, ...rest }) => {
+const Link = ({ className, children, target, hrefLang, rel, styleAsLink = true, ...rest }) => {
 
   return (
     <NextLink {...rest} >
@@ -13,7 +13,7 @@ const Link = ({ className, children, target, hreflang, rel, styleAsLink = true, 
           className
         )}
         target={target}
-        hreflang={hreflang}
+        hrefLang={hrefLang}
         rel={rel}
       >
         {children}
