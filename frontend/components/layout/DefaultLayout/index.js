@@ -2,7 +2,7 @@
 const DefaultLayout = ({ children }) => {
 
   return (
-    <div>
+    <div className="pt-header min-h-screen">
       {children}
     </div>
   )

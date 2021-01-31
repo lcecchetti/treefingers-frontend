@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Text, Link } from 'components/ui';
 import { useRouter } from 'next/router';
 
@@ -8,7 +9,7 @@ const Logo = ({ className, main }) => {
 
   return (
     <Link href="/" styleAsLink={false}>
-      <Text variant="h1" as={isHomePage && main ? 'h1' : 'span'} className={className}>
+      <Text variant="logo" as={isHomePage && main ? 'h1' : 'span'} className={className}>
         Treefingers
       </Text>
     </Link>

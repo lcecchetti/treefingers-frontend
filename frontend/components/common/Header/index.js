@@ -20,18 +20,21 @@ const Header = () => {
   const { data } = useQuery(QUERY_SELF);
 
   return (
-    <Container>
-      <div className="flex items-center justify-between my-md">
-        <Logo main className="bold" />
-        <ul className="flex flex-row gap-sm">
-          <li>
-            <Button as={Link} href={data ? '/profile/me' : '/auth/login'}>
-              {data ? `Welcome, ${data.self?.username}!` : 'Login'}
-            </Button>
-          </li>
-        </ul>
-      </div>
-    </Container>
+    <div className="absolute w-full h-header bg-base">
+      <Container>
+        <div className="flex items-center justify-between my-md">
+          <Logo main className="bold" />
+          <ul className="flex flex-row gap-sm">
+            <li>
+              <Button as={Link} href={data ? '/profile/me' : '/auth/login'}>
+                {data ? `Welcome, ${data.self?.username}!` : 'Login'}
+              </Button>
+            </li>
+          </ul>
+        </div>
+      </Container>
+    </div>
+
   );
 };
 
