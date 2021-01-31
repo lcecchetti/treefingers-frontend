@@ -2,27 +2,22 @@ import clsx from 'clsx';
 
 const Text = ({ children, className, variant = 'p', as, ...rest }) => {
 
-  // handle variant alias
-  switch (variant) {
-    case 'pageTitle':
-      variant = 'h1';
-      break;
-    case 'pageSubtitle':
-    case 'title':
-      variant = 'h2';
-      break;
-    case 'subtitle':
-      variant = 'h3';
-      break;
+  const variantsMap = {
+    pageTitle: 'h1',
+    pageSubtitle: 'h2',
+    title: 'h2',
+    subtitle: 'h3',
+    logo: 'span',
   }
-
+ 
   // pick component
-  const Component = as ?? variant;
+  const Component = as ?? variantsMap[variant] ?? variant;
 
   return (
     <Component
       className={clsx(
         {
+          ['text-3xl md:text-5xl']: variant === 'logo',
           ['text-3xl md:text-5xl mb-md']: variant === 'h1',
           ['text-2xl md:text-3xl mb-sm']: variant === 'h2',
           ['text-xl md:text-2xl mb-sm']: variant === 'h3',
