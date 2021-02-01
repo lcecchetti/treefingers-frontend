@@ -19,7 +19,7 @@ const Hero = () => {
           <span className="mb-sm inline-block">"The better to eat you with!" - Growled the wolf.</span>
           <br />
           {heroTexts.map((text, index) => (
-            <span key="index">
+            <span key={index}>
               {text}
               <Typist.Backspace count={text.length} delay={500} />
             </span>
@@ -32,9 +32,9 @@ const Hero = () => {
         <div className="mb-lg">
           <Text variant="h2">What is Treefingers?</Text>
           <Text variant="p">
-            Treefingers is a place where telling never ending stories.<br />
+            Treefingers is a place where to tell never ending stories.<br />
             Where writings do not belong to the writer, but to the reader.<br />
-            It's about choosing, and creating your own choice.
+            It's about choosing and creating your own choice.
           </Text>
         </div>
         <div className="md:mb-lg">
@@ -47,9 +47,9 @@ const Hero = () => {
           </Text>
         </div>
         <div className="w-full">
-          <Button as={Link} href="#" variant="primary-contrast" className="my-sm">Read</Button>
+          <Button as={Link} href="/stories" variant="primary-contrast" className="my-sm">Read</Button>
           <Text variant="span" className="m-sm">- Or -</Text>
-          <Button as={Link} href="#" variant="primary-contrast" className="my-sm">Write</Button>
+          <Button as={Link} href="/story/new" variant="primary-contrast" className="my-sm">Write</Button>
         </div>
       </div>
     </div>
