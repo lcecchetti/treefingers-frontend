@@ -28,22 +28,19 @@ const Header = () => {
 
           <ul className="hidden sm:flex flex-row gap-xl">
             <li>
-              <Link href="/stories" underline={false}><Text variant="span" className="font-bold text-lg">ALL STORIES</Text></Link>
+              <Link href="/stories" underline={false}><Text variant="span" className="font-bold text-lg">STORIES</Text></Link>
             </li>
             <li>
-              <Link href="/stories/pop" underline={false}><Text variant="span" className="font-bold text-lg">POP</Text></Link>
-            </li>
-            <li>
-              <Link href="/stories/new" underline={false}><Text variant="span" className="font-bold text-lg">NEW</Text></Link>
+              <Link href="/stories/recent" underline={false}><Text variant="span" className="font-bold text-lg">AUTHORS</Text></Link>
             </li>
           </ul>
 
           <ul className="flex flex-row gap-sm sm:gap-md">
             <li>
-              <Link href="/story/search"><FaSearch className="text-xl md:text-2xl"/></Link>
+              <Link href="#"><FaSearch className="text-xl md:text-2xl"/></Link>
             </li>
             <li>
-              <Link href="/story/create"><FaPenFancy className="text-xl md:text-2xl"/></Link>
+              <Link href="/story/new"><FaPenFancy className="text-xl md:text-2xl"/></Link>
             </li>
             <li>
               <Link href={data ? '/profile/me' : '/auth/login'}><FaUserCircle className="text-xl md:text-2xl"/></Link>
