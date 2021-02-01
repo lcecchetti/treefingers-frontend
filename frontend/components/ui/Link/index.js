@@ -1,14 +1,15 @@
 import clsx from 'clsx';
 import NextLink from 'next/link';
 
-const Link = ({ className, children, target, hrefLang, rel, styleAsLink = true, ...rest }) => {
+const Link = ({ className, children, target, hrefLang, rel, underline = true, styleAsLink = true, ...rest }) => {
 
   return (
     <NextLink {...rest} >
       <a
         className={clsx(
           {
-            ['transition-colors underline hover:text-primary-light']: styleAsLink,
+            ['transition-colors hover:text-primary-light']: styleAsLink,
+            ['underline']: styleAsLink && underline,
           },
           className
         )}
