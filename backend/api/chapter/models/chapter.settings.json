@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "chapters",
   "info": {
-    "name": "chapter"
+    "name": "chapter",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -11,10 +12,12 @@
   },
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "content": {
-      "type": "richtext"
+      "type": "richtext",
+      "required": true
     },
     "author": {
       "plugin": "users-permissions",
@@ -26,8 +29,8 @@
       "via": "chapters"
     },
     "likes": {
-      "via": "chapter",
-      "collection": "like"
+      "collection": "like",
+      "via": "chapter"
     }
   }
 }

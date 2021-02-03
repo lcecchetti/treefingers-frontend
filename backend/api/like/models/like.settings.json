@@ -11,8 +11,8 @@
   },
   "attributes": {
     "chapter": {
-      "model": "chapter",
-      "via": "likes"
+      "via": "likes",
+      "model": "chapter"
     },
     "user": {
       "plugin": "users-permissions",
@@ -20,8 +20,8 @@
       "via": "likes"
     },
     "story": {
-      "model": "story",
-      "via": "likes"
+      "via": "likes",
+      "model": "story"
     }
   }
 }

@@ -24,8 +24,11 @@
       "collection": "chapter"
     },
     "likes": {
-      "via": "story",
-      "collection": "like"
+      "collection": "like",
+      "via": "story"
+    },
+    "content": {
+      "type": "richtext"
     }
   }
 }
