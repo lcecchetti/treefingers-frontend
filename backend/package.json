@@ -11,6 +11,7 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "slugify": "^1.4.6",
     "strapi": "3.4.6",
     "strapi-admin": "3.4.6",
     "strapi-connector-mongoose": "3.4.6",
