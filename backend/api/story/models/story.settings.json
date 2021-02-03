@@ -12,7 +12,8 @@
   },
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 80
     },
     "author": {
       "plugin": "users-permissions",
@@ -20,8 +21,8 @@
       "via": "stories"
     },
     "chapters": {
-      "via": "story",
-      "collection": "chapter"
+      "collection": "chapter",
+      "via": "story"
     },
     "likes": {
       "collection": "like",
@@ -29,6 +30,12 @@
     },
     "content": {
       "type": "richtext"
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "private": false
     }
   }
 }

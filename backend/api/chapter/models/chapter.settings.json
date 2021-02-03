@@ -25,12 +25,15 @@
       "via": "chapters"
     },
     "story": {
-      "model": "story",
-      "via": "chapters"
+      "via": "chapters",
+      "model": "story"
     },
     "likes": {
       "collection": "like",
       "via": "chapter"
+    },
+    "parent": {
+      "model": "chapter"
     }
   }
 }
