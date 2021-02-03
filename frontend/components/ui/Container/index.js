@@ -1,9 +1,13 @@
 import clsx from 'clsx';
 
-const Container = ({ className, children }) => {
+const Container = ({ className, children, fluid }) => {
 
   return (
-    <div className={clsx('lg:container mx-auto px-md', className)}>
+    <div className={clsx(
+      { ['lg:container']: !fluid },
+      'mx-auto px-md',
+      className
+    )}>
       {children}
     </div>
   );

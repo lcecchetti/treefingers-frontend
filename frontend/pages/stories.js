@@ -1,11 +1,13 @@
 import { DefaultLayout } from 'components/layout';
-import { Text } from 'components/ui';
+import { Text, Container } from 'components/ui';
+import { StoryList } from 'components/story';
 
 const StoriesPage = () => {
   return (
-    <div>
-      <Text variant="h1">Stories</Text>
-    </div>
+    <Container>
+      <Text variant="pageTitle">Stories</Text>
+      <StoryList />
+    </Container>
   );
 };
 

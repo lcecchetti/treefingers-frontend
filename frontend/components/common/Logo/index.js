@@ -7,12 +7,14 @@ const Logo = ({ className, main }) => {
 
   const isHomePage = router.pathname == '/';
 
+  const Component = isHomePage && main ? 'h1' : 'span';
+
   return (
-    <Link href="/" styleAsLink={false}>
-      <Text variant="logo" as={isHomePage && main ? 'h1' : 'span'} className={className}>
-        Treefingers
-      </Text>
-    </Link>
+      <Component className={clsx('text-3xl md:text-5xl', className)}>
+        <Link href="/" underline={false}>
+          Treefingers
+        </Link>
+      </Component>
   );
 };
 

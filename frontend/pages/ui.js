@@ -29,7 +29,7 @@ const UiPage = () => {
         <Text variant="label">Lorem ipsum dolor sit amet</Text>
         <Text variant="span">Lorem ipsum dolor sit amet</Text>
 
-        <Link className="block my-sm" href="#">This is a link</Link>
+        <Link className="block my-sm" href="/#">This is a link</Link>
       </UiSection>
 
       <UiSection title="Buttons">
@@ -44,7 +44,7 @@ const UiPage = () => {
         <Button variant="outlined">Button</Button>
         <Button variant="outlined" loading>Button</Button>
         <Button variant="outlined" disabled>Button</Button>
-        <Button as={Link} href="#">This is a link</Button>
+        <Button as={Link} href="/#">This is a link</Button>
       </UiSection>
 
 

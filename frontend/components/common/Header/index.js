@@ -37,7 +37,7 @@ const Header = () => {
 
           <ul className="flex flex-row gap-sm sm:gap-md">
             <li>
-              <Link href="#"><FaSearch className="text-xl md:text-2xl"/></Link>
+              <Link href="/#"><FaSearch className="text-xl md:text-2xl"/></Link>
             </li>
             <li>
               <Link href="/story/new"><FaPenFancy className="text-xl md:text-2xl"/></Link>
