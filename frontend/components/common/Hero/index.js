@@ -47,9 +47,9 @@ const Hero = () => {
           </Text>
         </div>
         <div className="w-full">
-          <Button as={Link} href="/stories" variant="primary-contrast" className="my-sm">Read</Button>
+          <Button as={Link} styleAsLink={false} href="/stories" variant="primary-contrast" className="my-sm">Read</Button>
           <Text variant="span" className="m-sm">- Or -</Text>
-          <Button as={Link} href="/story/new" variant="primary-contrast" className="my-sm">Write</Button>
+          <Button as={Link} styleAsLink={false} href="/story/new" variant="primary-contrast" className="my-sm">Write</Button>
         </div>
       </div>
     </div>

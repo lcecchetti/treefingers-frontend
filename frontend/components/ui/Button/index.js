@@ -34,7 +34,6 @@ const Button = ({ children, className, loading, variant = 'primary', size = 'md'
         style.size[size],
         className
       )}
-      styleAsLink={false}
       {...rest}>
 
       {Icon &&

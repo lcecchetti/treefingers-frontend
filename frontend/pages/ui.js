@@ -44,7 +44,7 @@ const UiPage = () => {
         <Button variant="outlined">Button</Button>
         <Button variant="outlined" loading>Button</Button>
         <Button variant="outlined" disabled>Button</Button>
-        <Button as={Link} href="/#">This is a link</Button>
+        <Button as={Link} styleAsLink={false} href="/#">This is a link</Button>
       </UiSection>
 
 
