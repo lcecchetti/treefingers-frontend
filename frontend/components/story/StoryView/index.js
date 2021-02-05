@@ -49,25 +49,20 @@ const StoryView = ({ id }) => {
 
   const { data, loading, error } = useQuery(QUERY_STORY, { variables: { id } });
 
-  //@todo it should load the story from cache and not from network. Apparently it works only if using the very same query
-  console.log(data);
-
-  const story = data?.story;
-
   return (
     <div className="">
       {loading && <Spinner />}
 
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
-      {story &&
+      {data &&
         <div className="">
           <div>
-            <Text variant="h3"><Link href={getStoryUrl(story)} underline={false}>{story.title}</Link></Text>
-            <Text variant="span">Written by {story.author.username} on {formatDate(story.createdAt)}</Text>
+            <Text variant="h3"><Link href={getStoryUrl(data.story)} underline={false}>{data.story.title}</Link></Text>
+            <Text variant="span">Written by {data.story.author.username} on {formatDate(data.story.createdAt)}</Text>
           </div>
           <div>
-            <Text variant="p">{story.content}</Text>
+            <Text variant="p">{data.story.content}</Text>
           </div>
           <div>
             <FaRegHeart className="text-xl" />
