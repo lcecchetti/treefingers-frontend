@@ -71,6 +71,7 @@ export function initializeApollo(initialState = null, authToken) {
     // Merge the existing cache into data passed from getStaticProps/getServerSideProps
     const data = merge(initialState, existingCache);
 
+    console.log(data);
     // Restore the cache with the merged data
     _apolloClient.cache.restore(data);
   }
