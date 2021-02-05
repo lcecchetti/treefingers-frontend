@@ -58,7 +58,7 @@ const StoryView = ({ id }) => {
       {data &&
         <div className="">
           <div>
-            <Text variant="h3"><Link href={getStoryUrl(data.story)} underline={false}>{data.story.title}</Link></Text>
+            <Text variant="pageTitle">{data.story.title}</Text>
             <Text variant="span">Written by {data.story.author.username} on {formatDate(data.story.createdAt)}</Text>
           </div>
           <div>
