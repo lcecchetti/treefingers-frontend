@@ -7,7 +7,6 @@ import { getStoryUrl } from 'lib/helper/story';
 const StoryPage = ({ story }) => {
   return (
     <Container>
-      <Text variant="h1">Story</Text>
       <StoryView id={story.id} />
     </Container>
   );
