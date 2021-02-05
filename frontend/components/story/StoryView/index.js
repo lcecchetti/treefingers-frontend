@@ -45,7 +45,7 @@ export const QUERY_STORY_BY_SLUG = gql`
 `;
 
 
-const StoryView = ({ id }) => {
+const StoryView = ({ id, titleVariant = 'pageTitle' }) => {
 
   const { data, loading, error } = useQuery(QUERY_STORY, { variables: { id } });
 
@@ -58,7 +58,7 @@ const StoryView = ({ id }) => {
       {data &&
         <div className="">
           <div>
-            <Text variant="pageTitle">{data.story.title}</Text>
+            <Text variant={titleVariant}>{data.story.title}</Text>
             <Text variant="span">Written by {data.story.author.username} on {formatDate(data.story.createdAt)}</Text>
           </div>
           <div>

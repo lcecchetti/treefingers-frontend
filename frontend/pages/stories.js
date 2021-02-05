@@ -6,7 +6,6 @@ import { initializeApollo, addApolloState } from 'lib/apollo/client';
 const StoriesPage = () => {
   return (
     <Container>
-      <Text variant="pageTitle">Stories</Text>
       <StoryList />
     </Container>
   );
