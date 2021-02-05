@@ -25,11 +25,13 @@ export const QUERY_STORIES = gql`
 `;
 
 
-const StoryList = () => {
+const StoryList = ({ titleVariant = 'pageTitle' }) => {
   const { data, loading, error } = useQuery(QUERY_STORIES);
 
   return (
     <div className="">
+      <Text variant={titleVariant}>Stories</Text>
+
       {loading && <Spinner />}
 
       {error && <Text variant="span" className="text-error">{error}</Text>}
