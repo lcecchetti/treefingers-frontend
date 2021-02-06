@@ -31,7 +31,7 @@ const Header = () => {
               <Link href="/stories" underline={false}><Text variant="span" className="font-bold text-lg">STORIES</Text></Link>
             </li>
             <li>
-              <Link href="/stories/recent" underline={false}><Text variant="span" className="font-bold text-lg">AUTHORS</Text></Link>
+              <Link href="/authors" underline={false}><Text variant="span" className="font-bold text-lg">AUTHORS</Text></Link>
             </li>
           </ul>
 

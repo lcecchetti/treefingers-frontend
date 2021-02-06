@@ -1,5 +1,4 @@
-import { Link, Spinner, Text } from 'components/ui';
-import { getStoryUrl } from 'lib/helper/story';
+import { Spinner, Text } from 'components/ui';
 import { formatDate } from 'lib/helper/date';
 import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
@@ -25,12 +24,12 @@ export const QUERY_STORY = gql`
 `;
 
 /**
- * Single story by slug query
+ * Get stories by slug query
  * @type {gql}
  */
-export const QUERY_STORY_BY_SLUG = gql`
-  query storyBySlug($slug: String!) {
-    storyBySlug(slug: $slug) {
+export const QUERY_STORIES_BY_SLUG = gql`
+  query stories($slug: String) {
+    stories(where: { slug: $slug }) {
       id
       title
       content
