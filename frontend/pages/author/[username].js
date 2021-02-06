@@ -18,7 +18,9 @@ export async function getStaticProps({ params }) {
   const { data } = await apolloClient.query({
     query: QUERY_AUTHORS_BY_USERNAME,
     variables: { username: params.username },
-  },);
+  });
+
+  console.log(data);
 
   // check if author exists
   if (!data.users.length) {

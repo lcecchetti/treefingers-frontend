@@ -18,7 +18,7 @@ export async function getStaticProps({ params }) {
   const { data } = await apolloClient.query({
     query: QUERY_STORIES_BY_SLUG,
     variables: { slug: params.slug },
-  },);
+  });
 
   // check if story exists
   if (!data.stories.length) {

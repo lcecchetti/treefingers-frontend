@@ -2,16 +2,26 @@ import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 
 /**
+ * Author fragment
+ */
+const FRAGMENT_AUTHOR = gql`
+  fragment AuthorFields on UsersPermissionsUser {
+    id
+    username
+  }
+`;
+
+/**
  * Single author query
  * @type {gql}
  */
 export const QUERY_AUTHOR = gql`
   query user($id: ID!) {
     user(id: $id) {
-      id
-      username
+      ...AuthorFields
     }
   }
+  ${FRAGMENT_AUTHOR}
 `;
 
 /**
@@ -21,10 +31,10 @@ export const QUERY_AUTHOR = gql`
 export const QUERY_AUTHORS_BY_USERNAME = gql`
   query users($username: String!) {
     users(where: { username: $username }) {
-      id
-      username
+      ...AuthorFields
     }
   }
+  ${FRAGMENT_AUTHOR}
 `;
 
 const AuthorView = ({ id, titleVariant = 'pageTitle' }) => {
