@@ -1,7 +1,7 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { StoryView, QUERY_STORIES, QUERY_STORY_BY_SLUG, QUERY_STORY } from 'components/story';
+import { StoryView, QUERY_STORIES, QUERY_STORIES_BY_SLUG, QUERY_STORY } from 'components/story';
 
 const StoryPage = ({ story }) => {
   return (
@@ -16,26 +16,28 @@ export async function getStaticProps({ params }) {
 
   // load story by slug
   const { data } = await apolloClient.query({
-    query: QUERY_STORY_BY_SLUG,
+    query: QUERY_STORIES_BY_SLUG,
     variables: { slug: params.slug },
   },);
 
   // check if story exists
-  if (!data?.storyBySlug) {
+  if (!data.stories.length) {
     return {
       notFound: true,
     }
   }
 
+  const story = data.stories[0];
+
   // add story by id query to the cache
   apolloClient.writeQuery({
     query: QUERY_STORY,
-    data: { story: data.storyBySlug },
-    variables: { id: data.storyBySlug.id },
+    data: { story },
+    variables: { id: story.id },
   });
 
   return addApolloState(apolloClient, {
-    props: { story: data.storyBySlug},
+    props: { story},
     revalidate: 1,
   });
 }

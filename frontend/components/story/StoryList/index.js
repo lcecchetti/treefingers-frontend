@@ -9,8 +9,8 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
-  query stories($id: ID, $slug: String) {
-    stories(where: {slug: $slug, id: $id}) {
+  query stories($author: ID) {
+    stories(where: {author: $author}) {
       id
       title
       content
