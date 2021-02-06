@@ -4,23 +4,34 @@ import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 /**
+ * Author fragment
+ */
+const FRAGMENT_STORY = gql`
+  fragment StoryFields on Story {
+    id
+    title
+    content
+    slug
+    createdAt
+    author {
+      id
+      username
+    }
+  }
+`;
+
+
+/**
  * Single story query
  * @type {gql}
  */
 export const QUERY_STORY = gql`
   query story($id: ID!) {
     story(id: $id) {
-      id
-      title
-      content
-      slug
-      createdAt
-      author {
-        id
-        username
-      }
+      ...StoryFields
     }
   }
+  ${FRAGMENT_STORY}
 `;
 
 /**
@@ -30,17 +41,10 @@ export const QUERY_STORY = gql`
 export const QUERY_STORIES_BY_SLUG = gql`
   query stories($slug: String) {
     stories(where: { slug: $slug }) {
-      id
-      title
-      content
-      slug
-      createdAt
-      author {
-        id
-        username
-      }
+      ...StoryFields
     }
   }
+  ${FRAGMENT_STORY}
 `;
 
 
