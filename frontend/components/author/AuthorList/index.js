@@ -16,7 +16,6 @@ export const QUERY_AUTHORS = gql`
   }
 `;
 
-
 const AuthorList = ({ titleVariant = 'pageTitle' }) => {
   const { data, loading, error } = useQuery(QUERY_AUTHORS);
 
