@@ -1,6 +1,6 @@
 module.exports = {
   query: `
-    storyBySlug(slug: String!): Story!
+    storyBySlug(slug: String!): Story
   `,
   resolver: {
     Query: {

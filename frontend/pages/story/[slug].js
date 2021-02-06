@@ -1,8 +1,7 @@
 import { DefaultLayout } from 'components/layout';
-import { Text, Container } from 'components/ui';
+import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { StoryView, QUERY_STORIES, QUERY_STORY_BY_SLUG, QUERY_STORY } from 'components/story';
-import { getStoryUrl } from 'lib/helper/story';
 
 const StoryPage = ({ story }) => {
   return (
@@ -20,6 +19,13 @@ export async function getStaticProps({ params }) {
     query: QUERY_STORY_BY_SLUG,
     variables: { slug: params.slug },
   },);
+
+  // check if story exists
+  if (!data?.storyBySlug) {
+    return {
+      notFound: true,
+    }
+  }
 
   // add story by id query to the cache
   apolloClient.writeQuery({
@@ -40,8 +46,8 @@ export async function getStaticPaths() {
   const { data } = await apolloClient.query({ query: QUERY_STORIES });
 
   return {
-    paths: data.stories.map((story) => getStoryUrl(story)) || [],
-    fallback: true,
+    paths: data.stories.map((story) => ({ params: { slug: story.slug } })) || [],
+    fallback: 'blocking',
   };
 }
 
