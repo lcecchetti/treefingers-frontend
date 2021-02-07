@@ -1,14 +1,20 @@
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
+import { StoryList, FRAGMENT_STORIES_STORY } from 'components/story';
 
 /**
  * Author fragment
  */
+//@todo make story list as fragment and write cache manually on page load
 const FRAGMENT_AUTHOR = gql`
   fragment AuthorFields on UsersPermissionsUser {
     id
     username
+    stories {
+      ...StoryFields
+    }
   }
+  ${FRAGMENT_STORIES_STORY}
 `;
 
 /**
@@ -50,6 +56,7 @@ const AuthorView = ({ id, titleVariant = 'pageTitle' }) => {
       {data &&
         <div className="">
           <Text variant={titleVariant}>{data.user.username}</Text>
+          <StoryList variables={{ author: data.user.id }} />
         </div>
       }
     </div>
