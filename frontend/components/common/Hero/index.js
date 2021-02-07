@@ -1,5 +1,6 @@
 import { Link, Button, Text } from 'components/ui';
 import Typist from 'react-typist';
+import { FaAngleDoubleDown } from 'react-icons/fa';
 
 const heroTexts = [
   'Jumping out of the bed and swallowing her in just one bite.',
@@ -12,7 +13,7 @@ const Hero = () => {
 
   return (
     <div className="flex flex-col md:grid md:grid-cols-3 md:items-stretch items-center min-h-screen-no-header">
-      <div className="md:col-span-2 flex items-center md:justify-center flex-col p-md md:p-xl min-h-screen-no-header md:min-h-0">
+      <div className="md:col-span-2 flex items-center justify-center flex-col p-md md:p-xl min-h-screen-no-header md:min-h-0">
         <Text variant="h3" as={Typist} avgTypingDelay={50} startDelay={2000}>
           <span className="mb-sm inline-block">"What a big mouth you have!" - Said little red riding hood.</span>
           <br />
@@ -27,6 +28,8 @@ const Hero = () => {
 
           <span>Continuing this story is up to your imagination...</span>
         </Text>
+
+        <FaAngleDoubleDown className="md:hidden text-4xl mt-xl animate-bounce" />
       </div>
       <div className="text-primary-contrast bg-primary p-md md:p-xl flex flex-col md:justify-center items-start min-h-screen-no-header md:min-h-0">
         <div className="mb-lg">
