@@ -20,7 +20,6 @@ const FRAGMENT_STORY = gql`
   }
 `;
 
-
 /**
  * Single story query
  * @type {gql}

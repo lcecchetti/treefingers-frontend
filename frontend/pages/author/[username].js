@@ -2,6 +2,7 @@ import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { AuthorView, QUERY_AUTHORS, QUERY_AUTHOR, QUERY_AUTHORS_BY_USERNAME } from 'components/author';
+import { QUERY_STORIES } from 'components/story';
 
 const AuthorPage = ({ author }) => {
   return (
@@ -20,8 +21,6 @@ export async function getStaticProps({ params }) {
     variables: { username: params.username },
   });
 
-  console.log(data);
-
   // check if author exists
   if (!data.users.length) {
     return {
@@ -34,8 +33,15 @@ export async function getStaticProps({ params }) {
   // add author by id query to the cache
   apolloClient.writeQuery({
     query: QUERY_AUTHOR,
-    data: { author },
+    data: { user: author },
     variables: { id: author.id },
+  });
+
+  // add author stories query to the cache
+  apolloClient.writeQuery({
+    query: QUERY_STORIES,
+    data: { stories: author.stories },
+    variables: { author: author.id },
   });
 
   return addApolloState(apolloClient, {
