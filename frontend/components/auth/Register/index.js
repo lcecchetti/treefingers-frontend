@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
 import useAuthToken from 'lib/auth/useAuthToken';
 import { Text, Button, Link, FormField } from 'components/ui';
+import { getLoginUrl } from 'lib/helper/auth';
 
 /**
  * Sign up mutation
@@ -103,7 +104,7 @@ export default function SignUp() {
               Register
             </Button>
             <div className="text-right">
-              <Link href="/auth/signin">
+              <Link href={getLoginUrl()}>
                 <a>Already have an account? Login</a>
               </Link>
             </div>

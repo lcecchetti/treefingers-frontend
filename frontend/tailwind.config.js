@@ -15,13 +15,7 @@ module.exports = {
           dark: 'var(--color-primary-dark)',
           contrast: 'var(--color-primary-contrast)',
         },
-        secondary: {
-          light: 'var(--color-secondary-light)',
-          DEFAULT: 'var(--color-secondary)',
-          dark: 'var(--color-secondary-dark)',
-          constrast: 'var(--color-secondary-contrast)',
-        },
-        error: '#B91C1C',
+        error: 'var(--color-error)',
       },
       textColor: {
         // base font color

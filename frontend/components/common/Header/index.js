@@ -1,7 +1,8 @@
 import { Container, Link, Text } from 'components/ui';
 import { Logo } from 'components/common';
 import { gql, useQuery } from '@apollo/client';
-import { FaSearch, FaPenFancy, FaUserCircle } from 'react-icons/fa';
+import { FaMoon, FaSun, FaSearch, FaPenFancy, FaUserCircle } from 'react-icons/fa';
+import { useTheme } from 'next-themes';
 
 /**
  * Self query
@@ -18,6 +19,7 @@ const QUERY_SELF = gql`
 
 const Header = () => {
 
+  const { theme, setTheme } = useTheme();
   const { data } = useQuery(QUERY_SELF);
 
   return (
@@ -41,6 +43,12 @@ const Header = () => {
             </li>
             <li>
               <Link href="/story/new"><FaPenFancy className="text-xl md:text-2xl"/></Link>
+            </li>
+            <li>
+              <a href="#" className="hover:text-primary-light" onClick={() => {console.log('clicked'); theme === 'dark' ? setTheme('light') : setTheme('dark'); }}>
+                {theme === 'dark' && <FaMoon className="text-xl md:text-2xl"/>}
+                {theme !== 'dark' && <FaSun className="text-xl md:text-2xl"/>}
+              </a>
             </li>
             <li>
               <Link href={data ? '/profile/me' : '/auth/login'}><FaUserCircle className="text-xl md:text-2xl"/></Link>
