@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { gql, useQuery } from '@apollo/client';
+import { getLoginUrl } from 'lib/helper/auth';
 
 /**
  * Self query
@@ -22,7 +23,7 @@ const withAuthentication = Page => {
     useEffect(() => {
       if (error) {
         // redirect to login
-        router.replace('/auth/login');
+        router.replace(getLoginUrl());
       }
     }, [error]);
 

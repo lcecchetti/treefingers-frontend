@@ -7,6 +7,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
+import { getRegisterUrl } from 'lib/helper/auth';
 
 /**
  * Sign in mutation
@@ -90,14 +91,14 @@ export default function Login() {
               <Text variant="p" className="text-error">{apiError}</Text>
             }
             <Button
-              atype="submit"
+              type="submit"
               disabled={isSubmitting}
               className="my-md w-full">
               Login
             </Button>
             <div className="flex flex-row justify-between">
               <Link href="/#" className="text-left text-xs">Forgot password?</Link>
-              <Link href="/auth/register" className="text-right text-xs">Don't have an account?<br />Register</Link>
+              <Link href={getRegisterUrl()} className="text-right text-xs">Don't have an account?<br />Register</Link>
             </div>
           </Form>
         )}

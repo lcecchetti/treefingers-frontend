@@ -6,6 +6,7 @@ const Logout = () => {
   const router = useRouter()
   const { removeAuthToken } = useAuthToken();
 
+  //@todo verify signout sync timing
   useEffect(() => {
     removeAuthToken();
     router.push('/');

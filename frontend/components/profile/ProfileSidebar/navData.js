@@ -1,3 +1,5 @@
+import { getLogoutUrl } from "lib/helper/auth";
+
 export default [
   {
     'label': 'Me',
@@ -9,6 +11,6 @@ export default [
   },
   {
     'label': 'Logout',
-    'href': '/auth/logout',
+    'href': getLogoutUrl(),
   },
 ];

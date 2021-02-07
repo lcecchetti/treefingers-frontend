@@ -15,7 +15,7 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
       className,
     )}>
       <Component className={clsx(
-        'border-0 border-b-2 border-primary w-full focus:outline-none focus:border-primary-dark focus:ring-0',
+        'border-0 border-b-2 border-primary w-full bg-transparent focus:outline-none focus:border-primary-dark focus:ring-0',
         {
           ['']: type === 'select',
           ['']: type === 'textarea',
@@ -44,7 +44,7 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
             error && 'text-error',
             labelClassName
           )}
-          for={name}>
+          htmlFor={name}>
           {label}
         </Text>
       }
