@@ -1,21 +1,21 @@
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
-import SocialLink from './SocialLink';
+import { Link } from 'components/ui';
 
 const socials = [
   {
     label: 'facebook',
     Icon: FaFacebook,
-    href: '/#',
+    href: '#',
   },
   {
     label: 'twitter',
     Icon: FaTwitter,
-    href: '/#',
+    href: '#',
   },
   {
     label: 'instagram',
     Icon: FaInstagram,
-    href: '/#',
+    href: '#',
   },
 ];
 
@@ -23,8 +23,12 @@ const SocialLinks = () => {
 
   return (
     <ul className="flex justify-between gap-md">
-      {socials.map((socialProps, index) => (
-        <SocialLink key={index} {...socialProps} />
+      {socials.map((social, index) => (
+        <li key={index}>
+          <Link href={social.href}>
+            <social.Icon className="text-2xl" />
+          </Link>
+        </li>
       ))}
     </ul>
   );

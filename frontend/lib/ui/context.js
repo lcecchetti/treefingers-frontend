@@ -1,7 +1,12 @@
 import React, { useMemo } from 'react';
 
+export const themes = {
+  dark: 'dark',
+  light: 'light',
+};
+
 const initialState = {
-  isSidebarOpen: false,
+  isDrawerOpen: false,
 }
 
 export const UIContext = React.createContext(initialState);
@@ -9,23 +14,22 @@ export const UIContext = React.createContext(initialState);
 UIContext.displayName = 'UIContext';
 
 export const UIActions = {
-  toggleTheme: 'TOGGLE_THEME',
-  openSidebar: 'OPEN_SIDEBAR',
-  closeSidebar: 'CLOSE_SIDEBAR',
+  openDrawer: 'OPEN_DRAWER',
+  closeDrawer: 'CLOSE_DRAWER',
 };
 
 function uiReducer(state, action) {
   switch (action.type) {
-    case UIActions.openSidebar: {
+    case UIActions.openDrawer: {
       return {
         ...state,
-        isSidebarOpen: true,
+        isDrawerOpen: true,
       }
     }
-    case UIActions.closeSidebar: {
+    case UIActions.closeDrawer: {
       return {
         ...state,
-        isSidebarOpen: false,
+        isDrawerOpen: false,
       }
     }
   }
@@ -34,11 +38,11 @@ function uiReducer(state, action) {
 export const UIProvider = (props) => {
   const [state, dispatch] = React.useReducer(uiReducer, initialState);
 
-  const openSidebar = () => dispatch({ type: UIActions.openSidebar });
-  const closeSidebar = () => dispatch({ type: UIActions.closeSidebar });
-  const toggleSidebar = () => state.isSidebarOpen ? dispatch({ type: UIActions.closeSidebar }) : dispatch({ type: UIActions.openSidebar });
+  const openDrawer = () => dispatch({ type: UIActions.openDrawer });
+  const closeDrawer = () => dispatch({ type: UIActions.closeDrawer });
+  const toggleDrawer = () => state.isDrawerOpen ? dispatch({ type: UIActions.closeDrawer }) : dispatch({ type: UIActions.openDrawer });
 
-  const toggleTheme = (currentTheme) => (currentTheme !== themes.dark ? themes.dark : themes.light);
+  const getToggledTheme = (currentTheme) => (currentTheme !== themes.dark ? themes.dark : themes.light);
 
   const disableBodyScroll = () => {
     document.body.classList.add('overflow-hidden');
@@ -52,10 +56,10 @@ export const UIProvider = (props) => {
   const value = useMemo(
     () => ({
       ...state,
-      openSidebar,
-      closeSidebar,
-      toggleSidebar,
-      toggleTheme,
+      openDrawer,
+      closeDrawer,
+      toggleDrawer,
+      getToggledTheme,
       disableBodyScroll,
       enableBodyScroll,
     }),

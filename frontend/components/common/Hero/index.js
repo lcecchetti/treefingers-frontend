@@ -14,7 +14,7 @@ const Hero = () => {
   return (
     <div className="flex flex-col md:grid md:grid-cols-3 md:items-stretch items-center min-h-screen-no-header">
       <div className="md:col-span-2 flex items-center justify-center flex-col p-md md:p-xl min-h-screen-no-header md:min-h-0">
-        <Text variant="h3" as={Typist} avgTypingDelay={50} startDelay={2000}>
+        <Text className="md:pb-0 pb-14" variant="h3" as={Typist} avgTypingDelay={50} startDelay={2000}>
           <span className="mb-sm inline-block">"What a big mouth you have!" - Said little red riding hood.</span>
           <br />
           <span className="mb-sm inline-block">"The better to eat you with!" - Growled the wolf.</span>
@@ -29,7 +29,7 @@ const Hero = () => {
           <span>Continuing this story is up to your imagination...</span>
         </Text>
 
-        <FaAngleDoubleDown className="md:hidden text-4xl mt-xl animate-bounce" />
+        <FaAngleDoubleDown className="md:hidden text-4xl animate-bounce absolute bottom-md" />
       </div>
       <div className="text-primary-contrast bg-primary p-md md:p-xl flex flex-col md:justify-center items-start min-h-screen-no-header md:min-h-0">
         <div className="mb-lg">
