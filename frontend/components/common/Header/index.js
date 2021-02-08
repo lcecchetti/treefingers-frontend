@@ -34,7 +34,7 @@ const Header = () => {
           <div className="flex items-center justify-between my-md">
             <Logo main className="font-bold" />
 
-            <ul className="hidden sm:flex flex-row gap-xl">
+            <ul className="hidden md:flex flex-row gap-xl">
               <li>
                 <Link href="/stories" underline={false}><Text variant="span" className="font-bold text-lg">STORIES</Text></Link>
               </li>
@@ -47,10 +47,10 @@ const Header = () => {
               <li>
                 <Link href="/#"><FaSearch className="text-xl md:text-2xl" /></Link>
               </li>
-              <li className="hidden md:visible">
+              <li className="hidden md:inline-block">
                 <Link href="/story/new"><FaPenFancy className="text-xl md:text-2xl" /></Link>
               </li>
-              <li className="hidden md:visible">
+              <li className="hidden md:inline-block">
                 <a href="#" className="hover:text-primary-light" onClick={() => { theme === 'dark' ? setTheme('light') : setTheme('dark'); }}>
                   {theme === 'dark' && <FaMoon className="text-xl md:text-2xl" />}
                   {theme !== 'dark' && <FaSun className="text-xl md:text-2xl" />}
