@@ -4,16 +4,12 @@ import withAuthentication from 'lib/auth/withAuthentication';
 const ProfileLayout = ({ children }) => {
 
   return (
-    <div>
+    <div className="pt-header min-h-screen">
       <div>
-        <div>
-          <div>
-            <ProfileSidebar/>
-          </div>
-          <div>
-            {children}
-          </div>
-        </div>
+        <ProfileSidebar/>
+      </div>
+      <div>
+        {children}
       </div>
     </div>
   )

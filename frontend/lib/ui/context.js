@@ -16,12 +16,6 @@ export const UIActions = {
 
 function uiReducer(state, action) {
   switch (action.type) {
-    case UIActions.toggleTheme: {
-      return {
-        ...state,
-        theme: action.theme,
-      }
-    }
     case UIActions.openSidebar: {
       return {
         ...state,
@@ -40,11 +34,20 @@ function uiReducer(state, action) {
 export const UIProvider = (props) => {
   const [state, dispatch] = React.useReducer(uiReducer, initialState);
 
-  const openSidebar = () => dispatch({ type: UI_ACTIONS.OPEN_SIDEBAR });
-  const closeSidebar = () => dispatch({ type: UI_ACTIONS.CLOSE_SIDEBAR });
-  const toggleSidebar = () => state.isSidebarOpen ? dispatch({ type: UI_ACTIONS.CLOSE_SIDEBAR }) : dispatch({ type: UI_ACTIONS.OPEN_SIDEBAR });
+  const openSidebar = () => dispatch({ type: UIActions.openSidebar });
+  const closeSidebar = () => dispatch({ type: UIActions.closeSidebar });
+  const toggleSidebar = () => state.isSidebarOpen ? dispatch({ type: UIActions.closeSidebar }) : dispatch({ type: UIActions.openSidebar });
 
   const toggleTheme = (currentTheme) => (currentTheme !== themes.dark ? themes.dark : themes.light);
+
+  const disableBodyScroll = () => {
+    document.body.classList.add('overflow-hidden');
+    document.body.classList.add('md:overflow-auto');
+  };
+  const enableBodyScroll = () => {
+    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove('md:overflow-auto');
+  };
 
   const value = useMemo(
     () => ({
@@ -53,6 +56,8 @@ export const UIProvider = (props) => {
       closeSidebar,
       toggleSidebar,
       toggleTheme,
+      disableBodyScroll,
+      enableBodyScroll,
     }),
     [state]
   );
