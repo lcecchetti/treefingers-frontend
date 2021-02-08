@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+import { useUI } from 'lib/ui/context';
 
 const DefaultLayout = ({ children }) => {
 
