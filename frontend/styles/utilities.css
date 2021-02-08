@@ -1,3 +1,7 @@
 .min-h-screen-no-header {
   min-height: calc(100vh - theme('spacing.header'));
 }
+
+.h-screen-no-header {
+  height: calc(100vh - theme('spacing.header'));
+}

@@ -6,7 +6,7 @@ const Avatar = ({ firstName, lastName }) => {
   const initials = firstName?.charAt(0) + lastName?.charAt(0);
 
   return (
-    <Link href="/#" className="text-xl">
+    <Link href="#" className="text-xl">
       <MdAccountCircle />
     </Link>
   );

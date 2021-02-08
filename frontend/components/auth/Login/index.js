@@ -97,7 +97,7 @@ export default function Login() {
               Login
             </Button>
             <div className="flex flex-row justify-between">
-              <Link href="/#" className="text-left text-xs">Forgot password?</Link>
+              <Link className="text-left text-xs">Forgot password?</Link>
               <Link href={getRegisterUrl()} className="text-right text-xs">Don't have an account?<br />Register</Link>
             </div>
           </Form>

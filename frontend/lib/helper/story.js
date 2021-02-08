@@ -19,4 +19,20 @@ const getStoryUrl = (story) => {
   return link;
 };
 
-export { getExcerpt, getStoryUrl };
+/**
+ * Get stories url
+ * @return {string}
+ */
+const getStoriesUrl = () => {
+  return '/stories';
+};
+
+/**
+ * Get new story url
+ * @return {string}
+ */
+const getStoryNewUrl = () => {
+  return '/story/new';
+};
+
+export { getExcerpt, getStoryUrl, getStoriesUrl, getStoryNewUrl };

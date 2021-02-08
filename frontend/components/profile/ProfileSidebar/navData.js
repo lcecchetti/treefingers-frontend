@@ -7,7 +7,7 @@ export default [
   },
   {
     'label': 'Link 1',
-    'href': '/#',
+    'href': '#',
   },
   {
     'label': 'Logout',

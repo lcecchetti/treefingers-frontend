@@ -8,4 +8,12 @@ const getAuthorUrl = (author) => {
   return link;
 };
 
-export { getAuthorUrl };
+/**
+ * Get authors url
+ * @return {string}
+ */
+const getAuthorsUrl = () => {
+  return '/authors';
+};
+
+export { getAuthorUrl, getAuthorsUrl };
