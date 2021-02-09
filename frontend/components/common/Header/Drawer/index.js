@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import clsx from 'clsx';
 import { useUI } from 'lib/ui/context';
 import { useTheme } from 'next-themes';
@@ -9,9 +10,8 @@ import { Link, Text } from 'components/ui';
 import { FaPenFancy } from 'react-icons/fa';
 
 const Drawer = () => {
-  //@todo close drawer on link click
-
-  const { isDrawerOpen, disableBodyScroll, enableBodyScroll, getToggledTheme } = useUI();
+  const router = useRouter();
+  const { isDrawerOpen, closeDrawer, disableBodyScroll, enableBodyScroll, getToggledTheme } = useUI();
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -20,8 +20,10 @@ const Drawer = () => {
     } else {
       enableBodyScroll();
     }
+
     return () => {
       enableBodyScroll();
+      router.events.on('routeChangeStart', closeDrawer);
     };
   }, [isDrawerOpen]);
 

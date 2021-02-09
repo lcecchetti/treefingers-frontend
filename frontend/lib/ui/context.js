@@ -38,8 +38,8 @@ function uiReducer(state, action) {
 export const UIProvider = (props) => {
   const [state, dispatch] = React.useReducer(uiReducer, initialState);
 
-  const openDrawer = () => dispatch({ type: UIActions.openDrawer });
-  const closeDrawer = () => dispatch({ type: UIActions.closeDrawer });
+  const openDrawer = () => {!state.isDrawerOpen && dispatch({ type: UIActions.openDrawer });}
+  const closeDrawer = () => {state.isDrawerOpen && dispatch({ type: UIActions.closeDrawer });}
   const toggleDrawer = () => state.isDrawerOpen ? dispatch({ type: UIActions.closeDrawer }) : dispatch({ type: UIActions.openDrawer });
 
   const getToggledTheme = (currentTheme) => (currentTheme !== themes.dark ? themes.dark : themes.light);
