@@ -44,15 +44,6 @@ export const UIProvider = (props) => {
 
   const getToggledTheme = (currentTheme) => (currentTheme !== themes.dark ? themes.dark : themes.light);
 
-  const disableBodyScroll = () => {
-    document.body.classList.add('overflow-hidden');
-    document.body.classList.add('md:overflow-auto');
-  };
-  const enableBodyScroll = () => {
-    document.body.classList.remove('overflow-hidden');
-    document.body.classList.remove('md:overflow-auto');
-  };
-
   const value = useMemo(
     () => ({
       ...state,
@@ -60,8 +51,6 @@ export const UIProvider = (props) => {
       closeDrawer,
       toggleDrawer,
       getToggledTheme,
-      disableBodyScroll,
-      enableBodyScroll,
     }),
     [state]
   );
