@@ -1,1 +1,5 @@
 @import 'react-typist/dist/Typist.css';
+
+.drawer-open {
+  @apply overflow-hidden md:overflow-auto;
+}

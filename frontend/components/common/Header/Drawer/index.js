@@ -15,15 +15,20 @@ const Drawer = () => {
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
+    // handle body scroll lock
     if (isDrawerOpen) {
-      disableBodyScroll();
+      document.body.classList.add('drawer-open');
     } else {
-      enableBodyScroll();
+      document.body.classList.remove('drawer-open');
     }
 
+    // close drawer on route change
+    router.events.on('routeChangeStart', closeDrawer);
+
+    // clean up
     return () => {
-      enableBodyScroll();
-      router.events.on('routeChangeStart', closeDrawer);
+      document.body.classList.remove('drawer-open');
+      router.events.off('routeChangeStart', closeDrawer);
     };
   }, [isDrawerOpen]);
 
