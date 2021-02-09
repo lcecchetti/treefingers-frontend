@@ -35,6 +35,10 @@
       "type": "uid",
       "targetField": "title",
       "required": true
+    },
+    "tags": {
+      "via": "stories",
+      "collection": "tag"
     }
   }
 }
