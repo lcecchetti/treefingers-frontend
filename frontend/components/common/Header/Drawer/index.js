@@ -63,9 +63,9 @@ const Drawer = () => {
         <ul className="p-md flex flex-col overflow-y-auto">
           {drawerItems.map((item, index) => (
             <li key={index} className="text-primary-contrast text-xl py-sm text-center">
-              <Link href={item.href} underline={false} className="inline-flex items-center justify-center" onClick={item.onClick ? item.onClick : undefined} styleAsLink={false}>
+              <Link href={item.href} underline={false} className="inline-flex items-center justify-center relative" onClick={item.onClick ? item.onClick : undefined} styleAsLink={false}>
                 <Text variant="span">{item.label}</Text>
-                {!!item.Icon && <item.Icon className="ml-sm" />}
+                {!!item.Icon && <item.Icon className="absolute -right-xl" />}
               </Link>
             </li>
           ))}

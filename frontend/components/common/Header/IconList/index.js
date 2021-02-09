@@ -73,7 +73,7 @@ const IconList = () => {
           ['md:hidden']: !item.showOnDesktop,
         })}>
           <Link href={item.href} onClick={item.onClick ? item.onClick : undefined}>
-            <item.Icon className="text-xl md:text-2xl" />
+            <item.Icon className="text-2xl" />
           </Link>
         </li>
       ))}
