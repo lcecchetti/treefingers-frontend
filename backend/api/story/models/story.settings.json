@@ -32,10 +32,9 @@
       "type": "richtext"
     },
     "slug": {
-      "type": "string",
-      "required": true,
-      "unique": true,
-      "private": false
+      "type": "uid",
+      "targetField": "title",
+      "required": true
     }
   }
 }
