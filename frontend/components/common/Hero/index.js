@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Link, Button, Text } from 'components/ui';
 import Typist from 'react-typist';
 import { FaAngleDoubleDown } from 'react-icons/fa';
@@ -10,6 +11,9 @@ const heroTexts = [
 ];
 
 const Hero = () => {
+  const detailsRef = useRef(null);
+
+  const scrollToDetails = () => detailsRef.current.scrollIntoView({ behavior: 'smooth' });  
 
   return (
     <div className="flex flex-col md:grid md:grid-cols-3 md:items-stretch items-center min-h-screen-no-header text-center md:text-left">
@@ -29,9 +33,9 @@ const Hero = () => {
           <span>Continuing this story is up to your imagination...</span>
         </Text>
 
-        <FaAngleDoubleDown className="md:hidden text-4xl animate-bounce absolute bottom-md" />
+        <FaAngleDoubleDown className="md:hidden text-4xl animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
       </div>
-      <div className="text-primary-contrast bg-primary p-md md:p-xl flex flex-col md:justify-center items-start min-h-screen-no-header md:min-h-0">
+      <div ref={detailsRef} className="text-primary-contrast bg-primary p-md md:p-xl flex flex-col md:justify-center items-start min-h-screen-no-header md:min-h-0">
         <div className="mb-lg w-full">
           <Text variant="h2">What is Treefingers?</Text>
           <Text variant="p">
