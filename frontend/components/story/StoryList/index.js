@@ -53,7 +53,7 @@ const StoryList = ({ className, queryVariables }) => {
           </div>
 
           <div className="my-sm">
-            <Text variant="h3">
+            <Text variant="title">
               <Link href={getStoryUrl(story)} underline={false}>{story.title}</Link>
             </Text>
             <Text variant="p">{getExcerpt(story)}</Text>
