@@ -1,13 +1,15 @@
 import { DefaultLayout } from 'components/layout';
-import { Container } from 'components/ui';
+import { Container, Text } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { TagView, QUERY_TAG, QUERY_TAGS, QUERY_TAGS_BY_SLUG } from 'components/tag';
 import { QUERY_STORIES } from 'components/story';
 
 const TagPage = ({ tag }) => {
   return (
-    <Container>
-      <TagView id={tag.id} />
+    <Container className="py-md">
+      <Text variant="pageTitle">Stories by {tag.label}</Text>
+      <Text variant="p">Into {tag.label}? This might be the place you are looking for.</Text>
+      <TagView id={tag.id} className="my-md" />
     </Container>
   );
 };
