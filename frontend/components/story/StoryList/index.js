@@ -37,7 +37,7 @@ const StoryList = ({ className, queryVariables }) => {
   const { data, loading, error } = useQuery(QUERY_STORIES, { variables: queryVariables });
 
   return (
-    <div className={clsx('flex flex-col gap-md', className)}>
+    <div className={clsx('grid md:grid-cols-2 gap-md', className)}>
       {loading && <Spinner />}
 
       {error && <Text variant="span" className="text-error">{error}</Text>}
