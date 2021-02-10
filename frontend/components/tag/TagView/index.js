@@ -7,10 +7,11 @@ import { StoryList } from 'components/story';
  * @type {gql}
  */
 //@todo make story list as fragment and write cache manually on page load
-const FRAGMENT_AUTHOR = gql`
-  fragment AuthorFields on UsersPermissionsUser {
+const FRAGMENT_TAG = gql`
+  fragment TagFields on Tag {
     id
-    username
+    label
+    slug
     stories {
       id
       title
@@ -31,34 +32,34 @@ const FRAGMENT_AUTHOR = gql`
 `;
 
 /**
- * Single author query
+ * Single tag query
  * @type {gql}
  */
-export const QUERY_AUTHOR = gql`
-  query user($id: ID!) {
-    user(id: $id) {
-      ...AuthorFields
+export const QUERY_TAG = gql`
+  query tag($id: ID!) {
+    tag(id: $id) {
+      ...TagFields
     }
   }
-  ${FRAGMENT_AUTHOR}
+  ${FRAGMENT_TAG}
 `;
 
 /**
  * Get authors by username query
  * @type {gql}
  */
-export const QUERY_AUTHORS_BY_USERNAME = gql`
-  query users($username: String!) {
-    users(where: { username: $username }) {
-      ...AuthorFields
+export const QUERY_TAGS_BY_SLUG = gql`
+  query tags($slug: String!) {
+    tags(where: { slug: $slug }) {
+      ...TagFields
     }
   }
-  ${FRAGMENT_AUTHOR}
+  ${FRAGMENT_TAG}
 `;
 
-const AuthorView = ({ id, titleVariant = 'pageTitle' }) => {
+const TagView = ({ id, titleVariant = 'pageTitle' }) => {
 
-  const { data, loading, error } = useQuery(QUERY_AUTHOR, { variables: { id } });
+  const { data, loading, error } = useQuery(QUERY_TAG, { variables: { id } });
 
   return (
     <div className="">
@@ -68,13 +69,13 @@ const AuthorView = ({ id, titleVariant = 'pageTitle' }) => {
 
       {data &&
         <div className="">
-          <Text variant={titleVariant}>{data.user.username}</Text>
-          <StoryList queryVariables={{ author: data.user.id }} />
+          <Text variant={titleVariant}>{data.tag.label}</Text>
+          <StoryList queryVariables={{ tag: data.tag.id }} />
         </div>
       }
     </div>
   );
 };
 
-export default AuthorView;
+export default TagView;
 

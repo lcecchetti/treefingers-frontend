@@ -3,23 +3,28 @@ import { getExcerpt, getStoryUrl } from 'lib/helper/story';
 import { formatDate } from 'lib/helper/date';
 import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-
+import { TagList } from 'components/tag';
 
 /**
  * Story fields fragment
  * @type {gql}
  */
-export const FRAGMENT_STORIES_STORY = gql`
-  fragment StoryFields on Story {
+const FRAGMENT_STORIES = gql`
+  fragment StoriesFields on Story {
     id
-      title
-      content
+    title
+    content
+    slug
+    createdAt
+    author {
+      id
+      username
+    }
+    tags {
+      id
+      label
       slug
-      createdAt
-      author {
-        id
-        username
-      }
+    }
   }
 `;
 
@@ -28,21 +33,21 @@ export const FRAGMENT_STORIES_STORY = gql`
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
-  query stories($author: ID) {
-    stories(where: { author: $author }) {
-      ...StoryFields
+  query stories($author: ID, $tag: ID) {
+    stories(where: { author: $author, tags: $tag }) {
+      ...StoriesFields
     }
   }
-  ${FRAGMENT_STORIES_STORY}
+  ${FRAGMENT_STORIES}
 `;
 
 
-const StoryList = ({ titleVariant = 'pageTitle', variables }) => {
-  const { data, loading, error } = useQuery(QUERY_STORIES, { variables });
+const StoryList = ({ titleVariant = 'pageTitle', title= 'Stories', queryVariables }) => {
+  const { data, loading, error } = useQuery(QUERY_STORIES, { variables: queryVariables });
 
   return (
-    <div className="">
-      <Text variant={titleVariant}>Stories</Text>
+    <div className="pt-md">
+      <Text variant={titleVariant}>{title}</Text>
 
       {loading && <Spinner />}
 
@@ -56,6 +61,9 @@ const StoryList = ({ titleVariant = 'pageTitle', variables }) => {
           </div>
           <div>
             <Text variant="p">{getExcerpt(story)}</Text>
+          </div>
+          <div>
+            <TagList tags={story.tags} />
           </div>
           <div>
             <FaRegHeart className="text-xl" />
