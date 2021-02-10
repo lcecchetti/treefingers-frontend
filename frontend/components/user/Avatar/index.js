@@ -1,13 +1,23 @@
 import { MdAccountCircle } from 'react-icons/md';
-import { Link } from 'components/ui';
+import { Link, Text } from 'components/ui';
+import { getAuthorUrl } from 'lib/helper/author';
+import clsx from 'clsx';
 
-const Avatar = ({ firstName, lastName }) => {
-
-  const initials = firstName?.charAt(0) + lastName?.charAt(0);
-
+const Avatar = ({ className, user, size = 'md', showName = false }) => {
   return (
-    <Link href="#" className="text-xl">
-      <MdAccountCircle />
+    <Link href={getAuthorUrl(user)} underline={false} className={clsx('flex items-center', className, {
+      ['text-sm gap-xs']: size === 'sm',
+      ['text-md gap-xs']: size === 'md',
+      ['text-lg gap-sm']: size === 'lg',
+    })}>
+      <MdAccountCircle className={clsx({
+        ['text-2xl']: size === 'sm',
+        ['text-4xl']: size === 'md',
+        ['text-5xl']: size === 'lg',
+      })} />
+      {showName && 
+        <Text variant="span">{user.username}</Text>
+      }
     </Link>
   );
 };

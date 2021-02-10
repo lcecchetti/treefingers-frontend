@@ -1,6 +1,7 @@
 import { Button, Link } from 'components/ui';
 import { getTagUrl } from 'lib/helper/tag';
 import { gql } from '@apollo/client';
+import clsx from 'clsx';
 
 /**
  * Tags list query
@@ -16,10 +17,10 @@ export const QUERY_TAGS = gql`
   }
 `;
 
-const TagList = ({ tags }) => {
+const TagList = ({ className, tags }) => {
   
   return (
-    <ul className="my-sm flex gap-sm uppercase">
+    <ul className={clsx('flex gap-sm uppercase', className)}>
       {tags.map((tag) => (
         <li key={tag.id}>
           <Button as={Link} size="sm" styleAsLink={false} href={getTagUrl(tag)}>{tag.label}</Button>
