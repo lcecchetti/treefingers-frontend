@@ -1,6 +1,7 @@
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
+import clsx from 'clsx';
 
 /**
  * Author fragment
@@ -56,19 +57,18 @@ export const QUERY_TAGS_BY_SLUG = gql`
   ${FRAGMENT_TAG}
 `;
 
-const TagView = ({ id, titleVariant = 'pageTitle' }) => {
+const TagView = ({ className, id }) => {
 
   const { data, loading, error } = useQuery(QUERY_TAG, { variables: { id } });
 
   return (
-    <div className="">
+    <div className={clsx(className)}>
       {loading && <Spinner />}
 
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
       {data &&
         <div className="">
-          <Text variant={titleVariant}>{data.tag.label}</Text>
           <StoryList queryVariables={{ tag: data.tag.id }} />
         </div>
       }
