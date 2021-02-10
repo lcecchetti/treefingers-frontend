@@ -2,9 +2,11 @@ import { Spinner, Text } from 'components/ui';
 import { formatDate } from 'lib/helper/date';
 import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { TagList } from 'components/tag';
 
 /**
- * Author fragment
+ * Story fragment
+ * @type {gql}
  */
 const FRAGMENT_STORY = gql`
   fragment StoryFields on Story {
@@ -16,6 +18,11 @@ const FRAGMENT_STORY = gql`
     author {
       id
       username
+    }
+    tags {
+      id
+      label
+      slug
     }
   }
 `;
@@ -38,7 +45,7 @@ export const QUERY_STORY = gql`
  * @type {gql}
  */
 export const QUERY_STORIES_BY_SLUG = gql`
-  query stories($slug: String) {
+  query stories($slug: String!) {
     stories(where: { slug: $slug }) {
       ...StoryFields
     }
@@ -65,6 +72,9 @@ const StoryView = ({ id, titleVariant = 'pageTitle' }) => {
           </div>
           <div>
             <Text variant="p">{data.story.content}</Text>
+          </div>
+          <div>
+            <TagList tags={data.story.tags} />
           </div>
           <div>
             <FaRegHeart className="text-xl" />
