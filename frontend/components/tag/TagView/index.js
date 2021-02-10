@@ -6,7 +6,6 @@ import { StoryList } from 'components/story';
  * Author fragment
  * @type {gql}
  */
-//@todo make story list as fragment and write cache manually on page load
 const FRAGMENT_TAG = gql`
   fragment TagFields on Tag {
     id
