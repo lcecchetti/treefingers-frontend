@@ -6,39 +6,28 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 
 /**
- * Story fields fragment
- * @type {gql}
- */
-const FRAGMENT_STORIES = gql`
-  fragment StoriesFields on Story {
-    id
-    title
-    content
-    slug
-    createdAt
-    author {
-      id
-      username
-    }
-    tags {
-      id
-      label
-      slug
-    }
-  }
-`;
-
-/**
  * Story list query
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
   query stories($author: ID, $tag: ID) {
     stories(where: { author: $author, tags: $tag }) {
-      ...StoriesFields
+      id
+      title
+      content
+      slug
+      createdAt
+      author {
+        id
+        username
+      }
+      tags {
+        id
+        label
+        slug
+      }
     }
   }
-  ${FRAGMENT_STORIES}
 `;
 
 

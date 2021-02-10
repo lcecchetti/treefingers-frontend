@@ -6,7 +6,6 @@ import { StoryList } from 'components/story';
  * Author fragment
  * @type {gql}
  */
-//@todo make story list as fragment and write cache manually on page load
 const FRAGMENT_AUTHOR = gql`
   fragment AuthorFields on UsersPermissionsUser {
     id
