@@ -1,6 +1,9 @@
 import { Link, Spinner, Text } from 'components/ui';
-import { getAuthorUrl } from 'lib/helper/author';
 import { gql, useQuery } from '@apollo/client';
+import clsx from 'clsx';
+import { Avatar } from 'components/user';
+import { getStoryUrl } from 'lib/helper/story';
+import { FaRegHeart } from 'react-icons/fa';
 
 /**
  * Authors list query
@@ -12,26 +15,38 @@ export const QUERY_AUTHORS = gql`
     users {
       id
       username
+      stories {
+        id
+        title
+        slug
+      }
     }
   }
 `;
 
-const AuthorList = ({ titleVariant = 'pageTitle' }) => {
+const AuthorList = ({ className }) => {
   const { data, loading, error } = useQuery(QUERY_AUTHORS);
 
   return (
-    <div className="">
-      <Text variant={titleVariant}>Authors</Text>
-
+    <div className={clsx('grid md:grid-cols-4 gap-md', className)}>
       {loading && <Spinner />}
 
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
-      {data?.users && data.users.map((user) => (
-        <div key={user.id} className="">
-          <Text variant="h3">
-            <Link href={getAuthorUrl(user)} underline={false}>{user.username}</Link>
-          </Text>
+      {data?.users && data.users.map((author) => (
+        <div key={author.id} className="border rounded-xl flex flex-col p-md">
+          <div className="flex justify-between items-center">
+            <Avatar user={author} showName={true} />
+            <FaRegHeart className="text-2xl" />
+          </div>
+          <Text variant="p">{author.bio}</Text>
+          <ul>
+            {author.stories.map((story) => (
+              <li key={story.id}>
+                <Link href={getStoryUrl(story)} underline={false}>{story.title}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
       ))}
     </div>

@@ -43,7 +43,7 @@ const StoryList = ({ className, queryVariables }) => {
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
       {data?.stories && data.stories.map((story) => (
-        <div key={story.id} className="border border-primary rounded-xl p-md">
+        <div key={story.id} className="border rounded-xl p-md">
           
           <div className="flex justify-between">
             <Text variant="span" className="text-sm text-primary-light">
