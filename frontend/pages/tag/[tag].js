@@ -43,7 +43,7 @@ export async function getStaticProps({ params }) {
   apolloClient.writeQuery({
     query: QUERY_STORIES,
     data: { stories: tag.stories },
-    variables: { tag: tag.id },
+    variables: { where: { tag: tag.id } },
   });
 
   return addApolloState(apolloClient, {

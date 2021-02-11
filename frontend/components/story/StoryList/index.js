@@ -12,8 +12,8 @@ import clsx from 'clsx';
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
-  query stories($author: ID, $tag: ID) {
-    stories(where: { author: $author, tags: $tag }) {
+  query stories($where: JSON) {
+    stories(where: $where) {
       id
       title
       content
