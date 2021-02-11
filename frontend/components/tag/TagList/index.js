@@ -17,13 +17,13 @@ export const QUERY_TAGS = gql`
   }
 `;
 
-const TagList = ({ className, tags }) => {
+const TagList = ({ className, tags, buttonVariant = 'primary' }) => {
   
   return (
     <ul className={clsx('flex gap-sm uppercase', className)}>
       {tags.map((tag) => (
         <li key={tag.id}>
-          <Button as={Link} size="sm" styleAsLink={false} href={getTagUrl(tag)}>{tag.label}</Button>
+          <Button variant={buttonVariant} as={Link} size="sm" styleAsLink={false} href={getTagUrl(tag)}>{tag.label}</Button>
         </li>
       ))}
     </ul>

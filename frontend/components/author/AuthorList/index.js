@@ -34,7 +34,7 @@ const AuthorList = ({ className }) => {
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
       {data?.users && data.users.map((author) => (
-        <div key={author.id} className="border rounded-xl flex flex-col p-md">
+        <div key={author.id} className="text-primary-contrast bg-primary rounded-xl flex flex-col p-md">
           <div className="flex justify-between items-center">
             <Avatar user={author} showName={true} />
             <FaRegHeart className="text-2xl" />
