@@ -20,9 +20,9 @@
       "required": true
     },
     "author": {
+      "via": "chapters",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "chapters"
+      "model": "user"
     },
     "story": {
       "via": "chapters",
