@@ -43,10 +43,10 @@ const StoryList = ({ className, queryVariables }) => {
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
       {data?.stories && data.stories.map((story) => (
-        <div key={story.id} className="border rounded-xl p-md">
+        <div key={story.id} className="rounded-xl p-md bg-primary text-primary-contrast">
           
           <div className="flex justify-between">
-            <Text variant="span" className="text-sm text-primary-light">
+            <Text variant="span" className="text-sm">
               {formatDate(story.createdAt, DATE_SHORT)}
             </Text>
             <FaRegHeart className="text-xl" />
@@ -61,7 +61,7 @@ const StoryList = ({ className, queryVariables }) => {
           </div>
         
           <div className="flex flex-col md:flex-row md:justify-between gap-sm md:gap-md">
-            <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} />
+            <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} buttonVariant="primary-contrast" />
             <Avatar className="justify-end" user={story.author} showName={true} />
           </div>
         </div>
