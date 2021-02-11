@@ -10,6 +10,7 @@ const FRAGMENT_AUTHOR = gql`
   fragment AuthorFields on UsersPermissionsUser {
     id
     username
+    bio
     stories {
       id
       title
@@ -68,6 +69,7 @@ const AuthorView = ({ id, titleVariant = 'pageTitle' }) => {
       {data &&
         <div className="">
           <Text variant={titleVariant}>{data.user.username}</Text>
+          <Text>{data.user.bio}</Text>
           <StoryList queryVariables={{ author: data.user.id }} />
         </div>
       }

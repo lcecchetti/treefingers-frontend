@@ -60,16 +60,19 @@
       "configurable": false
     },
     "stories": {
-      "via": "author",
-      "collection": "story"
+      "collection": "story",
+      "via": "author"
     },
     "chapters": {
-      "via": "author",
-      "collection": "chapter"
+      "collection": "chapter",
+      "via": "author"
     },
     "likes": {
-      "via": "user",
-      "collection": "like"
+      "collection": "like",
+      "via": "user"
+    },
+    "bio": {
+      "type": "richtext"
     }
   }
 }

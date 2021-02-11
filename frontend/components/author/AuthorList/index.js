@@ -15,6 +15,7 @@ export const QUERY_AUTHORS = gql`
     users {
       id
       username
+      bio
       stories {
         id
         title
@@ -39,8 +40,8 @@ const AuthorList = ({ className }) => {
             <Avatar user={author} showName={true} />
             <FaRegHeart className="text-2xl" />
           </div>
-          <Text variant="p">{author.bio}</Text>
-          <ul>
+          
+          <ul className="mt-sm">
             {author.stories.map((story) => (
               <li key={story.id}>
                 <Link href={getStoryUrl(story)} underline={false}>{story.title}</Link>
