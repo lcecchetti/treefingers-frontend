@@ -38,9 +38,6 @@ const UiPage = () => {
         <Button size="lg" loading>Button</Button>
         <Button loading>Button</Button>
         <Button disabled>Button</Button>
-        <Button variant="secondary">Button</Button>
-        <Button variant="secondary" loading>Button</Button>
-        <Button variant="secondary" disabled>Button</Button>
         <Button variant="outlined">Button</Button>
         <Button variant="outlined" loading>Button</Button>
         <Button variant="outlined" disabled>Button</Button>
