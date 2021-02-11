@@ -69,7 +69,7 @@ const TagView = ({ className, id }) => {
 
       {data &&
         <div className="">
-          <StoryList queryVariables={{ tag: data.tag.id }} />
+          <StoryList queryVariables={{ where: { tag: data.tag.id } }} />
         </div>
       }
     </div>

@@ -8,8 +8,8 @@ import clsx from 'clsx';
  * @type {gql}
  */
 export const QUERY_TAGS = gql`
-  query tags($story: ID) {
-    tags(where: { stories: $story }) {
+  query tags($where: JSON) {
+    tags(where: $where) {
       id
       label
       slug
