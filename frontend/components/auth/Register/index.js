@@ -55,7 +55,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="md:max-w-sm mx-auto p-md">
+    <div className="md:max-w-sm p-md m-md border-2 rounded-xl">
       <Text variant="pageTitle" className="flex justify-between items-center">
         Register
         <MdAccountCircle />
@@ -103,7 +103,7 @@ export default function SignUp() {
             >
               Register
             </Button>
-            <div className="text-right">
+            <div className="text-right text-xs">
               <Link href={getLoginUrl()}>
                 <a>Already have an account? Login</a>
               </Link>

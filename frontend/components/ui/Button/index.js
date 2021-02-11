@@ -7,12 +7,11 @@ const Button = ({ children, className, loading, variant = 'primary', size = 'md'
   const Component = as ?? 'button';
 
   const style = {
-    root: 'rounded-full inline-flex items-center justify-center transition-colors focus:outline-none',
+    root: 'rounded-full inline-flex items-center justify-center transition-opacity focus:outline-none hover:opacity-90 active:opacity-100 disabled:opacity-60',
     variant: {
-      primary: 'bg-primary text-primary-contrast active:bg-primary-dark disabled:bg-primary-light',
+      primary: 'bg-primary text-primary-contrast ',
       'primary-contrast': 'bg-primary-contrast text-primary',
-      secondary: 'bg-secondary text-secondary-constrast active:bg-secondary-dark disabled:bg-secondary-light',
-      outlined: 'bg-primary-contrast text-primary border-primary border-2 disabled:border-primary-light disabled:text-primary-light disabled:line-through active:bg-primary active:text-primary-contrast',
+      outlined: 'bg-primary-contrast text-primary border-primary border-2 disabled:line-through',
     },
     size: {
       sm: 'text-xs py-sm px-sm',

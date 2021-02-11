@@ -10,9 +10,7 @@ module.exports = {
 
         // custom colors
         primary: {
-          light: 'var(--color-primary-light)',
           DEFAULT: 'var(--color-primary)',
-          dark: 'var(--color-primary-dark)',
           contrast: 'var(--color-primary-contrast)',
         },
         error: 'var(--color-error)',
@@ -37,8 +35,7 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ['active', 'disabled'],
-      textColor: ['active', 'disabled'],
+      opacity: ['active', 'disabled'],
       textDecoration: ['disabled'],
     },
   },

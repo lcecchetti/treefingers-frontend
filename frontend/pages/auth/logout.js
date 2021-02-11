@@ -3,9 +3,7 @@ import { Logout } from 'components/auth';
 
 const LogoutPage = () => {
   return (
-    <div>
-      <Logout/>
-    </div>
+    <Logout/>
   );
 };
 

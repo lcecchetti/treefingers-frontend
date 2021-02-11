@@ -53,7 +53,7 @@ export default function Login() {
   };
 
   return (
-    <div className="md:max-w-sm mx-auto p-md">
+    <div className="md:max-w-sm p-md m-md border-2 rounded-xl">
       <Text variant="pageTitle" className="flex justify-between items-center">
         Login
         <MdLockOutline />

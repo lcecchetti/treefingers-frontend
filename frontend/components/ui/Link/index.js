@@ -6,7 +6,7 @@ const HtmlA = forwardRef(({ children, className, target, hrefLang, href, rel, st
   return (
     <a className={clsx(
         {
-          ['transition-colors hover:text-primary-light']: styleAsLink,
+          ['transition-opacity hover:opacity-80']: styleAsLink,
           ['underline']: styleAsLink && underline,
         },
         className
