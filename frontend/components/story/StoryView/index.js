@@ -1,8 +1,9 @@
 import { Spinner, Text } from 'components/ui';
-import { formatDate } from 'lib/helper/date';
+import { DATE_LONG, formatDate } from 'lib/helper/date';
 import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { TagList } from 'components/tag';
+import { Avatar } from 'components/user';
 
 /**
  * Story fragment
@@ -54,30 +55,29 @@ export const QUERY_STORIES_BY_SLUG = gql`
 `;
 
 
-const StoryView = ({ id, titleVariant = 'pageTitle' }) => {
+const StoryView = ({ id }) => {
 
   const { data, loading, error } = useQuery(QUERY_STORY, { variables: { id } });
 
   return (
-    <div className="">
+    <div>
       {loading && <Spinner />}
 
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
       {data &&
-        <div className="">
-          <div>
-            <Text variant={titleVariant}>{data.story.title}</Text>
-            <Text variant="span">Written by {data.story.author.username} on {formatDate(data.story.createdAt)}</Text>
+        <div className="my-md">
+          <div className="flex justify-between items-center mb-xs">
+            <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
+            <Avatar user={data.story.author} showName={true} />
           </div>
-          <div>
+          <div className="mb-md">
+            <Text variant="storyViewTitle">{data.story.title}</Text>
             <Text variant="p">{data.story.content}</Text>
           </div>
-          <div>
-            <TagList tags={data.story.tags} />
-          </div>
-          <div>
+          <div className="flex justify-between">
             <FaRegHeart className="text-xl" />
+            <TagList tags={data.story.tags} />
           </div>
         </div>
       }
