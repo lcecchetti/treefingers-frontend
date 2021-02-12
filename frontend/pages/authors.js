@@ -2,13 +2,15 @@ import { DefaultLayout } from 'components/layout';
 import { Container, Text } from 'components/ui';
 import { AuthorList, QUERY_AUTHORS } from 'components/author';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
+import { PageIntro } from 'components/common';
 
 const AuthorsPage = () => {
   return (
-    <Container className="py-md">
-      <Text variant="pageTitle">Authors</Text>
-      <Text variant="p">Looking for the next Hemingway? Getting warmer...</Text>
-      <AuthorList className="my-md" />
+    <Container>
+      <PageIntro title="Authors">
+        <Text variant="p">Looking for the next Hemingway? Getting warmer...</Text>
+      </PageIntro>
+      <AuthorList />
     </Container>
   );
 };

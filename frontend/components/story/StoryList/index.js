@@ -45,14 +45,14 @@ const StoryList = ({ className, queryVariables }) => {
       {data?.stories && data.stories.map((story) => (
         <div key={story.id} className="rounded-xl p-md bg-primary text-primary-contrast">
           
-          <div className="flex justify-between">
+          <div className="flex justify-between mb-md">
             <Text variant="span" className="text-sm">
               {formatDate(story.createdAt, DATE_SHORT)}
             </Text>
             <FaRegHeart className="text-xl" />
           </div>
 
-          <div className="my-sm">
+          <div className="mb-md md:mb-sm">
             <Text variant="title">
               <Link href={getStoryUrl(story)} underline={false}>{story.title}</Link>
             </Text>

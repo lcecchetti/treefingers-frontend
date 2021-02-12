@@ -1,6 +1,7 @@
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
+import { PageIntro } from 'components/common';
 
 /**
  * Author fragment
@@ -56,22 +57,23 @@ export const QUERY_AUTHORS_BY_USERNAME = gql`
   ${FRAGMENT_AUTHOR}
 `;
 
-const AuthorView = ({ id, titleVariant = 'pageTitle' }) => {
+const AuthorView = ({ className, id }) => {
 
   const { data, loading, error } = useQuery(QUERY_AUTHOR, { variables: { id } });
 
   return (
-    <div className="">
+    <div className="my-md">
       {loading && <Spinner />}
 
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
       {data &&
-        <div className="">
-          <Text variant={titleVariant}>{data.user.username}</Text>
-          <Text>{data.user.bio}</Text>
+        <>
+          <PageIntro title={data.user.username}>
+            <Text variant="p">{data.user.bio}</Text>
+          </PageIntro>
           <StoryList queryVariables={{ where: { author: data.user.id } }} />
-        </div>
+        </>
       }
     </div>
   );

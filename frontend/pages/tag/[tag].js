@@ -6,10 +6,8 @@ import { QUERY_STORIES } from 'components/story';
 
 const TagPage = ({ tag }) => {
   return (
-    <Container className="py-md">
-      <Text variant="pageTitle">Stories by {tag.label}</Text>
-      <Text variant="p">Into {tag.label}? This might be the place you are looking for.</Text>
-      <TagView id={tag.id} className="my-md" />
+    <Container>
+      <TagView id={tag.id} />
     </Container>
   );
 };

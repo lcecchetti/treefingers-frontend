@@ -1,4 +1,5 @@
 import { Spinner, Text } from 'components/ui';
+import { PageIntro } from 'components/common';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
 import clsx from 'clsx';
@@ -68,7 +69,10 @@ const TagView = ({ className, id }) => {
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
       {data &&
-        <div className="">
+        <div>
+          <PageIntro title={data.tag.label}>
+          <Text variant="p">Into {data.tag.label}? This might be the place you are looking for.</Text>
+          </PageIntro>
           <StoryList queryVariables={{ where: { tag: data.tag.id } }} />
         </div>
       }
