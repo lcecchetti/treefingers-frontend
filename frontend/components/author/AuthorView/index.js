@@ -62,7 +62,7 @@ const AuthorView = ({ className, id }) => {
   const { data, loading, error } = useQuery(QUERY_AUTHOR, { variables: { id } });
 
   return (
-    <div className="my-md">
+    <div>
       {loading && <Spinner />}
 
       {error && <Text variant="span" className="text-error">{error}</Text>}

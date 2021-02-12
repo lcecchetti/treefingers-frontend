@@ -66,7 +66,7 @@ const StoryView = ({ id }) => {
       {error && <Text variant="span" className="text-error">{error}</Text>}
 
       {data &&
-        <div className="my-md">
+        <div className="md:my-md">
           <div className="flex justify-between items-center mb-xs">
             <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
             <Avatar user={data.story.author} showName={true} />
