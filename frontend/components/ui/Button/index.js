@@ -7,7 +7,7 @@ const Button = ({ children, className, loading, variant = 'primary', size = 'md'
   const Component = as ?? 'button';
 
   const style = {
-    root: 'rounded-full inline-flex items-center justify-center transition-opacity focus:outline-none hover:opacity-90 active:opacity-100 disabled:opacity-60',
+    root: 'rounded-full inline-flex gap-sm items-center justify-center transition-opacity focus:outline-none hover:opacity-90 active:opacity-100 disabled:opacity-60',
     variant: {
       primary: 'bg-primary text-primary-contrast ',
       'primary-contrast': 'bg-primary-contrast text-primary',
@@ -37,7 +37,7 @@ const Button = ({ children, className, loading, variant = 'primary', size = 'md'
 
       {Icon &&
         <Icon className={clsx(
-          'mr-sm inline-block',
+          'inline-block',
           style.iconSize[size],
         )} />
       }
@@ -46,7 +46,7 @@ const Button = ({ children, className, loading, variant = 'primary', size = 'md'
 
       {loading &&
         <Spinner className={clsx(
-          'ml-sm inline-block',
+          'inline-block',
           style.iconSize[size],
         )} />
       }

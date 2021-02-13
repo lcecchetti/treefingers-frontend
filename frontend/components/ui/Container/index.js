@@ -5,7 +5,7 @@ const Container = ({ className, children, fluid }) => {
   return (
     <div className={clsx(
       { ['lg:container']: !fluid },
-      'mx-auto px-md',
+      'mx-auto px-md w-full',
       className
     )}>
       {children}

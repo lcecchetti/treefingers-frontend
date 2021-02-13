@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getRegisterUrl } from 'lib/helper/auth';
+import { getProfileMeUrl } from 'lib/helper/profile';
 
 /**
  * Sign in mutation
@@ -45,7 +46,7 @@ export default function Login() {
       if (data?.login?.jwt) {
         setApiError('');
         setAuthToken(data.login.jwt)
-        router.push('/profile/me')
+        router.push(getProfileMeUrl())
       }
     } catch (e) {
       setApiError(parseError(e).message);

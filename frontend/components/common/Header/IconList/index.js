@@ -24,14 +24,14 @@ const QUERY_SELF = gql`
 
 const IconList = () => {
   const { theme, setTheme } = useTheme();
-  const { toggleDrawer, getToggledTheme } = useUI();
+  const { toggleDrawer, getToggledTheme, openSearch } = useUI();
   const { data } = useQuery(QUERY_SELF);
 
   const iconListItems = [
     {
       href: '#',
       Icon: FaSearch,
-      onClick: false,
+      onClick: openSearch,
       showOnMobile: true,
       showOnDesktop: true,
     },
@@ -59,7 +59,7 @@ const IconList = () => {
     {
       href: '#',
       Icon: FaBars,
-      onClick: () => toggleDrawer(),
+      onClick: toggleDrawer,
       showOnMobile: true,
       showOnDesktop: false,
     },

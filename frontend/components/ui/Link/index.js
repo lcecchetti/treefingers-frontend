@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 import NextLink from 'next/link';
 
-const HtmlA = forwardRef(({ children, className, target, hrefLang, href, rel, styleAsLink, underline, ...rest }, ref) => {
+const HtmlA = forwardRef(({ children, className, target, hrefLang, href = '/#', rel, styleAsLink, underline, ...rest }, ref) => {
   return (
     <a className={clsx(
         {
