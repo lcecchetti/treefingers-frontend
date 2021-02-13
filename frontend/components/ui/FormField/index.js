@@ -15,14 +15,15 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
       className,
     )}>
       <Component className={clsx(
-        'border-0 border-b-2 border-primary w-full bg-transparent focus:outline-none focus:border-primary focus:ring-0',
+        'border-0 border-b-2 border-primary w-full bg-transparent focus:outline-none focus:ring-0',
         {
           ['']: type === 'select',
           ['']: type === 'textarea',
         },
         fieldClassName,
         {
-          ['border-error']: !!error,
+          ['border-error focus:border-error']: !!error,
+          ['focus:border-primary']: !error,
         }
       )}
         name={name}
@@ -49,7 +50,7 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
         </Text>
       }
 
-      {!!error &&
+      {!!error && error !== true &&
         <Text className="text-error text-xs" variant="span">
           {error}
         </Text>

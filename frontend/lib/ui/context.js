@@ -16,6 +16,8 @@ UIContext.displayName = 'UIContext';
 export const UIActions = {
   openDrawer: 'OPEN_DRAWER',
   closeDrawer: 'CLOSE_DRAWER',
+  openSearch: 'OPEN_SEARCH',
+  closeSearch: 'CLOSE_SEARCH',
 };
 
 function uiReducer(state, action) {
@@ -32,6 +34,18 @@ function uiReducer(state, action) {
         isDrawerOpen: false,
       }
     }
+    case UIActions.openSearch: {
+      return {
+        ...state,
+        isSearchOpen: true,
+      }
+    }
+    case UIActions.closeSearch: {
+      return {
+        ...state,
+        isSearchOpen: false,
+      }
+    }
   }
 }
 
@@ -42,6 +56,9 @@ export const UIProvider = (props) => {
   const closeDrawer = () => {state.isDrawerOpen && dispatch({ type: UIActions.closeDrawer });}
   const toggleDrawer = () => state.isDrawerOpen ? dispatch({ type: UIActions.closeDrawer }) : dispatch({ type: UIActions.openDrawer });
 
+  const openSearch = () => {!state.isSearchOpen && dispatch({ type: UIActions.openSearch });}
+  const closeSearch = () => {state.isSearchOpen && dispatch({ type: UIActions.closeSearch });}
+
   const getToggledTheme = (currentTheme) => (currentTheme !== themes.dark ? themes.dark : themes.light);
 
   const value = useMemo(
@@ -51,6 +68,8 @@ export const UIProvider = (props) => {
       closeDrawer,
       toggleDrawer,
       getToggledTheme,
+      openSearch,
+      closeSearch,
     }),
     [state]
   );
