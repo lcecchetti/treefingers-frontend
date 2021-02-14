@@ -40,7 +40,7 @@ const StoryList = ({ className, queryVariables }) => {
     <div className={clsx('grid md:grid-cols-2 gap-md', className)}>
       {loading && <Spinner />}
 
-      {error && <Text variant="span" className="text-error">{error}</Text>}
+      {error && <Text variant="error">{error.message}</Text>}
 
       {data?.stories && data.stories.map((story) => (
         <div key={story.id} className="rounded-xl p-md bg-primary text-primary-contrast">

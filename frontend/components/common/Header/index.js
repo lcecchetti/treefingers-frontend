@@ -1,7 +1,7 @@
 import { Container } from 'components/ui';
 import { Logo } from 'components/common';
 import Drawer from './Drawer';
-import SearchBar from './SearchBar';
+import { SearchBar } from 'components/search';
 import MainNavigation from './MainNavigation';
 import IconList from './IconList';
 

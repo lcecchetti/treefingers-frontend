@@ -32,7 +32,7 @@ const AuthorList = ({ className }) => {
     <div className={clsx('grid md:grid-cols-4 gap-md', className)}>
       {loading && <Spinner />}
 
-      {error && <Text variant="span" className="text-error">{error}</Text>}
+      {error && <Text variant="error">{error.message}</Text>}
 
       {data?.users && data.users.map((author) => (
         <div key={author.id} className="text-primary-contrast bg-primary rounded-xl flex flex-col p-md">

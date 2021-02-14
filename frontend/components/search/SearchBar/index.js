@@ -33,7 +33,7 @@ const SearchBar = () => {
         >
           {({ errors }) => (
             <Form className="h-full flex items-center gap-sm">
-              <Field as={FormField} type="text" placeholder="Search" className="flex-grow" name="q" error={!!errors.q} autofocus={isSearchOpen} />
+              <Field as={FormField} type="text" placeholder="Search" className="flex-grow" name="q" error={!!errors.q} autoFocus={isSearchOpen} />
               <button type="submit" className="focus:outline-none">
                 <FaSearch className="text-2xl cursor-pointer" />
               </button>

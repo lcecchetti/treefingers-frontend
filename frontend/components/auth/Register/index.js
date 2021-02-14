@@ -95,7 +95,7 @@ export default function SignUp() {
               autoComplete="current-password"
             />
 
-            {!!apiError && <Text variant="p" className="text-error">{apiError}</Text>}
+            {!!apiError && <Text variant="error">{apiError}</Text>}
             <Button
               type="submit"
               disabled={isSubmitting}
