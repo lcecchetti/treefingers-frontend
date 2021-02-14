@@ -1,5 +1,5 @@
 import { Link, Spinner, Text } from 'components/ui';
-import { getExcerpt, getStoryUrl } from 'lib/helper/story';
+import { getStoryUrl } from 'lib/helper/story';
 import { formatDate, DATE_SHORT } from 'lib/helper/date';
 import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
@@ -16,7 +16,7 @@ export const QUERY_STORIES = gql`
     stories(where: $where) {
       id
       title
-      content
+      excerpt
       slug
       createdAt
       author {
@@ -56,7 +56,7 @@ const StoryList = ({ className, queryVariables }) => {
             <Text variant="title">
               <Link href={getStoryUrl(story)} underline={false}>{story.title}</Link>
             </Text>
-            <Text variant="p">{getExcerpt(story)}</Text>
+            <Text variant="p">{story.excerpt}</Text>
             <Link href={getStoryUrl(story)}>Read more</Link>
           </div>
         

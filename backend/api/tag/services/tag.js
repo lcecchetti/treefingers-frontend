@@ -5,4 +5,15 @@
  * to customize this service
  */
 
-module.exports = {};
+module.exports = {
+
+  /**
+   * Get tag url
+   * @param {Tag} tag
+   * @return {string}
+   */
+  getStoryUrl: (tag) => {
+    return `/tag/${tag.slug}`;
+  }
+
+};

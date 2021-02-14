@@ -24,11 +24,11 @@ module.exports = {
   },
 
   /**
-   * Get story url
-   * @param {Story} story
-   * @return {string}
-   */
-  getStoryUrl: (story) => {
-    return `/story/${story.slug}`;
+  * Get author url
+  * @param {Chapter} chapter
+  * @return {string}
+  */
+  getAuthorUrl: (user) => {
+    return `/author/${user.username}`;
   }
 };

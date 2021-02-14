@@ -13,37 +13,33 @@ module.exports = {
     const chapters = await strapi.services.chapter.search({ _q: q });
     const chaptersResults = chapters.map((chapter) => ({
       id: chapter.id,
-      type: 'chapter',
-      slug: chapter.id,
-      title: chapter.title,
-      content: chapter.content,
+      url: strapi.services.chapter.getChapterUrl(chapter),
+      label: chapter.title,
+      excerpt: chapter.excerpt,
     }));
 
     const stories = await strapi.services.story.search({ _q: q });
     const storiesResults = stories.map((story) => ({
       id: story.id,
-      type: 'story',
-      slug: story.slug,
-      title: story.title,
-      content: story.content,
+      url: strapi.services.story.getStoryUrl(story),
+      label: story.title,
+      excerpt: story.excerpt,
     }));
 
     const tags = await strapi.services.tag.search({ _q: q });
     const tagsResults = tags.map((tag) => ({
       id: tag.id,
-      type: 'tag',
-      slug: tag.slug,
-      title: tag.label,
-      content: '',
+      url: strapi.services.tag.getTagUrl(tag),
+      label: tag.label,
+      excerpt: '',
     }));
 
     const users = await strapi.query('user', 'users-permissions').search({ _q: q });
     const usersResults = users.map((user) => ({
       id: user.id,
-      type: 'user',
-      slug: user.username,
-      title: user.username,
-      content: user.bio,
+      url: strapi.plugins["users-permissions"].services.user.getAuthorUrl(user),
+      label: user.username,
+      excerpt: user.excerpt,
     }));
 
     const searchResults = [
