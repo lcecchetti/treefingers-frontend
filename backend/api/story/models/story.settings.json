@@ -16,9 +16,9 @@
       "maxLength": 80
     },
     "author": {
-      "via": "stories",
       "plugin": "users-permissions",
-      "model": "user"
+      "model": "user",
+      "via": "stories"
     },
     "chapters": {
       "collection": "chapter",
@@ -37,8 +37,13 @@
       "required": true
     },
     "tags": {
-      "via": "stories",
-      "collection": "tag"
+      "collection": "tag",
+      "via": "stories"
+    },
+    "excerpt": {
+      "type": "text",
+      "required": false,
+      "maxLength": 255
     }
   }
 }

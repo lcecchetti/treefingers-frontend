@@ -34,6 +34,11 @@
     },
     "parent": {
       "model": "chapter"
+    },
+    "excerpt": {
+      "type": "text",
+      "required": false,
+      "maxLength": 255
     }
   }
 }

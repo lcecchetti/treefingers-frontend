@@ -16,7 +16,7 @@ const FRAGMENT_TAG = gql`
     stories {
       id
       title
-      content
+      excerpt
       slug
       createdAt
       author {

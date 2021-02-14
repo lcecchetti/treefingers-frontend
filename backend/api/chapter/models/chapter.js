@@ -5,4 +5,13 @@
  * to customize this model
  */
 
-module.exports = {};
+module.exports = {
+  lifecycles: {
+    beforeCreate: async (data) => {
+      data.excerpt = strapi.services.chapter.createExcerpt(data.content);
+    },
+    beforeUpdate: async (params, data) => {
+      data.excerpt = strapi.services.chapter.createExcerpt(data.content);
+    },
+  },
+};

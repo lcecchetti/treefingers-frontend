@@ -1,17 +1,15 @@
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
-import { getExcerpt, getStoryNewUrl } from 'lib/helper/story';
+import { getStoryNewUrl } from 'lib/helper/story';
 import { Spinner, Link, Text, Button } from 'components/ui';
-import { getSearchResultUrl } from 'lib/helper/search';
 
 const QUERY_SEARCH = gql`
   query search($q: String!) {
     search(q: $q) {
       id
-      type
-      title
-      content
-      slug
+      label
+      excerpt
+      url
     }
   }  
 `;
@@ -36,9 +34,9 @@ const SearchResult = ({ className, query }) => {
 
       {data?.search && data.search.map((result) => (
         <div key={result.id}>
-          <Link href={getSearchResultUrl(result, result.type)} underline={false}>
-            <Text variant="h3" className="font-bold">{result.title}</Text>
-            <Text variant="p">{getExcerpt(result)}</Text>
+          <Link href={result.url} underline={false}>
+            <Text variant="h3" className="font-bold">{result.label}</Text>
+            <Text variant="p">{result.excerpt}</Text>
           </Link>
         </div>
       ))}

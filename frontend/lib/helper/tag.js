@@ -4,8 +4,8 @@
  * @return {string}
  */
 const getTagUrl = (tag) => {
-  const link = '/tag/' + tag.slug;
-  return link;
+  const url = `/tag/${tag.slug}`;
+  return url;
 };
 
 
