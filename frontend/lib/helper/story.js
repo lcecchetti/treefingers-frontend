@@ -4,9 +4,17 @@
  * @return {string}
  */
 const getStoryUrl = (story) => {
-  const url = '/story/' + story.slug;
+
+  let url = '/story';
+
+  if (story.root) {
+    url += `/${story.root.slug}`;
+  }
+
+  url += `/${story.slug}`;
+
   return url;
-};
+}
 
 /**
  * Get stories url

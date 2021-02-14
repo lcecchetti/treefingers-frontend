@@ -20,10 +20,6 @@
       "model": "user",
       "via": "stories"
     },
-    "chapters": {
-      "collection": "chapter",
-      "via": "story"
-    },
     "likes": {
       "collection": "like",
       "via": "story"
@@ -44,6 +40,20 @@
       "type": "text",
       "required": false,
       "maxLength": 255
+    },
+    "children": {
+      "collection": "story",
+      "via": "parent"
+    },
+    "parent": {
+      "model": "story",
+      "via": "children"
+    },
+    "root": {
+      "model": "story"
+    },
+    "action": {
+      "type": "text"
     }
   }
 }
