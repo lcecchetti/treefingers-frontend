@@ -11,8 +11,9 @@ const SearchBar = () => {
   const { isSearchOpen, closeSearch } = useUI();
   const router = useRouter();
 
-  const handleSubmit = (q) => {
+  const handleSubmit = ({ q }, { resetForm }) => {
     closeSearch();
+    resetForm();
     router.push(getSearchUrl(q));
   };
 
@@ -24,9 +25,9 @@ const SearchBar = () => {
         <Formik
           validateOnChange={false}
           initialValues={{
-            q: router.query.q,
+            q: router.query.q ?? '',
           }}
-          onSubmit={({ q }) => handleSubmit(q)}
+          onSubmit={(values, methods) => handleSubmit(values, methods)}
           validationSchema={Yup.object().shape({
             q: Yup.string().min(3),
           })}
