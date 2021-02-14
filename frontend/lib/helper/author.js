@@ -4,7 +4,8 @@
  * @return {string}
  */
 const getAuthorUrl = (author) => {
-  const link = '/author/' + author.username;
+  const slug = author.username ?? author.slug;
+  const link = `/author/${slug}`;
   return link;
 };
 

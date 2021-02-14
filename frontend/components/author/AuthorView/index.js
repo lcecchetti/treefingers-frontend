@@ -65,7 +65,7 @@ const AuthorView = ({ className, id }) => {
     <div>
       {loading && <Spinner />}
 
-      {error && <Text variant="span" className="text-error">{error}</Text>}
+      {error && <Text variant="error">{error.message}</Text>}
 
       {data &&
         <>
