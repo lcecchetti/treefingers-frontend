@@ -10,14 +10,6 @@ module.exports = {
   //@todo improve, standardize and sanitize
   async search(q) {
 
-    const chapters = await strapi.services.chapter.search({ _q: q });
-    const chaptersResults = chapters.map((chapter) => ({
-      id: chapter.id,
-      url: strapi.services.chapter.getChapterUrl(chapter),
-      label: chapter.title,
-      excerpt: chapter.excerpt,
-    }));
-
     const stories = await strapi.services.story.search({ _q: q });
     const storiesResults = stories.map((story) => ({
       id: story.id,
@@ -46,7 +38,6 @@ module.exports = {
       ...usersResults,
       ...storiesResults,
       ...tagsResults,
-      ...chaptersResults,
     ];
 
     return searchResults;

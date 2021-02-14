@@ -28,13 +28,27 @@ export const QUERY_STORIES = gql`
         label
         slug
       }
+      root {
+        id 
+        slug
+      }
     }
   }
 `;
 
+/**
+ * Default query variables
+ * @type {Object}
+ */
+export const defaultQueryStoriesVariables = {
+  where: {
+    parent_null: true,
+  }
+}
+
 
 const StoryList = ({ className, queryVariables }) => {
-  const { data, loading, error } = useQuery(QUERY_STORIES, { variables: queryVariables });
+  const { data, loading, error } = useQuery(QUERY_STORIES, { variables: { ...defaultQueryStoriesVariables, ...queryVariables } });
 
   return (
     <div className={clsx('grid md:grid-cols-2 gap-md', className)}>

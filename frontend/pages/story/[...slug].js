@@ -1,7 +1,26 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { StoryView, QUERY_STORIES, QUERY_STORIES_BY_SLUG, QUERY_STORY } from 'components/story';
+import { gql } from '@apollo/client';
+import { StoryView, QUERY_STORIES_BY_SLUG, QUERY_STORY } from 'components/story';
+import { getStoryUrl } from 'lib/helper/story';
+
+/**
+ * Story pages query
+ * @type {gql}
+ */
+const QUERY_STORY_PAGES = gql`
+  query stories {
+    stories {
+      id
+      slug
+      root {
+        id 
+        slug
+      }
+    }
+  }
+`;
 
 const StoryPage = ({ story }) => {
   return (
@@ -14,20 +33,23 @@ const StoryPage = ({ story }) => {
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo();
 
+  // get slug
+  const slug =  params.slug.length > 1 ? params.slug[1] : params.slug[0];
+
   // load story by slug
   const { data } = await apolloClient.query({
     query: QUERY_STORIES_BY_SLUG,
-    variables: { slug: params.slug },
+    variables: { slug },
   });
 
+  const story = data.stories.length && data.stories[0];
+
   // check if story exists
-  if (!data.stories.length) {
+  if (!story || (story.parent && params.slug[0] != story.root.slug) ) {
     return {
       notFound: true,
     }
   }
-
-  const story = data.stories[0];
 
   // add story by id query to the cache
   apolloClient.writeQuery({
@@ -45,10 +67,14 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const apolloClient = initializeApollo();
 
-  const { data } = await apolloClient.query({ query: QUERY_STORIES });
+  const { data } = await apolloClient.query({ query: QUERY_STORY_PAGES });
 
   return {
-    paths: data.stories.map((story) => ({ params: { slug: story.slug } })) || [],
+    paths: data.stories.map((story) => {
+      // get parent and child slug
+      const slug = getStoryUrl(story).split('/').slice(2,4);;
+      return { params: { slug: slug } };
+    }) || [],
     fallback: 'blocking',
   };
 }

@@ -1,6 +1,6 @@
 import { DefaultLayout } from 'components/layout';
 import { Container, Text } from 'components/ui';
-import { StoryList, QUERY_STORIES } from 'components/story';
+import { StoryList, QUERY_STORIES, defaultQueryStoriesVariables } from 'components/story';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro, Sidebar } from 'components/common';
 
@@ -23,6 +23,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_STORIES,
+    variables: defaultQueryStoriesVariables,
   },);
 
   return addApolloState(apolloClient, {

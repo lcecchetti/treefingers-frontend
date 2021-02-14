@@ -20,6 +20,10 @@ export const QUERY_AUTHORS = gql`
         id
         title
         slug
+        root {
+          id
+          slug
+        }
       }
     }
   }

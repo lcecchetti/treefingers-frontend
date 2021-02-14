@@ -63,10 +63,6 @@
       "via": "author",
       "collection": "story"
     },
-    "chapters": {
-      "collection": "chapter",
-      "via": "author"
-    },
     "likes": {
       "collection": "like",
       "via": "user"

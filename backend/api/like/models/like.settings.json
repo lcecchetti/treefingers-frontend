@@ -10,10 +10,6 @@
     "draftAndPublish": false
   },
   "attributes": {
-    "chapter": {
-      "via": "likes",
-      "model": "chapter"
-    },
     "user": {
       "via": "likes",
       "plugin": "users-permissions",

@@ -25,6 +25,19 @@ const FRAGMENT_STORY = gql`
       label
       slug
     }
+    root {
+      id
+      slug
+    }
+    parent {
+      id
+      slug
+    }
+    children {
+      id
+      action
+      slug
+    }
   }
 `;
 
