@@ -24,6 +24,17 @@ module.exports = {
   },
 
   /**
+    * Create slug
+    * @param {string} text
+    * @return {string}
+    */
+  createSlug: (text) => {
+    const slugify = require('slugify');
+    const slug = slugify(text, { lower: true });
+    return slug;
+  },
+
+  /**
    * Get story url
    * @param {Story} story
    * @return {string}

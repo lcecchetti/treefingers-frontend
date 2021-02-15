@@ -2,6 +2,7 @@ import { Link, Spinner, Text, Button } from 'components/ui';
 import { getStoryNewUrl, getStoryUrl } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
+import StoryNew from '../StoryNew';
 
 /**
  * Chapter list query
@@ -30,7 +31,17 @@ export const QUERY_CHAPTERS = gql`
  */
 export const defaultQueryChaptersVariables = {};
 
-const ChapterChoice = ({ className, queryVariables }) => {
+const ChapterChoice = ({ className, story, queryVariables }) => {
+
+  queryVariables = {
+    ...{
+      where: {
+        parent: story.id,
+      }
+    },
+    ...queryVariables
+  };
+
   const { data, loading, error } = useQuery(QUERY_CHAPTERS, { variables: { ...defaultQueryChaptersVariables, ...queryVariables } });
 
   return (
@@ -55,10 +66,11 @@ const ChapterChoice = ({ className, queryVariables }) => {
       {!loading &&
         <div className="mt-md text-center">
           <Text variant="title" as="span" className="">The end...?</Text>
-          <Button as={Link} href={getStoryNewUrl()} styleAsLink={false} className="w-full mt-sm">Write a new chapter</Button>
+          <Button as={Link} styleAsLink={false} className="w-full mt-sm">Write a new chapter</Button>
         </div>
       }
 
+      <StoryNew parent={story} root={story.root ?? story} />
     </div>
   );
 };
