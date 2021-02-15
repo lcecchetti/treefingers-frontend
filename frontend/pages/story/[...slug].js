@@ -2,7 +2,7 @@ import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { gql } from '@apollo/client';
-import { StoryView, QUERY_STORIES_BY_SLUG, QUERY_STORY } from 'components/story';
+import { StoryView, QUERY_STORIES_BY_SLUG, QUERY_STORY, QUERY_CHAPTERS, defaultQueryChaptersVariables } from 'components/story';
 import { getStoryUrl } from 'lib/helper/story';
 
 /**
@@ -56,6 +56,13 @@ export async function getStaticProps({ params }) {
     query: QUERY_STORY,
     data: { story },
     variables: { id: story.id },
+  });
+
+  // add story chapters to the cache
+  apolloClient.writeQuery({
+    query: QUERY_CHAPTERS,
+    data: { stories: story.children },
+    variables: { ...defaultQueryChaptersVariables, ...{ where: { parent: story.id } } },
   });
 
   return addApolloState(apolloClient, {

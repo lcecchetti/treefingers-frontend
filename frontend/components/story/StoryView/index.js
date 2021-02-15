@@ -4,6 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
+import { ChapterChoice } from 'components/story';
 
 /**
  * Story fragment
@@ -37,6 +38,13 @@ const FRAGMENT_STORY = gql`
       id
       action
       slug
+      root {
+        id
+        slug
+      }
+      parent {
+        id
+      }
     }
   }
 `;
@@ -92,6 +100,7 @@ const StoryView = ({ id }) => {
             <FaRegHeart className="text-xl" />
             <TagList tags={data.story.tags} />
           </div>
+          <ChapterChoice className="my-md" queryVariables={{ where: { parent: data.story.id } }}/>
         </div>
       }
     </div>
