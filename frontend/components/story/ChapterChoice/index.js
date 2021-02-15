@@ -1,5 +1,5 @@
-import { Link, Spinner, Text } from 'components/ui';
-import { getStoryUrl } from 'lib/helper/story';
+import { Link, Spinner, Text, Button } from 'components/ui';
+import { getStoryNewUrl, getStoryUrl } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 
@@ -40,17 +40,25 @@ const ChapterChoice = ({ className, queryVariables }) => {
       {error && <Text variant="error">{error.message}</Text>}
 
       {!!data?.stories.length &&
-        <>
+        <div>
           <Text variant="h3" className="font-bold mb-sm">What's next?</Text>
-          <ul className="flex flex-col border-2 rounded-xl gap-px bg-primary">
+          <ul className="flex flex-col border-2 rounded-xl overflow-hidden gap-px bg-primary">
             {data.stories.map((chapter) => (
               <li key={chapter.id} className="p-sm bg-base">
                 <Link href={getStoryUrl(chapter)} underline={false} className="block">{chapter.action}</Link>
               </li>
             ))}
           </ul>
-        </>
+        </div>
       }
+
+      {!loading &&
+        <div className="mt-md text-center">
+          <Text variant="title" as="span" className="">The end...?</Text>
+          <Button as={Link} href={getStoryNewUrl()} styleAsLink={false} className="w-full mt-sm">Write a new chapter</Button>
+        </div>
+      }
+
     </div>
   );
 };
