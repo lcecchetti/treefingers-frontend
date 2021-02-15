@@ -27,14 +27,9 @@
     "content": {
       "type": "richtext"
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "title",
-      "required": true
-    },
     "tags": {
-      "collection": "tag",
-      "via": "stories"
+      "via": "stories",
+      "collection": "tag"
     },
     "excerpt": {
       "type": "text",
@@ -54,6 +49,11 @@
     },
     "action": {
       "type": "text"
+    },
+    "slug": {
+      "type": "string",
+      "required": false,
+      "unique": true
     }
   }
 }

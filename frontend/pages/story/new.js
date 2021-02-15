@@ -1,11 +1,16 @@
 import { DefaultLayout } from 'components/layout';
-import { Text } from 'components/ui';
+import { Text, Container } from 'components/ui';
+import { PageIntro } from 'components/common';
+import { StoryNew } from 'components/story';
 
 const StoryNewPage = () => {
   return (
-    <div>
-      <Text variant="h1">New story</Text>
-    </div>
+    <Container>
+      <PageIntro title="New Story">
+        <Text variant="p">I see too much blank space on this page...</Text>
+      </PageIntro>
+      <StoryNew />
+    </Container>
   );
 };
 
