@@ -1,8 +1,9 @@
 import { Link, Spinner, Text, Button } from 'components/ui';
-import { getStoryNewUrl, getStoryUrl } from 'lib/helper/story';
+import { getStoryUrl } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
-import StoryNew from '../StoryNew';
+import { StoryNew } from 'components/story';
+import merge from 'deepmerge';
 
 /**
  * Chapter list query
@@ -31,18 +32,15 @@ export const QUERY_CHAPTERS = gql`
  */
 export const defaultQueryChaptersVariables = {};
 
-const ChapterChoice = ({ className, story, queryVariables }) => {
+const ChapterChoice = ({ className, parent }) => {
 
-  queryVariables = {
-    ...{
-      where: {
-        parent: story.id,
-      }
-    },
-    ...queryVariables
+  const queryVariables = {
+    where: {
+      parent: parent?.id,
+    }
   };
 
-  const { data, loading, error } = useQuery(QUERY_CHAPTERS, { variables: { ...defaultQueryChaptersVariables, ...queryVariables } });
+  const { data, loading, error } = useQuery(QUERY_CHAPTERS, { variables: merge(defaultQueryChaptersVariables, queryVariables) });
 
   return (
     <div className={clsx('mx-auto max-w-screen-sm', className)}>

@@ -6,6 +6,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import clsx from 'clsx';
+import merge from 'deepmerge';
 
 /**
  * Story list query
@@ -47,8 +48,15 @@ export const defaultQueryStoriesVariables = {
 }
 
 
-const StoryList = ({ className, queryVariables }) => {
-  const { data, loading, error } = useQuery(QUERY_STORIES, { variables: { ...defaultQueryStoriesVariables, ...queryVariables } });
+const StoryList = ({ className, author, tag }) => {
+  const queryVariables = {
+    where: {
+      author: author?.id,
+      tag: tag?.id,
+    }
+  }
+
+  const { data, loading, error } = useQuery(QUERY_STORIES, { variables: merge(defaultQueryStoriesVariables, queryVariables) });
 
   return (
     <div className={clsx('grid md:grid-cols-2 gap-md', className)}>
