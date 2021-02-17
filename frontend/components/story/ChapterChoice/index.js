@@ -68,7 +68,7 @@ const ChapterChoice = ({ className, parent }) => {
         </div>
       }
 
-      <StoryNew parent={story} root={story.root ?? story} />
+      <StoryNew parent={parent} root={parent?.root ?? parent} />
     </div>
   );
 };
