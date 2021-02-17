@@ -100,7 +100,7 @@ const StoryView = ({ id }) => {
             <FaRegHeart className="text-xl" />
             <TagList tags={data.story.tags} />
           </div>
-          <ChapterChoice className="my-md" story={data.story}/>
+          <ChapterChoice className="my-md" parent={data.story}/>
         </div>
       }
     </div>

@@ -72,7 +72,7 @@ const AuthorView = ({ className, id }) => {
           <PageIntro title={data.user.username}>
             <Text variant="p">{data.user.bio}</Text>
           </PageIntro>
-          <StoryList queryVariables={{ where: { author: data.user.id } }} />
+          <StoryList author={data.user} />
         </>
       }
     </div>

@@ -73,7 +73,7 @@ const TagView = ({ className, id }) => {
           <PageIntro title={data.tag.label}>
           <Text variant="p">Into {data.tag.label}? This might be the place you are looking for.</Text>
           </PageIntro>
-          <StoryList queryVariables={{ where: { tag: data.tag.id } }} />
+          <StoryList tagId={data.tag.id} />
         </div>
       }
     </div>
