@@ -1,6 +1,5 @@
 import { Link, Spinner, Text } from 'components/ui';
-import { getStoryUrl } from 'lib/helper/story';
-import { formatDate, DATE_SHORT } from 'lib/helper/date';
+import { formatDate, DATE_SHORT, getStoryUrl } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { TagList } from 'components/tag';
@@ -18,7 +17,6 @@ export const QUERY_STORIES = gql`
       id
       title
       excerpt
-      slug
       createdAt
       author {
         id
@@ -27,10 +25,6 @@ export const QUERY_STORIES = gql`
       tags {
         id
         label
-        slug
-      }
-      root {
-        id 
         slug
       }
     }

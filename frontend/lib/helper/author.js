@@ -1,11 +1,16 @@
 /**
  * Get author url
- * @param {Story} story
+ * @param {Author} tag
  * @return {string}
  */
 const getAuthorUrl = (author) => {
-  const url = `/author/${author.username}`;
-  return url;
+  const url = '/author/';
+  
+  if (author.url) {
+    return url + author.url;
+  }
+
+  return url + author.username;
 };
 
 /**

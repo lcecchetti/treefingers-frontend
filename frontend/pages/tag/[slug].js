@@ -18,7 +18,7 @@ export async function getStaticProps({ params }) {
   // load tag by slug
   const { data } = await apolloClient.query({
     query: QUERY_TAGS_BY_SLUG,
-    variables: { slug: params.tag },
+    variables: { slug: params.slug },
   });
 
   // check if tag exists
@@ -56,7 +56,7 @@ export async function getStaticPaths() {
   const { data } = await apolloClient.query({ query: QUERY_TAGS });
 
   return {
-    paths: data.tags.map((tag) => ({ params: { tag: tag.slug } })) || [],
+    paths: data.tags.map((tag) => ({ params: { slug: tag.slug } })) || [],
     fallback: 'blocking',
   };
 }

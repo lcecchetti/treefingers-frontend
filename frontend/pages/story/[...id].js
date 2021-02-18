@@ -2,8 +2,9 @@ import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { gql } from '@apollo/client';
-import { StoryView, QUERY_STORIES_BY_SLUG, QUERY_STORY, QUERY_CHAPTERS, defaultQueryChaptersVariables } from 'components/story';
-import { getStoryUrl } from 'lib/helper/story';
+import { StoryView, QUERY_STORY, QUERY_CHAPTERS, defaultQueryChaptersVariables } from 'components/story';
+import merge from 'deepmerge';
+import { getStoryUrl } from 'lib/helper';
 
 /**
  * Story pages query
@@ -13,10 +14,8 @@ const QUERY_STORY_PAGES = gql`
   query stories {
     stories {
       id
-      slug
       root {
-        id 
-        slug
+        id
       }
     }
   }
@@ -33,40 +32,31 @@ const StoryPage = ({ story }) => {
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo();
 
-  // get slug
-  const slug =  params.slug.length > 1 ? params.slug[1] : params.slug[0];
+  // get story id
+  const id =  params.id[params.id.length - 1];
 
-  // load story by slug
+  // load story by id
   const { data } = await apolloClient.query({
-    query: QUERY_STORIES_BY_SLUG,
-    variables: { slug },
+    query: QUERY_STORY,
+    variables: { id },
   });
 
-  const story = data.stories.length && data.stories[0];
-
   // check if story exists
-  if (!story || (story.parent && params.slug[0] != story.root.slug) ) {
+  if (!data.story || (data.story.root && params.id[0] != data.story.root.id)) {
     return {
       notFound: true,
     }
   }
 
-  // add story by id query to the cache
-  apolloClient.writeQuery({
-    query: QUERY_STORY,
-    data: { story },
-    variables: { id: story.id },
-  });
-
   // add story chapters to the cache
   apolloClient.writeQuery({
     query: QUERY_CHAPTERS,
-    data: { stories: story.children },
-    variables: { ...defaultQueryChaptersVariables, ...{ where: { parent: story.id } } },
+    data: { stories: data.story.children },
+    variables: merge(defaultQueryChaptersVariables, { where: { parent: data.story.id } }),
   });
 
   return addApolloState(apolloClient, {
-    props: { story},
+    props: { story: data.story },
     revalidate: 1,
   });
 }
@@ -78,9 +68,9 @@ export async function getStaticPaths() {
 
   return {
     paths: data.stories.map((story) => {
-      // get parent and child slug
-      const slug = getStoryUrl(story).split('/').slice(2,4);;
-      return { params: { slug: slug } };
+      // get parent and child id
+      const id = getStoryUrl(story).split('/').slice(2,4);
+      return { params: { id } };
     }) || [],
     fallback: 'blocking',
   };

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { gql, useQuery } from '@apollo/client';
-import { getLoginUrl } from 'lib/helper/auth';
+import { getLoginUrl } from 'lib/helper';
 
 /**
  * Self query

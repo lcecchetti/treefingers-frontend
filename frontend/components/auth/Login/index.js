@@ -7,8 +7,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
-import { getRegisterUrl } from 'lib/helper/auth';
-import { getProfileMeUrl } from 'lib/helper/profile';
+import { getRegisterUrl, getProfileMeUrl } from 'lib/helper';
 
 /**
  * Sign in mutation

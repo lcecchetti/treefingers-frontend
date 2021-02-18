@@ -28,8 +28,8 @@
       "type": "richtext"
     },
     "tags": {
-      "via": "stories",
-      "collection": "tag"
+      "collection": "tag",
+      "via": "stories"
     },
     "excerpt": {
       "type": "text",
@@ -49,11 +49,6 @@
     },
     "action": {
       "type": "text"
-    },
-    "slug": {
-      "type": "string",
-      "required": false,
-      "unique": true
     }
   }
 }

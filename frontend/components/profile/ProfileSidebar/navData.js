@@ -1,4 +1,4 @@
-import { getLogoutUrl } from "lib/helper/auth";
+import { getLogoutUrl } from "lib/helper";
 
 export default [
   {

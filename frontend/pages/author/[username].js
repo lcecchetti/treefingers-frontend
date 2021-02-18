@@ -22,7 +22,7 @@ export async function getStaticProps({ params }) {
   });
 
   // check if author exists
-  if (!data.users.length) {
+  if (!data?.users.length) {
     return {
       notFound: true,
     }
@@ -37,6 +37,7 @@ export async function getStaticProps({ params }) {
     variables: { id: author.id },
   });
 
+  //@todo check why query is not cached at page load
   // add author stories query to the cache
   apolloClient.writeQuery({
     query: QUERY_STORIES,

@@ -1,6 +1,5 @@
 import { Link, Text } from 'components/ui';
-import { getStoriesUrl } from 'lib/helper/story';
-import { getAuthorsUrl } from 'lib/helper/author';
+import { getStoriesUrl, getAuthorsUrl } from 'lib/helper';
 
 const mainNavigationItems = [
   {

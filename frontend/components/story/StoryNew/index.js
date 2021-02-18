@@ -5,8 +5,7 @@ import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
 import { FormField, Button, Text, Spinner, Link } from 'components/ui';
 import * as Yup from 'yup';
-import { getStoryUrl } from 'lib/helper/story';
-import { getLoginUrl } from 'lib/helper/auth';
+import { getLoginUrl, getStoryUrl } from 'lib/helper';
 
 /**
  * Create story mutation
@@ -33,17 +32,10 @@ const MUTATION_STORY_NEW = gql`
     }}) {
       story {
         id
-        slug
-        parent {
-          id
-          slug
-        }
         root {
           id
-          slug
         }
-      }
-      
+      } 
     }
   }
 `;
