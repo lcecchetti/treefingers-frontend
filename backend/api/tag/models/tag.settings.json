@@ -15,8 +15,8 @@
       "type": "string"
     },
     "stories": {
-      "collection": "story",
       "via": "tags",
+      "collection": "story",
       "dominant": true
     },
     "slug": {

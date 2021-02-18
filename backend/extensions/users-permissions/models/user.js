@@ -8,10 +8,10 @@
 module.exports = {
   lifecycles: {
     beforeCreate: async (data) => {
-      data.excerpt = strapi.plugins["users-permissions"].services.user.createExcerpt(data.bio);
+      data.excerpt = strapi.services.helper.createExcerpt(data.bio);
     },
     beforeUpdate: async (params, data) => {
-      data.excerpt = strapi.plugins["users-permissions"].services.user.createExcerpt(data.bio);
+      data.excerpt = strapi.services.helper.createExcerpt(data.bio);
     },
   },
 };

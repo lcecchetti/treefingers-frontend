@@ -1,9 +1,9 @@
 import { Link, Spinner, Text, Button } from 'components/ui';
-import { getStoryUrl } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { StoryNew } from 'components/story';
 import merge from 'deepmerge';
+import { getStoryUrl } from 'lib/helper';
 
 /**
  * Chapter list query
@@ -14,12 +14,7 @@ export const QUERY_CHAPTERS = gql`
     stories(where: $where) {
       id
       action
-      slug
       root {
-        id
-        slug
-      }
-      parent {
         id
       }
     }

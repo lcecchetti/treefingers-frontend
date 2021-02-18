@@ -5,6 +5,7 @@ module.exports = {
       url: String!
       label: String!
       excerpt: String
+      type: String!
     }
   `,
   query: `

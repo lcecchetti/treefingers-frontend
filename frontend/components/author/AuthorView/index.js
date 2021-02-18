@@ -16,7 +16,6 @@ const FRAGMENT_AUTHOR = gql`
       id
       title
       excerpt
-      slug
       createdAt
       author {
         id

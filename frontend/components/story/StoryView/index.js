@@ -1,53 +1,10 @@
 import { Spinner, Text } from 'components/ui';
-import { DATE_LONG, formatDate } from 'lib/helper/date';
+import { DATE_LONG, formatDate } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { ChapterChoice } from 'components/story';
-
-/**
- * Story fragment
- * @type {gql}
- */
-const FRAGMENT_STORY = gql`
-  fragment StoryFields on Story {
-    id
-    title
-    content
-    slug
-    createdAt
-    author {
-      id
-      username
-    }
-    tags {
-      id
-      label
-      slug
-    }
-    root {
-      id
-      slug
-    }
-    parent {
-      id
-      slug
-    }
-    children {
-      id
-      action
-      slug
-      root {
-        id
-        slug
-      }
-      parent {
-        id
-      }
-    }
-  }
-`;
 
 /**
  * Single story query
@@ -56,25 +13,35 @@ const FRAGMENT_STORY = gql`
 export const QUERY_STORY = gql`
   query story($id: ID!) {
     story(id: $id) {
-      ...StoryFields
+      id
+      title
+      content
+      createdAt
+      author {
+        id
+        username
+      }
+      tags {
+        id
+        label
+        slug
+      }
+      children {
+        id
+        action
+        root {
+          id
+        }
+      }
+      parent {
+        id
+      }
+      root {
+        id
+      }
     }
   }
-  ${FRAGMENT_STORY}
 `;
-
-/**
- * Get stories by slug query
- * @type {gql}
- */
-export const QUERY_STORIES_BY_SLUG = gql`
-  query stories($slug: String!) {
-    stories(where: { slug: $slug }) {
-      ...StoryFields
-    }
-  }
-  ${FRAGMENT_STORY}
-`;
-
 
 const StoryView = ({ id }) => {
 
@@ -100,7 +67,7 @@ const StoryView = ({ id }) => {
             <FaRegHeart className="text-xl" />
             <TagList tags={data.story.tags} />
           </div>
-          <ChapterChoice className="my-md" parent={data.story}/>
+          <ChapterChoice className="my-md" parent={data.story} />
         </div>
       }
     </div>

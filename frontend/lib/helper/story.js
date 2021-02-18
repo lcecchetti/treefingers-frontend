@@ -5,16 +5,21 @@
  */
 const getStoryUrl = (story) => {
 
-  let url = '/story';
+  let url = '/story/';
 
-  if (story.root) {
-    url += `/${story.root.slug}`;
+  // full story url passed in (ex: search)
+  if (story.url) {
+    return url + story.url;
   }
 
-  url += `/${story.slug}`;
+  if (story.root) {
+    url += `${story.root.id}/`;
+  }
+
+  url += story.id;
 
   return url;
-}
+};
 
 /**
  * Get stories url

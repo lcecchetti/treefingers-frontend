@@ -4,10 +4,8 @@ import { FaSearch, FaPenFancy, FaUserCircle, FaBars } from 'react-icons/fa';
 import { Link } from 'components/ui';
 import { useTheme } from 'next-themes';
 import { useUI } from 'lib/ui/context';
-import { getLoginUrl } from 'lib/helper/auth';
-import { getProfileMeUrl } from 'lib/helper/profile';
+import { getLoginUrl, getProfileMeUrl, getStoryNewUrl } from 'lib/helper';
 import { ThemeIcon } from 'components/common';
-import { getStoryNewUrl } from 'lib/helper/story';
 
 /**
  * Self query

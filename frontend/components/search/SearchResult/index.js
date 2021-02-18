@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
-import { getStoryNewUrl } from 'lib/helper/story';
+import { getStoryNewUrl, getSearchResultUrl } from 'lib/helper';
 import { Spinner, Link, Text, Button } from 'components/ui';
 
 const QUERY_SEARCH = gql`
@@ -10,6 +10,7 @@ const QUERY_SEARCH = gql`
       label
       excerpt
       url
+      type
     }
   }  
 `;
@@ -34,7 +35,7 @@ const SearchResult = ({ className, query }) => {
 
       {data?.search && data.search.map((result) => (
         <div key={result.id}>
-          <Link href={result.url} underline={false}>
+          <Link href={getSearchResultUrl(result)} underline={false}>
             <Text variant="h3" className="font-bold">{result.label}</Text>
             <Text variant="p">{result.excerpt}</Text>
           </Link>

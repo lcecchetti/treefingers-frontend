@@ -2,8 +2,8 @@ import { Link, Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { Avatar } from 'components/user';
-import { getStoryUrl } from 'lib/helper/story';
 import { FaRegHeart } from 'react-icons/fa';
+import { getStoryUrl } from 'lib/helper';
 
 /**
  * Authors list query
@@ -19,11 +19,6 @@ export const QUERY_AUTHORS = gql`
       stories {
         id
         title
-        slug
-        root {
-          id
-          slug
-        }
       }
     }
   }
