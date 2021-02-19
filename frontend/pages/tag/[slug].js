@@ -1,5 +1,5 @@
 import { DefaultLayout } from 'components/layout';
-import { Container, Text } from 'components/ui';
+import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { TagView, QUERY_TAG, QUERY_TAGS, QUERY_TAGS_BY_SLUG } from 'components/tag';
 import { QUERY_STORIES } from 'components/story';
@@ -33,15 +33,14 @@ export async function getStaticProps({ params }) {
   // add tag by id query to the cache
   apolloClient.writeQuery({
     query: QUERY_TAG,
-    data: { tag },
+    data: { tag: tag },
     variables: { id: tag.id },
   });
 
-  // add tag stories query to the cache
-  apolloClient.writeQuery({
+  // load tag stories
+  await apolloClient.query({
     query: QUERY_STORIES,
-    data: { stories: tag.stories },
-    variables: { where: { tag: tag.id } },
+    variables: { where: { tags: { id: tag.id }, isRoot: true } },
   });
 
   return addApolloState(apolloClient, {

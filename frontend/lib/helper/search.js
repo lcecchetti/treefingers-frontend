@@ -19,11 +19,11 @@ const getSearchUrl = (q = '') => {
 const getSearchResultUrl = (result) => {
   switch (result.type) {
     case 'story':
-      return getStoryUrl(result);
+      return getStoryUrl({ id: result.url });
     case 'tag':
-      return getTagUrl(result);    
+      return getTagUrl({ slug: result.url });    
     case 'author': 
-      return getAuthorUrl(result);  
+      return getAuthorUrl({ username: result.url });  
   }
 
   return '#';

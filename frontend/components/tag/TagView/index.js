@@ -13,21 +13,6 @@ const FRAGMENT_TAG = gql`
     id
     label
     slug
-    stories {
-      id
-      title
-      excerpt
-      createdAt
-      author {
-        id
-        username
-      }
-      tags {
-        id
-        label
-        slug
-      }
-    }
   }
 `;
 
@@ -72,7 +57,7 @@ const TagView = ({ className, id }) => {
           <PageIntro title={data.tag.label}>
           <Text variant="p">Into {data.tag.label}? This might be the place you are looking for.</Text>
           </PageIntro>
-          <StoryList tagId={data.tag.id} />
+          <StoryList tag={data.tag} />
         </div>
       }
     </div>

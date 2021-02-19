@@ -37,11 +37,9 @@ export async function getStaticProps({ params }) {
     variables: { id: author.id },
   });
 
-  //@todo check why query is not cached at page load
-  // add author stories query to the cache
-  apolloClient.writeQuery({
+  // load author stories
+  await apolloClient.query({
     query: QUERY_STORIES,
-    data: { stories: author.stories },
     variables: { where: { author: author.id } },
   });
 

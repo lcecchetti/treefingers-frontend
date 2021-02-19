@@ -1,11 +1,10 @@
 import { Link, Spinner, Text } from 'components/ui';
-import { formatDate, DATE_SHORT, getStoryUrl } from 'lib/helper';
+import { formatDate, DATE_SHORT, getStoryUrl, getStoryType } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import clsx from 'clsx';
-import merge from 'deepmerge';
 
 /**
  * Story list query
@@ -18,6 +17,7 @@ export const QUERY_STORIES = gql`
       title
       excerpt
       createdAt
+      isRoot
       author {
         id
         username
@@ -31,26 +31,17 @@ export const QUERY_STORIES = gql`
   }
 `;
 
-/**
- * Default query variables
- * @type {Object}
- */
-export const defaultQueryStoriesVariables = {
-  where: {
-    parent_null: true,
-  }
-}
+const StoryList = ({ className, rootsOnly = true, author, tag }) => {
 
-
-const StoryList = ({ className, author, tag }) => {
-  const queryVariables = {
-    where: {
-      author: author?.id,
-      tag: tag?.id,
+  const { data, loading, error } = useQuery(QUERY_STORIES, {
+    variables: {
+      where: {
+        author: author?.id,
+        tags: tag?.id ? { id: tag.id } : undefined,
+        isRoot: rootsOnly ? true : undefined,
+      }
     }
-  }
-
-  const { data, loading, error } = useQuery(QUERY_STORIES, { variables: merge(defaultQueryStoriesVariables, queryVariables) });
+  });
 
   return (
     <div className={clsx('grid md:grid-cols-2 gap-md', className)}>
@@ -60,11 +51,14 @@ const StoryList = ({ className, author, tag }) => {
 
       {data?.stories && data.stories.map((story) => (
         <div key={story.id} className="rounded-xl p-md bg-primary text-primary-contrast">
-          
-          <div className="flex justify-between mb-md">
+
+          <div className="flex justify-between mb-md items-center">
             <Text variant="span" className="text-sm">
               {formatDate(story.createdAt, DATE_SHORT)}
             </Text>
+            {!rootsOnly &&
+              <Text variant="span" className="font-bold">{getStoryType(story)}</Text>
+            }
             <FaRegHeart className="text-xl" />
           </div>
 
@@ -75,7 +69,7 @@ const StoryList = ({ className, author, tag }) => {
             <Text variant="p">{story.excerpt}</Text>
             <Link href={getStoryUrl(story)}>Read more</Link>
           </div>
-        
+
           <div className="flex flex-col md:flex-row md:justify-between gap-sm md:gap-md">
             <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} buttonVariant="primary-contrast" />
             <Avatar className="justify-end" user={story.author} showName={true} />

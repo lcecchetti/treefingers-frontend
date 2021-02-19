@@ -26,13 +26,6 @@ export const QUERY_STORY = gql`
         label
         slug
       }
-      children {
-        id
-        action
-        root {
-          id
-        }
-      }
       parent {
         id
       }

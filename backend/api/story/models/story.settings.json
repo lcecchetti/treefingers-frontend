@@ -49,6 +49,11 @@
     },
     "action": {
       "type": "text"
+    },
+    "isRoot": {
+      "type": "boolean",
+      "default": true,
+      "required": false
     }
   }
 }

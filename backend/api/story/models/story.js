@@ -9,9 +9,11 @@ module.exports = {
   lifecycles: {
     beforeCreate: async (data) => {
       data.excerpt = strapi.services.helper.createExcerpt(data.content);
+      data.isRoot = strapi.services.story.isRoot(data);
     },
     beforeUpdate: async (params, data) => {
       data.excerpt = strapi.services.helper.createExcerpt(data.content);
+      data.isRoot = strapi.services.story.isRoot(data);
     },
   },
 };

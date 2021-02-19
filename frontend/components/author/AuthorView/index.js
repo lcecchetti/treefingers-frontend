@@ -12,21 +12,6 @@ const FRAGMENT_AUTHOR = gql`
     id
     username
     bio
-    stories {
-      id
-      title
-      excerpt
-      createdAt
-      author {
-        id
-        username
-      }
-      tags {
-        id
-        label
-        slug
-      }
-    }
   }
 `;
 
@@ -71,7 +56,7 @@ const AuthorView = ({ className, id }) => {
           <PageIntro title={data.user.username}>
             <Text variant="p">{data.user.bio}</Text>
           </PageIntro>
-          <StoryList author={data.user} />
+          <StoryList author={data.user} rootsOnly={false} />
         </>
       }
     </div>

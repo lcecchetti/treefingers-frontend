@@ -4,14 +4,7 @@
  * @return {string}
  */
 const getTagUrl = (tag) => {
-
-  let url = '/tag/';
-
-  if (tag.url) {
-    return url + tag.url;
-  }
-
-  return url + tag.slug;
+  return `/tag/${tag.slug}`;
 };
 
 export { getTagUrl };

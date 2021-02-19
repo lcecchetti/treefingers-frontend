@@ -21,21 +21,13 @@ export const QUERY_CHAPTERS = gql`
   }
 `;
 
-/**
- * Default query variables
- * @type {Object}
- */
-export const defaultQueryChaptersVariables = {};
-
 const ChapterChoice = ({ className, parent }) => {
 
-  const queryVariables = {
+  const { data, loading, error } = useQuery(QUERY_CHAPTERS, { variables: {
     where: {
       parent: parent?.id,
     }
-  };
-
-  const { data, loading, error } = useQuery(QUERY_CHAPTERS, { variables: merge(defaultQueryChaptersVariables, queryVariables) });
+  }});
 
   return (
     <div className={clsx('mx-auto max-w-screen-sm', className)}>
