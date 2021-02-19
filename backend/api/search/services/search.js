@@ -12,7 +12,7 @@ module.exports = {
     const stories = await strapi.services.story.search({ _q: q });
     const storiesResults = stories.map((story) => ({
       id: story.id,
-      url: story.root ? `${story.root}/${story.id}` : story.id,
+      url: story.id,
       label: story.title,
       excerpt: story.excerpt,
       type: 'story',

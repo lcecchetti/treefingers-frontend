@@ -9,13 +9,12 @@ import { getStoryUrl } from 'lib/helper';
  * Authors list query
  * @type {gql}
  */
-//@todo limit to users with at least one story
 export const QUERY_AUTHORS = gql`
   query users {
     users {
       id
       username
-      bio
+      excerpt
       stories {
         id
         title
@@ -24,6 +23,7 @@ export const QUERY_AUTHORS = gql`
   }
 `;
 
+//@todo limit to users with at least one story
 const AuthorList = ({ className }) => {
   const { data, loading, error } = useQuery(QUERY_AUTHORS);
 

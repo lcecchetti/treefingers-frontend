@@ -4,21 +4,7 @@
  * @return {string}
  */
 const getStoryUrl = (story) => {
-
-  let url = '/story/';
-
-  // full story url passed in (ex: search)
-  if (story.url) {
-    return url + story.url;
-  }
-
-  if (story.root) {
-    url += `${story.root.id}/`;
-  }
-
-  url += story.id;
-
-  return url;
+  return `/story/${story.id}`;
 };
 
 /**
@@ -37,4 +23,22 @@ const getStoryNewUrl = () => {
   return '/story/new';
 };
 
-export { getStoryUrl, getStoriesUrl, getStoryNewUrl };
+/**
+ * Check if story is root
+ * @param {Story} story
+ * @return {boolean}
+ */
+const isStoryRoot = (story) => {
+  return story.isRoot;
+}
+
+/**
+ * Get story type
+ * @param {Story} story
+ * @return {string}
+ */
+const getStoryType = (story) => {
+  return isStoryRoot(story) ? 'STORY' : 'CHAPTER';
+}
+
+export { getStoryUrl, getStoriesUrl, getStoryNewUrl, isStoryRoot, getStoryType };
