@@ -37,6 +37,7 @@ module.exports = {
     extend: {
       opacity: ['active', 'disabled'],
       textDecoration: ['disabled'],
+      animation: ['group-hover'],
     },
   },
   plugins: [

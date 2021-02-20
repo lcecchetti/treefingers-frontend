@@ -12,10 +12,24 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
 
   return (
     <fieldset className={clsx(
+      "flex flex-col gap-xs",
       className,
     )}>
+
+      {!!label &&
+        <Text variant="label"
+          className={clsx(
+            'block',
+            error && 'text-error',
+            labelClassName
+          )}
+          htmlFor={name}>
+          {label}
+        </Text>
+      }
+
       <Component className={clsx(
-        'border-0 border-b-2 border-primary w-full bg-transparent focus:outline-none focus:ring-0',
+        'border-b-2 border-primary rounded-xl w-full bg-transparent focus:outline-none focus:ring-0',
         {
           ['']: type === 'select',
           ['']: type === 'textarea',
@@ -37,18 +51,6 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
         }
 
       </Component>
-
-      {!!label &&
-        <Text variant="label"
-          className={clsx(
-            'block',
-            error && 'text-error',
-            labelClassName
-          )}
-          htmlFor={name}>
-          {label}
-        </Text>
-      }
 
       {!!error && error !== true &&
         <Text className="text-error text-xs" variant="span">

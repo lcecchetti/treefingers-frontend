@@ -50,19 +50,19 @@ const StoryList = ({ className, rootsOnly = true, author, tag }) => {
       {error && <Text variant="error">{error.message}</Text>}
 
       {data?.stories && data.stories.map((story) => (
-        <div key={story.id} className="rounded-xl p-md bg-primary text-primary-contrast">
+        <div key={story.id} className="rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-xs">
 
-          <div className="flex justify-between mb-md items-center">
+          <div className="flex justify-between items-center">
             <Text variant="span" className="text-sm">
               {formatDate(story.createdAt, DATE_SHORT)}
             </Text>
             {!rootsOnly &&
               <Text variant="span" className="font-bold">{getStoryType(story)}</Text>
             }
-            <FaRegHeart className="text-xl" />
+            <Avatar className="justify-end" user={story.author} showName={true} />
           </div>
 
-          <div className="mb-md md:mb-sm">
+          <div>
             <Text variant="title">
               <Link href={getStoryUrl(story)} underline={false}>{story.title}</Link>
             </Text>
@@ -70,9 +70,9 @@ const StoryList = ({ className, rootsOnly = true, author, tag }) => {
             <Link href={getStoryUrl(story)}>Read more</Link>
           </div>
 
-          <div className="flex flex-col md:flex-row md:justify-between gap-sm md:gap-md">
+          <div className="flex flex-col md:flex-row md:justify-between items-center gap-sm md:gap-md">
             <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} buttonVariant="primary-contrast" />
-            <Avatar className="justify-end" user={story.author} showName={true} />
+            <FaRegHeart className="text-xl" />
           </div>
         </div>
       ))}

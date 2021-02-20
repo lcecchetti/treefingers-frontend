@@ -53,23 +53,31 @@ const QUERY_SELF = gql`
   }
 `;
 
-const StoryNew = ({ parent, root }) => {
-  const { data: selfData, loading: selfLoading } = useQuery(QUERY_SELF);
+const StoryNew = ({ parent }) => {
+  const { data, loading, error } = useQuery(QUERY_SELF);
   const [createStory] = useMutation(MUTATION_STORY_NEW);
   const router = useRouter();
   const [apiError, setApiError] = useState('');
 
   const handleSubmit = async (values, methods) => {
     try {
-      const { data } = await createStory({
+      setApiError('');
+
+      const { data, error } = await createStory({
         variables: {
-          ...values
+          ...values,
+          author: data.self.id,
+          parent: parent?.id,
+          root: parent?.root?.id ?? parent?.id,
         },
       });
 
       if (data?.story?.id) {
-        setApiError('');
         router.push(getStoryUrl(data.story));
+      }
+
+      if (error) {
+        setApiError(error);
       }
     } catch (e) {
       setApiError(parseError(e).message);
@@ -78,86 +86,80 @@ const StoryNew = ({ parent, root }) => {
 
   return (
     <div>
-      <div>
-        {selfLoading && <Spinner />}
+      {loading && <Spinner />}
 
-        {selfData?.self &&
-          <Formik
-            initialValues={{
-              title: '',
-              content: '',
-              author: selfData.self.id,
-              parent: parent?.id,
-              root: root?.id,
-            }}
-            onSubmit={(values, methods) => handleSubmit(values, methods)}
-            validationSchema={Yup.object().shape({
-              title: Yup.string().required('Required'),
-              content: Yup.string().required('Required'),
-            })}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                {!!parent?.id &&
-                  <Field
-                    as={FormField}
-                    name="action"
-                    type="text"
-                    label="Action - It'll be listed in the choices at the end of the story"
-                  />
-                }
-                <Field
-                  as={FormField}
-                  name="title"
-                  type="text"
-                  label="Title - Your chapter title"
-                />
-                <Field
-                  as={FormField}
-                  name="content"
-                  type="textarea"
-                  label="Content - Your chapter content"
-                />
-                <Field
-                  as="input"
-                  name="author"
-                  type="hidden"
-                />
-                <Field
-                  as="input"
-                  name="parent"
-                  type="hidden"
-                />
-                <Field
-                  as="input"
-                  name="root"
-                  type="hidden"
-                />
-
-                {!!apiError &&
-                  <Text variant="error">{apiError}</Text>
-                }
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  loading={isSubmitting}
-                  className="my-md w-full">
-                  Create
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        }
-      </div>
-
-      {
-        !selfLoading && !selfData &&
-        <div className="mt-sm">
+      {error &&
+        <div className="my-md flex flex-col gap-sm items-center p-lg border-t-2 border-b-2">
           <Text variant="p">Hey, it looks like you are not logged in. Login or create an account and you'll be ready to go.</Text>
           <Button as={Link} styleAsLink={false} href={getLoginUrl()}>Login / Register</Button>
         </div>
       }
 
+      {data?.self &&
+        <Formik
+          initialValues={{
+            title: '',
+            content: '',
+            action: '',
+          }}
+          onSubmit={(values, methods) => handleSubmit(values, methods)}
+          validationSchema={Yup.object().shape({
+            title: Yup.string().required('Required'),
+            content: Yup.string().required('Required'),
+          })}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              {!!parent?.id &&
+                <Field
+                  as={FormField}
+                  name="action"
+                  type="text"
+                  label="Action (This will be displayed in the choices list)"
+                />
+              }
+              <Field
+                as={FormField}
+                name="title"
+                type="text"
+                label="Title"
+              />
+              <Field
+                as={FormField}
+                name="content"
+                type="textarea"
+                label="Content"
+              />
+              <Field
+                as="input"
+                name="author"
+                type="hidden"
+              />
+              <Field
+                as="input"
+                name="parent"
+                type="hidden"
+              />
+              <Field
+                as="input"
+                name="root"
+                type="hidden"
+              />
+
+              {!!apiError &&
+                <Text variant="error">{apiError}</Text>
+              }
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                loading={isSubmitting}
+                className="my-md w-full">
+                Create
+                </Button>
+            </Form>
+          )}
+        </Formik>
+      }
     </div>
   );
 };
