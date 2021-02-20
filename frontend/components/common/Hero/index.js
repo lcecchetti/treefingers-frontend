@@ -35,7 +35,7 @@ const Hero = () => {
 
         <FaAngleDoubleDown className="md:hidden text-4xl animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
       </div>
-      <div ref={detailsRef} className="text-primary-contrast bg-primary p-md md:p-xl flex flex-col md:justify-center items-start min-h-screen-no-header md:min-h-0">
+      <div ref={detailsRef} className="text-primary-contrast bg-primary px-md py-xl md:px-xl flex flex-col md:justify-center items-start min-h-screen-no-header md:min-h-0">
         <div className="mb-lg w-full">
           <Text variant="h2">What is Treefingers?</Text>
           <Text variant="p">
