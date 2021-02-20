@@ -9,13 +9,7 @@ const QUERY_DATA = gql`
   query self {
     self {
       id
-      firstName
-      lastName
-      imageProfile {
-        formats
-        height
-        width
-      }
+      username
     }
   }
 `;

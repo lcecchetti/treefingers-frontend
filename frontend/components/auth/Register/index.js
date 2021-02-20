@@ -72,7 +72,7 @@ export default function SignUp() {
         })}
       >
         {({ isSubmitting }) => (
-          <Form noValidate>
+          <Form noValidate className="flex flex-col gap-sm">
             <Field
               as={FormField}
               label="Email"
@@ -99,7 +99,7 @@ export default function SignUp() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="my-md w-full"
+              className="my-sm w-full"
             >
               Register
             </Button>

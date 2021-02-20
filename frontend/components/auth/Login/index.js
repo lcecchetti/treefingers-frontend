@@ -71,7 +71,7 @@ export default function Login() {
         })}
       >
         {({ isSubmitting }) => (
-          <Form>
+          <Form className="flex flex-col gap-sm">
             <Field
               as={FormField}
               name="email"
@@ -93,7 +93,7 @@ export default function Login() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="my-md w-full">
+              className="w-full my-sm">
               Login
             </Button>
             <div className="flex flex-row justify-between">
