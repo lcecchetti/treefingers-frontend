@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
 import useAuthToken from 'lib/auth/useAuthToken';
 import { Text, Button, Link, FormField } from 'components/ui';
-import { getLoginUrl } from 'lib/helper';
+import { getLoginUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
 
 /**
  * Sign up mutation
@@ -45,7 +45,9 @@ export default function SignUp() {
       if (data?.register?.jwt) {
         setApiError('');
         setAuthToken(data.register.jwt);
-        router.push('/')
+        
+        const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
+        router.push(redirect);
       }
     } catch (e) {
       console.log(e);
@@ -103,7 +105,7 @@ export default function SignUp() {
               Register
             </Button>
             <div className="text-right text-xs">
-              <Link href={getLoginUrl()}>
+              <Link href={getLoginUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>
                 <a>Already have an account? Login</a>
               </Link>
             </div>

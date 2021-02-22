@@ -7,7 +7,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
-import { getRegisterUrl, getProfileMeUrl } from 'lib/helper';
+import { getRegisterUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
 
 /**
  * Sign in mutation
@@ -46,7 +46,9 @@ export default function Login() {
       if (data?.login?.jwt) {
         setApiError('');
         setAuthToken(data.login.jwt);
-        router.push(getProfileMeUrl())
+
+        const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
+        router.push(redirect);
       }
     } catch (e) {
       setApiError(parseError(e).message);
@@ -99,7 +101,7 @@ export default function Login() {
             </Button>
             <div className="flex flex-row justify-between">
               <Link className="text-left text-xs">Forgot password?</Link>
-              <Link href={getRegisterUrl()} className="text-right text-xs">Don't have an account?<br />Register</Link>
+              <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO])} className="text-right text-xs">Don't have an account?<br />Register</Link>
             </div>
           </Form>
         )}

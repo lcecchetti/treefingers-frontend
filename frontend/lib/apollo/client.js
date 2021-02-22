@@ -46,6 +46,7 @@ function createApolloClient(authToken) {
   // update current token
   currentToken = authToken;
 
+  console.log('CREATE');
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: authMiddleware(authToken).concat(httpLink),

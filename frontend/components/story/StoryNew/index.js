@@ -91,7 +91,7 @@ const StoryNew = ({ parent }) => {
       {error &&
         <div className="my-md flex flex-col gap-sm items-center p-lg border-t-2 border-b-2">
           <Text variant="p">Hey, it looks like you are not logged in. Login or create an account and you'll be ready to go.</Text>
-          <Button as={Link} styleAsLink={false} href={getLoginUrl()}>Login / Register</Button>
+          <Button as={Link} styleAsLink={false} href={getLoginUrl(router.asPath)}>Login / Register</Button>
         </div>
       }
 

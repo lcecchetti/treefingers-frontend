@@ -1,5 +1,6 @@
 
 import { getAuthorUrl, getStoryUrl, getTagUrl } from "lib/helper";
+
 /**
  * Get search url
  * @return {string}
