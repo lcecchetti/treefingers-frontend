@@ -33,18 +33,19 @@ export default function Login() {
    * @param {string} password
    * @return {Promise<void>}
    */
-  async function handleSubmit(email, password) {
+  const handleSubmit = async ({ email, password }) => {
     try {
+
       const { data } = await signIn({
         variables: {
-          email: email,
-          password: password,
+          email,
+          password,
         },
       });
 
       if (data?.login?.jwt) {
         setApiError('');
-        setAuthToken(data.login.jwt)
+        setAuthToken(data.login.jwt);
         router.push(getProfileMeUrl())
       }
     } catch (e) {
@@ -64,7 +65,7 @@ export default function Login() {
           email: '',
           password: '',
         }}
-        onSubmit={({ email, password }) => handleSubmit(email, password)}
+        onSubmit={(values) => handleSubmit(values)}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too Short!').required('Required'),

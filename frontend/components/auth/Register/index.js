@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import { useRouter } from 'next/router';
-import { useApolloClient, useMutation, gql } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
@@ -26,7 +26,6 @@ export default function SignUp() {
   const router = useRouter();
   const [apiError, setApiError] = useState('');
   const { setAuthToken } = useAuthToken();
-  const client = useApolloClient();
 
   /**
    * Handle signup form submission
@@ -45,7 +44,7 @@ export default function SignUp() {
 
       if (data?.register?.jwt) {
         setApiError('');
-        setAuthToken(data.register.jwt)
+        setAuthToken(data.register.jwt);
         router.push('/')
       }
     } catch (e) {

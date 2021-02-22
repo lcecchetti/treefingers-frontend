@@ -67,7 +67,7 @@ const ChapterChoice = ({ className, parent }) => {
                   <Text variant="title" as="span" className="">The end...?</Text>
                 }
 
-                <Button styleAsLink={false} className="w-full" onClick={() => setIsWriting(true)}>Write a new chapter</Button>
+                <Button className="w-full" onClick={() => setIsWriting(true)}>Write a new chapter</Button>
               </div>
             </div>
           }

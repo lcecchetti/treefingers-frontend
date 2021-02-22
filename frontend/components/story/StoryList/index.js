@@ -70,7 +70,7 @@ const StoryList = ({ className, rootsOnly = true, author, tag }) => {
             <Link href={getStoryUrl(story)}>Read more</Link>
           </div>
 
-          <div className="flex flex-col md:flex-row md:justify-between items-center gap-sm md:gap-md">
+          <div className="flex justify-between items-center gap-md">
             <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} buttonVariant="primary-contrast" />
             <FaRegHeart className="text-xl" />
           </div>

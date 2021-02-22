@@ -4,13 +4,14 @@ import { useApollo } from 'lib/apollo/client';
 import { Header, Footer } from 'components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from 'lib/ui/context';
+import { withCookies } from 'react-cookie';
 
 // global style dependencies
 import 'styles/globals.css'
 
 const Noop = ({ children }) => children;
 
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
 
   // delegate layout responsibility to the page to preserve top level component status
   const Layout = Component.Layout || Noop;
@@ -39,3 +40,5 @@ export default function App({ Component, pageProps }) {
     </>
   );
 };
+
+export default withCookies(App);

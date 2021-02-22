@@ -60,6 +60,7 @@ function createApolloClient(authToken) {
  * @return {ApolloClient}
  */
 export function initializeApollo(initialState = null, authToken) {
+
   // recycle apollo client for same session
   const _apolloClient = apolloClient && authToken == currentToken ? apolloClient : createApolloClient(authToken);
 
