@@ -6,11 +6,14 @@ const Logout = () => {
   const router = useRouter()
   const { removeAuthToken } = useAuthToken();
 
-  //@todo verify signout sync timing
-  useEffect(() => {
+  const logout = () => {
     removeAuthToken();
     router.push('/');
-  }, [router])
+  };
+
+  useEffect(() => {
+    logout();
+  })
 
   return <p>Logging out...</p>
 };
