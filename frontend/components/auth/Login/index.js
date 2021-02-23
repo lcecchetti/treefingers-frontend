@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useApolloClient } from '@apollo/client';
 import { parseError } from 'lib/apollo/error';
 import { useRouter } from 'next/router';
-import useAuthToken from 'lib/auth/useAuthToken';
+import { setAuthToken } from 'lib/auth/token';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
@@ -24,8 +24,8 @@ const MUTATION_SIGN_IN = gql`
 export default function Login() {
   const [signIn] = useMutation(MUTATION_SIGN_IN);
   const router = useRouter();
-  const { setAuthToken } = useAuthToken();
   const [apiError, setApiError] = useState('');
+  const client = useApolloClient();
 
   /**
    * Handle signin form submission
@@ -33,7 +33,7 @@ export default function Login() {
    * @param {string} password
    * @return {Promise<void>}
    */
-  const handleSubmit = async ({ email, password }) => {
+  const login = async (email, password) => {
     try {
 
       const { data } = await signIn({
@@ -46,6 +46,7 @@ export default function Login() {
       if (data?.login?.jwt) {
         setApiError('');
         setAuthToken(data.login.jwt);
+        await client.resetStore();
 
         const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
         router.push(redirect);
@@ -67,7 +68,7 @@ export default function Login() {
           email: '',
           password: '',
         }}
-        onSubmit={(values) => handleSubmit(values)}
+        onSubmit={({ email, password }) => login(email, password)}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too Short!').required('Required'),

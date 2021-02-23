@@ -5,7 +5,7 @@ import { gql, useQuery } from '@apollo/client';
  * Self query
  * @type {gql}
  */
-const QUERY_DATA = gql`
+const QUERY_SELF = gql`
   query self {
     self {
       id
@@ -15,7 +15,7 @@ const QUERY_DATA = gql`
 `;
 
 const ProfileMePage = () => {
-  const { data, loading } = useQuery(QUERY_DATA);
+  const { data, loading } = useQuery(QUERY_SELF);
 
   return (
     <div>

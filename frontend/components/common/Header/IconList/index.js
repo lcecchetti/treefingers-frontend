@@ -48,7 +48,7 @@ const IconList = () => {
       showOnDesktop: true,
     },
     {
-      href: data ? getProfileMeUrl() : getLoginUrl(),
+      href: data?.self ? getProfileMeUrl() : getLoginUrl(),
       Icon: FaUserCircle,
       onClick: false,
       showOnMobile: true,

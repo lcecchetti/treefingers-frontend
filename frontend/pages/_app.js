@@ -4,7 +4,6 @@ import { useApollo } from 'lib/apollo/client';
 import { Header, Footer } from 'components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from 'lib/ui/context';
-import { withCookies } from 'react-cookie';
 
 // global style dependencies
 import 'styles/globals.css'
@@ -41,4 +40,4 @@ const App = ({ Component, pageProps }) => {
   );
 };
 
-export default withCookies(App);
+export default App;
