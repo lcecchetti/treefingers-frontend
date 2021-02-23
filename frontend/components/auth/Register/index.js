@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import { useRouter } from 'next/router';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, gql, useApolloClient } from '@apollo/client';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
-import useAuthToken from 'lib/auth/useAuthToken';
 import { Text, Button, Link, FormField } from 'components/ui';
 import { getLoginUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
+import { setAuthToken } from 'lib/auth/token';
 
 /**
  * Sign up mutation
@@ -25,26 +25,28 @@ export default function SignUp() {
   const [signUp] = useMutation(MUTATION_SIGN_UP);
   const router = useRouter();
   const [apiError, setApiError] = useState('');
-  const { setAuthToken } = useAuthToken();
+  const client = useApolloClient();
 
   /**
    * Handle signup form submission
    * @param {Object} values
    * @return {Promise<void>}
    */
-  async function handleSubmit(values) {
+  const register = async (username, email, password) => {
     try {
       const { data } = await signUp({
         variables: {
-          username: values.username,
-          email: values.email,
-          password: values.password,
+          username,
+          email,
+          password,
         },
       });
 
       if (data?.register?.jwt) {
         setApiError('');
         setAuthToken(data.register.jwt);
+
+        await client.resetStore();
         
         const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
         router.push(redirect);
@@ -66,7 +68,7 @@ export default function SignUp() {
           email: '',
           password: '',
         }}
-        onSubmit={(values) => handleSubmit(values)}
+        onSubmit={({ username, email, password }) => register(username, email, password)}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too Short!').required('Required'),

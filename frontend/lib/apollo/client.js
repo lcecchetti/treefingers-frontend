@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
 import { ApolloClient, HttpLink, ApolloLink, InMemoryCache } from '@apollo/client';
 import merge from 'deepmerge';
-import useAuthToken from 'lib/auth/useAuthToken';
-import isEqual from 'lodash/isEqual'
+import { getAuthToken } from 'lib/auth/token';
+import isEqual from 'lodash/isEqual';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 let apolloClient;
-let currentToken;
 
 /**
  * Api endpoint http link
@@ -20,36 +19,32 @@ const httpLink = new HttpLink({
 
 /**
  * Authentication middleware
- * @param {string} authToken
  * @return {ApolloLink}
  */
-const authMiddleware = (authToken) =>
+const authMiddleware = () =>
   new ApolloLink((operation, forward) => {
+
+    const authToken = getAuthToken();
+
     // add the authorization to the headers
-    if (authToken) {
-      operation.setContext({
-        headers: {
-          authorization: `Bearer ${authToken}`,
-        },
-      });
-    }
+    operation.setContext({
+      headers: {
+        authorization: authToken ? `Bearer ${authToken}` : '',
+      },
+    });
 
     return forward(operation);
   });
 
 /**
  * Create apollo client instance
- * @param {string} authToken
  * @return {ApolloClient<NormalizedCacheObject>}
  */
-function createApolloClient(authToken) {
-  // update current token
-  currentToken = authToken;
+function createApolloClient() {
 
-  console.log('CREATE');
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: authMiddleware(authToken).concat(httpLink),
+    link: authMiddleware().concat(httpLink),
     cache: new InMemoryCache(),
   });
 }
@@ -57,13 +52,12 @@ function createApolloClient(authToken) {
 /**
  * Initialize apollo client
  * @param initialState
- * @param authToken
  * @return {ApolloClient}
  */
-export function initializeApollo(initialState = null, authToken) {
+export function initializeApollo(initialState = null) {
 
   // recycle apollo client for same session
-  const _apolloClient = apolloClient && authToken == currentToken ? apolloClient : createApolloClient(authToken);
+  const _apolloClient = apolloClient ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -113,8 +107,7 @@ export function addApolloState(client, pageProps) {
  * @return {ApolloClient}
  */
 export function useApollo(pageProps) {
-  const  { authToken } = useAuthToken();
   const state = pageProps[APOLLO_STATE_PROP_NAME];
-  const store = useMemo(() => initializeApollo(state, authToken), [state, authToken]);
+  const store = useMemo(() => initializeApollo(state), [state]);
   return store;
 }

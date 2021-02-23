@@ -17,17 +17,17 @@ const QUERY_SELF = gql`
 
 const withAuthentication = Page => {
   const SecurePage = props => {
-    const { data, error } = useQuery(QUERY_SELF);
+    const { data } = useQuery(QUERY_SELF);
     const router = useRouter();
 
     useEffect(() => {
-      if (error) {
+      if (!data?.self) {
         // redirect to login
         router.replace(getLoginUrl());
       }
-    }, [error]);
+    }, [data]);
 
-    return (data ? <Page {...props} /> : <div><p>Authenticating...</p></div> );
+    return (data?.self ? <Page {...props} /> : <div><p>Authenticating...</p></div> );
   }
 
   // propagate layout to app level
