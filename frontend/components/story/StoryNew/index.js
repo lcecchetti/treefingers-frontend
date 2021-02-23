@@ -54,7 +54,7 @@ const QUERY_SELF = gql`
 `;
 
 const StoryNew = ({ parent }) => {
-  const { data, loading, error } = useQuery(QUERY_SELF);
+  const { data, loading } = useQuery(QUERY_SELF);
   const [createStory] = useMutation(MUTATION_STORY_NEW);
   const router = useRouter();
   const [apiError, setApiError] = useState('');
@@ -88,7 +88,7 @@ const StoryNew = ({ parent }) => {
     <div>
       {loading && <Spinner />}
 
-      {error &&
+      {!data?.self &&
         <div className="my-md flex flex-col gap-sm items-center p-lg border-t-2 border-b-2">
           <Text variant="p">Hey, it looks like you are not logged in. Login or create an account and you'll be ready to go.</Text>
           <Button as={Link} styleAsLink={false} href={getLoginUrl(router.asPath)}>Login / Register</Button>
