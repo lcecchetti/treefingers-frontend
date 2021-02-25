@@ -2,19 +2,20 @@
 export const parseError = (error) => {
   if (error.graphQLErrors) {
     for (const graphQLError of error.graphQLErrors) {
-      // check for extension errors
-      const extensionMessage = graphQLError?.extensions?.exception?.data?.message[0]?.messages[0];
-      if (extensionMessage) {
-        return extensionMessage
+
+      // check for exception message
+      const exceptionError = graphQLError.extensions?.exception?.data?.message[0].messages[0];
+      if (exceptionError) {
+        return exceptionError.message;
       }
 
-      // check for graphql errors
+      // check for generic errors
       if (graphQLError.message) {
-        return graphQLError;
+        return graphQLError.message;
       }
-
-      // return generic error
-      return 'An error has occurred';
     }
   }
+
+  // return generic error
+  return 'An error has occurred';
 };

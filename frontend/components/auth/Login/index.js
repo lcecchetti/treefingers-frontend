@@ -24,7 +24,7 @@ const MUTATION_SIGN_IN = gql`
 export default function Login() {
   const [signIn] = useMutation(MUTATION_SIGN_IN);
   const router = useRouter();
-  const [apiError, setApiError] = useState('');
+  const [loginError, setLoginError] = useState('');
   const client = useApolloClient();
 
   /**
@@ -44,7 +44,7 @@ export default function Login() {
       });
 
       if (data?.login?.jwt) {
-        setApiError('');
+        setLoginError('');
         setAuthToken(data.login.jwt);
         await client.resetStore();
 
@@ -52,7 +52,7 @@ export default function Login() {
         router.push(redirect);
       }
     } catch (e) {
-      setApiError(parseError(e).message);
+      setLoginError(parseError(e));
     }
   };
 
@@ -73,8 +73,10 @@ export default function Login() {
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too Short!').required('Required'),
         })}
+        validateOnChange={false}
+        validateOnBlur={false}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors, touched }) => (
           <Form className="flex flex-col gap-sm">
             <Field
               as={FormField}
@@ -83,6 +85,8 @@ export default function Login() {
               label="Email"
               autoComplete="email"
               autoFocus
+              error={errors.email}
+              touched={touched.email}
             />
             <Field
               as={FormField}
@@ -90,9 +94,11 @@ export default function Login() {
               type="password"
               label="Password"
               autoComplete="current-password"
+              error={errors.password}
+              touched={touched.password}
             />
-            {!!apiError &&
-              <Text variant="error">{apiError}</Text>
+            {!!loginError &&
+              <Text variant="error">{loginError}</Text>
             }
             <Button
               type="submit"

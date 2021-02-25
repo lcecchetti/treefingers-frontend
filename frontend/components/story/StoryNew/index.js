@@ -15,7 +15,6 @@ const MUTATION_STORY_NEW = gql`
   mutation createStory(
     $title: String!,
     $content: String!,
-    $author: ID,
     $action: String,
     $parent: ID,
     $root: ID,
@@ -24,7 +23,6 @@ const MUTATION_STORY_NEW = gql`
     createStory(input: { data: {
       title: $title,
       content: $content,
-      author: $author,
       action: $action,
       parent: $parent,
       root: $root,
@@ -32,9 +30,6 @@ const MUTATION_STORY_NEW = gql`
     }}) {
       story {
         id
-        root {
-          id
-        }
       } 
     }
   }
@@ -54,33 +49,30 @@ const QUERY_SELF = gql`
 `;
 
 const StoryNew = ({ parent }) => {
-  const { data, loading } = useQuery(QUERY_SELF);
+  const { data: { self }, loading } = useQuery(QUERY_SELF);
   const [createStory] = useMutation(MUTATION_STORY_NEW);
   const router = useRouter();
-  const [apiError, setApiError] = useState('');
+  const [createStoryError, setCreateStoryError] = useState('');
 
-  const handleSubmit = async (values, methods) => {
+  const submitStory = async (values, { resetForm }) => {
     try {
-      setApiError('');
+      setCreateStoryError('');
 
-      const { data, error } = await createStory({
+      const { data } = await createStory({
         variables: {
           ...values,
-          author: data.self.id,
           parent: parent?.id,
           root: parent?.root?.id ?? parent?.id,
         },
       });
 
-      if (data?.story?.id) {
-        router.push(getStoryUrl(data.story));
+      if (data?.createStory?.story?.id) {
+        resetForm();
+        router.push(getStoryUrl(data.createStory.story));
       }
 
-      if (error) {
-        setApiError(error);
-      }
     } catch (e) {
-      setApiError(parseError(e).message);
+      setCreateStoryError(parseError(e));
     }
   };
 
@@ -88,66 +80,58 @@ const StoryNew = ({ parent }) => {
     <div>
       {loading && <Spinner />}
 
-      {!data?.self &&
+      {!self &&
         <div className="my-md flex flex-col gap-sm items-center p-lg border-t-2 border-b-2">
           <Text variant="p">Hey, it looks like you are not logged in. Login or create an account and you'll be ready to go.</Text>
           <Button as={Link} styleAsLink={false} href={getLoginUrl(router.asPath)}>Login / Register</Button>
         </div>
       }
 
-      {data?.self &&
+      {self &&
         <Formik
           initialValues={{
             title: '',
             content: '',
             action: '',
           }}
-          onSubmit={(values, methods) => handleSubmit(values, methods)}
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Required'),
             content: Yup.string().required('Required'),
+            action: Yup.string().required('Required'),
           })}
+          onSubmit={(values, methods) => submitStory(values, methods)}
         >
-          {({ isSubmitting }) => (
-            <Form>
-              {!!parent?.id &&
+          {({ isSubmitting, errors, touched }) => (
+            <Form className="flex flex-col gap-sm">
+              {!!parent &&
                 <Field
                   as={FormField}
                   name="action"
                   type="text"
                   label="Action (This will be displayed in the choices list)"
-                />
+                  error={errors.action}
+                  touched={touched.action}
+                  />
               }
               <Field
                 as={FormField}
                 name="title"
                 type="text"
                 label="Title"
+                error={errors.title}
+                touched={touched.title}
               />
               <Field
                 as={FormField}
                 name="content"
                 type="textarea"
                 label="Content"
+                error={errors.content}
+                touched={touched.content}
               />
-              <Field
-                as="input"
-                name="author"
-                type="hidden"
-              />
-              <Field
-                as="input"
-                name="parent"
-                type="hidden"
-              />
-              <Field
-                as="input"
-                name="root"
-                type="hidden"
-              />
-
-              {!!apiError &&
-                <Text variant="error">{apiError}</Text>
+            
+              {!!createStoryError &&
+                <Text variant="error">{createStoryError}</Text>
               }
               <Button
                 type="submit"

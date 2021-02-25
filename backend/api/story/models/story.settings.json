@@ -13,7 +13,9 @@
   "attributes": {
     "title": {
       "type": "string",
-      "maxLength": 80
+      "maxLength": 80,
+      "required": true,
+      "minLength": 1
     },
     "author": {
       "plugin": "users-permissions",
@@ -25,7 +27,9 @@
       "via": "story"
     },
     "content": {
-      "type": "richtext"
+      "type": "richtext",
+      "required": true,
+      "minLength": 1
     },
     "tags": {
       "collection": "tag",
@@ -48,7 +52,8 @@
       "model": "story"
     },
     "action": {
-      "type": "text"
+      "type": "text",
+      "minLength": 1
     },
     "isRoot": {
       "type": "boolean",
