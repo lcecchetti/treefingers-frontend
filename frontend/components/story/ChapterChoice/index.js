@@ -77,7 +77,7 @@ const ChapterChoice = ({ className, parent }) => {
 
       {isWriting && // writing section
         <div className="relative pt-md">
-          <div className="flex gap-xs justify-between items-center">
+          <div className="flex gap-xs justify-between items-center mb-sm">
             <Text variant="h3" as="span" className="uppercase font-bold">What's next?</Text>
             <FaTimes className="text-2xl cursor-pointer" onClick={() => setIsWriting(false)} />
           </div>

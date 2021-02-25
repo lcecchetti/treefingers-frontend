@@ -52,8 +52,7 @@ export default function SignUp() {
         router.push(redirect);
       }
     } catch (e) {
-      console.log(e);
-      setApiError(parseError(e).message);
+      setApiError(parseError(e));
     }
   };
 
@@ -75,7 +74,7 @@ export default function SignUp() {
         })}
       >
         {({ isSubmitting }) => (
-          <Form noValidate className="flex flex-col gap-sm">
+          <Form className="flex flex-col gap-sm">
             <Field
               as={FormField}
               label="Email"
