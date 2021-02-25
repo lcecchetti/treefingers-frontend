@@ -6,7 +6,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
 import { Text, Button, Link, FormField } from 'components/ui';
-import { getLoginUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
+import { getLoginUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
 import { setAuthToken } from 'lib/auth/token';
 
 /**
@@ -24,7 +24,7 @@ const MUTATION_SIGN_UP = gql`
 export default function SignUp() {
   const [signUp] = useMutation(MUTATION_SIGN_UP);
   const router = useRouter();
-  const [apiError, setApiError] = useState('');
+  const [registerError, setRegisterError] = useState('');
   const client = useApolloClient();
 
   /**
@@ -43,7 +43,7 @@ export default function SignUp() {
       });
 
       if (data?.register?.jwt) {
-        setApiError('');
+        setRegisterError('');
         setAuthToken(data.register.jwt);
 
         await client.resetStore();
@@ -52,7 +52,7 @@ export default function SignUp() {
         router.push(redirect);
       }
     } catch (e) {
-      setApiError(parseError(e));
+      setRegisterError(parseError(e));
     }
   };
 
@@ -73,7 +73,7 @@ export default function SignUp() {
           password: Yup.string().min(10, 'Too Short!').required('Required'),
         })}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors, touched }) => (
           <Form className="flex flex-col gap-sm">
             <Field
               as={FormField}
@@ -81,6 +81,8 @@ export default function SignUp() {
               type="email"
               name="email"
               autoComplete="email"
+              error={errors.email}
+              touched={touched.email}
             />
             <Field
               as={FormField}
@@ -88,6 +90,8 @@ export default function SignUp() {
               type="text"
               name="username"
               autoComplete="username"
+              error={errors.username}
+              touched={touched.username}
             />
             <Field
               as={FormField}
@@ -95,9 +99,11 @@ export default function SignUp() {
               label="Password"
               type="password"
               autoComplete="current-password"
+              error={errors.password}
+              touched={touched.password}
             />
 
-            {!!apiError && <Text variant="error">{apiError}</Text>}
+            {!!registerError && <Text variant="error">{registerError}</Text>}
             <Button
               type="submit"
               disabled={isSubmitting}
@@ -107,7 +113,7 @@ export default function SignUp() {
             </Button>
             <div className="text-right text-xs">
               <Link href={getLoginUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>
-                <a>Already have an account? Login</a>
+                Already have an account? Login
               </Link>
             </div>
           </Form>
