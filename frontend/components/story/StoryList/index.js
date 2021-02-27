@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
 import { Link, Spinner, Text } from 'components/ui';
 import { formatDate, DATE_SHORT, getStoryUrl, getStoryType } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
+import { Like } from 'components/common';
 import clsx from 'clsx';
+import { useUser } from 'lib/auth';
 
 /**
  * Story list query
@@ -27,21 +29,34 @@ export const QUERY_STORIES = gql`
         label
         slug
       }
+      likesCount
+      userLike {
+        id
+      }
     }
   }
 `;
 
 const StoryList = ({ className, rootsOnly = true, author, tag }) => {
 
-  const { data, loading, error } = useQuery(QUERY_STORIES, {
+  const user = useUser();
+
+  const { data, loading, error, refetch } = useQuery(QUERY_STORIES, {
     variables: {
       where: {
         author: author?.id,
         tags: tag?.id ? { id: tag.id } : undefined,
         isRoot: rootsOnly ? true : undefined,
-      }
-    }
+      },
+    },
   });
+
+  // refresh data with customer specific infos
+  useEffect(() => {
+    if (user !== null) {
+      refetch();
+    }
+  }, [user]);
 
   return (
     <div className={clsx('grid md:grid-cols-2 gap-md', className)}>
@@ -72,7 +87,7 @@ const StoryList = ({ className, rootsOnly = true, author, tag }) => {
 
           <div className="flex justify-between items-center gap-md">
             <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} buttonVariant="primary-contrast" />
-            <FaRegHeart className="text-xl" />
+            <Like story={story} count={story.likesCount} userLike={story.userLike} />
           </div>
         </div>
       ))}

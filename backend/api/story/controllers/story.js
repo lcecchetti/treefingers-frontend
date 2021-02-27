@@ -39,4 +39,38 @@ module.exports = {
 
     return sanitizeEntity(entity, { model: strapi.models.story });
   },
+
+  /**
+   * Find records
+   * @param {Object} ctx
+   * @return {Array<Story>}
+   */
+  find: async (ctx) => {
+    let stories;
+
+    stories = await strapi.services.story.find(ctx.query);
+
+    stories = await Promise.all(
+      stories.map(async (story) => {
+        return await strapi.services.story.withLikeData(story, ctx.state.user);
+      })
+    );
+
+    return stories;
+  },
+
+  /**
+   * Find one record
+   * @param {Object} ctx
+   * @return {Story}
+   */
+  findOne: async (ctx) => {
+    const story = await strapi.services.story.findOne(ctx.params);
+
+    if (!story) {
+      return ctx.notFound();
+    }
+
+    return strapi.services.story.withLikeData(story, ctx.state.user);
+  },
 };

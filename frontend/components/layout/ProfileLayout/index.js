@@ -1,5 +1,5 @@
 import ProfileSidebar from 'components/profile/ProfileSidebar';
-import withAuthentication from 'lib/auth/withAuthentication';
+import { withAuthentication } from 'lib/auth';
 
 const ProfileLayout = ({ children }) => {
 

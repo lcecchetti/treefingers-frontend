@@ -11,7 +11,7 @@ import { getLoginUrl, getStoryUrl } from 'lib/helper';
  * Create story mutation
  * @type {gql}
  */
-const MUTATION_STORY_NEW = gql`
+const MUTATION_STORY_CREATE = gql`
   mutation createStory(
     $title: String!,
     $content: String!,
@@ -35,22 +35,9 @@ const MUTATION_STORY_NEW = gql`
   }
 `;
 
-/**
- * Self query
- * @type {gql}
- */
-const QUERY_SELF = gql`
-  query self {
-    self {
-      id
-      username
-    }
-  }
-`;
-
 const StoryNew = ({ parent }) => {
-  const { data: { self }, loading } = useQuery(QUERY_SELF);
-  const [createStory] = useMutation(MUTATION_STORY_NEW);
+  const user = useUser();
+  const [createStory] = useMutation(MUTATION_STORY_CREATE);
   const router = useRouter();
   const [createStoryError, setCreateStoryError] = useState('');
 
@@ -78,16 +65,14 @@ const StoryNew = ({ parent }) => {
 
   return (
     <div>
-      {loading && <Spinner />}
-
-      {!self &&
+      {!user &&
         <div className="my-md flex flex-col gap-sm items-center p-lg border-t-2 border-b-2">
           <Text variant="p">Hey, it looks like you are not logged in. Login or create an account and you'll be ready to go.</Text>
           <Button as={Link} styleAsLink={false} href={getLoginUrl(router.asPath)}>Login / Register</Button>
         </div>
       }
 
-      {self &&
+      {user &&
         <Formik
           initialValues={{
             title: '',

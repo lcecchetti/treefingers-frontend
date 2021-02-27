@@ -1,34 +1,22 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { gql, useQuery } from '@apollo/client';
 import { getLoginUrl } from 'lib/helper';
-import { getAuthToken } from 'lib/auth/token';
+import { getAuthToken, useUser } from 'lib/auth';
 
-/**
- * Self query
- * @type {gql}
- */
-const QUERY_SELF = gql`
-  query self {
-    self {
-      id
-    }
-  }
-`;
 
 const withAuthentication = Page => {
   const SecurePage = props => {
-    const { data } = useQuery(QUERY_SELF);
+    const user = useUser();
     const router = useRouter();
 
     useEffect(() => {
-      if (!data?.self) {
+      if (!user) {
         // redirect to login
         router.replace(getLoginUrl());
       }
-    }, [data, getAuthToken()]);
+    }, [user, getAuthToken()]);
 
-    return (data?.self ? <Page {...props} /> : <div><p>Authenticating...</p></div> );
+    return (user ? <Page {...props} /> : <div><p>Authenticating...</p></div> );
   }
 
   // propagate layout to app level
@@ -37,4 +25,4 @@ const withAuthentication = Page => {
   return SecurePage;
 };
 
-export default withAuthentication;
+export { withAuthentication };

@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
 import { Text, Button, Link, FormField } from 'components/ui';
 import { getLoginUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
-import { setAuthToken } from 'lib/auth/token';
+import { setAuthToken } from 'lib/auth';
 
 /**
  * Sign up mutation

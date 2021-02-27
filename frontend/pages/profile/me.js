@@ -1,21 +1,8 @@
 import { ProfileLayout } from 'components/layout';
-import { gql, useQuery } from '@apollo/client';
-
-/**
- * Self query
- * @type {gql}
- */
-const QUERY_SELF = gql`
-  query self {
-    self {
-      id
-      username
-    }
-  }
-`;
+import { useUser } from 'lib/auth';
 
 const ProfileMePage = () => {
-  const { data, loading } = useQuery(QUERY_SELF);
+  const user = useUser();
 
   return (
     <div>
