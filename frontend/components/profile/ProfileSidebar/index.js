@@ -1,26 +1,13 @@
 import navData from './navData';
 import Link from 'next/link';
-import { gql, useQuery } from '@apollo/client';
-
-/**
- * Self query
- * @type {gql}
- */
-const QUERY_SELF = gql`
-  query self {
-    self {
-      id
-      username
-    }
-  }
-`;
+import { useUser } from 'lib/auth';
 
 const ProfileSidebar = () => {
-  const { data } = useQuery(QUERY_SELF);
+  const user = useUser();
 
   return (
     <div>
-      <h6>Welcome, {data?.self?.username}!</h6>
+      <h6>Welcome, {user?.username}!</h6>
       <div>
         <nav>
           <ul>

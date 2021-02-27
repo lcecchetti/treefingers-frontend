@@ -6,6 +6,7 @@ import { StoryNew } from 'components/story';
 import { FaAngleDown } from 'react-icons/fa';
 import { getStoryUrl } from 'lib/helper';
 import { FaTimes } from 'react-icons/fa';
+import { Like } from 'components/common';
 
 /**
  * Chapter list query
@@ -17,6 +18,10 @@ export const QUERY_CHAPTERS = gql`
       id
       action
       root {
+        id
+      }
+      likesCount
+      userLike {
         id
       }
     }
@@ -54,8 +59,9 @@ const ChapterChoice = ({ className, parent }) => {
                   </div>
                   <ul className="flex flex-col border-2 rounded-xl overflow-hidden gap-px bg-primary">
                     {data.stories.map((chapter) => (
-                      <li key={chapter.id} className="p-sm bg-base">
+                      <li key={chapter.id} className="p-md bg-base flex gap-md items-center justify-between">
                         <Link href={getStoryUrl(chapter)} underline={false} className="block">{chapter.action}</Link>
+                        <Like story={chapter} viewOnly={true} count={chapter.likesCount} userLike={chapter.userLike} />
                       </li>
                     ))}
                   </ul>
@@ -66,7 +72,6 @@ const ChapterChoice = ({ className, parent }) => {
                 {!data.stories.length &&
                   <Text variant="title" as="span" className="">The end...?</Text>
                 }
-
                 <Button className="w-full" onClick={() => setIsWriting(true)}>Write a new chapter</Button>
               </div>
             </div>

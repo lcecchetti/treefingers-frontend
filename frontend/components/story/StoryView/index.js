@@ -1,10 +1,13 @@
+import { useEffect } from 'react';
 import { Spinner, Text, Link } from 'components/ui';
 import { DATE_LONG, formatDate, getStoryUrl } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
-import { FaHeart, FaRegHeart, FaAngleDown, FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
+import { FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { ChapterChoice } from 'components/story';
+import { Like } from 'components/common';
+import { useUser } from 'lib/auth';
 
 /**
  * Single story query
@@ -32,7 +35,10 @@ export const QUERY_STORY = gql`
       }
       root {
         id
-        title
+      }
+      likesCount
+      userLike {
+        id
       }
     }
   }
@@ -40,7 +46,16 @@ export const QUERY_STORY = gql`
 
 const StoryView = ({ id }) => {
 
-  const { data, loading, error } = useQuery(QUERY_STORY, { variables: { id } });
+  const user = useUser();
+
+  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { id } });
+  
+  // refresh data with customer specific infos
+  useEffect(() => {
+    if (user !== null) {
+      refetch();
+    }
+  }, [user]);
 
   return (
     <div>
@@ -76,7 +91,7 @@ const StoryView = ({ id }) => {
 
             <div className="flex justify-between items-center">
               <TagList tags={data.story.tags} />
-              <FaRegHeart className="text-xl" />
+              <Like story={data.story} count={data.story.likesCount} userLike={data.story.userLike} />
             </div>
           </div>
         

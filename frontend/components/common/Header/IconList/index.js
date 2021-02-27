@@ -1,29 +1,16 @@
 import clsx from 'clsx';
-import { gql, useQuery } from '@apollo/client';
 import { FaSearch, FaPenFancy, FaUserCircle, FaBars } from 'react-icons/fa';
 import { Link } from 'components/ui';
 import { useTheme } from 'next-themes';
 import { useUI } from 'lib/ui/context';
 import { getLoginUrl, getProfileMeUrl, getStoryNewUrl } from 'lib/helper';
 import { ThemeIcon } from 'components/common';
-
-/**
- * Self query
- * @type {gql}
- */
-const QUERY_SELF = gql`
-  query self {
-    self {
-      id
-      username
-    }
-  }
-`;
+import { useUser } from 'lib/auth';
 
 const IconList = () => {
   const { theme, setTheme } = useTheme();
   const { toggleDrawer, getToggledTheme, openSearch } = useUI();
-  const { data } = useQuery(QUERY_SELF);
+  const user = useUser();
 
   const iconListItems = [
     {
@@ -48,7 +35,7 @@ const IconList = () => {
       showOnDesktop: true,
     },
     {
-      href: data?.self ? getProfileMeUrl() : getLoginUrl(),
+      href: user ? getProfileMeUrl() : getLoginUrl(),
       Icon: FaUserCircle,
       onClick: false,
       showOnMobile: true,

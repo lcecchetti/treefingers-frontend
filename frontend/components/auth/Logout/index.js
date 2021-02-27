@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter} from 'next/router';
 import { useApolloClient } from '@apollo/client';
-import { getAuthToken, removeAuthToken } from 'lib/auth/token';
+import { getAuthToken, removeAuthToken } from 'lib/auth';
 
 const Logout = () => {
   const router = useRouter()

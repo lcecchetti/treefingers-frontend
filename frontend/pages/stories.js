@@ -23,8 +23,8 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { where: { isRoot: true } },
-  },);
+    variables: { where: { isRoot: true }, user: {} },
+  });
 
   return addApolloState(apolloClient, {
     props: {},
