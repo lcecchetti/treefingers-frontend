@@ -13,8 +13,8 @@ import { useUser } from 'lib/auth';
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
-  query stories($where: JSON) {
-    stories(where: $where) {
+  query stories ($where: JSON) {
+    stories (where: $where, limit: 20) {
       id
       title
       excerpt

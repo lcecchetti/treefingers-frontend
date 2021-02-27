@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Spinner, Text, Button } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
@@ -7,14 +7,15 @@ import { FaAngleDown } from 'react-icons/fa';
 import { getStoryUrl } from 'lib/helper';
 import { FaTimes } from 'react-icons/fa';
 import { Like } from 'components/common';
+import { useUser } from 'lib/auth';
 
 /**
  * Chapter list query
  * @type {gql}
  */
 export const QUERY_CHAPTERS = gql`
-  query stories($where: JSON) {
-    stories(where: $where) {
+  query stories ($where: JSON) {
+    stories (where: $where, limit: 10) {
       id
       action
       root {
@@ -30,15 +31,24 @@ export const QUERY_CHAPTERS = gql`
 
 const ChapterChoice = ({ className, parent }) => {
 
+  const user = useUser();
+
   const [isWriting, setIsWriting] = useState(false);
 
-  const { data, loading, error } = useQuery(QUERY_CHAPTERS, {
+  const { data, loading, error, refetch } = useQuery(QUERY_CHAPTERS, {
     variables: {
       where: {
         parent: parent?.id,
-      }
+      },
     }
   });
+
+  // refresh data with customer specific infos
+  useEffect(() => {
+    if (user !== null) {
+      refetch();
+    }
+  }, [user]);
 
   return (
     <div>

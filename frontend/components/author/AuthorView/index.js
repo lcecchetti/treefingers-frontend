@@ -20,8 +20,8 @@ const FRAGMENT_AUTHOR = gql`
  * @type {gql}
  */
 export const QUERY_AUTHOR = gql`
-  query user($id: ID!) {
-    user(id: $id) {
+  query user ($id: ID!) {
+    user (id: $id) {
       ...AuthorFields
     }
   }
@@ -33,8 +33,8 @@ export const QUERY_AUTHOR = gql`
  * @type {gql}
  */
 export const QUERY_AUTHORS_BY_USERNAME = gql`
-  query users($username: String!) {
-    users(where: { username: $username }) {
+  query users ($username: String!) {
+    users (where: { username: $username }) {
       ...AuthorFields
     }
   }
@@ -46,7 +46,7 @@ const AuthorView = ({ className, id }) => {
   const { data, loading, error } = useQuery(QUERY_AUTHOR, { variables: { id } });
 
   return (
-    <div>
+    <div className={className}>
       {loading && <Spinner />}
 
       {error && <Text variant="error">{error.message}</Text>}
