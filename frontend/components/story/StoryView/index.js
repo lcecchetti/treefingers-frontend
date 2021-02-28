@@ -67,11 +67,11 @@ const StoryView = ({ id }) => {
         <div className="md:my-md flex flex-col gap-md">
           {!data.story.isRoot &&
             <div className="text-center flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg">
-              <Link href={getStoryUrl(data.story.parent)} underline={false} className="flex flex-col group items-center gap-xs">
+              <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
                 <FaAngleUp className="text-3xl group-hover:animate-bounce"/>
                 <Text variant="span" className="font-bold uppercase">Back to previous chapter</Text>
               </Link>
-              <Link href={getStoryUrl(data.story.root)} underline={false} className="flex flex-col group items-center gap-xs">
+              <Link href={getStoryUrl(data.story.root)} className="flex flex-col group items-center gap-xs">
                 <FaAngleDoubleUp className="text-3xl group-hover:animate-bounce"/>
                 <Text variant="span" className="font-bold uppercase">Back to the beginning</Text>
               </Link>

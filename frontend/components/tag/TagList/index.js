@@ -23,7 +23,7 @@ const TagList = ({ className, tags, buttonVariant = 'primary' }) => {
     <ul className={clsx('flex gap-sm uppercase', className)}>
       {tags.map((tag) => (
         <li key={tag.id}>
-          <Button variant={buttonVariant} as={Link} size="sm" styleAsLink={false} href={getTagUrl(tag)}>{tag.label}</Button>
+          <Button variant={buttonVariant} as={Link} size="sm" href={getTagUrl(tag)}>{tag.label}</Button>
         </li>
       ))}
     </ul>

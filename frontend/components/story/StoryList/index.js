@@ -79,7 +79,7 @@ const StoryList = ({ className, rootsOnly = true, author, tag }) => {
 
           <div>
             <Text variant="title">
-              <Link href={getStoryUrl(story)} underline={false}>{story.title}</Link>
+              <Link href={getStoryUrl(story)}>{story.title}</Link>
             </Text>
             <Text variant="p">{story.excerpt}</Text>
             <Link href={getStoryUrl(story)}>Read more</Link>

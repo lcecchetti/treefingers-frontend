@@ -29,13 +29,13 @@ const SearchResult = ({ className, query }) => {
         data?.search.length === 0 && 
           <>
             <Text variant="p">No one wrote anything regarding {query}. Not yet...</Text>
-            <Button as={Link} href={getStoryNewUrl()} styleAsLink={false}>Let's do something about it</Button>
+            <Button as={Link} href={getStoryNewUrl()}>Let's do something about it</Button>
           </>
       }
 
       {data?.search && data.search.map((result) => (
         <div key={result.id}>
-          <Link href={getSearchResultUrl(result)} underline={false}>
+          <Link href={getSearchResultUrl(result)}>
             <Text variant="h3" className="font-bold">{result.label}</Text>
             <Text variant="p">{result.excerpt}</Text>
           </Link>
