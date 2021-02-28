@@ -2,7 +2,7 @@ import { Text } from 'components/ui';
 
 const PageIntro = ({ title, children }) => {
   return (
-    <div className="mb-md md:my-sm md:mb-lg ">
+    <div className="mb-md">
       <Text variant="pageTitle">{title}</Text>
       {children}
     </div>

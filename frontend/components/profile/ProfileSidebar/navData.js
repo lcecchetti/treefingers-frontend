@@ -1,16 +1,26 @@
-import { getLogoutUrl } from "lib/helper";
+import { getLogoutUrl, getProfileMeUrl, getProfileStoriesUrl } from 'lib/helper';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 export default [
   {
-    'label': 'Me',
-    'href': '/profile/me',
+    'label': 'My profile',
+    'href': getProfileMeUrl(),
   },
   {
-    'label': 'Link 1',
-    'href': '#',
+    'label': 'My stories',
+    'href': getProfileStoriesUrl(),
+  },
+  {
+    'label': 'Liked stories',
+    'href': '/#',
+  },
+  {
+    'label': 'Favorite authors',
+    'href': '/#',
   },
   {
     'label': 'Logout',
     'href': getLogoutUrl(),
+    'Icon': FaSignOutAlt
   },
 ];
