@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { parseError } from 'lib/apollo/error';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
-import { FormField, Button, Text, Spinner, Link } from 'components/ui';
+import { FormField, Button, Text, Link } from 'components/ui';
 import * as Yup from 'yup';
 import { getLoginUrl, getStoryUrl } from 'lib/helper';
+import { useUser } from 'lib/auth';
 
 /**
  * Create story mutation
