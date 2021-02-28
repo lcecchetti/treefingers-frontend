@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import { useRouter } from 'next/router';
 import { useMutation, gql, useApolloClient } from '@apollo/client';
@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
 import { Text, Button, Link, FormField } from 'components/ui';
 import { getLoginUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
-import { setAuthToken } from 'lib/auth';
+import { setAuthToken, useUser } from 'lib/auth';
 
 /**
  * Sign up mutation
@@ -26,6 +26,14 @@ export default function SignUp() {
   const router = useRouter();
   const [registerError, setRegisterError] = useState('');
   const client = useApolloClient();
+  const user = useUser();
+
+  // logged in users should not visit login/register page
+  useEffect(() => {
+    if (user) {
+      router.push(getProfileMeUrl());
+    }
+  }, [user]);
 
   /**
    * Handle signup form submission
@@ -47,7 +55,7 @@ export default function SignUp() {
         setAuthToken(data.register.jwt);
 
         await client.resetStore();
-        
+
         const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
         router.push(redirect);
       }
@@ -55,7 +63,7 @@ export default function SignUp() {
       setRegisterError(parseError(e));
     }
   };
-
+  
   return (
     <div className="md:max-w-sm p-md m-md border-2 rounded-xl">
       <Text variant="pageTitle" className="flex justify-between items-center">
