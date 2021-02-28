@@ -6,4 +6,12 @@ const getProfileMeUrl = () => {
   return '/profile/me';
 };
 
-export { getProfileMeUrl };
+/**
+ * Get profile stories url
+ * @return {string}
+ */
+const getProfileStoriesUrl = () => {
+  return '/profile/stories';
+};
+
+export { getProfileMeUrl, getProfileStoriesUrl };

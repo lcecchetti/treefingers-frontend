@@ -5,10 +5,12 @@ import { withAuthentication } from 'lib/auth';
 const ProfileLayout = ({ children }) => {
 
   return (
-    <Container className="pt-header min-h-screen flex flex-col md:flex-row gap-md">
-      <ProfileSidebar className="md:w-1/4" />
-      <div className="md:w-3/4">
-        {children}
+    <Container className="pt-header min-h-screen">
+      <div className="my-sm flex flex-col md:flex-row gap-md">
+        <ProfileSidebar className="md:w-1/4" />
+        <div className="md:w-3/4">
+          {children}
+        </div>
       </div>
     </Container>
   )

@@ -1,7 +1,6 @@
 import clsx from 'clsx';
-import { assertCompositeType } from 'graphql';
 
-const Text = ({ children, className, variant = 'p', as, ...rest }) => {
+const Text = ({ children, className, variant = 'span', as, ...rest }) => {
 
   if (!as) {
     switch (variant) {
