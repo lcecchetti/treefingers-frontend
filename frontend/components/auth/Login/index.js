@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { gql, useMutation, useApolloClient } from '@apollo/client';
 import { parseError } from 'lib/apollo/error';
 import { useRouter } from 'next/router';
-import { setAuthToken } from 'lib/auth';
+import { setAuthToken, useUser } from 'lib/auth';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
@@ -26,6 +26,14 @@ export default function Login() {
   const router = useRouter();
   const [loginError, setLoginError] = useState('');
   const client = useApolloClient();
+  const user = useUser();
+
+  // logged in users should not visit login/register page
+  useEffect(() => {
+    if (user) {
+      router.push(getProfileMeUrl());
+    }
+  }, [user]);
 
   /**
    * Handle signin form submission
