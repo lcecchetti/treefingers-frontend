@@ -112,6 +112,7 @@ const StoryNew = ({ parent }) => {
                 name="content"
                 type="textarea"
                 label="Content"
+                rows="10"
                 error={errors.content}
                 touched={touched.content}
               />
