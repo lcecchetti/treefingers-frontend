@@ -43,7 +43,7 @@ const AuthorList = ({ className }) => {
           <ul className="mt-sm">
             {author.stories.map((story) => (
               <li key={story.id}>
-                <Link href={getStoryUrl(story)} underline={false}>{story.title}</Link>
+                <Link href={getStoryUrl(story)}>{story.title}</Link>
               </li>
             ))}
           </ul>

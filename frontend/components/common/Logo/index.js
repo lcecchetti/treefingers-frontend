@@ -11,7 +11,7 @@ const Logo = ({ className, main }) => {
 
   return (
       <Component className={clsx('text-3xl md:text-5xl', className)}>
-        <Link href="/" underline={false}>
+        <Link href="/">
           Treefingers
         </Link>
       </Component>
