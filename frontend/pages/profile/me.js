@@ -1,5 +1,5 @@
 import { ProfileLayout } from 'components/layout';
-import { useUser } from 'lib/auth';
+import { useUser, withAuthentication } from 'lib/auth';
 
 const ProfileMePage = () => {
   const user = useUser();

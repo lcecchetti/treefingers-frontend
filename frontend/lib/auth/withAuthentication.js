@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getLoginUrl } from 'lib/helper';
-import { getAuthToken, useUser } from 'lib/auth';
+import { useUser } from 'lib/auth';
+import { Spinner, Container, Text } from 'components/ui';
 
-
-const withAuthentication = Page => {
-  const SecurePage = props => {
+const withAuthentication = Component => {
+  const SecureComponent = props => {
     const user = useUser();
     const router = useRouter();
 
@@ -14,15 +14,20 @@ const withAuthentication = Page => {
         // redirect to login
         router.replace(getLoginUrl());
       }
-    }, [user, getAuthToken()]);
+    }, [user]);
 
-    return (user ? <Page {...props} /> : <div><p>Authenticating...</p></div> );
-  }
+    return (user ? <Component {...props} /> :
+      <Container className="flex gap-sm pt-header min-h-screen items-center justify-center">
+        <Text variant="span">Authenticating...</Text>
+        <Spinner />
+      </Container>
+    );
+  };
 
-  // propagate layout to app level
-  SecurePage.Layout = Page.Layout;
+  // propagate layout to app level in case of secure pages
+  SecureComponent.Layout = Component.Layout;
 
-  return SecurePage;
+  return SecureComponent;
 };
 
 export { withAuthentication };
