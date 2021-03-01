@@ -52,8 +52,7 @@
       "model": "story"
     },
     "action": {
-      "type": "text",
-      "minLength": 1
+      "type": "text"
     },
     "isRoot": {
       "type": "boolean",
