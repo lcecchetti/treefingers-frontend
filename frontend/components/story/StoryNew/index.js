@@ -49,8 +49,6 @@ const StoryNew = ({ parent }) => {
       const { data } = await createStory({
         variables: {
           ...values,
-          parent: parent?.id,
-          root: parent?.root?.id ?? parent?.id,
         },
       });
 
@@ -79,11 +77,16 @@ const StoryNew = ({ parent }) => {
             title: '',
             content: '',
             action: '',
+            parent: parent?.id,
+            root: parent?.root?.id ?? parent?.id,
           }}
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Required'),
             content: Yup.string().required('Required'),
-            action: Yup.string().required('Required'),
+            action: Yup.string().when('parent', {
+              is: value => value !== undefined,
+              then: Yup.string().required('Required'),
+            }),
           })}
           onSubmit={(values, methods) => submitStory(values, methods)}
         >

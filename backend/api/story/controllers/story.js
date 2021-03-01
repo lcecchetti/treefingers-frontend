@@ -14,6 +14,12 @@ module.exports = {
    */
 
   async create(ctx) {
+
+    // make action required for chapters
+    if (ctx.request.body.parent && !ctx.request.body.action) {
+      return ctx.badRequest('Action is required for chapters');
+    }
+
     // set author
     ctx.request.body.author = ctx.state.user.id;
 
@@ -28,10 +34,17 @@ module.exports = {
    */
 
   async update(ctx) {
+
     // validate story author
     const story = await strapi.services.story.findOne({ id: ctx.params.id });
+
     if (story && story.author != ctx.state.user.id) {
       return ctx.unauthorized(`You can't update this entry`);
+    }
+
+    // make action required for chapters
+    if (!story.isRoot && !ctx.request.body.action) {
+      return ctx.badRequest('Action is required for chapters');
     }
 
     // update entity
