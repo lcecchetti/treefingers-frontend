@@ -58,6 +58,9 @@
       "type": "boolean",
       "default": true,
       "required": false
+    },
+    "likesCount": {
+      "type": "integer"
     }
   }
 }

@@ -30,7 +30,7 @@ export const QUERY_STORIES = gql`
         slug
       }
       likesCount
-      userLike {
+      currentUserLike {
         id
       }
     }
@@ -87,7 +87,7 @@ const StoryList = ({ className, rootsOnly = true, author, tag }) => {
 
           <div className="flex justify-between items-center gap-md">
             <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} buttonVariant="primary-contrast" />
-            <Like story={story} count={story.likesCount} userLike={story.userLike} />
+            <Like story={story} count={story.likesCount} currentUserLike={story.currentUserLike} />
           </div>
         </div>
       ))}

@@ -33,13 +33,13 @@ const MUTATION_LIKE_DELETE = gql`
   }
 `;
 
-const Like = ({ story, userLike, count, viewOnly }) => {
+const Like = ({ story, currentUserLike, count, viewOnly }) => {
 
   // current user
   const user = useUser();
 
   // current user like
-  const [like, setLike] = useState(userLike);
+  const [userLike, setUserLike] = useState(currentUserLike);
 
   // error status
   const [isError, setIsError] = useState(false);
@@ -56,8 +56,8 @@ const Like = ({ story, userLike, count, viewOnly }) => {
 
   // keep prop and state aligned
   useEffect(() => {
-    setLike(userLike);
-  }, [userLike]);
+    setUserLike(currentUserLike);
+  }, [currentUserLike]);
 
   /**
    * Submit like
@@ -75,7 +75,7 @@ const Like = ({ story, userLike, count, viewOnly }) => {
 
       // update like if success
       if (data.createLike.like) {
-        setLike(data.createLike.like);
+        setUserLike(data.createLike.like);
       }
 
     } catch (e) {
@@ -93,13 +93,13 @@ const Like = ({ story, userLike, count, viewOnly }) => {
       // delete like
       const { data } = await deleteLike({
         variables: {
-          id: like.id,
+          id: userLike.id,
         },
       });
 
       // update like if success
       if (data.deleteLike.like) {
-        setLike(null);
+        setUserLike(null);
       }
 
     } catch (e) {
@@ -117,7 +117,7 @@ const Like = ({ story, userLike, count, viewOnly }) => {
     }
 
     setIsSubmitting(true);
-    like ? await removeLike() : await submitLike();
+    userLike ? await removeLike() : await submitLike();
     setIsSubmitting(false);
   }
 
@@ -128,18 +128,18 @@ const Like = ({ story, userLike, count, viewOnly }) => {
   const getCount = () => {
     let userLikeModifier = 0;
 
-    if (userLike && !like) {
+    if (currentUserLike && !userLike) {
       userLikeModifier = -1;
     }
 
-    if (!userLike && like) {
+    if (!currentUserLike && userLike) {
       userLikeModifier = 1;
     }
     return count + userLikeModifier;
   };
 
   // pick icon accoridng to user like presence
-  const Icon = like ? FaHeart : FaRegHeart;
+  const Icon = userLike ? FaHeart : FaRegHeart;
 
   return (
     <div className={clsx(

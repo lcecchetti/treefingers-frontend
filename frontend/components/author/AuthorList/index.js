@@ -11,11 +11,11 @@ import { getStoryUrl } from 'lib/helper';
  */
 export const QUERY_AUTHORS = gql`
   query users {
-    users (limit: 20) {
+    users (limit: 20, where: { stories: { isRoot: true } }) {
       id
       username
       excerpt
-      stories (limit: 5) {
+      stories (limit: 5, sort: "likesCount:desc") {
         id
         title
       }
