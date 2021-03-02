@@ -22,7 +22,7 @@ export const QUERY_CHAPTERS = gql`
         id
       }
       likesCount
-      userLike {
+      currentUserLike {
         id
       }
     }
@@ -72,7 +72,7 @@ const ChapterChoice = ({ className, parent }) => {
                       <li key={chapter.id} className="p-md bg-base">
                         <Link href={getStoryUrl(chapter)} className="flex gap-md items-center justify-between">
                           <Text variant="span">{chapter.action}</Text>
-                          <Like story={chapter} viewOnly={true} count={chapter.likesCount} userLike={chapter.userLike} />
+                          <Like story={chapter} viewOnly={true} count={chapter.likesCount} currentUserLike={chapter.currentUserLike} />
                         </Link>
                       </li>
                     ))}

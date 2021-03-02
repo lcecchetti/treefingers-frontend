@@ -1,7 +1,5 @@
 'use strict';
 
-const story = require("../controllers/story");
-
 /**
  * Read the documentation (https://strapi.io/documentation/developer-docs/latest/concepts/services.html#core-services)
  * to customize this service
@@ -24,15 +22,26 @@ module.exports = {
    * @param {User} user
    */
   withLikeData: async (story, user) => {
-    story.likesCount = await strapi.api.like.services.like.count({ story: story.id });
-
-    let userLike = undefined;
+    let currentUserLike = undefined;
     if (user) {
-      userLike = await strapi.api.like.services.like.findOne({ story: story.id, user: user.id });
+      currentUserLike = await strapi.api.like.services.like.findOne({ story: story.id, user: user.id });
     }
 
-    story.userLike = userLike;
+    story.currentUserLike = currentUserLike;
 
     return story;
   },
+
+  /**
+   * Recalculate the amount of likes
+   * @param {Story} story
+   * @param {User} user
+   */
+  updateLikesCount: async (story) => {
+    const likesCount = await strapi.api.like.services.like.count({ story: story.id });
+
+    await strapi.services.story.update({ id: story.id }, { likesCount });
+
+    story.likesCount = likesCount;
+  }
 };

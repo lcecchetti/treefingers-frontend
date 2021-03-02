@@ -37,7 +37,7 @@ export const QUERY_STORY = gql`
         id
       }
       likesCount
-      userLike {
+      currentUserLike {
         id
       }
     }
@@ -91,7 +91,7 @@ const StoryView = ({ id }) => {
 
             <div className="flex justify-between items-center">
               <TagList tags={data.story.tags} />
-              <Like story={data.story} count={data.story.likesCount} userLike={data.story.userLike} />
+              <Like story={data.story} count={data.story.likesCount} currentUserLike={data.story.currentUserLike} />
             </div>
           </div>
         

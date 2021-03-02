@@ -12,8 +12,9 @@ module.exports = {
       data.isRoot = strapi.services.story.isRoot(data);
     },
     beforeUpdate: async (params, data) => {
-      data.excerpt = strapi.services.helper.createExcerpt(data.content);
-      data.isRoot = strapi.services.story.isRoot(data);
+      if (data.content) {
+        data.excerpt = strapi.services.helper.createExcerpt(data.content);
+      }
     },
   },
 };
