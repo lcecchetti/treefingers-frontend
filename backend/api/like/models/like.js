@@ -8,10 +8,20 @@
 module.exports = {
   lifecycles: {
     afterCreate: async (data) => {
-      await strapi.services.story.updateLikesCount(data.story);
+      if (data.story) {
+        await strapi.services.story.updateLikesCount(data.story);
+      }
+      else if (data.author) {
+        strapi.plugins['users-permissions'].services.user.updateLikesCount(data.author);
+      }
     },
     afterDelete: async (params, data) => {
-      await strapi.services.story.updateLikesCount(params.story);
+      if (params.story) {
+        await strapi.services.story.updateLikesCount(params.story);
+      }
+      else if (params.author) {
+        await strapi.plugins['users-permissions'].services.user.updateLikesCount(params.author);
+      }
     },
   },
 };

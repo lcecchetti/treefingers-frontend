@@ -10,8 +10,8 @@ import { useUser } from 'lib/auth';
  * @type {gql}
  */
 const MUTATION_LIKE_CREATE = gql`
-  mutation createLike($story: ID!) {
-    createLike(input: { data: { story: $story } }) {
+  mutation createLike($story: ID, $author: ID) {
+    createLike(input: { data: { story: $story, author: $author } }) {
       like {
         id
       } 
@@ -33,7 +33,7 @@ const MUTATION_LIKE_DELETE = gql`
   }
 `;
 
-const Like = ({ story, currentUserLike, count, viewOnly }) => {
+const Like = ({ story, author, currentUserLike, count, viewOnly }) => {
 
   // current user
   const user = useUser();
@@ -70,6 +70,7 @@ const Like = ({ story, currentUserLike, count, viewOnly }) => {
       const { data } = await createLike({
         variables: {
           story: story?.id,
+          author: author?.id
         },
       });
 

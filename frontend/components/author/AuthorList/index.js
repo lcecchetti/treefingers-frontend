@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { Link, Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { Avatar } from 'components/user';
-import { FaRegHeart } from 'react-icons/fa';
+import { Like } from 'components/common';
 import { getStoryUrl } from 'lib/helper';
+import { useUser } from 'lib/auth';
 
 /**
  * Authors list query
@@ -19,13 +21,24 @@ export const QUERY_AUTHORS = gql`
         id
         title
       }
+      currentUserLike {
+        id
+      }
+      likesCount
     }
   }
 `;
 
-//@todo limit to users with at least one story
 const AuthorList = ({ className }) => {
-  const { data, loading, error } = useQuery(QUERY_AUTHORS);
+  const user = useUser();
+  const { data, loading, error, refetch } = useQuery(QUERY_AUTHORS);
+
+  // refresh data with customer specific infos
+  useEffect(() => {
+    if (user !== null) {
+      refetch();
+    }
+  }, [user]);
 
   return (
     <div className={clsx('grid md:grid-cols-4 gap-md', className)}>
@@ -37,9 +50,9 @@ const AuthorList = ({ className }) => {
         <div key={author.id} className="text-primary-contrast bg-primary rounded-xl flex flex-col p-md">
           <div className="flex justify-between items-center">
             <Avatar user={author} showName={true} />
-            <FaRegHeart className="text-2xl" />
+            <Like author={author} currentUserLike={author.currentUserLike} count={author.likesCount} />
           </div>
-          
+
           <ul className="mt-sm">
             {author.stories.map((story) => (
               <li key={story.id}>
