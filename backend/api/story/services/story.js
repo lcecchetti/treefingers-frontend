@@ -43,5 +43,18 @@ module.exports = {
     await strapi.services.story.update({ id: story.id }, { likesCount });
 
     story.likesCount = likesCount;
-  }
+  },
+
+  /**
+   * Recalculate the amount of comments
+   * @param {Story} story
+   * @param {User} user
+   */
+  updateCommentsCount: async (story) => {
+    const commentsCount = await strapi.services.comment.count({ story: story.id });
+
+    await strapi.services.story.update({ id: story.id }, { commentsCount });
+
+    story.commentsCount = commentsCount;
+  },
 };

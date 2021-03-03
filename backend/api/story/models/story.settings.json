@@ -18,13 +18,13 @@
       "minLength": 1
     },
     "author": {
-      "via": "stories",
       "plugin": "users-permissions",
-      "model": "user"
+      "model": "user",
+      "via": "stories"
     },
     "likes": {
-      "via": "story",
-      "collection": "like"
+      "collection": "like",
+      "via": "story"
     },
     "content": {
       "type": "richtext",
@@ -61,6 +61,13 @@
     },
     "likesCount": {
       "type": "integer"
+    },
+    "commentsCount": {
+      "type": "integer"
+    },
+    "comments": {
+      "via": "story",
+      "collection": "comment"
     }
   }
 }

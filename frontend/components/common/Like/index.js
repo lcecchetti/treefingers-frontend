@@ -33,7 +33,7 @@ const MUTATION_LIKE_DELETE = gql`
   }
 `;
 
-const Like = ({ story, author, currentUserLike, count, viewOnly }) => {
+const Like = ({ story, author, comment, currentUserLike, count, viewOnly }) => {
 
   // current user
   const user = useUser();
@@ -70,7 +70,8 @@ const Like = ({ story, author, currentUserLike, count, viewOnly }) => {
       const { data } = await createLike({
         variables: {
           story: story?.id,
-          author: author?.id
+          author: author?.id,
+          comment: comment?.id,
         },
       });
 

@@ -21,6 +21,7 @@ module.exports = {
 
     ctx.request.body.story && (where.story = ctx.request.body.story);
     ctx.request.body.author && (where.author = ctx.request.body.author);
+    ctx.request.body.comment && (where.comment = ctx.request.body.comment);
 
     const like = await strapi.services.like.findOne(where);
 
