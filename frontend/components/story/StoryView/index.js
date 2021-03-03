@@ -5,8 +5,7 @@ import { gql, useQuery } from '@apollo/client';
 import { FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
-import { ChapterChoice } from 'components/story';
-import { Like } from 'components/common';
+import { ChapterChoice, StoryActions } from 'components/story';
 import { useUser } from 'lib/auth';
 
 /**
@@ -37,6 +36,7 @@ export const QUERY_STORY = gql`
         id
       }
       likesCount
+      commentsCount
       currentUserLike {
         id
       }
@@ -91,7 +91,7 @@ const StoryView = ({ id }) => {
 
             <div className="flex justify-between items-center">
               <TagList tags={data.story.tags} />
-              <Like story={data.story} count={data.story.likesCount} currentUserLike={data.story.currentUserLike} />
+              <StoryActions story={data.story} />
             </div>
           </div>
         

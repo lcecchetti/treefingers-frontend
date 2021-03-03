@@ -4,7 +4,7 @@ import { formatDate, DATE_SHORT, getStoryUrl, getStoryType } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
-import { Like } from 'components/common';
+import { StoryActions } from 'components/story';
 import clsx from 'clsx';
 import { useUser } from 'lib/auth';
 
@@ -30,6 +30,7 @@ export const QUERY_STORIES = gql`
         slug
       }
       likesCount
+      commentsCount
       currentUserLike {
         id
       }
@@ -87,7 +88,7 @@ const StoryList = ({ className, rootsOnly = true, author, tag }) => {
 
           <div className="flex justify-between items-center gap-md">
             <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} buttonVariant="primary-contrast" />
-            <Like story={story} count={story.likesCount} currentUserLike={story.currentUserLike} />
+            <StoryActions story={story} />
           </div>
         </div>
       ))}
