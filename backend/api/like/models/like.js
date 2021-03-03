@@ -12,8 +12,12 @@ module.exports = {
         await strapi.services.story.updateLikesCount(data.story);
       }
       else if (data.author) {
-        strapi.plugins['users-permissions'].services.user.updateLikesCount(data.author);
+        await strapi.plugins['users-permissions'].services.user.updateLikesCount(data.author);
       }
+      else if (data.comment) {
+        await strapi.services.comment.updateLikesCount(data.comment);
+      }
+
     },
     afterDelete: async (params, data) => {
       if (params.story) {
@@ -21,6 +25,9 @@ module.exports = {
       }
       else if (params.author) {
         await strapi.plugins['users-permissions'].services.user.updateLikesCount(params.author);
+      }
+      else if (params.author) {
+        await strapi.services.comment.updateLikesCount(params.comment);
       }
     },
   },

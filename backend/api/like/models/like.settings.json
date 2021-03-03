@@ -12,8 +12,8 @@
   },
   "attributes": {
     "story": {
-      "model": "story",
-      "via": "likes"
+      "via": "likes",
+      "model": "story"
     },
     "author": {
       "via": "likes",
@@ -24,6 +24,10 @@
       "via": "likedStories",
       "plugin": "users-permissions",
       "model": "user"
+    },
+    "comment": {
+      "via": "likes",
+      "model": "comment"
     }
   }
 }
