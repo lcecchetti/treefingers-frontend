@@ -145,7 +145,7 @@ const Like = ({ story, author, comment, currentUserLike, count, viewOnly }) => {
 
   return (
     <div className={clsx(
-      'flex gap-sm align-center',
+      'flex gap-sm items-center',
       isError && 'text-error',
     )}>
       {!!getCount() &&
