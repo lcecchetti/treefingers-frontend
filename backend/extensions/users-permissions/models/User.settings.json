@@ -60,10 +60,10 @@
       "configurable": false
     },
     "stories": {
-      "via": "author",
-      "collection": "story"
+      "collection": "story",
+      "via": "author"
     },
-    "likes": {
+    "likedStories": {
       "collection": "like",
       "via": "user"
     },
@@ -73,6 +73,13 @@
     "excerpt": {
       "type": "text",
       "maxLength": 255
+    },
+    "likes": {
+      "collection": "like",
+      "via": "author"
+    },
+    "likesCount": {
+      "type": "integer"
     }
   }
 }

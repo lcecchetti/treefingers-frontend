@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
-import { PageIntro } from 'components/common';
+import { PageIntro, Like } from 'components/common';
+import { useUser } from 'lib/auth';
 
 /**
  * Author fragment
@@ -12,6 +14,10 @@ const FRAGMENT_AUTHOR = gql`
     id
     username
     bio
+    currentUserLike {
+      id
+    }
+    likesCount
   }
 `;
 
@@ -43,7 +49,15 @@ export const QUERY_AUTHORS_BY_USERNAME = gql`
 
 const AuthorView = ({ className, id }) => {
 
-  const { data, loading, error } = useQuery(QUERY_AUTHOR, { variables: { id } });
+  const user = useUser();
+  const { data, loading, error, refetch } = useQuery(QUERY_AUTHOR, { variables: { id } });
+
+  // refresh data with customer specific infos
+  useEffect(() => {
+    if (user !== null) {
+      refetch();
+    }
+  }, [user]);
 
   return (
     <div className={className}>
@@ -55,6 +69,7 @@ const AuthorView = ({ className, id }) => {
         <>
           <PageIntro title={data.user.username}>
             <Text variant="p">{data.user.bio}</Text>
+            <Like className="justify-end" author={data.user} currentUserLike={data.user.currentUserLike} count={data.user.likesCount} />
           </PageIntro>
           <StoryList author={data.user} rootsOnly={false} />
         </>

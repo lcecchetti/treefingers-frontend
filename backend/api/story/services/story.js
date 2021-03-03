@@ -24,7 +24,7 @@ module.exports = {
   withLikeData: async (story, user) => {
     let currentUserLike = undefined;
     if (user) {
-      currentUserLike = await strapi.api.like.services.like.findOne({ story: story.id, user: user.id });
+      currentUserLike = await strapi.services.like.findOne({ story: story.id, user: user.id });
     }
 
     story.currentUserLike = currentUserLike;
@@ -38,7 +38,7 @@ module.exports = {
    * @param {User} user
    */
   updateLikesCount: async (story) => {
-    const likesCount = await strapi.api.like.services.like.count({ story: story.id });
+    const likesCount = await strapi.services.like.count({ story: story.id });
 
     await strapi.services.story.update({ id: story.id }, { likesCount });
 

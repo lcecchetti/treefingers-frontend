@@ -15,7 +15,14 @@ module.exports = {
     // set user
     ctx.request.body.user = ctx.state.user.id;
 
-    const like = await strapi.services.like.findOne({ user: ctx.state.user.id, story: ctx.request.body.story });
+    const where = {
+      user: ctx.state.user.id
+    };
+
+    ctx.request.body.story && (where.story = ctx.request.body.story);
+    ctx.request.body.author && (where.author = ctx.request.body.author);
+
+    const like = await strapi.services.like.findOne(where);
 
     if (like) {
       return ctx.badRequest('Like already exist');

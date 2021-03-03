@@ -1,4 +1,9 @@
 module.exports = {
+  definition: /* GraphQL */ `
+    extend type UsersPermissionsUser {
+      currentUserLike: Like
+    }
+  `,
   query: `
     self: UsersPermissionsUser
   `,
@@ -6,7 +11,6 @@ module.exports = {
     Query: {
       self: {
         description: 'Return the full user object',
-        resolverOf: 'plugins::users-permissions.user.me',
         resolver: 'plugins::users-permissions.user.self',
       },
     },

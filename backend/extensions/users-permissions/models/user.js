@@ -11,7 +11,9 @@ module.exports = {
       data.excerpt = strapi.services.helper.createExcerpt(data.bio);
     },
     beforeUpdate: async (params, data) => {
-      data.excerpt = strapi.services.helper.createExcerpt(data.bio);
+      if (params.bio) {
+        data.excerpt = strapi.services.helper.createExcerpt(params.bio);
+      }
     },
   },
 };
