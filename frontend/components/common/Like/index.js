@@ -10,8 +10,8 @@ import { useUser } from 'lib/auth';
  * @type {gql}
  */
 const MUTATION_LIKE_CREATE = gql`
-  mutation createLike($story: ID, $author: ID) {
-    createLike(input: { data: { story: $story, author: $author } }) {
+  mutation createLike($story: ID, $author: ID, $comment: ID) {
+    createLike(input: { data: { story: $story, author: $author, comment: $comment } }) {
       like {
         id
       } 

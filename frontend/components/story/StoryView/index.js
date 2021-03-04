@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Spinner, Text, Link } from 'components/ui';
 import { DATE_LONG, formatDate, getStoryUrl } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
@@ -7,6 +7,7 @@ import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { ChapterChoice, StoryActions } from 'components/story';
 import { useUser } from 'lib/auth';
+import { CommentList } from 'components/comment';
 
 /**
  * Single story query
@@ -44,12 +45,13 @@ export const QUERY_STORY = gql`
   }
 `;
 
-const StoryView = ({ id }) => {
+const StoryView = ({ story }) => {
 
   const user = useUser();
+  const [showComments, setShowComments] = useState(false);
 
-  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { id } });
-  
+  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { id: story.id } });
+
   // refresh data with customer specific infos
   useEffect(() => {
     if (user !== null) {
@@ -58,47 +60,57 @@ const StoryView = ({ id }) => {
   }, [user]);
 
   return (
-    <div>
-      {loading && <Spinner />}
+    <div className="flex flex-col md:flex-row">
+      <div className="md:w-2/3 p-md md:px-xl">
+        {loading && <Spinner />}
 
-      {error && <Text variant="error">{error.message}</Text>}
+        {error && <Text variant="error">{error.message}</Text>}
 
-      {data &&
-        <div className="md:my-md flex flex-col gap-md">
-          {!data.story.isRoot &&
-            <div className="text-center flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg">
-              <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
-                <FaAngleUp className="text-3xl group-hover:animate-bounce"/>
-                <Text variant="span" className="font-bold uppercase">Back to previous chapter</Text>
-              </Link>
-              <Link href={getStoryUrl(data.story.root)} className="flex flex-col group items-center gap-xs">
-                <FaAngleDoubleUp className="text-3xl group-hover:animate-bounce"/>
-                <Text variant="span" className="font-bold uppercase">Back to the beginning</Text>
-              </Link>
+        {data &&
+          <div className="md:my-md flex flex-col gap-md">
+            {!data.story.isRoot &&
+              <div className="text-center flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg">
+                <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
+                  <FaAngleUp className="text-3xl group-hover:animate-bounce" />
+                  <Text variant="span" className="font-bold uppercase">Back to previous chapter</Text>
+                </Link>
+                <Link href={getStoryUrl(data.story.root)} className="flex flex-col group items-center gap-xs">
+                  <FaAngleDoubleUp className="text-3xl group-hover:animate-bounce" />
+                  <Text variant="span" className="font-bold uppercase">Back to the beginning</Text>
+                </Link>
+              </div>
+            }
+
+            <div className="flex flex-col gap-xs">
+              <div className="flex justify-between items-center">
+                <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
+                <Avatar user={data.story.author} showName={true} />
+              </div>
+
+              <div>
+                <Text variant="storyViewTitle">{data.story.title}</Text>
+                <Text variant="p">{data.story.content}</Text>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <TagList tags={data.story.tags} />
+                <StoryActions story={data.story} commentAction={() => setShowComments(true)} />
+              </div>
             </div>
-          }
 
-          <div className="flex flex-col gap-xs">
-            <div className="flex justify-between items-center">
-              <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
-              <Avatar user={data.story.author} showName={true} />
-            </div>
-
-            <div>
-              <Text variant="storyViewTitle">{data.story.title}</Text>
-              <Text variant="p">{data.story.content}</Text>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <TagList tags={data.story.tags} />
-              <StoryActions story={data.story} />
-            </div>
+            <ChapterChoice parent={data.story} />
           </div>
-        
-          <ChapterChoice parent={data.story} />
-        </div>
-      }
-    </div>
+        }
+      </div>
+      <div className="md:w-1/3 p-md md:px-xl">
+        {showComments && 
+          <CommentList story={story} close={() => setShowComments(false)} visible={showComments} />
+        }
+        {!showComments &&
+          <Text variant="span">DEFAULT SIDE CONTENT</Text>
+        }
+      </div>
+    </div >
   );
 };
 

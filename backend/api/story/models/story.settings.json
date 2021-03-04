@@ -18,9 +18,9 @@
       "minLength": 1
     },
     "author": {
+      "via": "stories",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "stories"
+      "model": "user"
     },
     "likes": {
       "collection": "like",
@@ -60,14 +60,16 @@
       "required": false
     },
     "likesCount": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0
     },
     "commentsCount": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0
     },
     "comments": {
-      "via": "story",
-      "collection": "comment"
+      "collection": "comment",
+      "via": "story"
     }
   }
 }
