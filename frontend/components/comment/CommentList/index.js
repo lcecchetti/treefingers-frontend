@@ -47,7 +47,7 @@ const CommentList = ({ story, close, visible }) => {
               <Text variant="span">This story has no comments yet.</Text>
             }
 
-            {data.comments.length &&
+            {!!data.comments.length &&
               <ol className="flex flex-col gap-md">
                 {data.comments.map((comment) => (
                   <li key={comment.id}>
