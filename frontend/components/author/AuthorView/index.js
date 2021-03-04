@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
-import { PageIntro, Like } from 'components/common';
+import { Like } from 'components/common';
 import { useUser } from 'lib/auth';
 
 /**
@@ -67,10 +67,7 @@ const AuthorView = ({ className, id }) => {
 
       {data &&
         <>
-          <PageIntro title={data.user.username}>
-            <Text variant="p">{data.user.bio}</Text>
-            <Like className="justify-end" author={data.user} currentUserLike={data.user.currentUserLike} count={data.user.likesCount} />
-          </PageIntro>
+          <Like className="justify-end" author={data.user} currentUserLike={data.user.currentUserLike} count={data.user.likesCount} />
           <StoryList author={data.user} rootsOnly={false} />
         </>
       }

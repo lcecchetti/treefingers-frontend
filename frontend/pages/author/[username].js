@@ -1,12 +1,16 @@
 import { DefaultLayout } from 'components/layout';
-import { Container } from 'components/ui';
+import { Container, Text } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { AuthorView, QUERY_AUTHORS, QUERY_AUTHOR, QUERY_AUTHORS_BY_USERNAME } from 'components/author';
 import { QUERY_STORIES } from 'components/story';
+import { PageIntro } from 'components/common';
 
 const AuthorPage = ({ author }) => {
   return (
     <Container>
+      <PageIntro title={author.username}>
+        <Text variant="p">{author.bio}</Text>
+      </PageIntro>
       <AuthorView id={author.id} />
     </Container>
   );
