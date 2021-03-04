@@ -11,7 +11,7 @@ const CommentCount = ({ count, action }) => {
       }
       <FaRegComment className={clsx(
         'text-2xl',
-        action && 'cursor-pointer'
+        !!action && 'cursor-pointer'
       )} onClick={action} />
     </div>
   );

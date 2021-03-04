@@ -16,17 +16,21 @@
       "required": true
     },
     "user": {
+      "via": "comments",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "comments"
+      "model": "user"
     },
     "likes": {
       "collection": "like",
       "via": "comment"
     },
     "story": {
-      "model": "story",
-      "via": "comments"
+      "via": "comments",
+      "model": "story"
+    },
+    "likesCount": {
+      "type": "integer",
+      "default": 0
     }
   }
 }

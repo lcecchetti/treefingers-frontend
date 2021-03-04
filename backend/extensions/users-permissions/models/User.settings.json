@@ -60,8 +60,8 @@
       "configurable": false
     },
     "stories": {
-      "via": "author",
-      "collection": "story"
+      "collection": "story",
+      "via": "author"
     },
     "likedStories": {
       "collection": "like",
@@ -79,11 +79,12 @@
       "via": "author"
     },
     "likesCount": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0
     },
     "comments": {
-      "via": "user",
-      "collection": "comment"
+      "collection": "comment",
+      "via": "user"
     }
   }
 }
