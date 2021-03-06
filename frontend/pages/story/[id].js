@@ -1,9 +1,8 @@
 import { DefaultLayout } from 'components/layout';
+import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { gql } from '@apollo/client';
 import { StoryView, QUERY_STORY, QUERY_CHAPTERS } from 'components/story';
-import { CommentList } from 'components/comment';
-
 /**
  * Story pages query
  * @type {gql}
@@ -18,7 +17,9 @@ const QUERY_STORY_PAGES = gql`
 
 const StoryPage = ({ story }) => {
   return (
-    <StoryView story={story} />
+    <Container>
+      <StoryView story={story} />
+    </Container>
   );
 };
 

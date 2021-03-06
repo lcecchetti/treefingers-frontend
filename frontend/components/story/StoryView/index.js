@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Spinner, Text, Link } from 'components/ui';
 import { DATE_LONG, formatDate, getStoryUrl } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
@@ -49,6 +49,7 @@ const StoryView = ({ story }) => {
 
   const user = useUser();
   const [showComments, setShowComments] = useState(false);
+  const sidebarRef = useRef(null);
 
   const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { id: story.id } });
 
@@ -59,9 +60,14 @@ const StoryView = ({ story }) => {
     }
   }, [user]);
 
+  const onShowComments = () => {
+    setShowComments(true);
+    sidebarRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="md:w-2/3 p-md md:px-xl">
+    <div className="flex flex-col sm:flex-row gap-md">
+      <div className="sm:w-3/5 md:w-2/3">
         {loading && <Spinner />}
 
         {error && <Text variant="error">{error.message}</Text>}
@@ -94,7 +100,7 @@ const StoryView = ({ story }) => {
 
               <div className="flex justify-between items-center">
                 <TagList tags={data.story.tags} />
-                <StoryActions story={data.story} commentAction={() => setShowComments(true)} />
+                <StoryActions story={data.story} commentAction={onShowComments} />
               </div>
             </div>
 
@@ -102,7 +108,7 @@ const StoryView = ({ story }) => {
           </div>
         }
       </div>
-      <div className="md:w-1/3 p-md md:px-xl">
+      <div className="sm:w-2/5 md:w-1/3" ref={sidebarRef}>
         {showComments && 
           <CommentList story={story} close={() => setShowComments(false)} visible={showComments} />
         }
