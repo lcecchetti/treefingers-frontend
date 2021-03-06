@@ -7,7 +7,7 @@ const StoryActions = ({ story, commentAction }) => {
       {(!!story.commentsCount || commentAction) &&
         <CommentCount count={story.commentsCount} action={commentAction} />
       }
-      <Like story={story} count={story.likesCount} currentUserLike={story.currentUserLike} />
+      <Like entity={story} />
     </div>
   );
 }

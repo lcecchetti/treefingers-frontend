@@ -33,13 +33,15 @@ const MUTATION_LIKE_DELETE = gql`
   }
 `;
 
-const Like = ({ story, author, comment, currentUserLike, count, viewOnly }) => {
+const Like = ({ entity, viewOnly }) => {
+
+  const entityType = entity.__typename == 'UsersPermissionsUser' ? 'author' : entity.__typename.toLowerCase();
 
   // current user
   const user = useUser();
 
   // current user like
-  const [userLike, setUserLike] = useState(currentUserLike);
+  const [userLike, setUserLike] = useState(entity.currentUserLike);
 
   // error status
   const [isError, setIsError] = useState(false);
@@ -51,13 +53,13 @@ const Like = ({ story, author, comment, currentUserLike, count, viewOnly }) => {
   const [createLike] = useMutation(MUTATION_LIKE_CREATE);
   const [deleteLike] = useMutation(MUTATION_LIKE_DELETE);
 
-  // set alays not editable for non logged in users
+  // set always not editable for non logged in users
   viewOnly = viewOnly || !user;
 
   // keep prop and state aligned
   useEffect(() => {
-    setUserLike(currentUserLike);
-  }, [currentUserLike]);
+    setUserLike(entity.currentUserLike);
+  }, [entity.currentUserLike]);
 
   /**
    * Submit like
@@ -66,14 +68,11 @@ const Like = ({ story, author, comment, currentUserLike, count, viewOnly }) => {
     try {
       setIsError(false);
 
+      const variables = {};
+      variables[entityType] = entity.id;
+
       // create like
-      const { data } = await createLike({
-        variables: {
-          story: story?.id,
-          author: author?.id,
-          comment: comment?.id,
-        },
-      });
+      const { data } = await createLike({ variables });
 
       // update like if success
       if (data.createLike.like) {
@@ -130,14 +129,14 @@ const Like = ({ story, author, comment, currentUserLike, count, viewOnly }) => {
   const getCount = () => {
     let userLikeModifier = 0;
 
-    if (currentUserLike && !userLike) {
+    if (entity.currentUserLike && !userLike) {
       userLikeModifier = -1;
     }
 
-    if (!currentUserLike && userLike) {
+    if (!entity.currentUserLike && userLike) {
       userLikeModifier = 1;
     }
-    return count + userLikeModifier;
+    return entity.likesCount + userLikeModifier;
   };
 
   // pick icon accoridng to user like presence

@@ -72,7 +72,7 @@ const ChapterChoice = ({ className, parent }) => {
                       <li key={chapter.id} className="p-md bg-base">
                         <Link href={getStoryUrl(chapter)} className="flex gap-md items-center justify-between">
                           <Text variant="span">{chapter.action}</Text>
-                          <Like story={chapter} viewOnly={true} count={chapter.likesCount} currentUserLike={chapter.currentUserLike} />
+                          <Like entity={chapter} viewOnly={true} />
                         </Link>
                       </li>
                     ))}

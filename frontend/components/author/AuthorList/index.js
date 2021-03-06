@@ -50,7 +50,7 @@ const AuthorList = ({ className }) => {
         <div key={author.id} className="text-primary-contrast bg-primary rounded-xl flex flex-col p-md">
           <div className="flex justify-between items-center">
             <Avatar user={author} showName={true} />
-            <Like author={author} currentUserLike={author.currentUserLike} count={author.likesCount} />
+            <Like entity={author} />
           </div>
 
           <ul className="mt-sm">
