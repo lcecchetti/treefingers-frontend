@@ -67,7 +67,13 @@ const AuthorView = ({ className, id }) => {
 
       {data &&
         <>
-          <Like className="justify-end" entity={data.user} />
+          <div className="flex flex-col gap-sm my-sm md:my-md">
+            <div className="flex justify-between items-center">
+              <Text variant="pageTitle">{data.user.username}</Text>
+              <Like entity={data.user} />
+            </div>
+            <Text variant="p">{data.user.bio}</Text>
+          </div>
           <StoryList author={data.user} rootsOnly={false} />
         </>
       }
