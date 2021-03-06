@@ -1,12 +1,14 @@
 import { CommentCount } from 'components/comment';
 import { Like } from 'components/common';
+import { useUI } from 'lib/ui/context';
 
-const StoryActions = ({ story, commentAction }) => {
+const StoryActions = ({ story }) => {
+
+  const { openFlyout, flyoutTypes } = useUI();
+
   return (
     <div className="flex items-center gap-sm">
-      {(!!story.commentsCount || commentAction) &&
-        <CommentCount count={story.commentsCount} action={commentAction} />
-      }
+      <CommentCount count={story.commentsCount} action={() => openFlyout(flyoutTypes.comments, { story, title: 'Comments' })} />
       <Like entity={story} />
     </div>
   );

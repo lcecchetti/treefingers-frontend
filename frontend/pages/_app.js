@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from 'lib/apollo/client';
-import { Header, Footer } from 'components/common';
+import { Header, Footer, Flyout } from 'components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from 'lib/ui/context';
 
@@ -33,6 +33,7 @@ const App = ({ Component, pageProps }) => {
               <Component {...pageProps} />
             </Layout>
             <Footer />
+            <Flyout />
           </UIProvider>
         </ThemeProvider>
       </ApolloProvider>
