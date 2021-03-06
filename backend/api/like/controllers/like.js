@@ -12,9 +12,16 @@ module.exports = {
    * @return {Object}
    */
   async create(ctx) {
+
     // set user
     ctx.request.body.user = ctx.state.user.id;
 
+    // block like creation with multiple entities
+    if (ctx.request.body.length > 2) {
+      return ctx.badRequest('Too many parameters provided');
+    }
+
+    // prepare where clause to search for existing like
     const where = {
       user: ctx.state.user.id
     };
@@ -29,14 +36,15 @@ module.exports = {
       return ctx.badRequest('Like already exist');
     }
 
+    // create like
     const entity = await strapi.services.like.create(ctx.request.body);
     return sanitizeEntity(entity, { model: strapi.models.like });
   },
 
-    /**
-   * Delete a record.
-   * @return {Object}
-   */
+  /**
+ * Delete a record.
+ * @return {Object}
+ */
   async delete(ctx) {
     const like = await strapi.services.like.findOne(ctx.params);
 

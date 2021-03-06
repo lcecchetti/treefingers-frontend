@@ -12,9 +12,7 @@ module.exports = {
   async self(ctx) {
     const user = ctx.state.user;
 
-    ctx.body = sanitizeEntity(user, {
-      model: strapi.query('user', 'users-permissions').model,
-    });
+    ctx.body = sanitizeEntity(user, { model: strapi.plugins['users-permissions'].models.user });
   },
 
     /**
@@ -35,7 +33,7 @@ module.exports = {
     // update entity
     const entity = await strapi.plugins['users-permissions'].services.user.edit(ctx.params, ctx.request.body);
 
-    return sanitizeEntity(entity, { model: strapi.query('user', 'users-permissions').model, });
+    return sanitizeEntity(entity, { model: strapi.plugins['users-permissions'].models.user });
   },
 
   /**
@@ -54,7 +52,7 @@ module.exports = {
       })
     );
 
-    return users;
+    return users.map(user => sanitizeEntity(user, { model: strapi.plugins['users-permissions'].models.user }));;
   },
 
   /**
@@ -63,12 +61,14 @@ module.exports = {
    * @return {Story}
    */
   findOne: async (ctx) => {
-    const user = await strapi.plugins['users-permissions'].services.user.fetch(ctx.params);
+    let user = await strapi.plugins['users-permissions'].services.user.fetch(ctx.params);
 
     if (!user) {
       return ctx.notFound();
     }
 
-    return strapi.plugins['users-permissions'].services.user.withLikeData(user, ctx.state.user);
+    await strapi.plugins['users-permissions'].services.user.withLikeData(user, ctx.state.user);
+
+    return sanitizeEntity(user, { model: strapi.plugins['users-permissions'].models.user });
   },
 };
