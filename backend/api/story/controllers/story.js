@@ -23,6 +23,7 @@ module.exports = {
     // set author
     ctx.request.body.author = ctx.state.user.id;
 
+    // create story
     const entity = await strapi.services.story.create(ctx.request.body);
     return sanitizeEntity(entity, { model: strapi.models.story });
   },
@@ -38,6 +39,7 @@ module.exports = {
     // validate story author
     const story = await strapi.services.story.findOne({ id: ctx.params.id });
 
+    // restrict update to the author
     if (story && story.author != ctx.state.user.id) {
       return ctx.unauthorized(`You can't update this entry`);
     }
@@ -69,7 +71,7 @@ module.exports = {
       })
     );
 
-    return stories;
+    return stories.map(story => sanitizeEntity(story, { model: strapi.models.story }));;
   },
 
   /**
@@ -84,6 +86,8 @@ module.exports = {
       return ctx.notFound();
     }
 
-    return strapi.services.story.withLikeData(story, ctx.state.user);
+    await strapi.services.story.withLikeData(story, ctx.state.user);
+
+    return sanitizeEntity(story, { model: strapi.models.story });
   },
 };

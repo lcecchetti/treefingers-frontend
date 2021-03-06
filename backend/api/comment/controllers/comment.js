@@ -5,6 +5,8 @@
  * to customize this controller
  */
 
+const { sanitizeEntity } = require('strapi-utils');
+
 module.exports = {
 
   async update(ctx) {
@@ -54,7 +56,7 @@ module.exports = {
       })
     );
 
-    return comments;
+    return comments.map(comment => sanitizeEntity(comment, { model: strapi.models.comment }));;
   },
 
   /**
@@ -69,6 +71,9 @@ module.exports = {
       return ctx.notFound();
     }
 
-    return strapi.services.comment.withLikeData(comment, ctx.state.user);
+    // add like data
+    strapi.services.comment.withLikeData(comment, ctx.state.user);
+
+    return sanitizeEntity(comment, { model: strapi.models.comment });
   },
 };
