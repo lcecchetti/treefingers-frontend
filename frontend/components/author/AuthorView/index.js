@@ -67,7 +67,7 @@ const AuthorView = ({ className, id }) => {
 
       {data &&
         <>
-          <Like className="justify-end" author={data.user} currentUserLike={data.user.currentUserLike} count={data.user.likesCount} />
+          <Like className="justify-end" entity={data.user} />
           <StoryList author={data.user} rootsOnly={false} />
         </>
       }

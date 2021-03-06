@@ -56,7 +56,7 @@ const CommentList = ({ story, close, visible }) => {
                       <Text variant="span">{comment.content}</Text>
                       <div className="flex justify-between items-center">
                         <Text variant="span" className="text-sm">{formatDate(comment.createdAt)}</Text>
-                        <Like comment={comment} count={comment.likesCount} currentUserLike={comment.currentUserLike} />
+                        <Like entity={comment} />
                       </div>
                     </div>
                   </li>
