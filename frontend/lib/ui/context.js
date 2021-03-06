@@ -5,8 +5,15 @@ export const themes = {
   light: 'light',
 };
 
+const flyoutTypes = {
+  comments: 'COMMENTS',
+};
+
 const initialState = {
   isDrawerOpen: false,
+  isFlyoutOpen: false,
+  flyoutData: null,
+  flyoutType: null,
 }
 
 export const UIContext = React.createContext(initialState);
@@ -18,6 +25,8 @@ export const UIActions = {
   closeDrawer: 'CLOSE_DRAWER',
   openSearch: 'OPEN_SEARCH',
   closeSearch: 'CLOSE_SEARCH',
+  openFlyout: 'OPEN_FLYOUT',
+  closeFlyout: 'CLOSE_FLYOUT',
 };
 
 function uiReducer(state, action) {
@@ -46,6 +55,20 @@ function uiReducer(state, action) {
         isSearchOpen: false,
       }
     }
+    case UIActions.openFlyout: {
+      return {
+        ...state,
+        isFlyoutOpen: true,
+        flyoutData: action.flyoutData,
+        flyoutType: action.flyoutType,
+      }
+    }
+    case UIActions.closeFlyout: {
+      return {
+        ...state,
+        isFlyoutOpen: false,
+      }
+    }
   }
 }
 
@@ -61,6 +84,9 @@ export const UIProvider = (props) => {
 
   const getToggledTheme = (currentTheme) => (currentTheme !== themes.dark ? themes.dark : themes.light);
 
+  const openFlyout = (flyoutType, flyoutData) => {dispatch({ type: UIActions.openFlyout, flyoutType, flyoutData });}
+  const closeFlyout = () => {dispatch({ type: UIActions.closeFlyout });}
+
   const value = useMemo(
     () => ({
       ...state,
@@ -70,6 +96,9 @@ export const UIProvider = (props) => {
       getToggledTheme,
       openSearch,
       closeSearch,
+      flyoutTypes,
+      openFlyout,
+      closeFlyout,
     }),
     [state]
   );

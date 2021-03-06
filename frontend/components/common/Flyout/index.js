@@ -1,0 +1,51 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import clsx from 'clsx';
+import { useUI } from 'lib/ui/context';
+import { Text } from 'components/ui';
+import { CommentList } from 'components/comment';
+import { FaTimes } from 'react-icons/fa'
+
+const Flyout = () => {
+  const router = useRouter();
+  const { isFlyoutOpen, flyoutTypes, flyoutData, flyoutType, closeFlyout } = useUI();
+
+  useEffect(() => {
+    // handle body scroll lock
+    if (isFlyoutOpen) {
+      document.body.classList.add('flyout-open');
+    } else {
+      document.body.classList.remove('flyout-open');
+    }
+
+    // close drawer on route change
+    router.events.on('routeChangeStart', closeFlyout);
+
+    // clean up
+    return () => {
+      document.body.classList.remove('flyout-open');
+      router.events.off('routeChangeStart', closeFlyout);
+    };
+  }, [isFlyoutOpen, flyoutData, flyoutType]);
+
+  return (
+    <div className={clsx(
+      'fixed sm:border-l-2 top-0 left-full bg-base w-full sm:w-2/3 md:w-1/3 h-screen transition-transform transform-gpu z-30',
+      {
+        ['-translate-x-full']: isFlyoutOpen,
+      }
+    )}>
+      <div className="h-full flex flex-col justify-center">
+        <div className="flex justify-between items-center gap-sm p-md border-b-2">
+          <Text variant="h3">{flyoutData?.title}</Text>
+          <FaTimes onClick={closeFlyout} className="text-2xl cursor-pointer"/>
+        </div>
+        {flyoutType === flyoutTypes.comments && 
+          <CommentList story={flyoutData.story} />
+        }
+      </div>
+    </div>
+  );
+};
+
+export default Flyout;

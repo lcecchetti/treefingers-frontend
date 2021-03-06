@@ -10,7 +10,7 @@ import { FaPenFancy } from 'react-icons/fa';
 
 const Drawer = () => {
   const router = useRouter();
-  const { isDrawerOpen, closeDrawer, disableBodyScroll, enableBodyScroll, getToggledTheme } = useUI();
+  const { isDrawerOpen, closeDrawer, getToggledTheme } = useUI();
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
