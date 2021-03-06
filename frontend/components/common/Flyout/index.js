@@ -37,7 +37,7 @@ const Flyout = () => {
     )}>
       <div className="h-full flex flex-col justify-center">
         <div className="flex justify-between items-center gap-sm p-md border-b-2">
-          <Text variant="h3">{flyoutData?.title}</Text>
+          <Text variant="h3" className="uppercase">{flyoutData?.title}</Text>
           <FaTimes onClick={closeFlyout} className="text-2xl cursor-pointer"/>
         </div>
         {flyoutType === flyoutTypes.comments && 
