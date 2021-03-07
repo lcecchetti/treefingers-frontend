@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect } from 'react';
 import { Spinner, Text, Link } from 'components/ui';
 import { DATE_LONG, formatDate, getStoryUrl } from 'lib/helper';
 import { gql, useQuery } from '@apollo/client';
@@ -7,7 +7,6 @@ import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { ChapterChoice, StoryActions } from 'components/story';
 import { useUser } from 'lib/auth';
-import { CommentList } from 'components/comment';
 
 /**
  * Single story query
@@ -48,8 +47,6 @@ export const QUERY_STORY = gql`
 const StoryView = ({ story }) => {
 
   const user = useUser();
-  const [showComments, setShowComments] = useState(false);
-  const sidebarRef = useRef(null);
 
   const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { id: story.id } });
 
@@ -59,11 +56,6 @@ const StoryView = ({ story }) => {
       refetch();
     }
   }, [user]);
-
-  const onShowComments = () => {
-    setShowComments(true);
-    sidebarRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <div className="flex flex-col gap-md">
@@ -99,7 +91,7 @@ const StoryView = ({ story }) => {
 
               <div className="flex justify-between items-center">
                 <TagList tags={data.story.tags} />
-                <StoryActions story={data.story} commentAction={onShowComments} />
+                <StoryActions story={data.story} />
               </div>
             </div>
 

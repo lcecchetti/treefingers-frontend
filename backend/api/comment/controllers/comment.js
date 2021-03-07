@@ -9,6 +9,22 @@ const { sanitizeEntity } = require('strapi-utils');
 
 module.exports = {
 
+  /**
+   * Create a record.
+   *
+   * @return {Object}
+   */
+
+  create: async (ctx) => {
+
+    // set author
+    ctx.request.body.user = ctx.state.user.id;
+
+    // create story
+    const entity = await strapi.services.comment.create(ctx.request.body);
+    return sanitizeEntity(entity, { model: strapi.models.comment });
+  },
+
   update: async (ctx) => {
 
     // validate comment author

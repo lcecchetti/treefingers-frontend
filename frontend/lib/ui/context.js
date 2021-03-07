@@ -5,7 +5,7 @@ export const themes = {
   light: 'light',
 };
 
-const flyoutTypes = {
+export const flyoutTypes = {
   comments: 'COMMENTS',
 };
 

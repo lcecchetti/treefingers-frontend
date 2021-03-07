@@ -1,9 +1,9 @@
 import { Text, Spinner } from 'components/ui';
 import { formatDate } from 'lib/helper';
-import { FaTimes } from 'react-icons/fa';
 import { Like } from 'components/common';
 import { Avatar } from 'components/user';
 import { gql, useQuery } from '@apollo/client';
+import { CommentNew } from 'components/comment';
 
 /**
  * Comments list query
@@ -37,7 +37,7 @@ const CommentList = ({ story }) => {
       {error && <Text variant="error">{error.message}</Text>}
 
       {data &&
-        <div>
+        <div className="flex flex-col gap-md">
           {!data.comments.length &&
             <Text variant="span">This story has no comments yet.</Text>
           }
@@ -58,6 +58,8 @@ const CommentList = ({ story }) => {
               ))}
             </ol>
           }
+
+          <CommentNew story={story} />
         </div>
       }
     </div>
