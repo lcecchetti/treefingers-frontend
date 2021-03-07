@@ -5,6 +5,7 @@ import { Formik, Form, Field } from 'formik';
 import { FormField, Button, Text } from 'components/ui';
 import * as Yup from 'yup';
 import { AuthRequired } from 'components/auth';
+import { QUERY_COMMENTS } from '../CommentList';
 
 /**
  * Create comment mutation
@@ -23,13 +24,41 @@ const MUTATION_COMMENT_CREATE = gql`
         id
         content
         createdAt
+        user {
+          id
+          username
+        }
       } 
     }
   }
 `;
 
 const CommentNew = ({ story }) => {
-  const [createComment] = useMutation(MUTATION_COMMENT_CREATE);
+  const [createComment] = useMutation(MUTATION_COMMENT_CREATE, {
+    update(cache, { data: { createComment } }) {
+
+      // load previous story comments
+      const commentsQuery = {
+        query: QUERY_COMMENTS,
+        variables: { story: story?.id }
+      };
+      const commentsData = cache.readQuery(commentsQuery);
+
+      // add new comment to the cache
+      cache.writeQuery({
+        ...commentsQuery, data: {
+          comments: [
+            ...commentsData.comments,
+            createComment.comment,
+          ]
+        }
+      });
+
+      //@todo update story count
+      //cache.modify();
+    }
+  });
+
   const [createCommentError, setCreateCommentError] = useState('');
 
   const submitComment = async (values, { resetForm }) => {
@@ -49,6 +78,7 @@ const CommentNew = ({ story }) => {
       }
 
     } catch (e) {
+      console.log(e);
       setCreateCommentError(parseError(e));
     }
   };

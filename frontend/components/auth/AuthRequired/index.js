@@ -1,8 +1,11 @@
 import { useUser } from 'lib/auth';
 import { Text, Button, Link } from 'components/ui';
+import { getLoginUrl } from 'lib/helper';
+import { useRouter } from 'next/router';
 
 const AuthRequired = ({ children, text }) => {
   const user = useUser();
+  const router = useRouter();
 
   text = text ?? "Hey, it looks like you are not logged in. Login or create an account and you'll be ready to go.";
 
