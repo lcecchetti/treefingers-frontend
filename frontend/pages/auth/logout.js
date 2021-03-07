@@ -23,8 +23,7 @@ const LogoutPage = () => {
 
   return (
     <Container className="flex gap-sm items-center justify-center">
-      <Text variant="span">Logging out...</Text>
-      <Spinner />
+      <Spinner label="Logging out..."/>
     </Container>
   );
 };

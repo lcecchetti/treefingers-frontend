@@ -18,8 +18,7 @@ const withAuthentication = Component => {
 
     return (user ? <Component {...props} /> :
       <Container className="flex gap-sm pt-header min-h-screen items-center justify-center">
-        <Text variant="span">Authenticating...</Text>
-        <Spinner />
+        <Spinner label="Authenticating..." />
       </Container>
     );
   };
