@@ -9,7 +9,7 @@ module.exports = {
    * Do not return error, but empty user if not found.
    * @return {Object|Array}
    */
-  async self(ctx) {
+  self: async (ctx) => {
     const user = ctx.state.user;
 
     ctx.body = sanitizeEntity(user, { model: strapi.plugins['users-permissions'].models.user });
@@ -21,7 +21,7 @@ module.exports = {
    * @return {Object}
    */
 
-  async update(ctx) {
+  update: async (ctx) => {
 
     // validate story author
     const user = await strapi.plugins['users-permissions'].services.user.fetch({ id: ctx.params.id });

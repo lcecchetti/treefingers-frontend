@@ -66,13 +66,13 @@ const StoryView = ({ story }) => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-md">
+    <div className="flex flex-col gap-md">
         {loading && <Spinner />}
 
         {error && <Text variant="error">{error.message}</Text>}
 
         {data &&
-          <div className="flex flex-col gap-md">
+          <>
             {!data.story.isRoot &&
               <div className="text-center mt-sm md:mt-md flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg">
                 <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
@@ -104,7 +104,7 @@ const StoryView = ({ story }) => {
             </div>
 
             <ChapterChoice parent={data.story} />
-          </div>
+          </>
         }
     </div >
   );

@@ -13,7 +13,7 @@ module.exports = {
    * @return {Object}
    */
 
-  async create(ctx) {
+  create: async (ctx) => {
 
     // make action required for chapters
     if (ctx.request.body.parent && !ctx.request.body.action) {
@@ -34,7 +34,7 @@ module.exports = {
    * @return {Object}
    */
 
-  async update(ctx) {
+  update: async (ctx) => {
 
     // validate story author
     const story = await strapi.services.story.findOne({ id: ctx.params.id });
