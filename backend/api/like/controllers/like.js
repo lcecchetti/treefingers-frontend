@@ -11,7 +11,7 @@ module.exports = {
    * Create a record.
    * @return {Object}
    */
-  async create(ctx) {
+  create: async (ctx) => {
 
     // set user
     ctx.request.body.user = ctx.state.user.id;
@@ -45,7 +45,7 @@ module.exports = {
  * Delete a record.
  * @return {Object}
  */
-  async delete(ctx) {
+  delete: async (ctx) => {
     const like = await strapi.services.like.findOne(ctx.params);
 
     if (!like || like.user.id != ctx.state.user.id) {

@@ -9,7 +9,7 @@ const { sanitizeEntity } = require('strapi-utils');
 
 module.exports = {
 
-  async update(ctx) {
+  update: async (ctx) => {
 
     // validate comment author
     const comment = await strapi.services.comment.findOne({ id: ctx.params.id });
@@ -28,7 +28,7 @@ module.exports = {
    * Delete a record.
    * @return {Object}
    */
-  async delete(ctx) {
+  delete: async (ctx) => {
     const comment = await strapi.services.comment.findOne(ctx.params);
 
     if (!comment || comment.user.id != ctx.state.user.id) {
