@@ -1,10 +1,16 @@
 import clsx from 'clsx';
 import { CgSpinner } from 'react-icons/cg';
+import { Text } from 'components/ui';
 
-const Spinner = ({ className }) => {
+const Spinner = ({ className, label }) => {
 
   return (
-    <CgSpinner className={clsx('animate-spin', className)} />
+    <div className={clsx('flex items-center justify-around gap-sm', className)}>
+      {!!label &&
+        <Text variant="span">{label}</Text>
+      }
+      <CgSpinner className="animate-spin text-2xl" />
+    </div>
   );
 };
 

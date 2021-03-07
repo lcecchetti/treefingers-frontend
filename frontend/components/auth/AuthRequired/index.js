@@ -1,5 +1,5 @@
 import { useUser } from 'lib/auth';
-import { Text, Button } from 'components/ui';
+import { Text, Button, Link } from 'components/ui';
 
 const AuthRequired = ({ children, text }) => {
   const user = useUser();
