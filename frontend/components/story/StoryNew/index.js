@@ -3,10 +3,10 @@ import { gql, useMutation } from '@apollo/client';
 import { parseError } from 'lib/apollo/error';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
-import { FormField, Button, Text, Link } from 'components/ui';
+import { FormField, Button, Text } from 'components/ui';
 import * as Yup from 'yup';
-import { getLoginUrl, getStoryUrl } from 'lib/helper';
-import { useUser } from 'lib/auth';
+import { getStoryUrl } from 'lib/helper';
+import { AuthRequired } from 'components/auth';
 
 /**
  * Create story mutation
@@ -37,7 +37,6 @@ const MUTATION_STORY_CREATE = gql`
 `;
 
 const StoryNew = ({ parent }) => {
-  const user = useUser();
   const [createStory] = useMutation(MUTATION_STORY_CREATE);
   const router = useRouter();
   const [createStoryError, setCreateStoryError] = useState('');
@@ -64,14 +63,7 @@ const StoryNew = ({ parent }) => {
 
   return (
     <div>
-      {!user &&
-        <div className="my-md flex flex-col gap-sm items-center p-lg border-t-2 border-b-2">
-          <Text variant="p">Hey, it looks like you are not logged in. Login or create an account and you'll be ready to go.</Text>
-          <Button as={Link} href={getLoginUrl(router.asPath)}>Login / Register</Button>
-        </div>
-      }
-
-      {user &&
+      <AuthRequired>
         <Formik
           initialValues={{
             title: '',
@@ -100,7 +92,7 @@ const StoryNew = ({ parent }) => {
                   label="Action (This will be displayed in the choices list)"
                   error={errors.action}
                   touched={touched.action}
-                  />
+                />
               }
               <Field
                 as={FormField}
@@ -119,7 +111,7 @@ const StoryNew = ({ parent }) => {
                 error={errors.content}
                 touched={touched.content}
               />
-            
+
               {!!createStoryError &&
                 <Text variant="error">{createStoryError}</Text>
               }
@@ -127,13 +119,13 @@ const StoryNew = ({ parent }) => {
                 type="submit"
                 disabled={isSubmitting}
                 loading={isSubmitting}
-                className="my-md w-full">
+                className="w-full">
                 Create
                 </Button>
             </Form>
           )}
         </Formik>
-      }
+      </AuthRequired>
     </div>
   );
 };

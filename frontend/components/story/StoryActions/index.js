@@ -1,10 +1,10 @@
 import { CommentCount } from 'components/comment';
 import { Like } from 'components/common';
-import { useUI } from 'lib/ui/context';
+import { useUI, flyoutTypes } from 'lib/ui/context';
 
 const StoryActions = ({ story }) => {
 
-  const { openFlyout, flyoutTypes } = useUI();
+  const { openFlyout } = useUI();
 
   return (
     <div className="flex items-center gap-sm">

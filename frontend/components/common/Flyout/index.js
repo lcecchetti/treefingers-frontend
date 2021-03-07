@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
-import { useUI } from 'lib/ui/context';
+import { useUI, flyoutTypes } from 'lib/ui/context';
 import { Text } from 'components/ui';
 import { CommentList } from 'components/comment';
 import { FaTimes } from 'react-icons/fa'
 
 const Flyout = () => {
   const router = useRouter();
-  const { isFlyoutOpen, flyoutTypes, flyoutData, flyoutType, closeFlyout } = useUI();
+  const { isFlyoutOpen, flyoutData, flyoutType, closeFlyout } = useUI();
 
   useEffect(() => {
     // handle body scroll lock
@@ -35,7 +35,7 @@ const Flyout = () => {
         ['-translate-x-full']: isFlyoutOpen,
       }
     )}>
-      <div className="h-full flex flex-col justify-center">
+      <div className="h-full flex flex-col">
         <div className="flex justify-between items-center gap-sm p-md border-b-2">
           <Text variant="h3" className="uppercase">{flyoutData?.title}</Text>
           <FaTimes onClick={closeFlyout} className="text-2xl cursor-pointer"/>
