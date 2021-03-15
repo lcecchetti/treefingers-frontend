@@ -28,6 +28,10 @@ const MUTATION_COMMENT_CREATE = gql`
           id
           username
         }
+        story {
+          id
+          commentsCount
+        }
       } 
     }
   }
@@ -53,12 +57,8 @@ const CommentNew = ({ story }) => {
           ]
         }
       });
-
-      //@todo update story count
-      //cache.modify();
     }
   });
-
   const [createCommentError, setCreateCommentError] = useState('');
 
   const submitComment = async (values, { resetForm }) => {
@@ -71,10 +71,10 @@ const CommentNew = ({ story }) => {
         },
       });
 
-      if (data?.createComment?.comment?.id) {
-        resetForm();
+      console.log(data);
 
-        //@todo update apollo cache
+      if (data.createComment?.comment?.id) {
+        resetForm();
       }
 
     } catch (e) {

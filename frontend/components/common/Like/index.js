@@ -6,6 +6,36 @@ import clsx from 'clsx';
 import { useUser } from 'lib/auth';
 
 /**
+ * Store like relations
+ * @type gql
+ */
+const FRAGMENT_LIKE_RELATIONS = gql`
+  fragment LikeRelations on Like {
+    story {
+      id
+      likesCount
+      currentUserLike {
+        id
+      }
+    }
+    author {
+      id
+      likesCount
+      currentUserLike {
+        id
+      }
+    }
+    comment {
+      id
+      likesCount
+      currentUserLike {
+        id
+      }
+    }
+  }
+`;
+
+/**
  * Create like mutation
  * @type {gql}
  */
@@ -14,9 +44,11 @@ const MUTATION_LIKE_CREATE = gql`
     createLike(input: { data: { story: $story, author: $author, comment: $comment } }) {
       like {
         id
+        ...LikeRelations
       } 
     }
   }
+  ${FRAGMENT_LIKE_RELATIONS}
 `;
 
 /**
@@ -28,20 +60,21 @@ const MUTATION_LIKE_DELETE = gql`
     deleteLike(input: { where: { id: $id } }) {
       like {
         id
+        ...LikeRelations
       } 
     }
   }
+  ${FRAGMENT_LIKE_RELATIONS}
 `;
 
 const Like = ({ entity, viewOnly }) => {
 
+  console.log(entity);
+  // get entity type
   const entityType = entity.__typename == 'UsersPermissionsUser' ? 'author' : entity.__typename.toLowerCase();
 
   // current user
   const user = useUser();
-
-  // current user like
-  const [userLike, setUserLike] = useState(entity.currentUserLike);
 
   // error status
   const [isError, setIsError] = useState(false);
@@ -56,11 +89,6 @@ const Like = ({ entity, viewOnly }) => {
   // set always not editable for non logged in users
   viewOnly = viewOnly || !user;
 
-  // keep prop and state aligned
-  useEffect(() => {
-    setUserLike(entity.currentUserLike);
-  }, [entity.currentUserLike]);
-
   /**
    * Submit like
    */
@@ -72,12 +100,7 @@ const Like = ({ entity, viewOnly }) => {
       variables[entityType] = entity.id;
 
       // create like
-      const { data } = await createLike({ variables });
-
-      // update like if success
-      if (data.createLike.like) {
-        setUserLike(data.createLike.like);
-      }
+      await createLike({ variables });
 
     } catch (e) {
       setIsError(true);
@@ -92,16 +115,11 @@ const Like = ({ entity, viewOnly }) => {
       setIsError(false);
 
       // delete like
-      const { data } = await deleteLike({
+      await deleteLike({
         variables: {
-          id: userLike.id,
+          id: entity.currentUserLike.id,
         },
       });
-
-      // update like if success
-      if (data.deleteLike.like) {
-        setUserLike(null);
-      }
 
     } catch (e) {
       setIsError(true);
@@ -118,37 +136,20 @@ const Like = ({ entity, viewOnly }) => {
     }
 
     setIsSubmitting(true);
-    userLike ? await removeLike() : await submitLike();
+    entity.currentUserLike ? await removeLike() : await submitLike();
     setIsSubmitting(false);
   }
 
-  /**
-   * Get like count keeping current user like into consideration
-   * @return {int}
-   */
-  const getCount = () => {
-    let userLikeModifier = 0;
-
-    if (entity.currentUserLike && !userLike) {
-      userLikeModifier = -1;
-    }
-
-    if (!entity.currentUserLike && userLike) {
-      userLikeModifier = 1;
-    }
-    return entity.likesCount + userLikeModifier;
-  };
-
   // pick icon accoridng to user like presence
-  const Icon = userLike ? FaHeart : FaRegHeart;
+  const Icon = entity.currentUserLike ? FaHeart : FaRegHeart;
 
   return (
     <div className={clsx(
       'flex gap-sm items-center',
       isError && 'text-error',
     )}>
-      {!!getCount() &&
-        <Text variant="span">{getCount()}</Text>
+      {!!entity.likesCount &&
+        <Text variant="span">{entity.likesCount}</Text>
       }
       <Icon className={clsx(
         'text-2xl',
