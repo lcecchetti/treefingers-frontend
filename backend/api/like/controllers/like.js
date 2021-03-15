@@ -38,6 +38,18 @@ module.exports = {
 
     // create like
     const entity = await strapi.services.like.create(ctx.request.body);
+
+    // update entity like data
+    if (entity.story) {
+      await strapi.services.story.withLikeData(entity.story, ctx.state.user);
+    }
+    else if (entity.author) {
+      await strapi.services.author.withLikeData(entity.author, ctx.state.user);
+    }
+    else if (entity.comment) {
+      await strapi.services.comment.withLikeData(entity.comment, ctx.state.user);
+    }
+
     return sanitizeEntity(entity, { model: strapi.models.like });
   },
 
@@ -53,6 +65,17 @@ module.exports = {
     }
 
     const entity = await strapi.services.like.delete(ctx.params);
+
+    // update entity like data
+    if (entity.story) {
+      await strapi.services.story.withLikeData(entity.story, ctx.state.user);
+    }
+    else if (entity.author) {
+      await strapi.services.author.withLikeData(entity.author, ctx.state.user);
+    }
+    else if (entity.comment) {
+      await strapi.services.comment.withLikeData(entity.comment, ctx.state.user);
+    }
 
     return sanitizeEntity(entity, { model: strapi.models.like });
   },

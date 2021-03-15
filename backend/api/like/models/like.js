@@ -26,7 +26,7 @@ module.exports = {
       else if (params.author) {
         await strapi.plugins['users-permissions'].services.user.updateLikesCount(params.author);
       }
-      else if (params.author) {
+      else if (params.comment) {
         await strapi.services.comment.updateLikesCount(params.comment);
       }
     },
