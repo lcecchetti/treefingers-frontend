@@ -44,7 +44,7 @@ module.exports = {
       await strapi.services.story.withLikeData(entity.story, ctx.state.user);
     }
     else if (entity.author) {
-      await strapi.services.author.withLikeData(entity.author, ctx.state.user);
+      await strapi.plugins['users-permissions'].services.user.withLikeData(entity.author, ctx.state.user);
     }
     else if (entity.comment) {
       await strapi.services.comment.withLikeData(entity.comment, ctx.state.user);
@@ -71,7 +71,7 @@ module.exports = {
       await strapi.services.story.withLikeData(entity.story, ctx.state.user);
     }
     else if (entity.author) {
-      await strapi.services.author.withLikeData(entity.author, ctx.state.user);
+      await strapi.plugins['users-permissions'].services.user.withLikeData(entity.author, ctx.state.user);
     }
     else if (entity.comment) {
       await strapi.services.comment.withLikeData(entity.comment, ctx.state.user);
