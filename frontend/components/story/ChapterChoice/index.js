@@ -69,8 +69,8 @@ const ChapterChoice = ({ className, parent }) => {
                   </div>
                   <ul className="flex flex-col border-2 rounded-xl overflow-hidden gap-px bg-primary">
                     {data.stories.map((chapter) => (
-                      <li key={chapter.id} className="p-md bg-base">
-                        <Link href={getStoryUrl(chapter)} className="flex gap-md items-center justify-between">
+                      <li key={chapter.id} className="bg-base">
+                        <Link href={getStoryUrl(chapter)} className="p-md flex gap-md items-center justify-between">
                           <Text variant="span">{chapter.action}</Text>
                           <Like entity={chapter} viewOnly={true} />
                         </Link>
