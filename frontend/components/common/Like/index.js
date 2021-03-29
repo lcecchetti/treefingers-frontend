@@ -67,10 +67,19 @@ const MUTATION_LIKE_DELETE = gql`
   ${FRAGMENT_LIKE_RELATIONS}
 `;
 
+/**
+ * Get entity type
+ * @param {Object} entity 
+ * @returns {String}
+ */
+const getEntityType = (entity) =>  {
+  return entity.__typename == 'UsersPermissionsUser' ? 'author' : entity.__typename.toLowerCase();
+}
+
 const Like = ({ entity, viewOnly }) => {
 
   // get entity type
-  const entityType = entity.__typename == 'UsersPermissionsUser' ? 'author' : entity.__typename.toLowerCase();
+  const entityType = getEntityType(entity);
 
   // current user
   const user = useUser();
