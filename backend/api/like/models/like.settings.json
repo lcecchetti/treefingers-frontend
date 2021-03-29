@@ -20,14 +20,14 @@
       "plugin": "users-permissions",
       "model": "user"
     },
-    "user": {
-      "via": "likedStories",
-      "plugin": "users-permissions",
-      "model": "user"
-    },
     "comment": {
       "via": "likes",
       "model": "comment"
+    },
+    "user": {
+      "via": "liked",
+      "plugin": "users-permissions",
+      "model": "user"
     }
   }
 }

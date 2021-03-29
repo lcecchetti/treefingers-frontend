@@ -71,8 +71,6 @@ const CommentNew = ({ story }) => {
         },
       });
 
-      console.log(data);
-
       if (data.createComment?.comment?.id) {
         resetForm();
       }
