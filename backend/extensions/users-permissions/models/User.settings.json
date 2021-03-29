@@ -63,7 +63,7 @@
       "collection": "story",
       "via": "author"
     },
-    "likedStories": {
+    "liked": {
       "collection": "like",
       "via": "user"
     },

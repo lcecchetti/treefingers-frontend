@@ -69,7 +69,6 @@ const MUTATION_LIKE_DELETE = gql`
 
 const Like = ({ entity, viewOnly }) => {
 
-  console.log(entity);
   // get entity type
   const entityType = entity.__typename == 'UsersPermissionsUser' ? 'author' : entity.__typename.toLowerCase();
 
