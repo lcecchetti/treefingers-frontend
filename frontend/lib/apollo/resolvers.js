@@ -1,15 +1,7 @@
-import Story from 'lib/mongodb/models/story';
+import { merge } from 'lodash';
+import story from 'lib/graphql/story/resolvers';
 
-export const resolvers = {
-  Query: {
-    test: async (_parent, _args, _context, _info) => {
-      try {
-        const story = await Story.findOne();
-        return story.title;
-      }
-      catch(e) {
-        console.log(e);
-      }
-    },
-  },
-};
+export const resolvers = merge( 
+  {},
+  story,
+);

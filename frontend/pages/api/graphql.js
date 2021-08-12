@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro';
-import { typeDefs } from 'lib/apollo/type-defs';
+import { typeDefs } from 'lib/apollo/typeDefs';
 import { resolvers } from 'lib/apollo/resolvers';
 import { context } from 'lib/apollo/context';
 
