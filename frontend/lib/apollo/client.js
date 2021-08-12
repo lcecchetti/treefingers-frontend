@@ -13,7 +13,7 @@ let apolloClient;
  * @type {HttpLink}
  */
 const httpLink = new HttpLink({
-  uri: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/graphql`,
+  uri: `${process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT}`,
   credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers
 });
 
