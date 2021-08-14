@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server-micro';
 import Story from 'lib/graphql/story/typeDefs';
+import User from 'lib/graphql/user/typeDefs';
 
 const Query = gql`
   type Query {
@@ -17,4 +18,5 @@ export const typeDefs = [
   Query,
   Mutation,
   Story,
+  User,
 ];
