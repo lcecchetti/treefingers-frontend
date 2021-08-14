@@ -2,13 +2,13 @@ import { gql } from 'apollo-server-micro';
 
 const typeDefs = gql`
   extend type Query {
-    story(id: ID!): Story
+    user(id: ID!): User
   }  
 
-  type Story {
+  type User {
     id: ID!
-    title: String!
-    author: User!
+    email: String!
+    stories: [Story]
   }
 `;
 

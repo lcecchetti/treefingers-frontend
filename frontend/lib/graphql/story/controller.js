@@ -1,14 +1,14 @@
 import Story from 'lib/mongodb/models/story';
 
-const find = () => {
-
+const find = async (filters) => {
+  return await Story.find(filters);
 };
 
-const findOne = async (id) => {
-  return await Story.findOne({ _id: id });
+const findById = async (id) => {
+  return await Story.findById(id);
 };
 
 export default {
   find,
-  findOne
+  findById,
 };
