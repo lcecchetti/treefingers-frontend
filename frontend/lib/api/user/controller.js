@@ -1,4 +1,4 @@
-import User from 'lib/mongodb/models/user';
+import User from 'lib/api/user/model';
 
 const findById = (id) => {
   return User.findById(id);
