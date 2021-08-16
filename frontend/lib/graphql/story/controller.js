@@ -1,11 +1,11 @@
 import Story from 'lib/mongodb/models/story';
 
-const find = async (filters) => {
-  return await Story.find(filters);
+const find = (conditions, projection, options) => {
+  return Story.find(conditions, projection, options);
 };
 
-const findById = async (id) => {
-  return await Story.findById(id);
+const findById = (id) => {
+  return Story.findById(id);
 };
 
 export default {
