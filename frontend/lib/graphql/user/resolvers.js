@@ -3,13 +3,13 @@ import storyController from 'lib/graphql/story/controller';
 
 const resolvers = {
   Query: {
-    user: async (parent, { id }, context) => {
-      return await userController.findById(id);
+    user: (root, { id }) => {
+      return userController.findById(id);
     },
   },
   User: {
-    stories: async (parent, args, context) => {
-      return await storyController.find({ _id: parent.stories });
+    stories: (user, { conditions }) => {
+      return storyController.find({ author: user._id, ...conditions });
     },
   }
 };

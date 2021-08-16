@@ -3,13 +3,13 @@ import userController from 'lib/graphql/user/controller';
 
 const resolvers = {
   Query: {
-    story: async (parent, { id }, context) => {
-      return await storyController.findById(id);
+    story: (root, { id }) => {
+      return storyController.findById(id);
     },
   },
   Story: {
-    author: async (parent, args, context) => {
-      return await userController.findById(parent.author);
+    author: (story) => {
+      return userController.findById(story.author);
     },
   }
 };
