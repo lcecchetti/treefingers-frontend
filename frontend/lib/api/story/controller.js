@@ -1,4 +1,4 @@
-import Story from 'lib/mongodb/models/story';
+import Story from 'lib/api/story/model';
 
 const find = (conditions, projection, options) => {
   return Story.find(conditions, projection, options);

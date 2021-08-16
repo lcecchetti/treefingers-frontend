@@ -1,4 +1,4 @@
-import dbConnect from 'lib/mongodb/connection';
+import dbConnect from 'lib/mongodb/dbConnect';
 
 export const context = async () => {
   return {

@@ -1,5 +1,5 @@
-import userController from 'lib/graphql/user/controller';
-import storyController from 'lib/graphql/story/controller';
+import userController from 'lib/api/user/controller';
+import storyController from 'lib/api/story/controller';
 
 const resolvers = {
   Query: {
