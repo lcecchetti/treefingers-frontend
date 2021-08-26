@@ -1,6 +1,6 @@
 
 import mongoose from 'mongoose';
-import paginationService from 'lib/api/pagination/service';
+import paginationService from 'backend/api/pagination/service';
 
 const StorySchema = new mongoose.Schema({
   title: {

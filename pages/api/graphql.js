@@ -1,4 +1,4 @@
-import { createApolloServer } from 'lib/apollo/server';
+import { createApolloServer } from 'backend/lib/apollo/server';
 
 const apolloServer = createApolloServer();
 
