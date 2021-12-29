@@ -1,13 +1,15 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
-  purge: ['./pages/**/*.js', './components/**/*.js'],
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
         gray: '#9CA3AF',
-
         // custom colors
         primary: {
           DEFAULT: 'var(--color-primary)',
@@ -31,13 +33,6 @@ module.exports = {
         xl: defaultTheme.spacing['10'],
         header: '76px',
       },
-    },
-  },
-  variants: {
-    extend: {
-      opacity: ['active', 'disabled'],
-      textDecoration: ['disabled'],
-      animation: ['group-hover'],
     },
   },
   plugins: [

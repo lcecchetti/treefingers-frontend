@@ -1,10 +1,4 @@
 @import './vars.css';
-
-@tailwind base;
 @import './base.css';
-
-@tailwind components;
 @import './components.css';
-
-@tailwind utilities;
 @import './utilities.css';

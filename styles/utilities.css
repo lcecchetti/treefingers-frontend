@@ -1,3 +1,5 @@
+@tailwind utilities;
+
 .min-h-screen-no-header {
   min-height: calc(100vh - theme('spacing.header'));
 }
