@@ -1,3 +1,5 @@
+@tailwind components;
+
 @import 'react-typist/dist/Typist.css';
 
 .drawer-open {
