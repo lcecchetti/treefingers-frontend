@@ -21,15 +21,15 @@ const MUTATION_COMMENT_CREATE = gql`
       story: $story,
     }}) {
       comment {
-        id
+        _id
         content
         createdAt
         user {
-          id
+          _id
           username
         }
         story {
-          id
+          _id
           commentsCount
         }
       } 
@@ -44,7 +44,7 @@ const CommentNew = ({ story }) => {
       // load previous story comments
       const commentsQuery = {
         query: QUERY_COMMENTS,
-        variables: { story: story?.id }
+        variables: { story: story?._id }
       };
       const commentsData = cache.readQuery(commentsQuery);
 
@@ -71,7 +71,7 @@ const CommentNew = ({ story }) => {
         },
       });
 
-      if (data.createComment?.comment?.id) {
+      if (data.createComment?.comment?._id) {
         resetForm();
       }
 
@@ -87,7 +87,7 @@ const CommentNew = ({ story }) => {
         <Formik
           initialValues={{
             content: '',
-            story: story?.id,
+            story: story?._id,
           }}
           validationSchema={Yup.object().shape({
             content: Yup.string().required('Required'),

@@ -10,7 +10,7 @@ import { StoryView, QUERY_STORY, QUERY_CHAPTERS } from 'components/story';
 const QUERY_STORY_PAGES = gql`
   query stories {
     stories {
-      id
+      _id
     }
   }
 `;
@@ -29,7 +29,7 @@ export async function getStaticProps({ params }) {
   // load story by id
   const { data } = await apolloClient.query({
     query: QUERY_STORY,
-    variables: { id: params.id },
+    variables: { _id: params._id },
   });
 
   // check if story exists
@@ -43,7 +43,7 @@ export async function getStaticProps({ params }) {
   await apolloClient.query({
     query: QUERY_CHAPTERS,
     data: { stories: data.story.children },
-    variables: { where: { parent: data.story.id } },
+    variables: { where: { parent: data.story._id } },
   });
 
   return addApolloState(apolloClient, {
@@ -58,7 +58,7 @@ export async function getStaticPaths() {
   const { data } = await apolloClient.query({ query: QUERY_STORY_PAGES });
 
   return {
-    paths: data.stories.map((story) => ({ params: { id: story.id } }) ) || [],
+    paths: data.stories.map((story) => ({ params: { _id: story._id } }) ) || [],
     fallback: 'blocking',
   };
 }

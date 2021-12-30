@@ -6,7 +6,7 @@ import { Spinner, Link, Text, Button } from 'components/ui';
 const QUERY_SEARCH = gql`
   query search($q: String!) {
     search(q: $q) {
-      id
+      _id
       label
       excerpt
       url
@@ -34,7 +34,7 @@ const SearchResult = ({ className, query }) => {
       }
 
       {data?.search && data.search.map((result) => (
-        <div key={result.id}>
+        <div key={result._id}>
           <Link href={getSearchResultUrl(result)}>
             <Text variant="h3" className="font-bold">{result.label}</Text>
             <Text variant="p">{result.excerpt}</Text>

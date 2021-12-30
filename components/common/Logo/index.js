@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Text, Link } from 'components/ui';
+import { Link } from 'components/ui';
 import { useRouter } from 'next/router';
 
 const Logo = ({ className, main }) => {

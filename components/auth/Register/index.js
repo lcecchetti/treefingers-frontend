@@ -7,40 +7,41 @@ import * as Yup from 'yup';
 import { parseError } from 'lib/apollo/error';
 import { Text, Button, Link, FormField } from 'components/ui';
 import { getLoginUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
-import { setAuthToken, useUser } from 'lib/auth';
+import { setAuthToken } from 'lib/auth/token';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
- * Sign up mutation
+ * Register mutation
  * @type {gql}
  */
-const MUTATION_SIGN_UP = gql`
-  mutation SignUpMutation($username: String!, $email: String!, $password: String!) {
+const MUTATION_REGISTER = gql`
+  mutation register($username: String!, $email: String!, $password: String!) {
     register(input: { username: $username, email: $email, password: $password }) {
-      jwt
+      token
     }
   }
 `;
 
 export default function SignUp() {
-  const [signUp] = useMutation(MUTATION_SIGN_UP);
+  const [register] = useMutation(MUTATION_REGISTER);
   const router = useRouter();
   const [registerError, setRegisterError] = useState('');
   const client = useApolloClient();
-  const user = useUser();
+  const currentUser = useCurrentUser();
 
   // logged in users should not visit login/register page
   useEffect(() => {
-    if (user) {
+    if (currentUser) {
       router.push(getProfileMeUrl());
     }
-  }, [user]);
+  }, [currentUser]);
 
   /**
    * Handle signup form submission
    * @param {Object} values
    * @return {Promise<void>}
    */
-  const register = async (username, email, password) => {
+  const registerSubmit = async (username, email, password) => {
     try {
       const { data } = await signUp({
         variables: {
@@ -50,9 +51,9 @@ export default function SignUp() {
         },
       });
 
-      if (data?.register?.jwt) {
+      if (data?.register?.token) {
         setRegisterError('');
-        setAuthToken(data.register.jwt);
+        setAuthToken(data.register.token);
 
         await client.resetStore();
 
@@ -75,7 +76,7 @@ export default function SignUp() {
           email: '',
           password: '',
         }}
-        onSubmit={({ username, email, password }) => register(username, email, password)}
+        onSubmit={({ username, email, password }) => registerSubmit(username, email, password)}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too Short!').required('Required'),

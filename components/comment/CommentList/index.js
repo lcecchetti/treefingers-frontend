@@ -12,16 +12,16 @@ import { CommentNew } from 'components/comment';
  */
 export const QUERY_COMMENTS = gql`
   query comments ($story: ID!) {
-    comments (where: { story: $story } , limit: 20) {
-      id
+    comments (filter: { story: { eq: $story } }) {
+      _id
       content
       createdAt
       likesCount
       currentUserLike {
-        id
+        _id
       }
       user {
-        id
+        _id
         username
       }
     }
@@ -29,7 +29,7 @@ export const QUERY_COMMENTS = gql`
 `;
 
 const CommentList = ({ story }) => {
-  const { data, loading, error } = useQuery(QUERY_COMMENTS, { variables: { story: story.id } });
+  const { data, loading, error } = useQuery(QUERY_COMMENTS, { variables: { story: story._id } });
 
   // scroll to bottom anchor
   const bottomRef = useRef(null);
@@ -40,7 +40,7 @@ const CommentList = ({ story }) => {
   // scroll to bottom each time a new comment list has loaded
   useEffect(() => {
     scrollToBottom();
-  }, [story.id, loading]);
+  }, [story._id, loading]);
 
   return (
     <div className="h-full overflow-y-auto">
@@ -58,7 +58,7 @@ const CommentList = ({ story }) => {
             {!!data.comments.length &&
               <ol className="flex flex-col gap-sm">
                 {data.comments.map((comment) => (
-                  <li key={comment.id}>
+                  <li key={comment._id}>
                     <div className="flex flex-col gap-xs">
                       <Avatar user={comment.user} showName={true} />
                       <Text variant="span">{comment.content}</Text>

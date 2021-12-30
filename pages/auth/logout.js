@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { DefaultLayout } from 'components/layout';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
-import { getAuthToken, removeAuthToken } from 'lib/auth';
-import { Spinner, Text, Container } from 'components/ui';
+import { getAuthToken, removeAuthToken } from 'lib/auth/token';
+import { Spinner, Container } from 'components/ui';
 
 const LogoutPage = () => {
   const router = useRouter()

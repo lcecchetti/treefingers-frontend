@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { gql, useMutation } from '@apollo/client';
 import { Text } from 'components/ui';
 import clsx from 'clsx';
-import { useUser } from 'lib/auth';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
  * Store like relations
@@ -12,24 +12,24 @@ import { useUser } from 'lib/auth';
 const FRAGMENT_LIKE_RELATIONS = gql`
   fragment LikeRelations on Like {
     story {
-      id
+      _id
       likesCount
       currentUserLike {
-        id
+        _id
       }
     }
     author {
-      id
+      _id
       likesCount
       currentUserLike {
-        id
+        _id
       }
     }
     comment {
-      id
+      _id
       likesCount
       currentUserLike {
-        id
+        _id
       }
     }
   }
@@ -43,7 +43,7 @@ const MUTATION_LIKE_CREATE = gql`
   mutation createLike($story: ID, $author: ID, $comment: ID) {
     createLike(input: { data: { story: $story, author: $author, comment: $comment } }) {
       like {
-        id
+        _id
         ...LikeRelations
       } 
     }
@@ -56,10 +56,10 @@ const MUTATION_LIKE_CREATE = gql`
  * @type {gql}
  */
 const MUTATION_LIKE_DELETE = gql`
-  mutation deleteLike($id: ID!) {
-    deleteLike(input: { where: { id: $id } }) {
+  mutation deleteLike($_id: ID!) {
+    deleteLike(input: { filter: { _id: { eq: $_id } } }) {
       like {
-        id
+        _id
         ...LikeRelations
       } 
     }
@@ -73,7 +73,7 @@ const MUTATION_LIKE_DELETE = gql`
  * @returns {String}
  */
 const getEntityType = (entity) =>  {
-  return entity.__typename == 'UsersPermissionsUser' ? 'author' : entity.__typename.toLowerCase();
+  return entity.__typename == 'User' ? 'author' : entity.__typename.toLowerCase();
 }
 
 const Like = ({ entity, viewOnly }) => {
@@ -82,7 +82,7 @@ const Like = ({ entity, viewOnly }) => {
   const entityType = getEntityType(entity);
 
   // current user
-  const user = useUser();
+  const currentUser = useCurrentUser();
 
   // error status
   const [isError, setIsError] = useState(false);
@@ -95,7 +95,7 @@ const Like = ({ entity, viewOnly }) => {
   const [deleteLike] = useMutation(MUTATION_LIKE_DELETE);
 
   // set always not editable for non logged in users
-  viewOnly = viewOnly || !user;
+  viewOnly = viewOnly || !currentUser;
 
   /**
    * Submit like
@@ -105,7 +105,7 @@ const Like = ({ entity, viewOnly }) => {
       setIsError(false);
 
       const variables = {};
-      variables[entityType] = entity.id;
+      variables[entityType] = entity._id;
 
       // create like
       await createLike({ variables });
@@ -125,7 +125,7 @@ const Like = ({ entity, viewOnly }) => {
       // delete like
       await deleteLike({
         variables: {
-          id: entity.currentUserLike.id,
+          _id: entity.currentUserLike._id,
         },
       });
 

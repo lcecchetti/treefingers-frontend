@@ -8,9 +8,9 @@ import { getTagUrl } from 'lib/helper';
  * @type {gql}
  */
 export const QUERY_TAGS = gql`
-  query tags($where: JSON) {
-    tags(where: $where) {
-      id
+  query tags {
+    tags {
+      _id
       label
       slug
     }
@@ -22,7 +22,7 @@ const TagList = ({ className, tags, buttonVariant = 'primary' }) => {
   return (
     <ul className={clsx('flex gap-sm uppercase', className)}>
       {tags.map((tag) => (
-        <li key={tag.id}>
+        <li key={tag._id}>
           <Button variant={buttonVariant} as={Link} size="sm" href={getTagUrl(tag)}>{tag.label}</Button>
         </li>
       ))}
