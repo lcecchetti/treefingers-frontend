@@ -6,39 +6,39 @@ import { FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { ChapterChoice, StoryActions } from 'components/story';
-import { useUser } from 'lib/auth';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
  * Single story query
  * @type {gql}
  */
 export const QUERY_STORY = gql`
-  query story($id: ID!) {
-    story(id: $id) {
-      id
+  query story($_id: ID!) {
+    story(filter: { _id: { eq: $_id } }) {
+      _id
       title
       content
       createdAt
-      isRoot
+      root
       author {
-        id
+        _id
         username
       }
       tags {
-        id
+        _id
         label
         slug
       }
       parent {
-        id
+        _id
       }
       root {
-        id
+        _id
       }
       likesCount
       commentsCount
       currentUserLike {
-        id
+        _id
       }
     }
   }
@@ -46,16 +46,16 @@ export const QUERY_STORY = gql`
 
 const StoryView = ({ story }) => {
 
-  const user = useUser();
+  const currentUser = useCurrentUser();
 
-  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { id: story.id } });
+  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { _id: story._id } });
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (user !== null) {
+    if (currentUser !== null) {
       refetch();
     }
-  }, [user]);
+  }, [currentUser]);
 
   return (
     <div className="flex flex-col gap-md">

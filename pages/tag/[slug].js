@@ -7,7 +7,7 @@ import { QUERY_STORIES } from 'components/story';
 const TagPage = ({ tag }) => {
   return (
     <Container>
-      <TagView id={tag.id} />
+      <TagView _id={tag._id} />
     </Container>
   );
 };
@@ -34,13 +34,13 @@ export async function getStaticProps({ params }) {
   apolloClient.writeQuery({
     query: QUERY_TAG,
     data: { tag: tag },
-    variables: { id: tag.id },
+    variables: { _id: tag._id },
   });
 
   // load tag stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { where: { tags: { id: tag.id }, isRoot: true } },
+    variables: { where: { tags: { _id: tag._id }, isRoot: true } },
   });
 
   return addApolloState(apolloClient, {

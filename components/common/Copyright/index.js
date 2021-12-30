@@ -1,5 +1,4 @@
 import { Link } from 'components/ui';
-import clsx from 'clsx';
 
 const Copyright = ({ className }) => {
 

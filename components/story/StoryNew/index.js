@@ -16,7 +16,6 @@ const MUTATION_STORY_CREATE = gql`
   mutation createStory(
     $title: String!,
     $content: String!,
-    $action: String,
     $parent: ID,
     $root: ID,
     $tags: [ID]
@@ -24,13 +23,12 @@ const MUTATION_STORY_CREATE = gql`
     createStory(input: { data: {
       title: $title,
       content: $content,
-      action: $action,
       parent: $parent,
       root: $root,
       tags: $tags,
     }}) {
       story {
-        id
+        _id
       } 
     }
   }
@@ -51,7 +49,7 @@ const StoryNew = ({ parent }) => {
         },
       });
 
-      if (data?.createStory?.story?.id) {
+      if (data?.createStory?.story?._id) {
         resetForm();
         router.push(getStoryUrl(data.createStory.story));
       }
@@ -68,32 +66,17 @@ const StoryNew = ({ parent }) => {
           initialValues={{
             title: '',
             content: '',
-            action: '',
-            parent: parent?.id,
-            root: parent?.root?.id ?? parent?.id,
+            parent: parent?._id,
+            root: parent?.root?._id ?? parent?._id,
           }}
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Required'),
             content: Yup.string().required('Required'),
-            action: Yup.string().when('parent', {
-              is: value => value !== undefined,
-              then: Yup.string().required('Required'),
-            }),
           })}
           onSubmit={(values, methods) => submitStory(values, methods)}
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex flex-col gap-sm">
-              {!!parent &&
-                <Field
-                  as={FormField}
-                  name="action"
-                  type="text"
-                  label="Action (This will be displayed in the choices list)"
-                  error={errors.action}
-                  touched={touched.action}
-                />
-              }
               <Field
                 as={FormField}
                 name="title"

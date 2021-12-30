@@ -5,12 +5,12 @@ import { useTheme } from 'next-themes';
 import { useUI } from 'lib/ui/context';
 import { getLoginUrl, getProfileMeUrl, getStoryNewUrl } from 'lib/helper';
 import { ThemeIcon } from 'components/common';
-import { useUser } from 'lib/auth';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 const IconList = () => {
   const { theme, setTheme } = useTheme();
   const { toggleDrawer, getToggledTheme, openSearch } = useUI();
-  const user = useUser();
+  const currentUser = useCurrentUser();
 
   const iconListItems = [
     {
@@ -35,7 +35,7 @@ const IconList = () => {
       showOnDesktop: true,
     },
     {
-      href: user ? getProfileMeUrl() : getLoginUrl(),
+      href: currentUser ? getProfileMeUrl() : getLoginUrl(),
       Icon: FaUserCircle,
       onClick: false,
       showOnMobile: true,

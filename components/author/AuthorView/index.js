@@ -3,19 +3,19 @@ import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
 import { Like } from 'components/common';
-import { useUser } from 'lib/auth';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
  * Author fragment
  * @type {gql}
  */
 const FRAGMENT_AUTHOR = gql`
-  fragment AuthorFields on UsersPermissionsUser {
-    id
-    username
+  fragment AuthorFields on User {
+    _id
+    email
     bio
     currentUserLike {
-      id
+      _id
     }
     likesCount
   }
@@ -26,8 +26,8 @@ const FRAGMENT_AUTHOR = gql`
  * @type {gql}
  */
 export const QUERY_AUTHOR = gql`
-  query user ($id: ID!) {
-    user (id: $id) {
+  query user($_id: ID!) {
+    user (filter: { _id: { eq: $_id } }) {
       ...AuthorFields
     }
   }
@@ -40,17 +40,17 @@ export const QUERY_AUTHOR = gql`
  */
 export const QUERY_AUTHORS_BY_USERNAME = gql`
   query users ($username: String!) {
-    users (where: { username: $username }) {
+    users (filter: { username: { eq: $username } }) {
       ...AuthorFields
     }
   }
   ${FRAGMENT_AUTHOR}
 `;
 
-const AuthorView = ({ className, id }) => {
+const AuthorView = ({ className, _id }) => {
 
   const user = useUser();
-  const { data, loading, error, refetch } = useQuery(QUERY_AUTHOR, { variables: { id } });
+  const { data, loading, error, refetch } = useQuery(QUERY_AUTHOR, { variables: { _id } });
 
   // refresh data with customer specific infos
   useEffect(() => {

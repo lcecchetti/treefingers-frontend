@@ -6,33 +6,33 @@ import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { StoryActions } from 'components/story';
 import clsx from 'clsx';
-import { useUser } from 'lib/auth';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
  * Story list query
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
-  query stories ($where: JSON) {
-    stories (where: $where, limit: 20) {
-      id
+  query stories ($author: ID, $root) {
+    stories (filter: { author: { eq: $author } }) {
+      _id
       title
       excerpt
       createdAt
       isRoot
       author {
-        id
+        _id
         username
       }
       tags {
-        id
+        _id
         label
         slug
       }
       likesCount
       commentsCount
       currentUserLike {
-        id
+        _id
       }
     }
   }
@@ -40,24 +40,21 @@ export const QUERY_STORIES = gql`
 
 const StoryList = ({ className, rootsOnly = true, author, tag }) => {
 
-  const user = useUser();
+  const currentUser = useCurrentUser();
 
   const { data, loading, error, refetch } = useQuery(QUERY_STORIES, {
     variables: {
-      where: {
-        author: author?.id,
-        tags: tag?.id ? { id: tag.id } : undefined,
-        isRoot: rootsOnly ? true : undefined,
-      },
+      author: author?._id,
+      root: rootsOnly ? true : undefined,
     },
   });
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (user !== null) {
+    if (currentUser !== null) {
       refetch();
     }
-  }, [user]);
+  }, [currentUser]);
 
   return (
     <div className={clsx('grid md:grid-cols-2 gap-md', className)}>
@@ -66,7 +63,7 @@ const StoryList = ({ className, rootsOnly = true, author, tag }) => {
       {error && <Text variant="error">{error.message}</Text>}
 
       {data?.stories && data.stories.map((story) => (
-        <div key={story.id} className="rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-xs">
+        <div key={story._id} className="rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-xs">
 
           <div className="flex justify-between items-center">
             <Text variant="span" className="text-sm">

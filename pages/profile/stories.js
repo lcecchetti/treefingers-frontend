@@ -1,18 +1,18 @@
 import { ProfileLayout } from 'components/layout';
-import { useUser } from 'lib/auth';
+import { useCurrentUser } from 'lib/auth/currentUser';
 import { StoryList } from 'components/story';
 import { PageIntro } from 'components/common';
 import { Text } from 'components/ui';
 
 const ProfileStoriesPage = () => {
-  const user = useUser();
+  const currentUser = useCurrentUser();
 
   return (
     <>
       <PageIntro title="My stories">
         <Text variant="p">Here you can find a list of all your writings.</Text>
       </PageIntro>
-      <StoryList author={user} rootsOnly={false} />
+      <StoryList author={currentUser} rootsOnly={false} />
     </>
   );
 };

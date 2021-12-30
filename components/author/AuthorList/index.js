@@ -5,24 +5,25 @@ import clsx from 'clsx';
 import { Avatar } from 'components/user';
 import { Like } from 'components/common';
 import { getStoryUrl } from 'lib/helper';
-import { useUser } from 'lib/auth';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
  * Authors list query
  * @type {gql}
  */
+//@todo change to authors endpoint
 export const QUERY_AUTHORS = gql`
   query users {
-    users (limit: 20, where: { stories: { isRoot: true } }) {
-      id
+    users () {
+      _id
       username
       excerpt
-      stories (limit: 5, sort: "likesCount:desc") {
-        id
+      stories {
+        _id
         title
       }
       currentUserLike {
-        id
+        _id
       }
       likesCount
     }
@@ -30,15 +31,15 @@ export const QUERY_AUTHORS = gql`
 `;
 
 const AuthorList = ({ className }) => {
-  const user = useUser();
+  const currentUser = useCurrentUser();
   const { data, loading, error, refetch } = useQuery(QUERY_AUTHORS);
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (user !== null) {
+    if (currentUser !== null) {
       refetch();
     }
-  }, [user]);
+  }, [currentUser]);
 
   return (
     <div className={clsx('grid md:grid-cols-4 gap-md', className)}>
@@ -47,7 +48,7 @@ const AuthorList = ({ className }) => {
       {error && <Text variant="error">{error.message}</Text>}
 
       {data?.users && data.users.map((author) => (
-        <div key={author.id} className="text-primary-contrast bg-primary rounded-xl flex flex-col p-md">
+        <div key={author._id} className="text-primary-contrast bg-primary rounded-xl flex flex-col p-md">
           <div className="flex justify-between items-center">
             <Avatar user={author} showName={true} />
             <Like entity={author} />
@@ -55,7 +56,7 @@ const AuthorList = ({ className }) => {
 
           <ul className="mt-sm">
             {author.stories.map((story) => (
-              <li key={story.id}>
+              <li key={story._id}>
                 <Link href={getStoryUrl(story)}>{story.title}</Link>
               </li>
             ))}

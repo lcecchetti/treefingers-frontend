@@ -7,7 +7,7 @@ import { QUERY_STORIES } from 'components/story';
 const AuthorPage = ({ author }) => {
   return (
     <Container>
-      <AuthorView id={author.id} />
+      <AuthorView _id={author._id} />
     </Container>
   );
 };
@@ -34,7 +34,7 @@ export async function getStaticProps({ params }) {
   apolloClient.writeQuery({
     query: QUERY_AUTHOR,
     data: { user: author },
-    variables: { id: author.id },
+    variables: { _id: author._id },
   });
 
   // load author stories

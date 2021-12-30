@@ -7,23 +7,23 @@ import { FaAngleDown } from 'react-icons/fa';
 import { getStoryUrl } from 'lib/helper';
 import { FaTimes } from 'react-icons/fa';
 import { Like } from 'components/common';
-import { useUser } from 'lib/auth';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
  * Chapter list query
  * @type {gql}
  */
 export const QUERY_CHAPTERS = gql`
-  query stories ($where: JSON) {
-    stories (where: $where, limit: 10) {
-      id
-      action
+  query stories ($parent: ID) {
+    stories (filter: { parent: { eq: $parent } }) {
+      _id
+      title
       root {
-        id
+        _id
       }
       likesCount
       currentUserLike {
-        id
+        _id
       }
     }
   }
@@ -31,24 +31,22 @@ export const QUERY_CHAPTERS = gql`
 
 const ChapterChoice = ({ className, parent }) => {
 
-  const user = useUser();
+  const currentUser = useCurrentUser();
 
   const [isWriting, setIsWriting] = useState(false);
 
   const { data, loading, error, refetch } = useQuery(QUERY_CHAPTERS, {
     variables: {
-      where: {
-        parent: parent?.id,
-      },
+      parent: parent?._id,
     }
   });
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (user !== null) {
+    if (currentUser !== null) {
       refetch();
     }
-  }, [user]);
+  }, [currentUser]);
 
   return (
     <div>
@@ -69,9 +67,9 @@ const ChapterChoice = ({ className, parent }) => {
                   </div>
                   <ul className="flex flex-col border-2 rounded-xl overflow-hidden gap-px bg-primary">
                     {data.stories.map((chapter) => (
-                      <li key={chapter.id} className="bg-base">
+                      <li key={chapter._id} className="bg-base">
                         <Link href={getStoryUrl(chapter)} className="p-md flex gap-md items-center justify-between">
-                          <Text variant="span">{chapter.action}</Text>
+                          <Text variant="span">{chapter.title}</Text>
                           <Like entity={chapter} viewOnly={true} />
                         </Link>
                       </li>
