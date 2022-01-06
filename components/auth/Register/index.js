@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import { useRouter } from 'next/router';
 import { useMutation, gql, useApolloClient } from '@apollo/client';
@@ -15,19 +15,27 @@ import { useCurrentUser } from 'lib/auth/currentUser';
  * @type {gql}
  */
 const MUTATION_REGISTER = gql`
-  mutation register($username: String!, $email: String!, $password: String!) {
-    register(input: { username: $username, email: $email, password: $password }) {
+  mutation register($input: RegisterInput!) {
+    register(input: $input) {
       token
     }
   }
 `;
 
 export default function SignUp() {
-  const [register] = useMutation(MUTATION_REGISTER);
   const router = useRouter();
-  const [registerError, setRegisterError] = useState('');
   const client = useApolloClient();
   const currentUser = useCurrentUser();
+
+  const [register, { error }] = useMutation(MUTATION_REGISTER, {
+    onCompleted: async ({ register }) => {
+      setAuthToken(register.token);
+      await client.resetStore();
+      const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
+      router.push(redirect);
+    },
+    onError: (e) => {},
+  });
 
   // logged in users should not visit login/register page
   useEffect(() => {
@@ -35,35 +43,6 @@ export default function SignUp() {
       router.push(getProfileMeUrl());
     }
   }, [currentUser]);
-
-  /**
-   * Handle signup form submission
-   * @param {Object} values
-   * @return {Promise<void>}
-   */
-  const registerSubmit = async (username, email, password) => {
-    try {
-      const { data } = await signUp({
-        variables: {
-          username,
-          email,
-          password,
-        },
-      });
-
-      if (data?.register?.token) {
-        setRegisterError('');
-        setAuthToken(data.register.token);
-
-        await client.resetStore();
-
-        const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
-        router.push(redirect);
-      }
-    } catch (e) {
-      setRegisterError(parseError(e));
-    }
-  };
   
   return (
     <div className="md:max-w-sm p-md m-md border-2 rounded-xl">
@@ -76,7 +55,7 @@ export default function SignUp() {
           email: '',
           password: '',
         }}
-        onSubmit={({ username, email, password }) => registerSubmit(username, email, password)}
+        onSubmit={({ email, password }) => register({ variables: { input: { email, password } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too Short!').required('Required'),
@@ -95,15 +74,6 @@ export default function SignUp() {
             />
             <Field
               as={FormField}
-              label="Username"
-              type="text"
-              name="username"
-              autoComplete="username"
-              error={errors.username}
-              touched={touched.username}
-            />
-            <Field
-              as={FormField}
               name="password"
               label="Password"
               type="password"
@@ -112,7 +82,7 @@ export default function SignUp() {
               touched={touched.password}
             />
 
-            {!!registerError && <Text variant="error">{registerError}</Text>}
+            {!!error && <Text variant="error">{parseError(error)}</Text>}
             <Button
               type="submit"
               disabled={isSubmitting}

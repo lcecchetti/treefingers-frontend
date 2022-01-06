@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { gql, useMutation, useApolloClient } from '@apollo/client';
-import { parseError } from 'lib/apollo/error';
 import { useRouter } from 'next/router';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { setAuthToken } from 'lib/auth/token';
@@ -9,25 +8,34 @@ import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getRegisterUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
+import { parseError } from 'lib/apollo/error';
 
 /**
  * Login mutation
  * @type {gql}
  */
 const MUTATION_LOGIN = gql`
-  mutation SignInMutation($email: String!, $password: String!) {
-    login(input: { identifier: $email, password: $password }) {
+  mutation login($input: LoginInput!) {
+    login(input: $input) {
       token
     }
   }
 `;
 
 export default function Login() {
-  const [login] = useMutation(MUTATION_LOGIN);
   const router = useRouter();
-  const [loginError, setLoginError] = useState('');
   const client = useApolloClient();
   const currentUser = useCurrentUser();
+
+  const [login, { error }] = useMutation(MUTATION_LOGIN, {
+    onCompleted: async ({ login }) => {      
+      setAuthToken(login.token);
+      await client.resetStore();
+      const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
+      router.push(redirect);
+    },
+    onError: (e) => {}
+  });
 
   // logged in users should not visit login/register page
   useEffect(() => {
@@ -35,35 +43,6 @@ export default function Login() {
       router.push(getProfileMeUrl());
     }
   }, [currentUser]);
-
-  /**
-   * Handle signin form submission
-   * @param {string} email
-   * @param {string} password
-   * @return {Promise<void>}
-   */
-  const loginSubmit = async (email, password) => {
-    try {
-
-      const { data } = await signIn({
-        variables: {
-          email,
-          password,
-        },
-      });
-
-      if (data?.login?.token) {
-        setLoginError('');
-        setAuthToken(data.login.token);
-        await client.resetStore();
-
-        const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
-        router.push(redirect);
-      }
-    } catch (e) {
-      setLoginError(parseError(e));
-    }
-  };
 
   return (
     <div className="md:max-w-sm p-md m-md border-2 rounded-xl">
@@ -77,7 +56,7 @@ export default function Login() {
           email: '',
           password: '',
         }}
-        onSubmit={({ email, password }) => loginSubmit(email, password)}
+        onSubmit={({ email, password }) => login({ variables: { input: { email, password } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too Short!').required('Required'),
@@ -106,8 +85,8 @@ export default function Login() {
               error={errors.password}
               touched={touched.password}
             />
-            {!!loginError &&
-              <Text variant="error">{loginError}</Text>
+            {!!error &&
+              <Text variant="error">{parseError(error)}</Text>
             }
             <Button
               type="submit"

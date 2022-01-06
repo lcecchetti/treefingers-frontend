@@ -11,9 +11,7 @@ const LogoutPage = () => {
 
   const logout = async () => {
     removeAuthToken();
-
     await client.resetStore();
-
     router.push('/');
   };
 
