@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { parseError } from 'lib/apollo/error';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
 import { FormField, Button, Text } from 'components/ui';
 import * as Yup from 'yup';
 import { getStoryUrl } from 'lib/helper';
 import { AuthRequired } from 'components/auth';
+import { ApiError } from 'components/common';
 
 /**
  * Create story mutation
@@ -54,9 +54,7 @@ const StoryNew = ({ parent }) => {
         router.push(getStoryUrl(data.createStory.story));
       }
 
-    } catch (e) {
-      setCreateStoryError(parseError(e));
-    }
+    } catch (e) {}
   };
 
   return (
@@ -94,10 +92,7 @@ const StoryNew = ({ parent }) => {
                 error={errors.content}
                 touched={touched.content}
               />
-
-              {!!createStoryError &&
-                <Text variant="error">{createStoryError}</Text>
-              }
+              <ApiError error={createStoryError} />
               <Button
                 type="submit"
                 disabled={isSubmitting}

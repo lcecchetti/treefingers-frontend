@@ -4,11 +4,11 @@ import { useRouter } from 'next/router';
 import { useMutation, gql, useApolloClient } from '@apollo/client';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { parseError } from 'lib/apollo/error';
 import { Text, Button, Link, FormField } from 'components/ui';
 import { getLoginUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
 import { setAuthToken } from 'lib/auth/token';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import { ApiError } from 'components/common';
 
 /**
  * Register mutation
@@ -81,8 +81,7 @@ export default function SignUp() {
               error={errors.password}
               touched={touched.password}
             />
-
-            {!!error && <Text variant="error">{parseError(error)}</Text>}
+            <ApiError error={error}/>
             <Button
               type="submit"
               disabled={isSubmitting}

@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getRegisterUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
-import { parseError } from 'lib/apollo/error';
+import { ApiError } from 'components/common';
 
 /**
  * Login mutation
@@ -85,9 +85,7 @@ export default function Login() {
               error={errors.password}
               touched={touched.password}
             />
-            {!!error &&
-              <Text variant="error">{parseError(error)}</Text>
-            }
+            <ApiError error={error} />
             <Button
               type="submit"
               disabled={isSubmitting}

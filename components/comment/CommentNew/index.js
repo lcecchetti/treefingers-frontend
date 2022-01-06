@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { parseError } from 'lib/apollo/error';
 import { Formik, Form, Field } from 'formik';
 import { FormField, Button, Text } from 'components/ui';
 import * as Yup from 'yup';
 import { AuthRequired } from 'components/auth';
 import { QUERY_COMMENTS } from '../CommentList';
+import { ApiError } from 'components/common';
 
 /**
  * Create comment mutation
@@ -77,7 +77,6 @@ const CommentNew = ({ story }) => {
 
     } catch (e) {
       console.log(e);
-      setCreateCommentError(parseError(e));
     }
   };
 
@@ -105,10 +104,7 @@ const CommentNew = ({ story }) => {
                 error={errors.content}
                 touched={touched.content}
               />
-
-              {!!createCommentError &&
-                <Text variant="error">{createCommentError}</Text>
-              }
+              <ApiError error={createCommentError} />
               <Button
                 type="submit"
                 disabled={isSubmitting}
