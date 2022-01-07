@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
-import { getStoryNewUrl, getSearchResultUrl } from 'lib/helper';
+import { getStoryNewUrl } from 'lib/helper/story';
+import { getSearchResultUrl } from 'lib/helper/search';
 import { Spinner, Link, Text, Button } from 'components/ui';
 import { ApiError } from 'components/common';
 

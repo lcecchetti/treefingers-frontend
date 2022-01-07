@@ -7,7 +7,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
-import { getRegisterUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper';
+import { getRegisterUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { ApiError } from 'components/common';
 
 /**

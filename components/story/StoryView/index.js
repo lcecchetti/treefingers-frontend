@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Spinner, Text, Link } from 'components/ui';
-import { DATE_LONG, formatDate, getStoryUrl } from 'lib/helper';
+import { DATE_LONG, formatDate } from 'lib/helper/date';
+import { getStoryUrl } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import { FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
 import { TagList } from 'components/tag';

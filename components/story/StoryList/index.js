@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link, Spinner, Text } from 'components/ui';
-import { formatDate, DATE_SHORT, getStoryUrl, getStoryType } from 'lib/helper';
+import { formatDate, DATE_SHORT } from 'lib/helper/date';
+import { getStoryUrl, getStoryType } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';

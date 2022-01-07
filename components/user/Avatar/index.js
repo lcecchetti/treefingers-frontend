@@ -1,7 +1,7 @@
 import { MdAccountCircle } from 'react-icons/md';
 import { Link, Text } from 'components/ui';
 import clsx from 'clsx';
-import { getAuthorUrl } from 'lib/helper';
+import { getAuthorUrl } from 'lib/helper/author';
 
 const Avatar = ({ className, user, size = 'md', showName = false }) => {
   return (

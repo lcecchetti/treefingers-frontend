@@ -1,4 +1,5 @@
-import { getLogoutUrl, getProfileMeUrl, getProfileStoriesUrl } from 'lib/helper';
+import { getProfileMeUrl, getProfileStoriesUrl } from 'lib/helper/profile';
+import { getLogoutUrl } from 'lib/helper/auth';
 import { FaSignOutAlt } from 'react-icons/fa';
 
 export default [

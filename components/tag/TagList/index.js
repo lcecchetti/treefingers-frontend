@@ -1,7 +1,7 @@
 import { Button, Link } from 'components/ui';
 import { gql } from '@apollo/client';
 import clsx from 'clsx';
-import { getTagUrl } from 'lib/helper';
+import { getTagUrl } from 'lib/helper/tag';
 
 /**
  * Tags list query
