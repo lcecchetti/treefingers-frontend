@@ -10,7 +10,11 @@ import { StoryView, QUERY_STORY, QUERY_CHAPTERS } from 'components/story';
 const QUERY_STORY_PAGES = gql`
   query stories {
     stories {
-      _id
+      edges {
+        node {
+          _id
+        }
+      }
     }
   }
 `;
@@ -58,7 +62,7 @@ export async function getStaticPaths() {
   const { data } = await apolloClient.query({ query: QUERY_STORY_PAGES });
 
   return {
-    paths: data.stories.map((story) => ({ params: { _id: story._id } }) ) || [],
+    paths: data.stories.edges.map(({ node }) => ({ params: { _id: node._id } }) ) || [],
     fallback: 'blocking',
   };
 }
