@@ -4,7 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { StoryNew } from 'components/story';
 import { FaAngleDown } from 'react-icons/fa';
-import { getStoryUrl } from 'lib/helper';
+import { getStoryUrl } from 'lib/helper/story';
 import { FaTimes } from 'react-icons/fa';
 import { ApiError, Like } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';

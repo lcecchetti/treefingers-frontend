@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { Text, Spinner } from 'components/ui';
-import { formatDate } from 'lib/helper';
+import { formatDate } from 'lib/helper/date';
 import { ApiError, Like } from 'components/common';
 import { Avatar } from 'components/user';
 import { gql, useQuery } from '@apollo/client';

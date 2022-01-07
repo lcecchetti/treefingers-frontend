@@ -4,7 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { Avatar } from 'components/user';
 import { ApiError, Like } from 'components/common';
-import { getStoryUrl } from 'lib/helper';
+import { getStoryUrl } from 'lib/helper/story';
 import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**

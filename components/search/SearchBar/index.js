@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useUI } from 'lib/ui/context';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 import { FormField, Container } from 'components/ui';
-import { getSearchUrl } from 'lib/helper';
+import { getSearchUrl } from 'lib/helper/search';
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';

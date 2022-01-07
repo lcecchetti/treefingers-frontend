@@ -1,6 +1,6 @@
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { Text, Button, Link } from 'components/ui';
-import { getLoginUrl } from 'lib/helper';
+import { getLoginUrl } from 'lib/helper/auth';
 import { useRouter } from 'next/router';
 
 const AuthRequired = ({ children, text }) => {
