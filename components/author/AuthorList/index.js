@@ -3,7 +3,7 @@ import { Link, Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { Avatar } from 'components/user';
-import { Like } from 'components/common';
+import { ApiError, Like } from 'components/common';
 import { getStoryUrl } from 'lib/helper';
 import { useCurrentUser } from 'lib/auth/currentUser';
 
@@ -11,21 +11,28 @@ import { useCurrentUser } from 'lib/auth/currentUser';
  * Authors list query
  * @type {gql}
  */
-//@todo change to authors endpoint
 export const QUERY_AUTHORS = gql`
-  query users {
-    users () {
-      _id
-      username
-      excerpt
-      stories {
-        _id
-        title
+  query users($filter: UserFilterInput) {
+    users (filter: $filter) {
+      edges {
+        node {
+          _id
+          username
+          excerpt
+          stories {
+            edges {
+              node {
+                _id
+                title
+              }
+            }
+          }
+          currentUserLike {
+            _id
+          }
+          likesCount
+        }
       }
-      currentUserLike {
-        _id
-      }
-      likesCount
     }
   }
 `;
@@ -43,11 +50,10 @@ const AuthorList = ({ className }) => {
 
   return (
     <div className={clsx('grid md:grid-cols-4 gap-md', className)}>
-      {loading && <Spinner />}
+      <Spinner loading={loading}/>
+      <ApiError error={error}/>
 
-      {error && <Text variant="error">{error.message}</Text>}
-
-      {data?.users && data.users.map((author) => (
+      {data?.users && data.users.edges.map(({ node: author }) => (
         <div key={author._id} className="text-primary-contrast bg-primary rounded-xl flex flex-col p-md">
           <div className="flex justify-between items-center">
             <Avatar user={author} showName={true} />
@@ -55,7 +61,7 @@ const AuthorList = ({ className }) => {
           </div>
 
           <ul className="mt-sm">
-            {author.stories.map((story) => (
+            {author.stories && author.stories.edges.map(({ node: story }) => (
               <li key={story._id}>
                 <Link href={getStoryUrl(story)}>{story.title}</Link>
               </li>

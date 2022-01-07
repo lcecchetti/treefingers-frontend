@@ -44,12 +44,11 @@ const Button = ({ children, className, loading, variant = 'primary', size = 'md'
 
       {children}
 
-      {loading &&
-        <Spinner className={clsx(
+      <Spinner className={clsx(
           'inline-block',
           style.iconSize[size],
-        )} />
-      }
+        )} 
+        loading={loading}/>
 
     </Component>
   );

@@ -61,9 +61,8 @@ const StoryList = ({ className, filter }) => {
 
   return (
     <div className={clsx('grid md:grid-cols-2 gap-md', className)}>
-      {loading && <Spinner />}
-
-      <ApiError error={error} />
+      <Spinner loading={loading}/>
+      <ApiError error={error}/>
 
       {data?.stories && data.stories.edges.map(({ node }) => (
         <div key={node._id} className="rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-xs">

@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { getStoryNewUrl, getSearchResultUrl } from 'lib/helper';
 import { Spinner, Link, Text, Button } from 'components/ui';
+import { ApiError } from 'components/common';
 
 const QUERY_SEARCH = gql`
   query search($q: String!) {
@@ -21,9 +22,8 @@ const SearchResult = ({ className, query }) => {
 
   return (
     <div className={clsx('', className)}>
-      {loading && <Spinner />}
-
-      {error && <Text variant="error">{error.message}</Text>}
+      <Spinner loading={loading}/>
+      <ApiError error={error}/>
 
       {
         data?.search.length === 0 && 

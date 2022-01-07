@@ -48,8 +48,7 @@ const TagView = ({ className, _id }) => {
 
   return (
     <div className={clsx(className)}>
-      {loading && <Spinner />}
-
+      <Spinner loading={loading}/>
       <ApiError error={error}/>
 
       {data &&
