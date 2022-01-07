@@ -62,14 +62,14 @@ const ChapterChoice = ({ className, parent }) => {
           {data &&
             <div className="flex flex-col gap-md">
 
-              {!!data?.edges.length && // chapter list
+              {!!data?.stories.edges.length && // chapter list
                 <div className="flex flex-col gap-xs">
                   <div className="flex flex-col items-center justify-center gap-xs">
                     <Text variant="span" className="font-bold uppercase">What's next? </Text>
                     <FaAngleDown className="text-3xl animate-bounce" />
                   </div>
                   <ul className="flex flex-col border-2 rounded-xl overflow-hidden gap-px bg-primary">
-                    {data.edges.map(({ node }) => (
+                    {data.stories.edges.map(({ node }) => (
                       <li key={node._id} className="bg-base">
                         <Link href={getStoryUrl(node)} className="p-md flex gap-md items-center justify-between">
                           <Text variant="span">{node.title}</Text>
@@ -82,7 +82,7 @@ const ChapterChoice = ({ className, parent }) => {
               }
 
               <div className="text-center flex flex-col gap-xs">
-                {!data.edges.length &&
+                {!data?.stories.edges.length &&
                   <Text variant="title" as="span" className="">The end...?</Text>
                 }
                 <Button className="w-full" onClick={() => setIsWriting(true)}>Write a new chapter</Button>
