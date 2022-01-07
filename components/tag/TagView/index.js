@@ -1,5 +1,5 @@
 import { Spinner, Text } from 'components/ui';
-import { PageIntro } from 'components/common';
+import { ApiError, PageIntro } from 'components/common';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
 import clsx from 'clsx';
@@ -50,14 +50,14 @@ const TagView = ({ className, _id }) => {
     <div className={clsx(className)}>
       {loading && <Spinner />}
 
-      {error && <Text variant="error">{error.message}</Text>}
+      <ApiError error={error}/>
 
       {data &&
         <div>
           <PageIntro title={data.tag.label}>
           <Text variant="p">Into {data.tag.label}? This might be the place you are looking for.</Text>
           </PageIntro>
-          <StoryList tag={data.tag} />
+          <StoryList filter={{ tags: tag._id, root: { eq: null } }} />
         </div>
       }
     </div>

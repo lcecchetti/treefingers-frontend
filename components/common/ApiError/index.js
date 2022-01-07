@@ -8,17 +8,17 @@ const ApiError = ({ className, error }) => {
 
   const apiErrors = [];
 
-  if (error.graphQLErrors) {
+  // graphql errors
+  if (error.message) {
+    apiErrors.push(error.message);
+  } else if (error.graphQLErrors) {
     error.graphQLErrors.map((graphQLError) => {
       apiErrors.push(graphQLError.message);
     });
-  }
-
-  if (error.networkError) {
-    apiErrors.push(networkError);
-  }
-
-  if (!apiErrors.length) {
+  } else if (error.networkError) {
+    // network error
+    apiErrors.push(error.networkError.message);
+  } else {
     apiErrors.push('An error has occurred');
   }
 

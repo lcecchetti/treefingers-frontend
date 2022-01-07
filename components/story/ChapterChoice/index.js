@@ -6,7 +6,7 @@ import { StoryNew } from 'components/story';
 import { FaAngleDown } from 'react-icons/fa';
 import { getStoryUrl } from 'lib/helper';
 import { FaTimes } from 'react-icons/fa';
-import { Like } from 'components/common';
+import { ApiError, Like } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
@@ -14,30 +14,33 @@ import { useCurrentUser } from 'lib/auth/currentUser';
  * @type {gql}
  */
 export const QUERY_CHAPTERS = gql`
-  query stories ($parent: ID) {
-    stories (filter: { parent: { eq: $parent } }) {
-      _id
-      title
-      root {
-        _id
-      }
-      likesCount
-      currentUserLike {
-        _id
+  query stories ($filter: StoryFilterInput) {
+    stories (filter: $filter) {
+      edges {
+        node {
+          _id
+          title
+          root {
+            _id
+          }
+          likesCount
+          currentUserLike {
+            _id
+          }
+        }
       }
     }
   }
 `;
 
 const ChapterChoice = ({ className, parent }) => {
-
   const currentUser = useCurrentUser();
 
   const [isWriting, setIsWriting] = useState(false);
 
   const { data, loading, error, refetch } = useQuery(QUERY_CHAPTERS, {
     variables: {
-      parent: parent?._id,
+      filter: { parent: { eq: parent?._id } }
     }
   });
 
@@ -54,23 +57,23 @@ const ChapterChoice = ({ className, parent }) => {
         <div className={clsx('mx-auto max-w-screen-sm', className)}>
           {loading && <Spinner />}
 
-          {error && <Text variant="error">{error.message}</Text>}
+          <ApiError error={error}/>
 
           {data &&
             <div className="flex flex-col gap-md">
 
-              {!!data?.stories.length && // chapter list
+              {!!data?.edges.length && // chapter list
                 <div className="flex flex-col gap-xs">
                   <div className="flex flex-col items-center justify-center gap-xs">
                     <Text variant="span" className="font-bold uppercase">What's next? </Text>
                     <FaAngleDown className="text-3xl animate-bounce" />
                   </div>
                   <ul className="flex flex-col border-2 rounded-xl overflow-hidden gap-px bg-primary">
-                    {data.stories.map((chapter) => (
-                      <li key={chapter._id} className="bg-base">
-                        <Link href={getStoryUrl(chapter)} className="p-md flex gap-md items-center justify-between">
-                          <Text variant="span">{chapter.title}</Text>
-                          <Like entity={chapter} viewOnly={true} />
+                    {data.edges.map(({ node }) => (
+                      <li key={node._id} className="bg-base">
+                        <Link href={getStoryUrl(node)} className="p-md flex gap-md items-center justify-between">
+                          <Text variant="span">{node.title}</Text>
+                          <Like entity={node} viewOnly={true} />
                         </Link>
                       </li>
                     ))}
@@ -79,7 +82,7 @@ const ChapterChoice = ({ className, parent }) => {
               }
 
               <div className="text-center flex flex-col gap-xs">
-                {!data.stories.length &&
+                {!data.edges.length &&
                   <Text variant="title" as="span" className="">The end...?</Text>
                 }
                 <Button className="w-full" onClick={() => setIsWriting(true)}>Write a new chapter</Button>

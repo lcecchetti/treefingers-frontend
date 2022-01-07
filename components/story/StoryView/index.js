@@ -7,19 +7,19 @@ import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { ChapterChoice, StoryActions } from 'components/story';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import { ApiError } from 'components/common';
 
 /**
  * Single story query
  * @type {gql}
  */
 export const QUERY_STORY = gql`
-  query story($_id: ID!) {
-    story(filter: { _id: { eq: $_id } }) {
+  query story($filter: StoryFilterInput!) {
+    story(filter: $filter) {
       _id
       title
       content
       createdAt
-      root
       author {
         _id
         username
@@ -45,10 +45,9 @@ export const QUERY_STORY = gql`
 `;
 
 const StoryView = ({ story }) => {
-
   const currentUser = useCurrentUser();
 
-  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { _id: story._id } });
+  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { filter: { _id: { eq: story._id } } } });
 
   // refresh data with customer specific infos
   useEffect(() => {
@@ -61,11 +60,11 @@ const StoryView = ({ story }) => {
     <div className="flex flex-col gap-md">
         {loading && <Spinner />}
 
-        {error && <Text variant="error">{error.message}</Text>}
+        <ApiError error={error} />
 
         {data &&
           <>
-            {!data.story.isRoot &&
+            {data.story.root &&
               <div className="text-center mt-sm md:mt-md flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg">
                 <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
                   <FaAngleUp className="text-3xl group-hover:animate-bounce" />
