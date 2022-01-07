@@ -12,7 +12,7 @@ const ProfileStoriesPage = () => {
       <PageIntro title="My stories">
         <Text variant="p">Here you can find a list of all your writings.</Text>
       </PageIntro>
-      <StoryList author={currentUser} rootsOnly={false} />
+      <StoryList filter={{ author: { eq: currentUser._id }, root: { eq: null } }} />
     </>
   );
 };

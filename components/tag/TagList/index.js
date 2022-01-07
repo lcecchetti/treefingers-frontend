@@ -19,6 +19,10 @@ export const QUERY_TAGS = gql`
 
 const TagList = ({ className, tags, buttonVariant = 'primary' }) => {
   
+  if (!tags) {
+    return '';
+  }
+
   return (
     <ul className={clsx('flex gap-sm uppercase', className)}>
       {tags.map((tag) => (

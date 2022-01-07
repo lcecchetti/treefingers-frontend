@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
@@ -13,20 +12,8 @@ import { ApiError } from 'components/common';
  * @type {gql}
  */
 const MUTATION_STORY_CREATE = gql`
-  mutation createStory(
-    $title: String!,
-    $content: String!,
-    $parent: ID,
-    $root: ID,
-    $tags: [ID]
-  ) {
-    createStory(input: { data: {
-      title: $title,
-      content: $content,
-      parent: $parent,
-      root: $root,
-      tags: $tags,
-    }}) {
+  mutation createStory($input: CreateStoryInput!) {
+    createStory(input: $input) {
       story {
         _id
       } 
@@ -35,27 +22,10 @@ const MUTATION_STORY_CREATE = gql`
 `;
 
 const StoryNew = ({ parent }) => {
-  const [createStory] = useMutation(MUTATION_STORY_CREATE);
+  const [createStory, { error }] = useMutation(MUTATION_STORY_CREATE, {
+    onError: (e) => {},
+  });
   const router = useRouter();
-  const [createStoryError, setCreateStoryError] = useState('');
-
-  const submitStory = async (values, { resetForm }) => {
-    try {
-      setCreateStoryError('');
-
-      const { data } = await createStory({
-        variables: {
-          ...values,
-        },
-      });
-
-      if (data?.createStory?.story?._id) {
-        resetForm();
-        router.push(getStoryUrl(data.createStory.story));
-      }
-
-    } catch (e) {}
-  };
 
   return (
     <div>
@@ -71,7 +41,13 @@ const StoryNew = ({ parent }) => {
             title: Yup.string().required('Required'),
             content: Yup.string().required('Required'),
           })}
-          onSubmit={(values, methods) => submitStory(values, methods)}
+          onSubmit={(values, { resetForm }) => createStory({
+            variables: { input: { data: values } },
+            onCompleted: (data) => {
+              resetForm();
+              router.push(getStoryUrl(data.createStory.story));
+            },
+          })}
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex flex-col gap-sm">
@@ -92,7 +68,7 @@ const StoryNew = ({ parent }) => {
                 error={errors.content}
                 touched={touched.content}
               />
-              <ApiError error={createStoryError} />
+              <ApiError error={error} />
               <Button
                 type="submit"
                 disabled={isSubmitting}

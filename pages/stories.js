@@ -11,7 +11,7 @@ const StoriesPage = () => {
         <Text variant="p">Looking for some good reads? Here is a good place to start.</Text>
       </PageIntro>
       <div className="flex flex-col md:flex-row gap-md">
-        <StoryList className="md:w-3/4"/>
+        <StoryList filter={{ root: { ne: null } }} className="md:w-3/4"/>
         <Sidebar className="md:w-1/4" />
       </div>
     </Container>
@@ -23,7 +23,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { where: { isRoot: true }, user: {} },
+    variables: { filter: { root: { eq: null } } },
   });
 
   return addApolloState(apolloClient, {
