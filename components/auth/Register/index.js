@@ -85,6 +85,7 @@ export default function SignUp() {
             <Button
               type="submit"
               disabled={isSubmitting}
+              loading={isSubmitting}
               className="my-sm w-full"
             >
               Register

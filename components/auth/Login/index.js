@@ -89,6 +89,7 @@ export default function Login() {
             <Button
               type="submit"
               disabled={isSubmitting}
+              loading={isSubmitting}
               className="w-full my-sm">
               Login
             </Button>

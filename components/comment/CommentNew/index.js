@@ -12,15 +12,9 @@ import { ApiError } from 'components/common';
  * @type {gql}
  */
 const MUTATION_COMMENT_CREATE = gql`
-  mutation createComment(
-    $content: String!,
-    $story: ID!,
-  ) {
-    createComment(input: { data: {
-      content: $content,
-      story: $story,
-    }}) {
-      comment {
+  mutation createComment($input: CreateCommentInput!) {
+    createComment(input: $input) {
+      data {
         _id
         content
         createdAt
@@ -38,47 +32,30 @@ const MUTATION_COMMENT_CREATE = gql`
 `;
 
 const CommentNew = ({ story }) => {
-  const [createComment] = useMutation(MUTATION_COMMENT_CREATE, {
+  const [createComment, { error }] = useMutation(MUTATION_COMMENT_CREATE, {
     update(cache, { data: { createComment } }) {
 
       // load previous story comments
       const commentsQuery = {
         query: QUERY_COMMENTS,
-        variables: { story: story?._id }
+        variables: { filter: { story: { eq: story?._id } } }
       };
       const commentsData = cache.readQuery(commentsQuery);
 
       // add new comment to the cache
       cache.writeQuery({
         ...commentsQuery, data: {
-          comments: [
-            ...commentsData.comments,
-            createComment.comment,
-          ]
+          comments: { 
+            edges: [
+              ...commentsData.comments.edges,
+              { node: createComment.comment },
+            ]
+          }
         }
       });
-    }
+    }, 
+    onError(e) {}
   });
-  const [createCommentError, setCreateCommentError] = useState('');
-
-  const submitComment = async (values, { resetForm }) => {
-    try {
-      setCreateCommentError('');
-
-      const { data } = await createComment({
-        variables: {
-          ...values,
-        },
-      });
-
-      if (data.createComment?.comment?._id) {
-        resetForm();
-      }
-
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <div>
@@ -91,8 +68,14 @@ const CommentNew = ({ story }) => {
           validationSchema={Yup.object().shape({
             content: Yup.string().required('Required'),
           })}
-          onSubmit={(values, methods) => submitComment(values, methods)}
-        >
+          onSubmit={(values, { resetForm }) => {
+            createComment({
+              variables: values,
+              onCompleted: () => {
+                resetForm();
+              },
+            });
+          }}>
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex flex-col gap-sm">
               <Field
@@ -104,7 +87,7 @@ const CommentNew = ({ story }) => {
                 error={errors.content}
                 touched={touched.content}
               />
-              <ApiError error={createCommentError} />
+              <ApiError error={error} />
               <Button
                 type="submit"
                 disabled={isSubmitting}
