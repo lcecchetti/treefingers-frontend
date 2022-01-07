@@ -58,9 +58,8 @@ const StoryView = ({ story }) => {
 
   return (
     <div className="flex flex-col gap-md">
-        {loading && <Spinner />}
-
-        <ApiError error={error} />
+        <Spinner loading={loading}/>
+        <ApiError error={error}/>
 
         {data &&
           <>

@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { Text, Spinner } from 'components/ui';
 import { formatDate } from 'lib/helper';
-import { Like } from 'components/common';
+import { ApiError, Like } from 'components/common';
 import { Avatar } from 'components/user';
 import { gql, useQuery } from '@apollo/client';
 import { CommentNew } from 'components/comment';
@@ -45,9 +45,8 @@ const CommentList = ({ story }) => {
   return (
     <div className="h-full overflow-y-auto">
       <div className="flex flex-col gap-md p-md">
-        {loading && <Spinner />}
-
-        {error && <Text variant="error">{error.message}</Text>}
+        <Spinner loading={loading}/>
+        <ApiError error={error}/>
 
         {data &&
           <div className="flex flex-col gap-md">

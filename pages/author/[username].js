@@ -1,7 +1,7 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { AuthorView, QUERY_AUTHORS, QUERY_AUTHOR, QUERY_AUTHORS_BY_USERNAME } from 'components/author';
+import { AuthorView, QUERY_AUTHORS, QUERY_AUTHOR } from 'components/author';
 import { QUERY_STORIES } from 'components/story';
 
 const AuthorPage = ({ author }) => {
@@ -14,37 +14,35 @@ const AuthorPage = ({ author }) => {
 
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo();
-
+  
   // load author by username
   const { data } = await apolloClient.query({
-    query: QUERY_AUTHORS_BY_USERNAME,
-    variables: { username: params.username },
+    query: QUERY_AUTHOR,
+    variables: { filter: { username: { eq: params.username } } },
   });
 
   // check if author exists
-  if (!data?.users.length) {
+  if (!data?.user) {
     return {
       notFound: true,
     }
   }
 
-  const author = data.users[0];
-
   // add author by id query to the cache
   apolloClient.writeQuery({
     query: QUERY_AUTHOR,
-    data: { user: author },
-    variables: { _id: author._id },
+    data: { user: data.user },
+    variables: { _id: data.user._id },
   });
 
   // load author stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { where: { author: author.id } },
+    variables: { filter: { author: { eq: data.user._id } } },
   });
 
   return addApolloState(apolloClient, {
-    props: { author },
+    props: { author: data.user },
     revalidate: 1,
   });
 }
@@ -55,7 +53,7 @@ export async function getStaticPaths() {
   const { data } = await apolloClient.query({ query: QUERY_AUTHORS });
 
   return {
-    paths: data.users.map((user) => ({ params: { username: user.username } })) || [],
+    paths: data?.users?.edges.map(({ node }) => ({ params: { username: node.username } })) || [],
     fallback: 'blocking',
   };
 }

@@ -55,8 +55,7 @@ const ChapterChoice = ({ className, parent }) => {
     <div>
       {!isWriting && // chapter list section
         <div className={clsx('mx-auto max-w-screen-sm', className)}>
-          {loading && <Spinner />}
-
+          <Spinner loading={loading}/>
           <ApiError error={error}/>
 
           {data &&
