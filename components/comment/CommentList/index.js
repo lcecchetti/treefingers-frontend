@@ -11,25 +11,29 @@ import { CommentNew } from 'components/comment';
  * @type {gql}
  */
 export const QUERY_COMMENTS = gql`
-  query comments ($story: ID!) {
-    comments (filter: { story: { eq: $story } }) {
-      _id
-      content
-      createdAt
-      likesCount
-      currentUserLike {
-        _id
-      }
-      user {
-        _id
-        username
+  query comments ($filter: CommentFilterInput) {
+    comments (filter: $filter) {
+      edges {
+        node {
+          _id
+          content
+          createdAt
+          likesCount
+          currentUserLike {
+            _id
+          }
+          user {
+            _id
+            username
+          }
+        }
       }
     }
   }
 `;
 
 const CommentList = ({ story }) => {
-  const { data, loading, error } = useQuery(QUERY_COMMENTS, { variables: { story: story._id } });
+  const { data, loading, error } = useQuery(QUERY_COMMENTS, { variables: { filter: { story: { eq: story._id } } } });
 
   // scroll to bottom anchor
   const bottomRef = useRef(null);
@@ -50,20 +54,20 @@ const CommentList = ({ story }) => {
 
         {data &&
           <div className="flex flex-col gap-md">
-            {!data.comments.length &&
+            {!data?.comments.edges.length &&
               <Text variant="span">This story has no comments yet.</Text>
             }
 
-            {!!data.comments.length &&
+            {!!data?.comments.edges.length &&
               <ol className="flex flex-col gap-sm">
-                {data.comments.map((comment) => (
-                  <li key={comment._id}>
+                {data.comments.edges.map(({ node }) => (
+                  <li key={node._id}>
                     <div className="flex flex-col gap-xs">
-                      <Avatar user={comment.user} showName={true} />
-                      <Text variant="span">{comment.content}</Text>
+                      <Avatar user={node.user} showName={true} />
+                      <Text variant="span">{node.content}</Text>
                       <div className="flex justify-between items-center">
-                        <Text variant="span" className="text-sm">{formatDate(comment.createdAt)}</Text>
-                        <Like entity={comment} />
+                        <Text variant="span" className="text-sm">{formatDate(node.createdAt)}</Text>
+                        <Like entity={node} />
                       </div>
                     </div>
                   </li>
