@@ -5,46 +5,22 @@ import { StoryList } from 'components/story';
 import clsx from 'clsx';
 
 /**
- * Author fragment
- * @type {gql}
- */
-const FRAGMENT_TAG = gql`
-  fragment TagFields on Tag {
-    _id
-    label
-    slug
-  }
-`;
-
-/**
  * Single tag query
  * @type {gql}
  */
 export const QUERY_TAG = gql`
-  query tag($_id: ID!) {
-    tag(filter: { _id: { eq: $_id } }) {
-      ...TagFields
+  query tag($filter: TagFilterInput!) {
+    tag(filter: $filter) {
+      _id
+      label
+      slug
     }
   }
-  ${FRAGMENT_TAG}
-`;
-
-/**
- * Get authors by username query
- * @type {gql}
- */
-export const QUERY_TAGS_BY_SLUG = gql`
-  query tags($slug: String!) {
-    tags(filter: { slug: { eq: $slug } }) {
-      ...TagFields
-    }
-  }
-  ${FRAGMENT_TAG}
 `;
 
 const TagView = ({ className, _id }) => {
 
-  const { data, loading, error } = useQuery(QUERY_TAG, { variables: { _id } });
+  const { data, loading, error } = useQuery(QUERY_TAG, { variables: { filter: { _id: { eq: _id } } } });
 
   return (
     <div className={clsx(className)}>
@@ -56,7 +32,7 @@ const TagView = ({ className, _id }) => {
           <PageIntro title={data.tag.label}>
           <Text variant="p">Into {data.tag.label}? This might be the place you are looking for.</Text>
           </PageIntro>
-          <StoryList filter={{ tags: tag._id, root: { eq: null } }} />
+          <StoryList filter={{ tags: { in: [data.tag._id] }, root: { eq: null } }} />
         </div>
       }
     </div>
