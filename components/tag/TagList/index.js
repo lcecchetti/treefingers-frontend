@@ -8,8 +8,8 @@ import { getTagUrl } from 'lib/helper/tag';
  * @type {gql}
  */
 export const QUERY_TAGS = gql`
-  query tags {
-    tags {
+  query tags($filter: TagFilterInput) {
+    tags(filter: $filter) {
       _id
       label
       slug

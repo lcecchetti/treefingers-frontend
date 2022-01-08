@@ -17,34 +17,32 @@ export async function getStaticProps({ params }) {
 
   // load tag by slug
   const { data } = await apolloClient.query({
-    query: QUERY_TAGS_BY_SLUG,
-    variables: { slug: params.slug },
+    query: QUERY_TAG,
+    variables: { filter: { slug: { eq: params.slug } } },
   });
 
   // check if tag exists
-  if (!data.tags.length) {
+  if (!data.tag) {
     return {
       notFound: true,
     }
   }
 
-  const tag = data.tags[0];
-
   // add tag by id query to the cache
   apolloClient.writeQuery({
     query: QUERY_TAG,
-    data: { tag: tag },
-    variables: { _id: tag._id },
+    data,
+    variables: { filter: { _id: { eq: data.tag._id } } },
   });
 
   // load tag stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { where: { tags: { _id: tag._id }, isRoot: true } },
+    variables: { filter: { tags: { in: [data.tag._id] }, root: { eq: null } } },
   });
 
   return addApolloState(apolloClient, {
-    props: { tag },
+    props: { tag: data.tag },
     revalidate: 1,
   });
 }
@@ -55,7 +53,7 @@ export async function getStaticPaths() {
   const { data } = await apolloClient.query({ query: QUERY_TAGS });
 
   return {
-    paths: data.tags.map((tag) => ({ params: { slug: tag.slug } })) || [],
+    paths: data?.tags.edges.map(({ node }) => ({ params: { slug: node.slug } })) || [],
     fallback: 'blocking',
   };
 }
