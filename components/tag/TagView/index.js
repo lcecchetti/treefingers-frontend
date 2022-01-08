@@ -32,7 +32,7 @@ const TagView = ({ className, _id }) => {
           <PageIntro title={data.tag.label}>
           <Text variant="p">Into {data.tag.label}? This might be the place you are looking for.</Text>
           </PageIntro>
-          <StoryList filter={{ tags: { in: [data.tag._id] }, root: { eq: null } }} />
+          <StoryList filter={{ tags: { in: [data.tag._id] }, root: null }} />
         </div>
       }
     </div>
