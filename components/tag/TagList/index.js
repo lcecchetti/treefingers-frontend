@@ -10,9 +10,13 @@ import { getTagUrl } from 'lib/helper/tag';
 export const QUERY_TAGS = gql`
   query tags($filter: TagFilterInput) {
     tags(filter: $filter) {
-      _id
-      label
-      slug
+      edges {
+        node {
+          _id
+          label
+          slug
+        }
+      }
     }
   }
 `;
