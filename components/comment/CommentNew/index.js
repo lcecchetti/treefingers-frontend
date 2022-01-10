@@ -14,7 +14,7 @@ import { ApiError } from 'components/common';
 const MUTATION_COMMENT_CREATE = gql`
   mutation createComment($input: CreateCommentInput!) {
     createComment(input: $input) {
-      data {
+      comment {
         _id
         content
         createdAt
@@ -70,7 +70,7 @@ const CommentNew = ({ story }) => {
           })}
           onSubmit={(values, { resetForm }) => {
             createComment({
-              variables: values,
+              variables: { input: { data: values } },
               onCompleted: () => {
                 resetForm();
               },
