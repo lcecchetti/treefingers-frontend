@@ -19,7 +19,7 @@ export const QUERY_AUTHORS = gql`
           _id
           username
           excerpt
-          stories {
+          stories(filter: { root: null }) {
             edges {
               node {
                 _id
