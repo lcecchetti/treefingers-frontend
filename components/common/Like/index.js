@@ -92,7 +92,7 @@ const Like = ({ entity, viewOnly }) => {
     variables: createVariables,
   });
   const [deleteLike, { error: deleteError, loading: deleteLoading }] = useMutation(MUTATION_LIKE_DELETE, {
-    input: { filter: { _id: { eq: entity.currentUserLike?._id } } }
+    variables: { input: { filter: { _id: { eq: entity.currentUserLike?._id } } } },
   });
 
   const isSubmitting = createLoading || deleteLoading;
