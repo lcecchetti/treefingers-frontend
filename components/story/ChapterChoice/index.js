@@ -49,7 +49,8 @@ const ChapterChoice = ({ className, parent }) => {
     if (currentUser !== null) {
       refetch();
     }
-  }, [currentUser]);
+    setIsWriting(false);
+  }, [currentUser, parent]);
 
   return (
     <div>
