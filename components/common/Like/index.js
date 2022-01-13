@@ -40,8 +40,8 @@ const FRAGMENT_LIKE_RELATIONS = gql`
  * @type {gql}
  */
 const MUTATION_LIKE_CREATE = gql`
-  mutation createLike($story: ID, $author: ID, $comment: ID) {
-    createLike(input: { data: { story: $story, author: $author, comment: $comment } }) {
+  mutation createLike($input: CreateLikeInput!) {
+    createLike(input: $input) {
       like {
         _id
         ...LikeRelations
@@ -56,8 +56,8 @@ const MUTATION_LIKE_CREATE = gql`
  * @type {gql}
  */
 const MUTATION_LIKE_DELETE = gql`
-  mutation deleteLike($_id: ID!) {
-    deleteLike(input: { filter: { _id: { eq: $_id } } }) {
+  mutation deleteLike($input: DeleteLikeInput!) {
+    deleteLike(input: $input) {
       like {
         _id
         ...LikeRelations
@@ -84,55 +84,22 @@ const Like = ({ entity, viewOnly }) => {
   // current user
   const currentUser = useCurrentUser();
 
-  // error status
-  const [isError, setIsError] = useState(false);
-
-  // submission status
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const createVariables = { input: { data: {} } };
+  createVariables.input.data[entityType] = entity._id;
 
   // mutations
-  const [createLike] = useMutation(MUTATION_LIKE_CREATE);
-  const [deleteLike] = useMutation(MUTATION_LIKE_DELETE);
+  const [createLike, { error: createError, loading: createLoading }] = useMutation(MUTATION_LIKE_CREATE, {
+    variables: createVariables,
+  });
+  const [deleteLike, { error: deleteError, loading: deleteLoading }] = useMutation(MUTATION_LIKE_DELETE, {
+    input: { filter: { _id: { eq: entity.currentUserLike?._id } } }
+  });
+
+  const isSubmitting = createLoading || deleteLoading;
+  const isError = createError || deleteError;
 
   // set always not editable for non logged in users
   viewOnly = viewOnly || !currentUser;
-
-  /**
-   * Submit like
-   */
-  const submitLike = async () => {
-    try {
-      setIsError(false);
-
-      const variables = {};
-      variables[entityType] = entity._id;
-
-      // create like
-      await createLike({ variables });
-
-    } catch (e) {
-      setIsError(true);
-    }
-  };
-
-  /**
-   * Remove like
-   */
-  const removeLike = async () => {
-    try {
-      setIsError(false);
-
-      // delete like
-      await deleteLike({
-        variables: {
-          _id: entity.currentUserLike._id,
-        },
-      });
-
-    } catch (e) {
-      setIsError(true);
-    }
-  };
 
   /**
    * Toogle like status for logged in users
@@ -143,9 +110,7 @@ const Like = ({ entity, viewOnly }) => {
       return;
     }
 
-    setIsSubmitting(true);
-    entity.currentUserLike ? await removeLike() : await submitLike();
-    setIsSubmitting(false);
+    entity.currentUserLike ? await deleteLike() : await createLike();
   }
 
   // pick icon accoridng to user like presence
