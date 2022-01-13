@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { gql, useMutation } from '@apollo/client';
 import { Text } from 'components/ui';

@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { Formik, Form, Field } from 'formik';
-import { FormField, Button, Text } from 'components/ui';
+import { FormField, Button } from 'components/ui';
 import * as Yup from 'yup';
 import { AuthRequired } from 'components/auth';
-import { QUERY_COMMENTS } from '../CommentList';
+import { QUERY_COMMENTS, FRAGMENT_COMMENT_FIELDS } from '../CommentList';
 import { ApiError } from 'components/common';
 
 /**
@@ -15,44 +14,31 @@ const MUTATION_COMMENT_CREATE = gql`
   mutation createComment($input: CreateCommentInput!) {
     createComment(input: $input) {
       comment {
-        _id
-        content
-        createdAt
-        user {
-          _id
-          username
-        }
-        story {
-          _id
-          commentsCount
-        }
+        ...CommentFields
       } 
     }
   }
+  ${FRAGMENT_COMMENT_FIELDS}
 `;
 
 const CommentNew = ({ story }) => {
   const [createComment, { error }] = useMutation(MUTATION_COMMENT_CREATE, {
-    update(cache, { data: { createComment } }) {
-
-      // load previous story comments
-      const commentsQuery = {
-        query: QUERY_COMMENTS,
-        variables: { filter: { story: { eq: story?._id } } }
-      };
-      const commentsData = cache.readQuery(commentsQuery);
+    update(cache, { data }) {
 
       // add new comment to the cache
-      cache.writeQuery({
-        ...commentsQuery, data: {
+      cache.updateQuery({
+          query: QUERY_COMMENTS,
+          variables: { filter: { story: { eq: story._id } } },
+        },
+        ({ comments }) => ({
           comments: { 
             edges: [
-              ...commentsData.comments.edges,
-              { node: createComment.comment },
+              ...comments.edges,
+              { node: data.createComment.comment },
             ]
           }
-        }
-      });
+        })
+      );
     }, 
     onError(e) {}
   });
