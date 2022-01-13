@@ -7,29 +7,40 @@ import { gql, useQuery } from '@apollo/client';
 import { CommentNew } from 'components/comment';
 
 /**
+ * Comment fields
+ * @type gql
+ */
+ export const FRAGMENT_COMMENT_FIELDS = gql`
+ fragment CommentFields on Comment {
+    _id
+    content
+    createdAt
+    likesCount
+    currentUserLike {
+      _id
+    }
+    user {
+      _id
+      username
+    }
+ }
+`;
+
+/**
  * Comments list query
  * @type {gql}
  */
 export const QUERY_COMMENTS = gql`
-  query comments ($filter: CommentFilterInput) {
+  query comments($filter: CommentFilterInput) {
     comments (filter: $filter) {
       edges {
         node {
-          _id
-          content
-          createdAt
-          likesCount
-          currentUserLike {
-            _id
-          }
-          user {
-            _id
-            username
-          }
+          ...CommentFields
         }
       }
     }
   }
+  ${FRAGMENT_COMMENT_FIELDS}
 `;
 
 const CommentList = ({ story }) => {
