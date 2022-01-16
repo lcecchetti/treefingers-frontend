@@ -24,6 +24,10 @@ import { CommentNew } from 'components/comment';
       username
       pseudonym
     }
+    story {
+      _id
+      commentsCount
+    }
  }
 `;
 

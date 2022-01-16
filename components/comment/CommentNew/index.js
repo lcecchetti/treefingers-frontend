@@ -10,9 +10,9 @@ import { ApiError } from 'components/common';
  * Create comment mutation
  * @type {gql}
  */
-const MUTATION_COMMENT_CREATE = gql`
-  mutation createComment($input: CreateCommentInput!) {
-    createComment(input: $input) {
+const MUTATION_COMMENT_STORY = gql`
+  mutation commentStory($input: CommentStoryInput!) {
+    commentStory(input: $input) {
       comment {
         ...CommentFields
       } 
@@ -22,7 +22,7 @@ const MUTATION_COMMENT_CREATE = gql`
 `;
 
 const CommentNew = ({ story }) => {
-  const [createComment, { error }] = useMutation(MUTATION_COMMENT_CREATE, {
+  const [commentStory, { error }] = useMutation(MUTATION_COMMENT_STORY, {
     update(cache, { data }) {
 
       // add new comment to the cache
@@ -34,7 +34,7 @@ const CommentNew = ({ story }) => {
           comments: { 
             edges: [
               ...comments.edges,
-              { node: data.createComment.comment },
+              { node: data.commentStory.comment },
             ]
           }
         })
@@ -49,14 +49,13 @@ const CommentNew = ({ story }) => {
         <Formik
           initialValues={{
             content: '',
-            story: story?._id,
           }}
           validationSchema={Yup.object().shape({
             content: Yup.string().required('Required'),
           })}
           onSubmit={(values, { resetForm }) => {
-            createComment({
-              variables: { input: { data: values } },
+            commentStory({
+              variables: { input: { story: story._id, data: values } },
               onCompleted: () => {
                 resetForm();
               },
