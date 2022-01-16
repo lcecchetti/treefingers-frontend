@@ -57,7 +57,7 @@ export default function SignUp() {
           password: '',
           pseudonym: '',
         }}
-        onSubmit={({ email, password, pseudonym }) => register({ variables: { input: { email, password, pseudonym } } })}
+        onSubmit={({ email, password, pseudonym }) => register({ variables: { input: { data: { email, password, pseudonym } } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too short!').required('Required'),
