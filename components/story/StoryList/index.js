@@ -30,6 +30,7 @@ export const QUERY_STORIES = gql`
             _id
             email
             username
+            pseudonym
           }
           tags {
             _id

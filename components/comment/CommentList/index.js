@@ -22,6 +22,7 @@ import { CommentNew } from 'components/comment';
     user {
       _id
       username
+      pseudonym
     }
  }
 `;

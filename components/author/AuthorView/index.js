@@ -15,6 +15,8 @@ export const QUERY_AUTHOR = gql`
       _id
       email
       bio
+      username
+      pseudonym
       currentUserLike {
         _id
       }
@@ -43,7 +45,7 @@ const AuthorView = ({ className, _id }) => {
         <>
           <div className="flex flex-col gap-sm my-sm md:my-md">
             <div className="flex justify-between items-center">
-              <Text variant="pageTitle">{data.user.username}</Text>
+              <Text variant="pageTitle">{data.user.pseudonym}</Text>
               <Like entity={data.user} />
             </div>
             <Text variant="p">{data.user.bio}</Text>
