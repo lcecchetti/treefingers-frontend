@@ -16,6 +16,10 @@ const MUTATION_STORY_CREATE = gql`
     createStory(input: $input) {
       story {
         _id
+        author {
+          _id
+          storiesCount
+        }
       } 
     }
   }
