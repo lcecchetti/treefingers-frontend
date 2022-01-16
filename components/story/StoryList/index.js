@@ -15,7 +15,7 @@ import { ApiError } from 'components/common';
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
-  query stories ($filter: StoryFilterInput) {
+  query stories ($filter: FilterStoryInput) {
     stories (filter: $filter) {
       edges {
         node {

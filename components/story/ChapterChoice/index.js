@@ -14,7 +14,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
  * @type {gql}
  */
 export const QUERY_CHAPTERS = gql`
-  query stories ($filter: StoryFilterInput) {
+  query stories ($filter: FilterStoryInput) {
     stories (filter: $filter) {
       edges {
         node {

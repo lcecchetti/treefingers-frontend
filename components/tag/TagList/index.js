@@ -8,7 +8,7 @@ import { getTagUrl } from 'lib/helper/tag';
  * @type {gql}
  */
 export const QUERY_TAGS = gql`
-  query tags($filter: TagFilterInput) {
+  query tags($filter: FilterTagInput) {
     tags(filter: $filter) {
       edges {
         node {
