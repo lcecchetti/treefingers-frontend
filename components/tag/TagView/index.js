@@ -9,7 +9,7 @@ import clsx from 'clsx';
  * @type {gql}
  */
 export const QUERY_TAG = gql`
-  query tag($filter: TagFilterInput!) {
+  query tag($filter: FilterTagInput!) {
     tag(filter: $filter) {
       _id
       label

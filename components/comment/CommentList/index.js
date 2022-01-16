@@ -31,7 +31,7 @@ import { CommentNew } from 'components/comment';
  * @type {gql}
  */
 export const QUERY_COMMENTS = gql`
-  query comments($filter: CommentFilterInput) {
+  query comments($filter: FilterCommentInput) {
     comments (filter: $filter) {
       edges {
         node {

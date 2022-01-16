@@ -10,7 +10,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
  * @type {gql}
  */
 export const QUERY_AUTHOR = gql`
-  query user($filter: UserFilterInput!) {
+  query user($filter: FilterUserInput!) {
     user(filter: $filter) {
       _id
       email

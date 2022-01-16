@@ -12,7 +12,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
  * @type {gql}
  */
 export const QUERY_AUTHORS = gql`
-  query users($filter: UserFilterInput) {
+  query users($filter: FilterUserInput) {
     users (filter: $filter) {
       edges {
         node {
