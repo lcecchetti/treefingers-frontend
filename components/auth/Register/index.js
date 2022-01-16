@@ -56,12 +56,14 @@ export default function SignUp() {
           email: '',
           password: '',
           pseudonym: '',
+          bio: '',
         }}
-        onSubmit={({ email, password, pseudonym }) => register({ variables: { input: { data: { email, password, pseudonym } } } })}
+        onSubmit={(data) => register({ variables: { input: { data } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too short!').required('Required'),
           pseudonym: Yup.string().min(2, 'Too short!').max(32, 'Too long!').required('Required'),
+          bio: Yup.string().max(255, 'Too long!'),
         })}
       >
         {({ isSubmitting, errors, touched }) => (
@@ -77,6 +79,15 @@ export default function SignUp() {
             />
             <Field
               as={FormField}
+              name="password"
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              error={errors.password}
+              touched={touched.password}
+            />
+            <Field
+              as={FormField}
               label="Pseudonym"
               type="text"
               name="pseudonym"
@@ -85,12 +96,11 @@ export default function SignUp() {
             />
             <Field
               as={FormField}
-              name="password"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              error={errors.password}
-              touched={touched.password}
+              label="Bio"
+              type="textarea"
+              name="bio"
+              error={errors.bio}
+              touched={touched.bio}
             />
             <ApiError error={error}/>
             <Button
