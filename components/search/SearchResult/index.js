@@ -5,8 +5,7 @@ import { Spinner, Link, Text, Button } from 'components/ui';
 import { ApiError } from 'components/common';
 import { StoryCard } from 'components/story';
 import { FRAGMENT_STORY_CARD_FIELDS } from 'components/story/StoryCard';
-import { AuthorCard } from 'components/author';
-import { FRAGMENT_AUTHOR_CARD_FIELDS } from 'components/author/AuthorCard';
+import { Avatar } from 'components/user';
 import { TagList } from 'components/tag';
 
 const QUERY_SEARCH = gql`
@@ -22,7 +21,9 @@ const QUERY_SEARCH = gql`
       authors {
         edges {
           node {
-            ...AuthorCardFields
+            _id
+            pseudonym
+            username
           }
         }
       }
@@ -38,7 +39,6 @@ const QUERY_SEARCH = gql`
     }
   }  
   ${FRAGMENT_STORY_CARD_FIELDS}
-  ${FRAGMENT_AUTHOR_CARD_FIELDS}
 `;
 
 const SearchResult = ({ className, query }) => {
@@ -58,12 +58,18 @@ const SearchResult = ({ className, query }) => {
         </>
       }
 
-
-
       {data &&
         <div className="flex flex-col gap-md">
           {!!data.search.tags.edges.length &&
             <TagList tags={data?.search.tags?.edges.map(({ node }) => node)} />
+          }
+
+          {!!data.search.authors.edges.length &&
+            <div className="flex flex-row flex-wrap gap-sm">
+              {data.search.authors.edges.map(({ node }) => (
+                <Avatar key={node._id} user={node} showName={true} />
+              ))}
+            </div>
           }
 
           {!!data.search.stories.edges.length &&
@@ -72,17 +78,6 @@ const SearchResult = ({ className, query }) => {
               <div className="grid md:grid-cols-2 gap-md">
                 {data.search.stories.edges.map(({ node }) => (
                   <StoryCard key={node._id} story={node} />
-                ))}
-              </div>
-            </div>
-          }
-
-          {!!data.search.authors.edges.length &&
-            <div>
-              <Text variant="h2" as="h3">Authors</Text>
-              <div className="grid md:grid-cols-2 gap-md">
-                {data.search.authors.edges.map(({ node }) => (
-                  <AuthorCard key={node._id} author={node} />
                 ))}
               </div>
             </div>
