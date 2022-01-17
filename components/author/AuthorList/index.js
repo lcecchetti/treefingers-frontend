@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { FRAGMENT_AUTHOR_CARD_FIELDS } from 'components/author/AuthorCard';
+import { AuthorCard } from 'components/author';
+
 /**
  * Authors list query
  * @type {gql}
