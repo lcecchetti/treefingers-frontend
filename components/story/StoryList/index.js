@@ -44,7 +44,7 @@ const StoryList = ({ className, filter }) => {
       <ApiError error={error}/>
 
       {data?.stories && data.stories.edges.map(({ node }) => (
-        <StoryCard key={story._id} story={node} />
+        <StoryCard key={node._id} story={node} />
       ))}
     </div>
   );
