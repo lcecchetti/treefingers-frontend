@@ -1,2 +1,3 @@
-export { default as AuthorList, QUERY_AUTHORS } from './AuthorList';
-export { default as AuthorView, QUERY_AUTHOR, QUERY_AUTHORS_BY_USERNAME } from './AuthorView';
+export { default as AuthorList } from './AuthorList';
+export { default as AuthorView } from './AuthorView';
+export { default as AuthorCard, FRAGMENT_AUTHOR_CARD_FIELDS } from './AuthorCard';

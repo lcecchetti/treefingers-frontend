@@ -11,7 +11,7 @@ import { CommentNew } from 'components/comment';
  * @type gql
  */
  export const FRAGMENT_COMMENT_FIELDS = gql`
- fragment CommentFields on Comment {
+  fragment CommentFields on Comment {
     _id
     content
     createdAt
@@ -28,7 +28,7 @@ import { CommentNew } from 'components/comment';
       _id
       commentsCount
     }
- }
+  }
 `;
 
 /**

@@ -1,7 +1,8 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { AuthorView, QUERY_AUTHORS, QUERY_AUTHOR } from 'components/author';
+import { AuthorView } from 'components/author';
+import { QUERY_AUTHORS, QUERY_AUTHOR } from 'components/author';
 import { QUERY_STORIES } from 'components/story';
 
 const AuthorPage = ({ author }) => {

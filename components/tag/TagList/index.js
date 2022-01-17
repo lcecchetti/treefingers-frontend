@@ -22,7 +22,6 @@ export const QUERY_TAGS = gql`
 `;
 
 const TagList = ({ className, tags, buttonVariant = 'primary' }) => {
-  
   if (!tags) {
     return '';
   }
