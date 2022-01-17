@@ -1,7 +1,9 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { TagView, QUERY_TAG, QUERY_TAGS } from 'components/tag';
+import { TagView } from 'components/tag';
+import { QUERY_TAG } from 'components/tag/TagView';
+import { QUERY_TAGS } from 'components/tag/TagList';
 import { QUERY_STORIES } from 'components/story';
 
 const TagPage = ({ tag }) => {
