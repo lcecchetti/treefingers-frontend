@@ -11,12 +11,6 @@ const SearchBar = () => {
   const { isSearchOpen, closeSearch } = useUI();
   const router = useRouter();
 
-  const handleSubmit = ({ q }, { resetForm }) => {
-    closeSearch();
-    resetForm();
-    router.push(getSearchUrl(q));
-  };
-
   return (
     <div className={clsx('h-full w-full absolute bg-base -top-full left-0 transition-transform transform-gpu', {
       ['translate-y-full']: isSearchOpen,
@@ -27,14 +21,18 @@ const SearchBar = () => {
           initialValues={{
             q: router.query.q ?? '',
           }}
-          onSubmit={(values, methods) => handleSubmit(values, methods)}
+          onSubmit={({ q }, { resetForm }) => {
+            closeSearch();
+            resetForm();
+            router.push(getSearchUrl(q));
+          }}
           validationSchema={Yup.object().shape({
-            q: Yup.string().min(3),
+            q: Yup.string().min(3, 'Cmon, be more precise!'),
           })}
         >
-          {({ errors }) => (
+          {({ errors, touched }) => (
             <Form className="h-full flex items-center gap-sm">
-              <Field as={FormField} type="text" placeholder="Search" className="flex-grow" name="q" error={!!errors.q} autoFocus={isSearchOpen} />
+              <Field as={FormField} type="text" placeholder="Search" className="flex-grow" name="q" error={errors.q} touched={touched.q} autoFocus={isSearchOpen} />
               <button type="submit" className="focus:outline-none">
                 <FaSearch className="text-2xl cursor-pointer" />
               </button>
