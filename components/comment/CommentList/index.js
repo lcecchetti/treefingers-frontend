@@ -60,7 +60,7 @@ const CommentList = ({ story }) => {
   // scroll to bottom each time a new comment list has loaded
   useEffect(() => {
     scrollToBottom();
-  }, [story._id, loading]);
+  }, [story._id]);
 
   return (
     <div className="h-full overflow-y-auto">
