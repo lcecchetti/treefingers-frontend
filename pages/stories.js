@@ -1,7 +1,7 @@
 import { DefaultLayout } from 'components/layout';
 import { Container, Text } from 'components/ui';
 import { StoryList } from 'components/story';
-import { QUERY_STORIES } from 'components/story';
+import { QUERY_STORIES } from 'components/story/StoryList';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro, Sidebar } from 'components/common';
 

@@ -5,7 +5,7 @@ import { StoryCard } from 'components/story';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
-import { FRAGMENT_STORY_CARD_FIELDS } from 'components/story';
+import { FRAGMENT_STORY_CARD_FIELDS } from 'components/story/StoryCard';
 
 /**
  * Story list query
