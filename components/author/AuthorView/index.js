@@ -50,7 +50,7 @@ const AuthorView = ({ className, _id }) => {
             </div>
             <Text variant="p">{data.user.bio}</Text>
           </div>
-          <StoryList filter={{ author: { eq: data.user._id }, root: null }} />
+          <StoryList filter={{ author: { eq: data.user._id } }} />
         </>
       }
     </div>
