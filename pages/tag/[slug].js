@@ -4,7 +4,7 @@ import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { TagView } from 'components/tag';
 import { QUERY_TAG } from 'components/tag/TagView';
 import { QUERY_TAGS } from 'components/tag/TagList';
-import { QUERY_STORIES } from 'components/story';
+import { QUERY_STORIES } from 'components/story/StoryList';
 
 const TagPage = ({ tag }) => {
   return (
