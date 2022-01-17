@@ -40,7 +40,7 @@ const ChapterChoice = ({ className, parent }) => {
 
   const { data, loading, error, refetch } = useQuery(QUERY_CHAPTERS, {
     variables: {
-      filter: { parent: { eq: parent?._id } }
+      filter: { parent: { eq: parent._id } }
     }
   });
 
@@ -50,7 +50,7 @@ const ChapterChoice = ({ className, parent }) => {
       refetch();
     }
     setIsWriting(false);
-  }, [currentUser, parent]);
+  }, [currentUser]);
 
   return (
     <div>
