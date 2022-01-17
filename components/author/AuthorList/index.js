@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
-import { Link, Spinner, Text } from 'components/ui';
+import { Spinner } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
-import { Avatar } from 'components/user';
-import { ApiError, Like } from 'components/common';
-import { getStoryUrl } from 'lib/helper/story';
+import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
-
+import { FRAGMENT_AUTHOR_CARD_FIELDS } from 'components/author';
 /**
  * Authors list query
  * @type {gql}
@@ -16,26 +14,12 @@ export const QUERY_AUTHORS = gql`
     users (filter: $filter) {
       edges {
         node {
-          _id
-          username
-          pseudonym
-          excerpt
-          stories(filter: { root: null }) {
-            edges {
-              node {
-                _id
-                title
-              }
-            }
-          }
-          currentUserLike {
-            _id
-          }
-          likesCount
+          ...AuthorCardFields
         }
       }
     }
   }
+  ${FRAGMENT_AUTHOR_CARD_FIELDS}
 `;
 
 const AuthorList = ({ className }) => {
@@ -54,21 +38,8 @@ const AuthorList = ({ className }) => {
       <Spinner loading={loading}/>
       <ApiError error={error}/>
 
-      {data?.users && data.users.edges.map(({ node: author }) => (
-        <div key={author._id} className="text-primary-contrast bg-primary rounded-xl flex flex-col p-md">
-          <div className="flex justify-between items-center">
-            <Avatar user={author} showName={true} />
-            <Like entity={author} />
-          </div>
-
-          <ul className="mt-sm">
-            {author.stories && author.stories.edges.map(({ node: story }) => (
-              <li key={story._id}>
-                <Link href={getStoryUrl(story)}>{story.title}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {data?.users && data.users.edges.map(({ node }) => (
+        <AuthorCard key={node._id} author={node} />
       ))}
     </div>
   );

@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { FormField, Button } from 'components/ui';
 import * as Yup from 'yup';
 import { AuthRequired } from 'components/auth';
-import { QUERY_COMMENTS, FRAGMENT_COMMENT_FIELDS } from '../CommentList';
+import { QUERY_COMMENTS, FRAGMENT_COMMENT_FIELDS } from 'components/comment';
 import { ApiError } from 'components/common';
 
 /**
