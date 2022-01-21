@@ -1,11 +1,12 @@
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldArray } from 'formik';
 import { FormField, Button } from 'components/ui';
 import * as Yup from 'yup';
 import { getStoryUrl } from 'lib/helper/story';
 import { AuthRequired } from 'components/auth';
 import { ApiError } from 'components/common';
+import { FaTimes } from 'react-icons/fa';
 
 /**
  * Create story mutation
@@ -40,20 +41,24 @@ const StoryNew = ({ parent }) => {
             content: '',
             parent: parent?._id,
             root: parent?.root?._id ?? parent?._id,
+            addTag: '',
+            tags: [],
           }}
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Required'),
             content: Yup.string().required('Required'),
           })}
-          onSubmit={(values, { resetForm }) => createStory({
-            variables: { input: { data: values } },
+          onSubmit={({ title, content, parent, tags, root }, { resetForm }) => createStory({
+            variables: { input: { data: {
+              title, content, parent, tags, root
+            }}},
             onCompleted: (data) => {
               resetForm();
               router.push(getStoryUrl(data.createStory.story));
             },
           })}
         >
-          {({ isSubmitting, errors, touched }) => (
+          {({ isSubmitting, values, setFieldValue, errors, touched }) => (
             <Form className="flex flex-col gap-sm">
               <Field
                 as={FormField}
@@ -72,12 +77,36 @@ const StoryNew = ({ parent }) => {
                 error={errors.content}
                 touched={touched.content}
               />
+              <FieldArray
+                name="tags"
+                render={arrayHelpers => (
+                  <div className="flex flex-col gap-xs">
+                    <div className="flex flex-row gap-sm justify-items-stretch">
+                      <Field className="grow" name="addTag" as={FormField} type="text" />
+                      <Button type="button" onClick={() => { 
+                        if(values.tags.includes(values.addTag)) {
+                          return;
+                        } 
+                        arrayHelpers.push(values.addTag);
+                        setFieldValue('addTag', '');
+                      }}>Add Tag</Button>
+                    </div>
+                    {!!values.tags.length && (
+                      <ul className="flex flex-row gap-xs">
+                        {values.tags.map((tag, index) => (
+                          <Button size="sm" key={index}>{tag} <FaTimes onClick={() => arrayHelpers.remove(index)}/></Button>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              />
               <ApiError error={error} />
               <Button
                 type="submit"
                 disabled={isSubmitting}
                 loading={isSubmitting}
-                className="w-full">
+                className="w-full mt-sm">
                 Create
                 </Button>
             </Form>
