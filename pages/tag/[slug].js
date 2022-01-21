@@ -40,7 +40,7 @@ export async function getStaticProps({ params }) {
   // load tag stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { tags: { in: [data.tag._id] }, root: null } },
+    variables: { filter: { tags: { in: [data.tag._id] } } },
   });
 
   return addApolloState(apolloClient, {
