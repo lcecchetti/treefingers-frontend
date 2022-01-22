@@ -5,6 +5,8 @@ import { QUERY_STORIES } from 'components/story/StoryList';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro, Sidebar } from 'components/common';
 import { QUERY_AUTHORS_POPULAR } from 'components/author/PopularAuthors';
+import { QUERY_TAGS_POPULAR } from 'components/tag/PopularTags';
+
 
 const StoriesPage = () => {
   return (
@@ -30,6 +32,10 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_AUTHORS_POPULAR,
+  });
+
+  await apolloClient.query({
+    query: QUERY_TAGS_POPULAR,
   });
 
   return addApolloState(apolloClient, {
