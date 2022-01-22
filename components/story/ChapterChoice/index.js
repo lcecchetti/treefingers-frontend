@@ -46,11 +46,11 @@ const ChapterChoice = ({ className, parent }) => {
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (currentUser !== null) {
+    if (!currentUser) {
       refetch();
     }
     setIsWriting(false);
-  }, [currentUser]);
+  }, [!currentUser]);
 
   return (
     <div>

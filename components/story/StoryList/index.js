@@ -33,13 +33,13 @@ const StoryList = ({ className, filter }) => {
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (currentUser !== null) {
+    if (currentUser) {
       refetch();
     }
-  }, [currentUser]);
+  }, [!currentUser]);
 
   return (
-    <div className={clsx('grid md:grid-cols-2 gap-md', className)}>
+    <div className={clsx('grid xl:grid-cols-3 sm:grid-cols-2 gap-md', className)}>
       <Spinner loading={loading}/>
       <ApiError error={error}/>
 
