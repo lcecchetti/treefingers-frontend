@@ -30,10 +30,10 @@ const AuthorList = ({ className }) => {
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (currentUser !== null) {
+    if (currentUser) {
       refetch();
     }
-  }, [currentUser]);
+  }, [!currentUser]);
 
   return (
     <div className={clsx('grid md:grid-cols-4 gap-md', className)}>

@@ -4,7 +4,6 @@ export { default as Copyright } from './Copyright';
 export { default as Logo } from './Logo';
 export { default as Hero } from './Hero';
 export { default as ThemeIcon } from './ThemeIcon';
-export { default as Sidebar } from './Sidebar';
 export { default as PageIntro } from './PageIntro';
 export { default as Like } from './Like';
 export { default as Flyout } from './Flyout';

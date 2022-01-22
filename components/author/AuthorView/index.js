@@ -31,10 +31,10 @@ const AuthorView = ({ className, _id }) => {
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (currentUser !== null) {
+    if (currentUser) {
       refetch();
     }
-  }, [currentUser]);
+  }, [!currentUser]);
 
   return (
     <div className={className}>

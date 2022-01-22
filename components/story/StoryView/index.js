@@ -53,10 +53,10 @@ const StoryView = ({ story }) => {
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (currentUser !== null) {
+    if (currentUser) {
       refetch();
     }
-  }, [currentUser]);
+  }, [!currentUser]);
 
   return (
     <div className="flex flex-col gap-md">

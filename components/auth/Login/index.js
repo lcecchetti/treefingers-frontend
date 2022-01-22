@@ -43,7 +43,7 @@ export default function Login() {
     if (currentUser) {
       router.push(getProfileMeUrl());
     }
-  }, [currentUser]);
+  }, [!currentUser]);
 
   return (
     <div className="md:max-w-sm p-md m-md border-2 rounded-xl">

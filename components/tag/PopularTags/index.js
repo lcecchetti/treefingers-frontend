@@ -31,7 +31,6 @@ const PopularTags = ({ className }) => {
       <Spinner loading={loading}/>
       <ApiError error={error}/>
 
-      <Text variant="pageSubtitle" as="h2">Popular tags</Text>
       <TagList tags={data?.tags.edges.map(({ node }) => node)} />
     </div>
   );
