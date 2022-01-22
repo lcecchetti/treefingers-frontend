@@ -15,7 +15,7 @@ import { gql } from '@apollo/client';
     username
     pseudonym
     excerpt
-    stories(filter: { root: null }) {
+    stories(filter: { root: null }, pagination: { pageSize: 5 }) {
       edges {
         node {
           _id
