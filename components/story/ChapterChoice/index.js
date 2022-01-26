@@ -8,6 +8,7 @@ import { getStoryUrl } from 'lib/helper/story';
 import { FaTimes } from 'react-icons/fa';
 import { ApiError, Like } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import { TagList } from 'components/tag';
 
 /**
  * Chapter list query
@@ -27,6 +28,7 @@ export const QUERY_CHAPTERS = gql`
           currentUserLike {
             _id
           }
+          tags
         }
       }
     }
@@ -73,7 +75,10 @@ const ChapterChoice = ({ className, parent }) => {
                       <li key={node._id} className="bg-base">
                         <Link href={getStoryUrl(node)} className="p-md flex gap-md items-center justify-between">
                           <Text variant="span">{node.title}</Text>
-                          <Like entity={node} viewOnly={true} />
+                          <div className="flex gap-sm items-center">
+                            <TagList tags={node.tags} />
+                            <Like entity={node} viewOnly={true} />
+                          </div>
                         </Link>
                       </li>
                     ))}
