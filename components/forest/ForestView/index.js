@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList, StoryNew } from 'components/story';
 import { ApiError, Like } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import { FaSeedling, FaTimes } from 'react-icons/fa';
 
 /**
  * Single forest query
@@ -27,6 +28,7 @@ export const QUERY_FOREST = gql`
 
 const ForestView = ({ className, _id }) => {
   const currentUser = useCurrentUser();
+  const [isWritingStory, setIsWritingStory] = useState(false);
   const { data, loading, error, refetch } = useQuery(QUERY_FOREST, { variables: { filter: { _id: { eq: _id } } } });
 
   // refresh data with customer specific infos
@@ -46,12 +48,25 @@ const ForestView = ({ className, _id }) => {
           <div className="flex flex-col gap-sm my-sm md:my-md">
             <div className="flex justify-between items-center">
               <Text variant="pageTitle">{data.forest.name}</Text>
-              <Like entity={data.forest} />
+              <ul className="flex flex-row gap-sm justify-end items-center">
+                <li><FaSeedling className="cursor-pointer text-2xl" onClick={() => setIsWritingStory(true)} /></li>
+                <li><Like entity={data.forest} /></li>
+              </ul>
             </div>
             <Text variant="p">{data.forest.about}</Text>
-            <StoryNew forest={data.forest} />
           </div>
-          <StoryList filter={{ forest: { eq: data.forest._id } }} />
+          {isWritingStory &&
+            <div>
+              <div className="flex justify-between items-center">
+                <Text variant="subtitle">Plant a story</Text>
+                <FaTimes className="cursor-pointer" onClick={() => setIsWritingStory(false)} />
+              </div>
+              <StoryNew forest={data.forest} />
+            </div>
+          }
+          {!isWritingStory &&
+            <StoryList filter={{ forest: { eq: data.forest._id } }} />
+          }
         </>
       }
     </div>

@@ -24,10 +24,6 @@ import { Text, Link } from 'components/ui';
 const ForestCard = ({ className, forest }) => {
   return (
     <div className={clsx('text-primary-contrast bg-primary rounded-xl flex flex-col p-md', className)}>
-      <div className="flex justify-between items-center">
-        <Text variant="h3"><Link href={getForestUrl(forest)}>{forest.name}</Link></Text>
-      </div>
-
       <div>
         <Text variant="title">
           <Link href={getForestUrl(forest)}>{forest.name}</Link>
