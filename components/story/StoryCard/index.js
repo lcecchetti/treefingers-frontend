@@ -1,11 +1,11 @@
 import { Link, Text } from 'components/ui';
 import { formatDate, DATE_SHORT } from 'lib/helper/date';
 import { getStoryUrl, getStoryType } from 'lib/helper/story';
-import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { StoryActions } from 'components/story';
 import clsx from 'clsx';
 import { gql } from '@apollo/client';
+import { TagList } from 'components/tag';
 
 /**
  * Story card fields
@@ -26,11 +26,7 @@ import { gql } from '@apollo/client';
       username
       pseudonym
     }
-    tags {
-      _id
-      label
-      slug
-    }
+    tags
     likesCount
     commentsCount
     currentUserLike {

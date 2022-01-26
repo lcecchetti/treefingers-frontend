@@ -1,19 +1,19 @@
 import { DefaultLayout } from 'components/layout';
 import { Text, Container } from 'components/ui';
 import { PageIntro } from 'components/common';
-import { StoryNew } from 'components/story';
+import { ForestNew } from 'components/forest';
 
-const StoryNewPage = () => {
+const ForestNewPage = () => {
   return (
     <Container>
-      <PageIntro title="New Story">
+      <PageIntro title="New Forest">
         <Text variant="p">I see too much blank space on this page...</Text>
       </PageIntro>
-      <StoryNew />
+      <ForestNew />
     </Container>
   );
 };
 
-StoryNewPage.Layout = DefaultLayout;
+ForestNewPage.Layout = DefaultLayout;
 
-export default StoryNewPage;
+export default ForestNewPage;

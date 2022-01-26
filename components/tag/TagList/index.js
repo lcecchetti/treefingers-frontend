@@ -1,36 +1,12 @@
-import { Button, Link } from 'components/ui';
-import { gql } from '@apollo/client';
+import { Button } from 'components/ui';
 import clsx from 'clsx';
-import { getTagUrl } from 'lib/helper/tag';
 
-/**
- * Tags list query
- * @type {gql}
- */
-export const QUERY_TAGS = gql`
-  query tags($filter: FilterTagInput) {
-    tags(filter: $filter) {
-      edges {
-        node {
-          _id
-          label
-          slug
-        }
-      }
-    }
-  }
-`;
-
-const TagList = ({ className, tags, buttonVariant = 'primary' }) => {
-  if (!tags) {
-    return '';
-  }
-
-  return (
+const TagList = ({ className, tags = [], buttonVariant = 'primary' }) => {
+  return ( 
     <ul className={clsx('flex gap-sm uppercase flex-wrap', className)}>
-      {tags.map((tag) => (
-        <li key={tag._id}>
-          <Button variant={buttonVariant} as={Link} size="sm" href={getTagUrl(tag)}>{tag.label}</Button>
+      {tags.map((tag, i) => (
+        <li key={i}>
+          <Button variant={buttonVariant} size="sm">{tag}</Button>
         </li>
       ))}
     </ul>

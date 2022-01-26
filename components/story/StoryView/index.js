@@ -4,11 +4,11 @@ import { DATE_LONG, formatDate } from 'lib/helper/date';
 import { getStoryUrl } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import { FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
-import { TagList } from 'components/tag';
 import { Avatar } from 'components/user';
 import { ChapterChoice, StoryActions } from 'components/story';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
+import { TagList } from 'components/tag';
 
 /**
  * Single story query
@@ -26,11 +26,7 @@ export const QUERY_STORY = gql`
         username
         pseudonym
       }
-      tags {
-        _id
-        label
-        slug
-      }
+      tags
       parent {
         _id
       }

@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 import { useUI } from 'lib/ui/context';
 import { getLoginUrl } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
-import { getStoryNewUrl } from 'lib/helper/story';
+import { getForestNewUrl } from 'lib/helper/forest';
 import { ThemeIcon } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 
@@ -20,13 +20,6 @@ const IconList = () => {
       Icon: FaSearch,
       onClick: openSearch,
       showOnMobile: true,
-      showOnDesktop: true,
-    },
-    {
-      href: getStoryNewUrl(),
-      Icon: FaPenFancy,
-      onClick: false,
-      showOnMobile: false,
       showOnDesktop: true,
     },
     {

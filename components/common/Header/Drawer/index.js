@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import clsx from 'clsx';
 import { useUI } from 'lib/ui/context';
 import { useTheme } from 'next-themes';
-import { getStoriesUrl, getStoryNewUrl } from 'lib/helper/story';
+import { getStoriesUrl } from 'lib/helper/story';
+import { getForestsUrl } from 'lib/helper/forest';
 import { getAuthorsUrl } from 'lib/helper/author';
 import { ThemeIcon } from 'components/common';
 import { Link, Text } from 'components/ui';
-import { FaPenFancy } from 'react-icons/fa';
 
 const Drawer = () => {
   const router = useRouter();
@@ -34,12 +34,6 @@ const Drawer = () => {
 
   const drawerItems = [
     {
-      label: 'NEW STORY',
-      href: getStoryNewUrl(),
-      Icon: FaPenFancy,
-      onClick: false,
-    },
-    {
       label: 'STORIES',
       href: getStoriesUrl(),
       Icon: null,
@@ -48,6 +42,12 @@ const Drawer = () => {
     {
       label: 'AUTHORS',
       href: getAuthorsUrl(),
+      Icon: null,
+      onClick: false,
+    },
+    {
+      label: 'FORESTS',
+      href: getForestsUrl(),
       Icon: null,
       onClick: false,
     },

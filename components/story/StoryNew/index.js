@@ -26,7 +26,7 @@ const MUTATION_STORY_CREATE = gql`
   }
 `;
 
-const StoryNew = ({ parent }) => {
+const StoryNew = ({ parent, forest }) => {
   const [createStory, { error }] = useMutation(MUTATION_STORY_CREATE, {
     onError: (e) => {},
   });
@@ -41,6 +41,7 @@ const StoryNew = ({ parent }) => {
             content: '',
             parent: parent?._id,
             root: parent?.root?._id ?? parent?._id,
+            forest: forest?._id ?? parent.forest?._id,
             addTag: '',
             tags: [],
           }}
@@ -48,9 +49,9 @@ const StoryNew = ({ parent }) => {
             title: Yup.string().required('Required'),
             content: Yup.string().required('Required'),
           })}
-          onSubmit={({ title, content, parent, tags, root }, { resetForm }) => createStory({
+          onSubmit={({ title, content, parent, root, tags, forest }, { resetForm }) => createStory({
             variables: { input: { data: {
-              title, content, parent, tags, root
+              title, content, parent, root, forest, tags
             }}},
             onCompleted: (data) => {
               resetForm();

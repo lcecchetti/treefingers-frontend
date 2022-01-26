@@ -32,7 +32,7 @@ import { gql } from '@apollo/client';
 
 const AuthorCard = ({ className, author }) => {
   return (
-    <div key={author._id} className={clsx('text-primary-contrast bg-primary rounded-xl flex flex-col p-md', className)}>
+    <div className={clsx('text-primary-contrast bg-primary rounded-xl flex flex-col p-md', className)}>
       <div className="flex justify-between items-center">
         <Avatar user={author} showName={true} />
         <Like entity={author} />

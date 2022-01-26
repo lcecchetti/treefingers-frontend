@@ -68,6 +68,27 @@ const MUTATION_LIKE_STORY = gql`
 `;
 
 /**
+ * Create like mutation
+ * @type {gql}
+ */
+ const MUTATION_LIKE_FOREST = gql`
+ mutation likeForest($input: LikeForestInput!) {
+   likeForest(input: $input) {
+     like {
+       _id
+       forest {
+        _id
+        likesCount
+        currentUserLike {
+          _id
+        }
+       }
+     } 
+   }
+ }
+`;
+
+/**
  * Delete like mutation
  * @type {gql}
  */
@@ -131,6 +152,27 @@ const MUTATION_DISLIKE_STORY = gql`
 `;
 
 /**
+ * Delete like mutation
+ * @type {gql}
+ */
+ const MUTATION_DISLIKE_FOREST = gql`
+ mutation dislikeForest($input: DislikeForestInput!) {
+   dislikeForest(input: $input) {
+     like {
+       _id
+       forest {
+        _id
+        likesCount
+        currentUserLike {
+          _id
+        }
+       }
+     } 
+   }
+ }
+`;
+
+/**
  * Get entity type
  * @param {Object} entity 
  * @returns {String}
@@ -152,6 +194,8 @@ const getLikeMutation = (entityType) =>  {
       return MUTATION_LIKE_COMMENT;
     case 'author':  
       return MUTATION_LIKE_AUTHOR;
+    case 'forest':  
+      return MUTATION_LIKE_FOREST;
   }
 }
 
@@ -168,6 +212,8 @@ const getLikeMutation = (entityType) =>  {
       return MUTATION_DISLIKE_COMMENT;
     case 'author':  
       return MUTATION_DISLIKE_AUTHOR;
+    case 'forest':  
+      return MUTATION_DISLIKE_FOREST;
   }
 }
 
