@@ -1,6 +1,6 @@
 import { Link, Text } from 'components/ui';
 import { formatDate, DATE_SHORT } from 'lib/helper/date';
-import { getStoryUrl, getStoryType } from 'lib/helper/story';
+import { getStoryUrl } from 'lib/helper/story';
 import { Avatar } from 'components/user';
 import { StoryActions } from 'components/story';
 import clsx from 'clsx';
@@ -42,7 +42,6 @@ const StoryCard = ({ className, story }) => {
         <Text variant="span" className="text-sm">
           {formatDate(story.createdAt, DATE_SHORT)}
         </Text>
-        <Text variant="span" className="font-bold">{getStoryType(story)}</Text>
         <Avatar className="justify-end" user={story.author} showName={true} />
       </div>
 
