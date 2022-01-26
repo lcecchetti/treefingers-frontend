@@ -1,6 +1,7 @@
 import { Link, Text } from 'components/ui';
 import { getStoriesUrl } from 'lib/helper/story';
 import { getAuthorsUrl } from 'lib/helper/author';
+import { getForestsUrl } from 'lib/helper/forest';
 
 const mainNavigationItems = [
   {
@@ -10,6 +11,10 @@ const mainNavigationItems = [
   {
     href: getAuthorsUrl(),
     label: 'AUTHORS',
+  },
+  {
+    href: getForestsUrl(),
+    label: 'FORESTS',
   },
 ];
 

@@ -1,12 +1,13 @@
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
-import { getStoryNewUrl } from 'lib/helper/story';
+import { getForestNewUrl } from 'lib/helper/forest';
 import { Spinner, Link, Text, Button } from 'components/ui';
 import { ApiError } from 'components/common';
 import { StoryCard } from 'components/story';
 import { FRAGMENT_STORY_CARD_FIELDS } from 'components/story/StoryCard';
+import { FRAGMENT_FOREST_CARD_FIELDS } from 'components/forest/ForestCard';
 import { Avatar } from 'components/user';
-import { TagList } from 'components/tag';
+import { ForestCard } from 'components/forest';
 
 const QUERY_SEARCH = gql`
   query search($query: String!) {
@@ -27,24 +28,23 @@ const QUERY_SEARCH = gql`
           }
         }
       }
-      tags {
+      forests {
         edges {
           node {
-            _id
-            slug
-            label
+            ...ForestCardFields
           }
         }
       }
     }
   }  
   ${FRAGMENT_STORY_CARD_FIELDS}
+  ${FRAGMENT_FOREST_CARD_FIELDS}
 `;
 
 const SearchResult = ({ className, query }) => {
 
   const { data, loading, error } = useQuery(QUERY_SEARCH, { variables: { query }, skip: !query });
-  const hasNoResults = data && data.search.stories.edges.length === 0 && data.search.authors.edges.length === 0 && data.search.tags.edges.length === 0;
+  const hasNoResults = data && data.search.stories.edges.length === 0 && data.search.authors.edges.length === 0 && data.search.forests.edges.length === 0;
 
   return (
     <div className={clsx('', className)}>
@@ -54,21 +54,28 @@ const SearchResult = ({ className, query }) => {
       {hasNoResults &&
         <>
           <Text variant="p">No one wrote anything regarding {query}. Not yet...</Text>
-          <Button as={Link} href={getStoryNewUrl()}>Let's do something about it</Button>
+          <Button as={Link} href={getForestNewUrl()}>Let's do something about it</Button>
         </>
       }
 
       {data &&
         <div className="flex flex-col gap-md">
-          {!!data.search.tags.edges.length &&
-            <TagList tags={data?.search.tags?.edges.map(({ node }) => node)} />
-          }
-
           {!!data.search.authors.edges.length &&
             <div className="flex flex-row flex-wrap gap-sm">
               {data.search.authors.edges.map(({ node }) => (
                 <Avatar key={node._id} user={node} showName={true} />
               ))}
+            </div>
+          }
+
+          {!!data.search.forests.edges.length &&
+            <div>
+              <Text variant="h2" as="h3">Forests</Text>
+              <div className="grid md:grid-cols-2 gap-md">
+                {data.search.forests.edges.map(({ node }) => (
+                  <ForestCard key={node._id} forest={node} />
+                ))}
+              </div>
             </div>
           }
 

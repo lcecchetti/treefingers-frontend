@@ -1,15 +1,15 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { TagView } from 'components/tag';
-import { QUERY_TAG } from 'components/tag/TagView';
-import { QUERY_TAGS } from 'components/tag/TagList';
+import { ForestView } from 'components/forest';
+import { QUERY_FOREST } from 'components/forest/ForestView';
 import { QUERY_STORIES } from 'components/story/StoryList';
+import { QUERY_FORESTS } from 'components/forest/ForestList'
 
-const TagPage = ({ tag }) => {
+const ForestPage = ({ forest }) => {
   return (
     <Container>
-      <TagView _id={tag._id} />
+      <ForestView _id={forest._id} />
     </Container>
   );
 };
@@ -17,34 +17,34 @@ const TagPage = ({ tag }) => {
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo();
 
-  // load tag by slug
+  // load forest by slug
   const { data } = await apolloClient.query({
-    query: QUERY_TAG,
+    query: QUERY_FOREST,
     variables: { filter: { slug: { eq: params.slug } } },
   });
 
-  // check if tag exists
-  if (!data.tag) {
+  // check if forest exists
+  if (!data.forest) {
     return {
       notFound: true,
     }
   }
 
-  // add tag by id query to the cache
+  // add forest by id query to the cache
   apolloClient.writeQuery({
-    query: QUERY_TAG,
+    query: QUERY_FOREST,
     data,
-    variables: { filter: { _id: { eq: data.tag._id } } },
+    variables: { filter: { _id: { eq: data.forest._id } } },
   });
 
-  // load tag stories
+  // load forest stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { tags: { in: [data.tag._id] } } },
+    variables: { filter: { forest: { eq: data.forest._id } } },
   });
 
   return addApolloState(apolloClient, {
-    props: { tag: data.tag },
+    props: { forest: data.forest },
     revalidate: 1,
   });
 }
@@ -52,14 +52,14 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const apolloClient = initializeApollo();
 
-  const { data } = await apolloClient.query({ query: QUERY_TAGS });
+  const { data } = await apolloClient.query({ query: QUERY_FORESTS });
 
   return {
-    paths: data?.tags.edges.map(({ node }) => ({ params: { slug: node.slug } })) || [],
+    paths: data?.forests.edges.map(({ node }) => ({ params: { slug: node.slug } })) || [],
     fallback: 'blocking',
   };
 }
 
-TagPage.Layout = DefaultLayout;
+ForestPage.Layout = DefaultLayout;
 
-export default TagPage;
+export default ForestPage;
