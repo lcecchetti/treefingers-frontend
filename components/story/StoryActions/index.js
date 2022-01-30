@@ -8,7 +8,7 @@ const StoryActions = ({ story }) => {
 
   return (
     <div className="flex items-center gap-sm">
-      <CommentCount count={story.commentsCount} action={() => openFlyout(flyoutTypes.comments, { story, title: 'Comments' })} />
+      <CommentCount count={story.commentsCount} action={() => openFlyout(flyoutTypes.comments, { entity: story, title: 'Comments' })} />
       <Like entity={story} />
     </div>
   );

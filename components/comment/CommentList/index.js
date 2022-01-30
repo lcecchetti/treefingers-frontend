@@ -28,6 +28,10 @@ import { CommentNew } from 'components/comment';
       _id
       commentsCount
     }
+    forest {
+      _id
+      commentsCount
+    }
   }
 `;
 
@@ -48,8 +52,22 @@ export const QUERY_COMMENTS = gql`
   ${FRAGMENT_COMMENT_FIELDS}
 `;
 
-const CommentList = ({ story }) => {
-  const { data, loading, error } = useQuery(QUERY_COMMENTS, { variables: { filter: { story: { eq: story._id } } } });
+/**
+ * Get entity type
+ * @param {Object} entity 
+ * @returns {String}
+ */
+ const getEntityType = (entity) =>  {
+  return entity.__typename.toLowerCase();
+}
+
+const CommentList = ({ entity }) => {
+  const entityType = getEntityType(entity);
+
+  const filter = {};
+  filter[entityType] = { eq: entity._id };
+
+  const { data, loading, error } = useQuery(QUERY_COMMENTS, { variables: { filter } });
 
   // scroll to bottom anchor
   const bottomRef = useRef(null);
@@ -60,7 +78,7 @@ const CommentList = ({ story }) => {
   // scroll to bottom each time a new comment list has loaded
   useEffect(() => {
     scrollToBottom();
-  }, [story._id]);
+  }, [filter]);
 
   return (
     <div className="h-full overflow-y-auto">
@@ -71,7 +89,7 @@ const CommentList = ({ story }) => {
         {data &&
           <div className="flex flex-col gap-md">
             {!data?.comments.edges.length &&
-              <Text variant="span">This story has no comments yet.</Text>
+              <Text variant="span">This {entityType} has no comments yet.</Text>
             }
 
             {!!data?.comments.edges.length &&
@@ -91,7 +109,7 @@ const CommentList = ({ story }) => {
               </ol>
             }
 
-            <CommentNew story={story} />
+            <CommentNew entity={entity} />
           </div>
         }
       </div>
