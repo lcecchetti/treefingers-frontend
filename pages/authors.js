@@ -8,7 +8,8 @@ import { PageIntro } from 'components/common';
 const AuthorsPage = () => {
   return (
     <Container>
-      <PageIntro title="Authors">
+      <PageIntro>
+        <Text variant="pageTitle">Authors</Text>
         <Text variant="p">Looking for the next Hemingway? Getting warmer...</Text>
       </PageIntro>
       <AuthorList />

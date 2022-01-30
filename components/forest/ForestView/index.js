@@ -5,7 +5,7 @@ import { StoryList, StoryNew } from 'components/story';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { FaSeedling, FaTimes } from 'react-icons/fa';
-import { ForestActions } from '../ForestActions';
+import ForestActions from '../ForestActions';
 
 /**
  * Single forest query
@@ -23,6 +23,7 @@ export const QUERY_FOREST = gql`
       }
       storiesCount
       likesCount
+      commentsCount
     }
   }
 `;
@@ -50,7 +51,7 @@ const ForestView = ({ className, _id }) => {
             <div className="flex justify-between items-center">
               <Text variant="pageTitle">{data.forest.name}</Text>
               <div className="flex gap-sm">
-                <Button icon={FaSeedling} onClick={() => setIsWritingStory(true)} />
+                <Button icon={FaSeedling} onClick={() => setIsWritingStory(true)}>Plant a story</Button>
                 <ForestActions forest={data.forest} />
               </div>
             </div>

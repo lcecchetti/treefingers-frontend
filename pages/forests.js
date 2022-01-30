@@ -1,5 +1,5 @@
 import { DefaultLayout } from 'components/layout';
-import { Container, Text, Link } from 'components/ui';
+import { Container, Text, Link, Button } from 'components/ui';
 import { ForestList } from 'components/forest';
 import { QUERY_FORESTS } from 'components/forest/ForestList';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
@@ -10,12 +10,12 @@ import { getForestNewUrl } from 'lib/helper/forest';
 const ForestsPage = () => {
   return (
     <Container>
-      <PageIntro title="Forests">
-        <div className="flex justify-between">
-          <Text variant="p">Be careful, you might get lost in here...</Text>
-          <Link href={getForestNewUrl()}><FaSeedling className="text-2xl" /></Link>
+      <PageIntro>
+        <div className="flex gap-sm justify-between">
+          <Text variant="pageTitle">Forests</Text>
+          <Button as={Link} href={getForestNewUrl()} icon={FaSeedling}>Create a forest</Button>
         </div>
-
+        <Text variant="p">Be careful, you might get lost in here...</Text>
       </PageIntro>
       <ForestList />
     </Container>
