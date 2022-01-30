@@ -6,7 +6,8 @@ import { ForestNew } from 'components/forest';
 const ForestNewPage = () => {
   return (
     <Container>
-      <PageIntro title="New Forest">
+      <PageIntro>
+        <Text variant="pageTitle">New forest</Text>
         <Text variant="p">I see too much blank space on this page...</Text>
       </PageIntro>
       <ForestNew />

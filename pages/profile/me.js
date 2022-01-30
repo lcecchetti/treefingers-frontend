@@ -8,8 +8,8 @@ const ProfileMePage = () => {
 
   return (
     <div>
-      <PageIntro title={`Welcome ${currentUser.pseudonym}!`}>
-        <Text variant="h3"></Text>
+      <PageIntro>
+        <Text variant="pageTitle">{`Welcome ${currentUser.pseudonym}!`}</Text>
         <Text variant="p">Here you can edit your profile details.</Text>
       </PageIntro>
     </div>

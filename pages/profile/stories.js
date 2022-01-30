@@ -9,7 +9,8 @@ const ProfileStoriesPage = () => {
 
   return (
     <>
-      <PageIntro title="My stories">
+      <PageIntro>
+        <Text variant="pageTitle">My stories</Text>
         <Text variant="p">Here you can find a list of all your writings.</Text>
       </PageIntro>
       <StoryList filter={{ author: { eq: currentUser._id } }} />

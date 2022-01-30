@@ -8,7 +8,8 @@ import { PageIntro } from 'components/common';
 const StoriesPage = () => {
   return (
     <Container>
-      <PageIntro title="Stories">
+      <PageIntro>
+        <Text variant="pageTitle">Stories</Text>
         <Text variant="p">Looking for some good reads? Here is a good place to start.</Text>
       </PageIntro>
       <div className="flex flex-col gap-md">
