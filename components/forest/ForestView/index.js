@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Spinner, Text } from 'components/ui';
+import { Spinner, Text, Button } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList, StoryNew } from 'components/story';
-import { ApiError, Like } from 'components/common';
+import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { FaSeedling, FaTimes } from 'react-icons/fa';
+import { ForestActions } from '../ForestActions';
 
 /**
  * Single forest query
@@ -48,10 +49,10 @@ const ForestView = ({ className, _id }) => {
           <div className="flex flex-col gap-sm my-sm md:my-md">
             <div className="flex justify-between items-center">
               <Text variant="pageTitle">{data.forest.name}</Text>
-              <ul className="flex flex-row gap-sm justify-end items-center">
-                <li><FaSeedling className="cursor-pointer text-2xl" onClick={() => setIsWritingStory(true)} /></li>
-                <li><Like entity={data.forest} /></li>
-              </ul>
+              <div className="flex gap-sm">
+                <Button icon={FaSeedling} onClick={() => setIsWritingStory(true)} />
+                <ForestActions forest={data.forest} />
+              </div>
             </div>
             <Text variant="p">{data.forest.about}</Text>
           </div>

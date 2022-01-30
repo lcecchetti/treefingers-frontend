@@ -41,7 +41,7 @@ const Flyout = () => {
           <FaTimes onClick={closeFlyout} className="text-2xl cursor-pointer"/>
         </div>
         {flyoutType === flyoutTypes.comments && 
-          <CommentList story={flyoutData.story} />
+          <CommentList entity={flyoutData.entity} />
         }
       </div>
     </div>

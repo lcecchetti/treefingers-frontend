@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { FRAGMENT_FOREST_CARD_FIELDS } from 'components/forest/ForestCard';
-import { ForestCard } from 'components/forest';
+import ForestCard from '../ForestCard';
 
 /**
  * Forests list query

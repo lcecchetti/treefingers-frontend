@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { Like } from 'components/common';
 import { gql } from '@apollo/client';
 import { getForestUrl } from 'lib/helper/forest';
 import { Text, Link } from 'components/ui';
+import ForestActions from '../ForestActions';
 
 /**
  * Forest card fields
@@ -18,6 +18,7 @@ import { Text, Link } from 'components/ui';
       _id
     }
     likesCount
+    commentsCount
   }
 `;
 
@@ -32,9 +33,7 @@ const ForestCard = ({ className, forest }) => {
         <Link href={getForestUrl(forest)}>Read more</Link>
       </div>
 
-      <div className="flex justify-end items-center gap-md">
-        <Like entity={forest} />
-      </div>
+      <ForestActions forest={forest} />
     </div>
   );
 };
