@@ -1,7 +1,6 @@
 import { DefaultLayout } from 'components/layout';
 import { Container, Text } from 'components/ui';
-import { AuthorList } from 'components/author';
-import { QUERY_AUTHORS } from 'components/author/AuthorList';
+import { AuthorList, QUERY_AUTHORS } from 'components/author';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro } from 'components/common';
 

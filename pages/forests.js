@@ -1,7 +1,6 @@
 import { DefaultLayout } from 'components/layout';
 import { Container, Text, Link, Button } from 'components/ui';
-import { ForestList } from 'components/forest';
-import { QUERY_FORESTS } from 'components/forest/ForestList';
+import { QUERY_FORESTS, ForestList } from 'components/forest';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro } from 'components/common';
 import { FaTree } from 'react-icons/fa';

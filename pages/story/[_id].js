@@ -2,9 +2,7 @@ import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { gql } from '@apollo/client';
-import { StoryView } from 'components/story';
-import { QUERY_STORY } from 'components/story/StoryView';
-import { QUERY_CHAPTERS } from 'components/story/ChapterChoice';
+import { QUERY_CHAPTERS, QUERY_STORY, StoryView } from 'components/story';
 
 /**
  * Story pages query

@@ -4,8 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import { FRAGMENT_FOREST_CARD_FIELDS } from 'components/forest/ForestCard';
-import ForestCard from '../ForestCard';
+import { ForestCard, FRAGMENT_FOREST_CARD_FIELDS } from 'components/forest';
 
 /**
  * Forests list query

@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { gql } from '@apollo/client';
 import { getForestUrl } from 'lib/helper/forest';
 import { Text, Link } from 'components/ui';
-import ForestActions from '../ForestActions';
+import { ForestActions } from 'components/forest';
 
 /**
  * Forest card fields

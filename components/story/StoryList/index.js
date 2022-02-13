@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { Spinner } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
-import { StoryCard } from 'components/story';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
-import { FRAGMENT_STORY_CARD_FIELDS } from 'components/story/StoryCard';
+import { StoryCard, FRAGMENT_STORY_CARD_FIELDS } from 'components/story';
 
 /**
  * Story list query

@@ -1,10 +1,8 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { ForestView } from 'components/forest';
-import { QUERY_FOREST } from 'components/forest/ForestView';
-import { QUERY_STORIES } from 'components/story/StoryList';
-import { QUERY_FORESTS } from 'components/forest/ForestList'
+import { ForestView, QUERY_FOREST, QUERY_FORESTS } from 'components/forest';
+import { QUERY_STORIES } from 'components/story';
 
 const ForestPage = ({ forest }) => {
   return (
