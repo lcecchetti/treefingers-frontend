@@ -16,8 +16,10 @@ const MUTATION_LIKE_STORY = gql`
         story {
           _id
           likesCount
-          currentUserLike {
-            _id
+          currentUserData {
+            like {
+              _id
+            }
           }
         }
       } 
@@ -31,18 +33,20 @@ const MUTATION_LIKE_STORY = gql`
  */
  const MUTATION_LIKE_COMMENT = gql`
  mutation likeComment($input: LikeCommentInput!) {
-   likeComment(input: $input) {
-     like {
-       _id
-       comment {
+  likeComment(input: $input) {
+    like {
+      _id
+      comment {
         _id
         likesCount
-        currentUserLike {
-          _id
+        currentUserData {
+          like {
+            _id
+          }
         }
-       }
-     } 
-   }
+      }
+    } 
+  }
  }
 `;
 
@@ -52,18 +56,20 @@ const MUTATION_LIKE_STORY = gql`
  */
  const MUTATION_LIKE_AUTHOR = gql`
  mutation likeAuthor($input: LikeAuthorInput!) {
-   likeAuthor(input: $input) {
-     like {
-       _id
-       author {
+  likeAuthor(input: $input) {
+    like {
+      _id
+      author {
         _id
         likesCount
-        currentUserLike {
-          _id
+        currentUserData {
+          like {
+            _id
+          }
         }
-       }
-     } 
-   }
+      }
+    } 
+  }
  }
 `;
 
@@ -73,19 +79,21 @@ const MUTATION_LIKE_STORY = gql`
  */
  const MUTATION_LIKE_FOREST = gql`
  mutation likeForest($input: LikeForestInput!) {
-   likeForest(input: $input) {
-     like {
-       _id
-       forest {
+  likeForest(input: $input) {
+    like {
+      _id
+      forest {
         _id
         likesCount
-        currentUserLike {
-          _id
+        currentUserData {
+          like {
+            _id
+          }
         }
-       }
-     } 
-   }
- }
+      }
+    } 
+  }
+}
 `;
 
 /**
@@ -100,8 +108,10 @@ const MUTATION_DISLIKE_STORY = gql`
         story {
           _id
           likesCount
-          currentUserLike {
-            _id
+          currentUserData {
+            like {
+              _id
+            }
           }
         }
       } 
@@ -121,8 +131,10 @@ const MUTATION_DISLIKE_STORY = gql`
        comment {
         _id
         likesCount
-        currentUserLike {
-          _id
+        currentUserData {
+          like {
+            _id
+          }
         }
        }
      } 
@@ -137,18 +149,20 @@ const MUTATION_DISLIKE_STORY = gql`
  const MUTATION_DISLIKE_AUTHOR = gql`
  mutation dislikeAuthor($input: DislikeAuthorInput!) {
    dislikeAuthor(input: $input) {
-     like {
-       _id
-       author {
+    like {
+      _id
+      author {
         _id
         likesCount
-        currentUserLike {
-          _id
+        currentUserData {
+          like {
+            _id
+          }
         }
-       }
-     } 
-   }
- }
+      }
+    } 
+  }
+}
 `;
 
 /**
@@ -157,19 +171,21 @@ const MUTATION_DISLIKE_STORY = gql`
  */
  const MUTATION_DISLIKE_FOREST = gql`
  mutation dislikeForest($input: DislikeForestInput!) {
-   dislikeForest(input: $input) {
-     like {
-       _id
-       forest {
+  dislikeForest(input: $input) {
+    like {
+      _id
+      forest {
         _id
         likesCount
-        currentUserLike {
-          _id
+        currentUserData {
+          like {
+            _id
+          }
         }
-       }
-     } 
-   }
- }
+      }
+    } 
+  }
+}
 `;
 
 /**
@@ -251,11 +267,11 @@ const Like = ({ entity, viewOnly }) => {
       return;
     }
 
-    entity.currentUserLike ? await deleteLike() : await createLike();
+    entity.currentUserData?.like ? await deleteLike() : await createLike();
   }
 
   // pick icon accoridng to user like presence
-  const Icon = entity.currentUserLike ? FaHeart : FaRegHeart;
+  const Icon = entity.currentUserData?.like ? FaHeart : FaRegHeart;
 
   return (
     <div className={clsx(

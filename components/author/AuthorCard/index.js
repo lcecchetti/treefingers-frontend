@@ -23,8 +23,10 @@ import { gql } from '@apollo/client';
         }
       }
     }
-    currentUserLike {
-      _id
+    currentUserData {
+      like {
+        _id
+      }
     }
     likesCount
   }
