@@ -50,7 +50,7 @@ const ChapterChoice = ({ className, parent }) => {
 
   // refresh data with customer specific infos
   useEffect(() => {
-    if (!currentUser) {
+    if (currentUser) {
       refetch();
     }
     setIsWriting(false);
