@@ -3,11 +3,9 @@ import clsx from 'clsx';
 import { getForestNewUrl } from 'lib/helper/forest';
 import { Spinner, Link, Text, Button } from 'components/ui';
 import { ApiError } from 'components/common';
-import { StoryCard } from 'components/story';
-import { FRAGMENT_STORY_CARD_FIELDS } from 'components/story/StoryCard';
-import { FRAGMENT_FOREST_CARD_FIELDS } from 'components/forest/ForestCard';
+import { StoryCard, FRAGMENT_STORY_CARD_FIELDS } from 'components/story';
 import { Avatar } from 'components/user';
-import { ForestCard } from 'components/forest';
+import { ForestCard, FRAGMENT_FOREST_CARD_FIELDS } from 'components/forest';
 
 const QUERY_SEARCH = gql`
   query search($query: String!) {

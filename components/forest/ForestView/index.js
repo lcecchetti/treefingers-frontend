@@ -5,7 +5,7 @@ import { StoryList, StoryNew } from 'components/story';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { FaSeedling, FaTimes } from 'react-icons/fa';
-import ForestActions from '../ForestActions';
+import { ForestActions } from 'components/forest';
 
 /**
  * Single forest query
