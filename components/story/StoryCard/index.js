@@ -29,8 +29,10 @@ import { TagList } from 'components/tag';
     tags
     likesCount
     commentsCount
-    currentUserLike {
-      _id
+    currentUserData {
+      like {
+        _id
+      }
     }
   }
 `;

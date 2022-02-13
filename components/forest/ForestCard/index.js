@@ -14,8 +14,10 @@ import { ForestActions } from 'components/forest';
     name
     slug
     excerpt
-    currentUserLike {
-      _id
+    currentUserData {
+      like {
+        _id
+      }
     }
     likesCount
     commentsCount

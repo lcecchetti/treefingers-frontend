@@ -17,8 +17,10 @@ export const QUERY_AUTHOR = gql`
       bio
       username
       pseudonym
-      currentUserLike {
-        _id
+      currentUserData {
+        like {
+          _id
+        }
       }
       likesCount
     }
