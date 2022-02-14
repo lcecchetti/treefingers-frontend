@@ -40,12 +40,6 @@ const Drawer = () => {
       onClick: false,
     },
     {
-      label: 'AUTHORS',
-      href: getAuthorsUrl(),
-      Icon: null,
-      onClick: false,
-    },
-    {
       label: 'FORESTS',
       href: getForestsUrl(),
       Icon: null,

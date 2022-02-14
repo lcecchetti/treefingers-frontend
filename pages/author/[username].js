@@ -2,7 +2,7 @@ import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { AuthorView } from 'components/author';
-import { QUERY_AUTHOR, QUERY_AUTHORS } from 'components/author';
+import { QUERY_AUTHOR } from 'components/author';
 import { QUERY_STORIES } from 'components/story';
 
 const AuthorPage = ({ author }) => {
@@ -49,12 +49,8 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const apolloClient = initializeApollo();
-
-  const { data } = await apolloClient.query({ query: QUERY_AUTHORS });
-
   return {
-    paths: data?.users?.edges.map(({ node }) => ({ params: { username: node.username } })) || [],
+    paths: [],
     fallback: 'blocking',
   };
 }
