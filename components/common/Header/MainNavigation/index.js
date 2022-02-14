@@ -9,10 +9,6 @@ const mainNavigationItems = [
     label: 'STORIES',
   },
   {
-    href: getAuthorsUrl(),
-    label: 'AUTHORS',
-  },
-  {
     href: getForestsUrl(),
     label: 'FORESTS',
   },
