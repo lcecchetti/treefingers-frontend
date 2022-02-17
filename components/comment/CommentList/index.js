@@ -42,12 +42,17 @@ import { CommentNew } from 'components/comment';
  * @type {gql}
  */
 export const QUERY_COMMENTS = gql`
-  query comments($filter: FilterCommentInput) {
-    comments (filter: $filter) {
+  query comments($filter: FilterCommentInput, $sort: SortInput, $last: Int, $before: String) {
+    comments (filter: $filter, sort: $sort, last: $last, before: $before) {
       edges {
+        cursor
         node {
           ...CommentFields
         }
+      }
+      pageInfo {
+        startCursor
+        hasPreviousPage
       }
     }
   }
@@ -63,27 +68,35 @@ export const QUERY_COMMENTS = gql`
   return entity.__typename.toLowerCase();
 }
 
-const CommentList = ({ entity }) => {
+const CommentList = ({ entity, last = 10 }) => {
   const entityType = getEntityType(entity);
 
   const filter = {};
   filter[entityType] = { eq: entity._id };
 
-  const { data, loading, error } = useQuery(QUERY_COMMENTS, { variables: { filter } });
+  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter, sort: { _id: 'ASC' }, last } });
 
-  // scroll to bottom anchor
-  const bottomRef = useRef(null);
+  // scroll to anchor
+  const scrollToRef = useRef(null);
 
   // scroll to bottom function
-  const scrollToBottom = () => bottomRef.current.scrollIntoView();  
+  const adjustScrollPosition = () => scrollToRef?.current?.scrollIntoView();  
 
-  // scroll to bottom each time a new comment list has loaded
+  // adjust scroll position on data update
   useEffect(() => {
-    scrollToBottom();
-  }, [filter]);
+    adjustScrollPosition()
+  }, [data]);
+
+  const onScroll = ({ currentTarget }) => {
+    if (
+      !loading && currentTarget.scrollTop === 0 && data.comments.pageInfo.hasPreviousPage
+    ) {
+      fetchMore({ variables: { before: data.comments.pageInfo.startCursor } });
+    }
+  };
 
   return (
-    <div className="h-full overflow-y-auto">
+    <div className="h-full overflow-y-auto" onScroll={onScroll}>
       <div className="flex flex-col gap-md p-md">
         <Spinner loading={loading}/>
         <ApiError error={error}/>
@@ -96,8 +109,8 @@ const CommentList = ({ entity }) => {
 
             {!!data?.comments.edges.length &&
               <ol className="flex flex-col gap-sm">
-                {data.comments.edges.map(({ node }) => (
-                  <li key={node._id}>
+                {data.comments.edges.map(({ node }, index) => (
+                  <li key={node._id} ref={index === last - 1 ? scrollToRef : null}>
                     <div className="flex flex-col gap-xs">
                       <Avatar user={node.user} showName={true} />
                       <Text variant="span">{node.content}</Text>
@@ -115,9 +128,7 @@ const CommentList = ({ entity }) => {
           </div>
         }
       </div>
-
-      <div ref={bottomRef}/>
-    </div >
+    </div>
   );
 }
 
