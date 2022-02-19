@@ -8,3 +8,4 @@ export { default as PageIntro } from './PageIntro';
 export { default as Like } from './Like';
 export { default as Flyout } from './Flyout';
 export { default as ApiError } from './ApiError';
+export { default as InfiniteScroll } from './InfiniteScroll';

@@ -1,7 +1,6 @@
-import { useRef, useEffect } from 'react';
 import { Text, Spinner } from 'components/ui';
 import { formatDate } from 'lib/helper/date';
-import { ApiError, Like } from 'components/common';
+import { ApiError, InfiniteScroll, Like } from 'components/common';
 import { Avatar } from 'components/user';
 import { gql, useQuery } from '@apollo/client';
 import { CommentNew } from 'components/comment';
@@ -76,27 +75,8 @@ const CommentList = ({ entity, last = 10 }) => {
 
   const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter, sort: { _id: 'ASC' }, last } });
 
-  // scroll to anchor
-  const scrollToRef = useRef(null);
-
-  // scroll to bottom function
-  const adjustScrollPosition = () => scrollToRef?.current?.scrollIntoView();  
-
-  // adjust scroll position on data update
-  useEffect(() => {
-    adjustScrollPosition()
-  }, [data]);
-
-  const onScroll = ({ currentTarget }) => {
-    if (
-      !loading && currentTarget.scrollTop === 0 && data.comments.pageInfo.hasPreviousPage
-    ) {
-      fetchMore({ variables: { before: data.comments.pageInfo.startCursor } });
-    }
-  };
-
   return (
-    <div className="h-full overflow-y-auto" onScroll={onScroll}>
+    <InfiniteScroll className="h-full" onLoadMore={() => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor } })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
       <div className="flex flex-col gap-md p-md">
         <Spinner loading={loading}/>
         <ApiError error={error}/>
@@ -109,8 +89,8 @@ const CommentList = ({ entity, last = 10 }) => {
 
             {!!data?.comments.edges.length &&
               <ol className="flex flex-col gap-sm">
-                {data.comments.edges.map(({ node }, index) => (
-                  <li key={node._id} ref={index === last - 1 ? scrollToRef : null}>
+                {data.comments.edges.map(({ node }) => (
+                  <li key={node._id}>
                     <div className="flex flex-col gap-xs">
                       <Avatar user={node.user} showName={true} />
                       <Text variant="span">{node.content}</Text>
@@ -128,7 +108,7 @@ const CommentList = ({ entity, last = 10 }) => {
           </div>
         }
       </div>
-    </div>
+    </InfiniteScroll>
   );
 }
 
