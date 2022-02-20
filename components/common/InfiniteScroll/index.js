@@ -11,19 +11,17 @@ const InfiniteScroll = ({ className, onLoadMore, error, loading, children, hasMo
   const reachEndRef = useRef(null);
 
   useEffect(() => {
-    const scrollableElement = ref.current;
-
     if (backwards) {
-      scrollableElement.scrollTo({
-        top: scrollableElement.scrollHeight - scrollBottom,
-        left: scrollableElement.scrollWidth - scrollRight,
+      ref.current.scrollTo({
+        top: ref.current.scrollHeight - scrollBottom,
+        left: ref.current.scrollWidth - scrollRight,
       });
     }
 
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && hasMore && !loading) {
-        setScrollBottom(scrollableElement.scrollHeight - scrollableElement.scrollTop);
-        setScrollRight(scrollableElement.scrollWidth - scrollableElement.scrollLeft);
+        setScrollBottom(ref.current.scrollHeight - ref.current.scrollTop);
+        setScrollRight(ref.current.scrollWidth - ref.current.scrollLeft);
         onLoadMore();
       }
     });

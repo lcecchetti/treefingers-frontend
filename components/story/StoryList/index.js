@@ -26,11 +26,11 @@ export const QUERY_STORIES = gql`
   ${FRAGMENT_STORY_CARD_FIELDS}
 `;
 
-const StoryList = ({ className, filter }) => {
+const StoryList = ({ className, filter, first = 10 }) => {
   const currentUser = useCurrentUser();
 
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
-    variables: { filter },
+    variables: { filter, first },
   });
 
   // refresh data with customer specific infos
