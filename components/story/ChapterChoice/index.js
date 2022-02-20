@@ -41,7 +41,7 @@ export const QUERY_CHAPTERS = gql`
   }
 `;
 
-const ChapterChoice = ({ className, parent, first = 1 }) => {
+const ChapterChoice = ({ className, parent, first = 10 }) => {
   const currentUser = useCurrentUser();
 
   const [isWriting, setIsWriting] = useState(false);
