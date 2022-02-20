@@ -67,7 +67,7 @@ export const QUERY_COMMENTS = gql`
   return entity.__typename.toLowerCase();
 }
 
-const CommentList = ({ entity, last = 10 }) => {
+const CommentList = ({ entity, last = 5 }) => {
   const entityType = getEntityType(entity);
 
   const filter = {};
@@ -76,38 +76,33 @@ const CommentList = ({ entity, last = 10 }) => {
   const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter, sort: { _id: 'ASC' }, last } });
 
   return (
-    <InfiniteScroll className="h-full" onLoadMore={() => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor } })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
-      <div className="flex flex-col gap-md p-md">
-        <Spinner loading={loading}/>
-        <ApiError error={error}/>
+    <InfiniteScroll className="h-full flex flex-col gap-md px-md" error={error} onLoadMore={() => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor } })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
+      {data &&
+        <div className="flex flex-col gap-md">
+          {!data?.comments.edges.length &&
+            <Text variant="span">This {entityType} has no comments yet.</Text>
+          }
 
-        {data &&
-          <div className="flex flex-col gap-md">
-            {!data?.comments.edges.length &&
-              <Text variant="span">This {entityType} has no comments yet.</Text>
-            }
-
-            {!!data?.comments.edges.length &&
-              <ol className="flex flex-col gap-sm">
-                {data.comments.edges.map(({ node }) => (
-                  <li key={node._id}>
-                    <div className="flex flex-col gap-xs">
-                      <Avatar user={node.user} showName={true} />
-                      <Text variant="span">{node.content}</Text>
-                      <div className="flex justify-between items-center">
-                        <Text variant="span" className="text-sm">{formatDate(node.createdAt)}</Text>
-                        <Like entity={node} />
-                      </div>
+          {!!data?.comments.edges.length &&
+            <ol className="flex flex-col gap-sm">
+              {data.comments.edges.map(({ node }) => (
+                <li key={node._id}>
+                  <div className="flex flex-col gap-xs">
+                    <Avatar user={node.user} showName={true} />
+                    <Text variant="span">{node.content}</Text>
+                    <div className="flex justify-between items-center">
+                      <Text variant="span" className="text-sm">{formatDate(node.createdAt)}</Text>
+                      <Like entity={node} />
                     </div>
-                  </li>
-                ))}
-              </ol>
-            }
+                  </div>
+                </li>
+              ))}
+            </ol>
+          }
 
-            <CommentNew entity={entity} />
-          </div>
-        }
-      </div>
+          <CommentNew entity={entity} />
+        </div>
+      }
     </InfiniteScroll>
   );
 }
