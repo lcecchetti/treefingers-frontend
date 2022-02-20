@@ -33,13 +33,13 @@ export async function getStaticProps({ params }) {
   apolloClient.writeQuery({
     query: QUERY_AUTHOR,
     data: { user: data.user },
-    variables: { filter: { _id: { eq: data.user._id } } },
+    variables: { filter: { _id: { eq: data.user._id } }, first: 10 },
   });
 
   // load author stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { author: { eq: data.user._id } } },
+    variables: { filter: { author: { eq: data.user._id } }, first: 10 },
   });
 
   return addApolloState(apolloClient, {

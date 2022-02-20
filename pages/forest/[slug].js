@@ -1,7 +1,7 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { ForestView, QUERY_FOREST, QUERY_FORESTS } from 'components/forest';
+import { ForestView, QUERY_FOREST } from 'components/forest';
 import { QUERY_STORIES } from 'components/story';
 
 const ForestPage = ({ forest }) => {
@@ -38,7 +38,7 @@ export async function getStaticProps({ params }) {
   // load forest stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { forest: { eq: data.forest._id } } },
+    variables: { filter: { forest: { eq: data.forest._id } }, first: 10 },
   });
 
   return addApolloState(apolloClient, {
@@ -48,12 +48,8 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const apolloClient = initializeApollo();
-
-  const { data } = await apolloClient.query({ query: QUERY_FORESTS });
-
   return {
-    paths: data?.forests.edges.map(({ node }) => ({ params: { slug: node.slug } })) || [],
+    paths: [],
     fallback: 'blocking',
   };
 }

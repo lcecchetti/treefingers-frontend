@@ -1,7 +1,7 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { QUERY_STORY, StoryView } from 'components/story';
+import { QUERY_CHAPTERS, QUERY_STORY, StoryView } from 'components/story';
 
 const StoryPage = ({ story }) => {
   return (
@@ -26,6 +26,12 @@ export async function getStaticProps({ params }) {
       notFound: true,
     }
   }
+
+  // load story chapters
+  await apolloClient.query({
+    query: QUERY_CHAPTERS,
+    variables: { filter: { parent: { eq: data.story._id } }, first: 10 },
+  });
 
   return addApolloState(apolloClient, {
     props: { story: data.story },
