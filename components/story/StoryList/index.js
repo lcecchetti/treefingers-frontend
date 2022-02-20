@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { Spinner } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import { ApiError } from 'components/common';
+import { InfiniteScroll } from 'components/common';
 import { StoryCard, FRAGMENT_STORY_CARD_FIELDS } from 'components/story';
 
 /**
@@ -11,12 +10,16 @@ import { StoryCard, FRAGMENT_STORY_CARD_FIELDS } from 'components/story';
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
-  query stories($filter: FilterStoryInput) {
-    stories(filter: $filter) {
+  query stories($filter: FilterStoryInput, $sort: SortInput, $first: Int, $after: String) {
+    stories(filter: $filter, sort: $sort, first: $first, after: $after) {
       edges {
         node {
           ...StoryCardFields
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }
@@ -26,7 +29,7 @@ export const QUERY_STORIES = gql`
 const StoryList = ({ className, filter }) => {
   const currentUser = useCurrentUser();
 
-  const { data, loading, error, refetch } = useQuery(QUERY_STORIES, {
+  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
     variables: { filter },
   });
 
@@ -38,14 +41,11 @@ const StoryList = ({ className, filter }) => {
   }, [!currentUser]);
 
   return (
-    <div className={clsx('grid xl:grid-cols-3 sm:grid-cols-2 gap-md', className)}>
-      <Spinner loading={loading}/>
-      <ApiError error={error}/>
-
+    <InfiniteScroll className={clsx('grid xl:grid-cols-3 sm:grid-cols-2 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.stories.pageInfo.hasNextPage}>
       {data?.stories && data.stories.edges.map(({ node }) => (
         <StoryCard key={node._id} story={node} />
       ))}
-    </div>
+    </InfiniteScroll>
   );
 };
 
