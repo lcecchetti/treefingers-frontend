@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, Spinner, Text, Button } from 'components/ui';
+import { Link, Text, Button } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { StoryNew } from 'components/story';
 import { FaAngleDown } from 'react-icons/fa';
 import { getStoryUrl } from 'lib/helper/story';
 import { FaTimes } from 'react-icons/fa';
-import { ApiError, Like } from 'components/common';
+import { InfiniteScroll, Like } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { TagList } from 'components/tag';
 
@@ -15,8 +15,8 @@ import { TagList } from 'components/tag';
  * @type {gql}
  */
 export const QUERY_CHAPTERS = gql`
-  query stories ($filter: FilterStoryInput) {
-    stories (filter: $filter) {
+  query stories($filter: FilterStoryInput, $first: Int, $after: String) {
+    stories (filter: $filter, first: $first, after: $after) {
       edges {
         node {
           _id
@@ -33,18 +33,23 @@ export const QUERY_CHAPTERS = gql`
           tags
         }
       }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
     }
   }
 `;
 
-const ChapterChoice = ({ className, parent }) => {
+const ChapterChoice = ({ className, parent, first = 1 }) => {
   const currentUser = useCurrentUser();
 
   const [isWriting, setIsWriting] = useState(false);
 
-  const { data, loading, error, refetch } = useQuery(QUERY_CHAPTERS, {
+  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_CHAPTERS, {
     variables: {
-      filter: { parent: { eq: parent._id } }
+      filter: { parent: { eq: parent._id } },
+      first,
     }
   });
 
@@ -59,44 +64,36 @@ const ChapterChoice = ({ className, parent }) => {
   return (
     <div>
       {!isWriting && // chapter list section
-        <div className={clsx('mx-auto max-w-screen-sm', className)}>
-          <Spinner loading={loading}/>
-          <ApiError error={error}/>
-
-          {data &&
-            <div className="flex flex-col gap-md">
-
-              {!!data?.stories.edges.length && // chapter list
-                <div className="flex flex-col gap-xs">
-                  <div className="flex flex-col items-center justify-center gap-xs">
-                    <Text variant="span" className="font-bold uppercase">What's next? </Text>
-                    <FaAngleDown className="text-3xl animate-bounce" />
-                  </div>
-                  <ul className="flex flex-col border-2 rounded-xl overflow-hidden gap-px bg-primary">
-                    {data.stories.edges.map(({ node }) => (
-                      <li key={node._id} className="bg-base">
-                        <Link href={getStoryUrl(node)} className="p-md flex gap-md items-center justify-between">
-                          <Text variant="span">{node.title}</Text>
-                          <div className="flex gap-sm items-center">
-                            <TagList tags={node.tags} />
-                            <Like entity={node} viewOnly={true} />
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+        <div className={clsx('mx-auto max-w-screen-sm flex flex-col gap-md', className)}>
+          <InfiniteScroll loading={loading} error={error} onLoadMore={() => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })} hasMore={data?.stories.pageInfo.hasNextPage}>
+            {!!data?.stories.edges.length && // chapter list
+              <div className="flex flex-col gap-xs">
+                <div className="flex flex-col items-center justify-center gap-xs">
+                  <Text variant="span" className="font-bold uppercase">What's next? </Text>
+                  <FaAngleDown className="text-3xl animate-bounce" />
                 </div>
-              }
-
-              <div className="text-center flex flex-col gap-xs">
-                {!data?.stories.edges.length &&
-                  <Text variant="title" as="span" className="">The end...?</Text>
-                }
-                <Button className="w-full" onClick={() => setIsWriting(true)}>Write a new chapter</Button>
+                <ul className="flex flex-col border-2 rounded-xl overflow-hidden gap-px bg-primary">
+                  {data.stories.edges.map(({ node }) => (
+                    <li key={node._id} className="bg-base">
+                      <Link href={getStoryUrl(node)} className="p-md flex gap-md items-center justify-between">
+                        <Text variant="span">{node.title}</Text>
+                        <div className="flex gap-sm items-center">
+                          <TagList tags={node.tags} />
+                          <Like entity={node} viewOnly={true} />
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          }
-
+            }
+          </InfiniteScroll>
+          <div className="text-center flex flex-col gap-xs">
+            {!data?.stories.edges.length &&
+              <Text variant="title" as="span" className="">The end...?</Text>
+            }
+            <Button className="w-full" onClick={() => setIsWriting(true)}>Write a new chapter</Button>
+          </div>
         </div>
       }
 

@@ -1,24 +1,7 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { gql } from '@apollo/client';
-import { QUERY_CHAPTERS, QUERY_STORY, StoryView } from 'components/story';
-
-/**
- * Story pages query
- * @type {gql}
- */
-const QUERY_STORY_PAGES = gql`
-  query stories {
-    stories {
-      edges {
-        node {
-          _id
-        }
-      }
-    }
-  }
-`;
+import { QUERY_STORY, StoryView } from 'components/story';
 
 const StoryPage = ({ story }) => {
   return (
@@ -44,13 +27,6 @@ export async function getStaticProps({ params }) {
     }
   }
 
-  // load story chapters
-  await apolloClient.query({
-    query: QUERY_CHAPTERS,
-    data: { stories: data.story.children },
-    variables: { filter: { parent: { eq: data.story._id } } },
-  });
-
   return addApolloState(apolloClient, {
     props: { story: data.story },
     revalidate: 1,
@@ -58,12 +34,8 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const apolloClient = initializeApollo();
-
-  const { data } = await apolloClient.query({ query: QUERY_STORY_PAGES });
-
   return {
-    paths: data.stories.edges.map(({ node }) => ({ params: { _id: node._id } }) ) || [],
+    paths: [],
     fallback: 'blocking',
   };
 }

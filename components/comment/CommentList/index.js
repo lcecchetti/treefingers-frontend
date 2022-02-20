@@ -67,7 +67,7 @@ export const QUERY_COMMENTS = gql`
   return entity.__typename.toLowerCase();
 }
 
-const CommentList = ({ entity, last = 5 }) => {
+const CommentList = ({ entity, last = 10 }) => {
   const entityType = getEntityType(entity);
 
   const filter = {};
