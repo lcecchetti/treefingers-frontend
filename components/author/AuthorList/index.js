@@ -28,9 +28,9 @@ export const QUERY_AUTHORS = gql`
   }
 `;
 
-const AuthorList = ({ className }) => {
+const AuthorList = ({ className, filter, first = 10 }) => {
   const currentUser = useCurrentUser();
-  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_AUTHORS);
+  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_AUTHORS, { variables: { filter, first } });
 
   // refresh data with customer specific infos
   useEffect(() => {
