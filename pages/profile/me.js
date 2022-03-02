@@ -7,12 +7,10 @@ const ProfileMePage = () => {
   const currentUser = useCurrentUser();
 
   return (
-    <div>
-      <PageIntro>
-        <Text variant="pageTitle">{`Welcome ${currentUser.pseudonym}!`}</Text>
-        <Text variant="p">Here you can edit your profile details.</Text>
-      </PageIntro>
-    </div>
+    <PageIntro>
+      <Text variant="pageTitle">{`Welcome ${currentUser.pseudonym}!`}</Text>
+      <Text variant="p">Here you can edit your profile details.</Text>
+    </PageIntro>
   );
 };
 

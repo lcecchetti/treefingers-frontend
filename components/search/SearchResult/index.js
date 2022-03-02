@@ -24,7 +24,7 @@ const SearchResult = ({ className, query }) => {
 
       <div>
         {tabs.map(({ key, Component }) => (
-          currentTab === key && <Component filter={{ query }} />   
+          currentTab === key && <Component key={key} filter={{ query }} />   
         ))}
       </div>
     </div>
