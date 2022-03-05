@@ -16,20 +16,22 @@ const SearchBar = () => {
       ['translate-y-full']: isSearchOpen,
     })}>
       <Container className="h-full">
-        <Formik
-          validateOnChange={false}
-          initialValues={{
-            q: router.query.q ?? '',
-          }}
-          onSubmit={({ q }, { resetForm }) => {
-            closeSearch();
-            resetForm();
-            router.push(getSearchUrl(q));
-          }}
-          validationSchema={Yup.object().shape({
-            q: Yup.string().min(3, 'Cmon, be more precise!'),
-          })}
-        >
+        {isSearchOpen &&
+          <Formik
+            autoFocus={true}
+            validateOnChange={false}
+            initialValues={{
+              q: router.query.q ?? '',
+            }}
+            onSubmit={({ q }, { resetForm }) => {
+              closeSearch();
+              resetForm();
+              router.push(getSearchUrl(q));
+            }}
+            validationSchema={Yup.object().shape({
+              q: Yup.string().required('').min(3, 'Cmon, be more precise!'),
+            })}
+          >
           {({ errors, touched }) => (
             <Form className="h-full flex items-center gap-sm">
               <Field as={FormField} type="text" placeholder="Search" className="flex-grow" name="q" error={errors.q} touched={touched.q} autoFocus={isSearchOpen} />
@@ -40,6 +42,7 @@ const SearchBar = () => {
             </Form>
           )}
         </Formik>
+        }
       </Container>
     </div>
   )
