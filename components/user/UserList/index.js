@@ -6,10 +6,10 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 import { Avatar } from 'components/user';
 
 /**
- * Authors list query
+ * Users list query
  * @type {gql}
  */
-export const QUERY_AUTHORS = gql`
+export const QUERY_USERS = gql`
   query users($filter: FilterUserInput, $first: Int, $after: String) {
     users (filter: $filter, first: $first, after: $after) {
       edges {
@@ -28,9 +28,9 @@ export const QUERY_AUTHORS = gql`
   }
 `;
 
-const AuthorList = ({ className, filter, first = 10 }) => {
+const UserList = ({ className, filter, first = 10 }) => {
   const currentUser = useCurrentUser();
-  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_AUTHORS, { variables: { filter, first } });
+  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_USERS, { variables: { filter, first } });
 
   // refresh data with customer specific infos
   useEffect(() => {
@@ -48,5 +48,5 @@ const AuthorList = ({ className, filter, first = 10 }) => {
   );
 };
 
-export default AuthorList;
+export default UserList;
 

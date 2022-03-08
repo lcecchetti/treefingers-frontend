@@ -1,14 +1,14 @@
 import clsx from 'clsx';
 import { ForestList } from 'components/forest';
 import { StoryList } from 'components/story';
-import { AuthorList } from 'components/author';
+import { UserList } from 'components/user';
 import { Button } from 'components/ui';
 import { useState } from 'react';
 
 const tabs = [
   { key: 'forests', label: 'Forests', Component: ForestList },
   { key: 'stories', label: 'Stories', Component: StoryList },
-  { key: 'users', label: 'Users', Component: AuthorList },
+  { key: 'users', label: 'Users', Component: UserList },
 ];
 
 const SearchResult = ({ className, query }) => {

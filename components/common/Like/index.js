@@ -51,52 +51,6 @@ const MUTATION_LIKE_STORY = gql`
 `;
 
 /**
- * Create like mutation
- * @type {gql}
- */
- const MUTATION_LIKE_AUTHOR = gql`
- mutation likeAuthor($input: LikeAuthorInput!) {
-  likeAuthor(input: $input) {
-    like {
-      _id
-      author {
-        _id
-        likesCount
-        currentUserData {
-          like {
-            _id
-          }
-        }
-      }
-    } 
-  }
- }
-`;
-
-/**
- * Create like mutation
- * @type {gql}
- */
- const MUTATION_LIKE_FOREST = gql`
- mutation likeForest($input: LikeForestInput!) {
-  likeForest(input: $input) {
-    like {
-      _id
-      forest {
-        _id
-        likesCount
-        currentUserData {
-          like {
-            _id
-          }
-        }
-      }
-    } 
-  }
-}
-`;
-
-/**
  * Delete like mutation
  * @type {gql}
  */
@@ -143,61 +97,6 @@ const MUTATION_DISLIKE_STORY = gql`
 `;
 
 /**
- * Delete like mutation
- * @type {gql}
- */
- const MUTATION_DISLIKE_AUTHOR = gql`
- mutation dislikeAuthor($input: DislikeAuthorInput!) {
-   dislikeAuthor(input: $input) {
-    like {
-      _id
-      author {
-        _id
-        likesCount
-        currentUserData {
-          like {
-            _id
-          }
-        }
-      }
-    } 
-  }
-}
-`;
-
-/**
- * Delete like mutation
- * @type {gql}
- */
- const MUTATION_DISLIKE_FOREST = gql`
- mutation dislikeForest($input: DislikeForestInput!) {
-  dislikeForest(input: $input) {
-    like {
-      _id
-      forest {
-        _id
-        likesCount
-        currentUserData {
-          like {
-            _id
-          }
-        }
-      }
-    } 
-  }
-}
-`;
-
-/**
- * Get entity type
- * @param {Object} entity 
- * @returns {String}
- */
-const getEntityType = (entity) =>  {
-  return entity.__typename == 'User' ? 'author' : entity.__typename.toLowerCase();
-}
-
-/**
  * Get entity type
  * @param {string} entityType
  * @returns {String}
@@ -208,10 +107,6 @@ const getLikeMutation = (entityType) =>  {
       return MUTATION_LIKE_STORY;
     case 'comment':  
       return MUTATION_LIKE_COMMENT;
-    case 'author':  
-      return MUTATION_LIKE_AUTHOR;
-    case 'forest':  
-      return MUTATION_LIKE_FOREST;
   }
 }
 
@@ -226,17 +121,13 @@ const getLikeMutation = (entityType) =>  {
       return MUTATION_DISLIKE_STORY;
     case 'comment':  
       return MUTATION_DISLIKE_COMMENT;
-    case 'author':  
-      return MUTATION_DISLIKE_AUTHOR;
-    case 'forest':  
-      return MUTATION_DISLIKE_FOREST;
   }
 }
 
 const Like = ({ entity, viewOnly }) => {
 
   // get entity type
-  const entityType = getEntityType(entity);
+  const entityType = entity.__typename.toLowerCase();
 
   // current user
   const currentUser = useCurrentUser();
