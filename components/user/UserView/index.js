@@ -2,14 +2,14 @@ import { useEffect } from 'react';
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
-import { ApiError, Like } from 'components/common';
+import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 
 /**
- * Single author query
+ * Single user query
  * @type {gql}
  */
-export const QUERY_AUTHOR = gql`
+export const QUERY_USER = gql`
   query user($filter: FilterUserInput!) {
     user(filter: $filter) {
       _id
@@ -17,19 +17,13 @@ export const QUERY_AUTHOR = gql`
       bio
       username
       pseudonym
-      currentUserData {
-        like {
-          _id
-        }
-      }
-      likesCount
     }
   }
 `;
 
-const AuthorView = ({ className, _id }) => {
+const UserView = ({ className, _id }) => {
   const currentUser = useCurrentUser();
-  const { data, loading, error, refetch } = useQuery(QUERY_AUTHOR, { variables: { filter: { _id: { eq: _id } } } });
+  const { data, loading, error, refetch } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: _id } } } });
 
   // refresh data with customer specific infos
   useEffect(() => {
@@ -48,7 +42,6 @@ const AuthorView = ({ className, _id }) => {
           <div className="flex flex-col gap-sm my-sm md:my-md">
             <div className="flex justify-between items-center">
               <Text variant="pageTitle">{data.user.pseudonym}</Text>
-              <Like entity={data.user} />
             </div>
             <Text variant="p">{data.user.bio}</Text>
           </div>
@@ -59,5 +52,5 @@ const AuthorView = ({ className, _id }) => {
   );
 };
 
-export default AuthorView;
+export default UserView;
 

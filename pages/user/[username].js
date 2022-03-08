@@ -1,14 +1,13 @@
 import { DefaultLayout } from 'components/layout';
 import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { AuthorView } from 'components/author';
-import { QUERY_AUTHOR } from 'components/author';
+import { QUERY_USER, UserView } from 'components/user';
 import { QUERY_STORIES } from 'components/story';
 
-const AuthorPage = ({ author }) => {
+const UserPage = ({ user }) => {
   return (
     <Container>
-      <AuthorView _id={author._id} />
+      <UserView _id={user._id} />
     </Container>
   );
 };
@@ -16,13 +15,13 @@ const AuthorPage = ({ author }) => {
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo();
   
-  // load author by username
+  // load user by username
   const { data } = await apolloClient.query({
-    query: QUERY_AUTHOR,
+    query: QUERY_USER,
     variables: { filter: { username: { eq: params.username } } },
   });
 
-  // check if author exists
+  // check if user exists
   if (!data?.user) {
     return {
       notFound: true,
@@ -31,7 +30,7 @@ export async function getStaticProps({ params }) {
 
   // add author by id query to the cache
   apolloClient.writeQuery({
-    query: QUERY_AUTHOR,
+    query: QUERY_USER,
     data: { user: data.user },
     variables: { filter: { _id: { eq: data.user._id } }, first: 10 },
   });
@@ -43,7 +42,7 @@ export async function getStaticProps({ params }) {
   });
 
   return addApolloState(apolloClient, {
-    props: { author: data.user },
+    props: { user: data.user },
     revalidate: 1,
   });
 }
@@ -55,6 +54,6 @@ export async function getStaticPaths() {
   };
 }
 
-AuthorPage.Layout = DefaultLayout;
+UserPage.Layout = DefaultLayout;
 
-export default AuthorPage;
+export default UserPage;

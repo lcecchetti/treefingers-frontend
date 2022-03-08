@@ -18,13 +18,7 @@ export const QUERY_FOREST = gql`
       name
       about
       slug
-      currentUserData {
-        like {
-          _id
-        }
-      }
       storiesCount
-      likesCount
       commentsCount
     }
   }

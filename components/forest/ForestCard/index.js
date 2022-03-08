@@ -14,12 +14,6 @@ import { ForestActions } from 'components/forest';
     name
     slug
     excerpt
-    currentUserData {
-      like {
-        _id
-      }
-    }
-    likesCount
     commentsCount
   }
 `;
