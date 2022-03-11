@@ -10,9 +10,9 @@ import { ApiError } from 'components/common';
  * Create comment mutation
  * @type {gql}
  */
-const MUTATION_COMMENT_STORY = gql`
-  mutation commentStory($input: CommentStoryInput!) {
-    commentStory(input: $input) {
+const MUTATION_COMMENT = gql`
+  mutation comment($input: CommentInput!) {
+    comment(input: $input) {
       comment {
         ...CommentFields
       } 
@@ -21,82 +21,19 @@ const MUTATION_COMMENT_STORY = gql`
   ${FRAGMENT_COMMENT_FIELDS}
 `;
 
-/**
- * Create comment mutation
- * @type {gql}
- */
- const MUTATION_COMMENT_FOREST = gql`
- mutation commentForest($input: CommentForestInput!) {
-   commentForest(input: $input) {
-     comment {
-       ...CommentFields
-     } 
-   }
- }
- ${FRAGMENT_COMMENT_FIELDS}
-`;
-
-/**
- * Get entity type
- * @param {Object} entity 
- * @returns {String}
- */
- const getEntityType = (entity) =>  {
-  return entity.__typename.toLowerCase();
-}
-
-/**
- * Get comment mutation based on entity type
- * @param {string} entityType
- * @returns {String}
- */
- const getCommentMutation = (entityType) =>  {
-  switch (entityType) {
-    case 'story':
-      return MUTATION_COMMENT_STORY;
-    case 'forest':  
-      return MUTATION_COMMENT_FOREST;
-  }
-}
-
-/**
- * Get comment mutation name based on entity type
- * @param {string} entityType
- * @returns {String}
- */
- const getCommentMutationName = (entityType) =>  {
-  switch (entityType) {
-    case 'story':
-      return 'commentStory';
-    case 'forest':  
-      return 'commentForest';
-  }
-}
-
 const CommentNew = ({ entity }) => {
-
-  // get entity type
-  const entityType = getEntityType(entity);
-
-  const input = {};
-  input[entityType] = entity._id;
-
-  const [comment, { error }] = useMutation(getCommentMutation(entityType), {
+  const [comment, { error }] = useMutation(MUTATION_COMMENT, {
     update(cache, { data }) {
-
-      const filter = {};
-      filter[entityType] = { eq: entity._id };
-
       // add new comment to the cache
       cache.updateQuery({
           query: QUERY_COMMENTS,
-          variables: { filter },
+          variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename } },
         },
         ({ comments }) => ({
           comments: { 
             edges: [
               ...comments.edges,
-              { node: data[getCommentMutationName(entityType)].comment },
+              { node: data.comment.comment },
             ]
           }
         })
@@ -117,7 +54,7 @@ const CommentNew = ({ entity }) => {
           })}
           onSubmit={(values, { resetForm }) => {
             comment({
-              variables: { input: { ...input, data: values } },
+              variables: { input: { data: { ...values, entity: entity._id, entityType: entity.__typename } } },
               onCompleted: () => {
                 resetForm();
               },

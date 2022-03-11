@@ -23,11 +23,7 @@ import { CommentNew } from 'components/comment';
       username
       pseudonym
     }
-    story {
-      _id
-      commentsCount
-    }
-    forest {
+    entity {
       _id
       commentsCount
     }
@@ -40,7 +36,7 @@ import { CommentNew } from 'components/comment';
  */
 export const QUERY_COMMENTS = gql`
   query comments($filter: FilterCommentInput, $sort: SortInput, $last: Int, $before: String) {
-    comments (filter: $filter, sort: $sort, last: $last, before: $before) {
+    comments(filter: $filter, sort: $sort, last: $last, before: $before) {
       edges {
         cursor
         node {
@@ -56,29 +52,15 @@ export const QUERY_COMMENTS = gql`
   ${FRAGMENT_COMMENT_FIELDS}
 `;
 
-/**
- * Get entity type
- * @param {Object} entity 
- * @returns {String}
- */
- const getEntityType = (entity) =>  {
-  return entity.__typename.toLowerCase();
-}
-
 const CommentList = ({ entity, last = 10 }) => {
-  const entityType = getEntityType(entity);
-
-  const filter = {};
-  filter[entityType] = { eq: entity._id };
-
-  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter, sort: { _id: 'ASC' }, last } });
+  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename }, sort: { _id: 'ASC' }, last } });
 
   return (
     <InfiniteScroll className="h-full flex flex-col gap-md px-md" error={error} onLoadMore={() => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor } })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
       {data &&
         <div className="flex flex-col gap-md">
           {!data?.comments.edges.length &&
-            <Text variant="span">This {entityType} has no comments yet.</Text>
+            <Text variant="span">This {entity.__typename.toLowerCase()} has no comments yet.</Text>
           }
 
           {!!data?.comments.edges.length &&
