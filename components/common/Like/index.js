@@ -17,7 +17,9 @@ const MUTATION_LIKE = gql`
         entity {
           _id
           likesCount
-          currentUserLikes
+          currentUserLike {
+            _id
+          }
         }
       } 
     }
@@ -37,7 +39,9 @@ const MUTATION_DISLIKE = gql`
         entity {
           _id
           likesCount
-          currentUserLikes
+          currentUserLike {
+            _id
+          }
         }
       } 
     }
@@ -74,11 +78,11 @@ const Like = ({ entity, viewOnly }) => {
       return;
     }
 
-    entity.currentUserLikes ? await deleteLike() : await createLike();
+    entity.currentUserLike ? await deleteLike() : await createLike();
   }
 
   // pick icon accoridng to user like presence
-  const Icon = entity.currentUserLikes ? FaHeart : FaRegHeart;
+  const Icon = entity.currentUserLike ? FaHeart : FaRegHeart;
 
   return (
     <div className={clsx(
