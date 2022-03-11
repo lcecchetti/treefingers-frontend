@@ -8,65 +8,16 @@ import { useCurrentUser } from 'lib/auth/currentUser';
  * Create like mutation
  * @type {gql}
  */
-const MUTATION_LIKE_STORY = gql`
-  mutation likeStory($input: LikeStoryInput!) {
-    likeStory(input: $input) {
+const MUTATION_LIKE = gql`
+  mutation like($input: LikeInput!) {
+    like(input: $input) {
       like {
         _id
-        story {
+        entityType
+        entity {
           _id
           likesCount
-          currentUserData {
-            like {
-              _id
-            }
-          }
-        }
-      } 
-    }
-  }
-`;
-
-/**
- * Create like mutation
- * @type {gql}
- */
- const MUTATION_LIKE_COMMENT = gql`
- mutation likeComment($input: LikeCommentInput!) {
-  likeComment(input: $input) {
-    like {
-      _id
-      comment {
-        _id
-        likesCount
-        currentUserData {
-          like {
-            _id
-          }
-        }
-      }
-    } 
-  }
- }
-`;
-
-/**
- * Delete like mutation
- * @type {gql}
- */
-const MUTATION_DISLIKE_STORY = gql`
-  mutation dislikeStory($input: DislikeStoryInput!) {
-    dislikeStory(input: $input) {
-      like {
-        _id
-        story {
-          _id
-          likesCount
-          currentUserData {
-            like {
-              _id
-            }
-          }
+          currentUserLikes
         }
       } 
     }
@@ -77,69 +28,34 @@ const MUTATION_DISLIKE_STORY = gql`
  * Delete like mutation
  * @type {gql}
  */
- const MUTATION_DISLIKE_COMMENT = gql`
- mutation dislikeComment($input: DislikeCommentInput!) {
-   dislikeComment(input: $input) {
-     like {
-       _id
-       comment {
+const MUTATION_DISLIKE = gql`
+  mutation dislike($input: DislikeInput!) {
+    dislike(input: $input) {
+      like {
         _id
-        likesCount
-        currentUserData {
-          like {
-            _id
-          }
+        entityType
+        entity {
+          _id
+          likesCount
+          currentUserLikes
         }
-       }
-     } 
-   }
- }
+      } 
+    }
+  }
 `;
-
-/**
- * Get entity type
- * @param {string} entityType
- * @returns {String}
- */
-const getLikeMutation = (entityType) =>  {
-  switch (entityType) {
-    case 'story':
-      return MUTATION_LIKE_STORY;
-    case 'comment':  
-      return MUTATION_LIKE_COMMENT;
-  }
-}
-
-/**
- * Get entity type
- * @param {string} entityType
- * @returns {String}
- */
- const getDislikeMutation = (entityType) =>  {
-  switch (entityType) {
-    case 'story':
-      return MUTATION_DISLIKE_STORY;
-    case 'comment':  
-      return MUTATION_DISLIKE_COMMENT;
-  }
-}
 
 const Like = ({ entity, viewOnly }) => {
-
-  // get entity type
-  const entityType = entity.__typename.toLowerCase();
 
   // current user
   const currentUser = useCurrentUser();
 
-  const variables = { input: {} };
-  variables.input[entityType] = entity._id;
+  const variables = { input: { entityType: entity.__typename, entity: entity._id } }
 
   // mutations
-  const [createLike, { error: createError, loading: createLoading }] = useMutation(getLikeMutation(entityType), {
+  const [createLike, { error: createError, loading: createLoading }] = useMutation(MUTATION_LIKE, {
     variables,
   });
-  const [deleteLike, { error: deleteError, loading: deleteLoading }] = useMutation(getDislikeMutation(entityType), {
+  const [deleteLike, { error: deleteError, loading: deleteLoading }] = useMutation(MUTATION_DISLIKE, {
     variables,
   });
 
@@ -158,11 +74,11 @@ const Like = ({ entity, viewOnly }) => {
       return;
     }
 
-    entity.currentUserData?.like ? await deleteLike() : await createLike();
+    entity.currentUserLikes ? await deleteLike() : await createLike();
   }
 
   // pick icon accoridng to user like presence
-  const Icon = entity.currentUserData?.like ? FaHeart : FaRegHeart;
+  const Icon = entity.currentUserLikes ? FaHeart : FaRegHeart;
 
   return (
     <div className={clsx(

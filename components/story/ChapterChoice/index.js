@@ -25,11 +25,7 @@ export const QUERY_CHAPTERS = gql`
             _id
           }
           likesCount
-          currentUserData {
-            like {
-              _id
-            }
-          }
+          currentUserLikes
           tags
         }
       }
