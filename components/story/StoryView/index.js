@@ -35,7 +35,9 @@ export const QUERY_STORY = gql`
       }
       likesCount
       commentsCount
-      currentUserLikes
+      currentUserLike {
+        _id
+      }
     }
   }
 `;

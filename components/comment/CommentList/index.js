@@ -15,7 +15,9 @@ import { CommentNew } from 'components/comment';
     content
     createdAt
     likesCount
-    currentUserLikes
+    currentUserLike {
+      _id
+    }
     user {
       _id
       username
