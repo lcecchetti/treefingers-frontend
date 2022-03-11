@@ -11,8 +11,8 @@ import { ApiError } from 'components/common';
  * @type {gql}
  */
 const MUTATION_COMMENT = gql`
-  mutation comment($input: CommentInput!) {
-    comment(input: $input) {
+  mutation submitComment($input: CommentInput!) {
+    submitComment(input: $input) {
       comment {
         ...CommentFields
       } 
@@ -33,7 +33,7 @@ const CommentNew = ({ entity }) => {
           comments: { 
             edges: [
               ...comments.edges,
-              { node: data.comment.comment },
+              { node: data.submitComment.comment },
             ]
           }
         })
