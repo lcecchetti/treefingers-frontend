@@ -91,6 +91,7 @@ export default function SignUp() {
               label="Username"
               type="text"
               name="username"
+              hint="Only letters, numbers, dots, hyphens and dashes"
               error={errors.username}
               touched={touched.username}
             />
