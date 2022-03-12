@@ -34,10 +34,12 @@ const ForestNew = () => {
         <Formik
           initialValues={{
             name: '',
+            title: '',
             about: '',
           }}
           validationSchema={Yup.object().shape({
-            name: Yup.string().required('Required'),
+            name: Yup.string().min(2, 'Too short!').max(32, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required('Required'),
+            title: Yup.string().max(128, 'Too long!').required('Required'),
             about: Yup.string().required('Required'),
           })}
           onSubmit={({ name, about }) => createForest({
@@ -55,6 +57,15 @@ const ForestNew = () => {
                 name="name"
                 type="text"
                 label="Name"
+                hint="Only letters, numbers, dots, hyphens and dashes"
+                error={errors.name}
+                touched={touched.name}
+              />
+              <Field
+                as={FormField}
+                name="title"
+                type="text"
+                label="Title"
                 error={errors.title}
                 touched={touched.title}
               />

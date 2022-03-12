@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Text } from 'components/ui';
 
-const FormField = ({ className, fieldClassName, labelClassName, type, name, label, options, error, touched, ...rest }) => {
+const FormField = ({ className, fieldClassName, labelClassName, type, name, label, hint, options, error, touched, ...rest }) => {
 
   const componentMap = {
     'select': 'select',
@@ -52,6 +52,16 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
         }
 
       </Component>
+
+      {!!hint && !error &&
+        <Text variant="label"
+          className={clsx(
+            'block text-xs',
+            error && touched && 'text-error',
+          )}>
+          {hint}
+        </Text>
+      }
 
       {!!error && error !== true && touched &&
         <Text className="text-error text-xs" variant="span">

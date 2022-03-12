@@ -18,7 +18,7 @@ export async function getStaticProps({ params }) {
   // load forest by slug
   const { data } = await apolloClient.query({
     query: QUERY_FOREST,
-    variables: { filter: { slug: { eq: params.slug } } },
+    variables: { filter: { name: { eq: params.name } } },
   });
 
   // check if forest exists

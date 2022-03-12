@@ -12,7 +12,7 @@ import { ForestActions } from 'components/forest';
   fragment ForestCardFields on Forest {
     _id
     name
-    slug
+    title
     excerpt
     commentsCount
     membersCount
@@ -27,7 +27,7 @@ const ForestCard = ({ className, forest }) => {
     <div className={clsx('text-primary-contrast bg-primary rounded-xl flex flex-col p-md', className)}>
       <div>
         <Text variant="title">
-          <Link href={getForestUrl(forest)}>{forest.name}</Link>
+          <Link href={getForestUrl(forest)}>{forest.title}</Link>
         </Text>
         <Text variant="p">{forest.excerpt}</Text>
         <Link href={getForestUrl(forest)}>Read more</Link>
