@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { InfiniteScroll } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { Avatar } from 'components/user';
+import { Text } from 'components/ui';
 
 /**
  * Users list query
@@ -38,11 +39,19 @@ const UserList = ({ className, filter, first = 10 }) => {
   }, [!currentUser]);
 
   return (
-    <InfiniteScroll className={clsx('grid md:grid-cols-4 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.users.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
-      {data?.users && data.users.edges.map(({ node }) => (
-        <Avatar key={node._id} user={node} showName={true} />
-      ))}
-    </InfiniteScroll>
+    <>
+      {!data?.users.edges.length &&
+        <Text>No results.</Text>
+      }
+
+      {!!data?.users.edges.length &&
+        <InfiniteScroll className={clsx('grid md:grid-cols-4 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.users.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
+          {data?.users && data.users.edges.map(({ node }) => (
+            <Avatar key={node._id} user={node} showName={true} />
+          ))}
+        </InfiniteScroll>
+      }
+    </>
   );
 };
 

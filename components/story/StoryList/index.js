@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { InfiniteScroll } from 'components/common';
 import { StoryCard, FRAGMENT_STORY_CARD_FIELDS } from 'components/story';
+import { Text } from 'components/ui';
 
 /**
  * Story list query
@@ -41,11 +42,19 @@ const StoryList = ({ className, filter, first = 10 }) => {
   }, [!currentUser]);
 
   return (
-    <InfiniteScroll className={clsx('grid xl:grid-cols-3 sm:grid-cols-2 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.stories.pageInfo.hasNextPage}>
-      {data?.stories && data.stories.edges.map(({ node }) => (
-        <StoryCard key={node._id} story={node} />
-      ))}
-    </InfiniteScroll>
+    <>
+      {!data?.stories.edges.length &&
+        <Text>No results.</Text>
+      }
+
+      {!!data?.stories.edges.length &&
+        <InfiniteScroll className={clsx('grid xl:grid-cols-3 sm:grid-cols-2 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.stories.pageInfo.hasNextPage}>
+          {data?.stories && data.stories.edges.map(({ node }) => (
+            <StoryCard key={node._id} story={node} />
+          ))}
+        </InfiniteScroll>
+      }
+    </>
   );
 };
 
