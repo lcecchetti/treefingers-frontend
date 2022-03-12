@@ -15,6 +15,10 @@ import { ForestActions } from 'components/forest';
     slug
     excerpt
     commentsCount
+    membersCount
+    currentUserMembership {
+      _id
+    }
   }
 `;
 

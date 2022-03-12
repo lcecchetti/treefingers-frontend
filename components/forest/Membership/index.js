@@ -1,0 +1,93 @@
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { gql, useMutation } from '@apollo/client';
+import { Text } from 'components/ui';
+import clsx from 'clsx';
+import { useCurrentUser } from 'lib/auth/currentUser';
+
+const MUTATION_JOIN = gql`
+  mutation join($input: JoinInput!) {
+    join(input: $input) {
+      membership {
+        _id
+        forest {
+          _id
+          membersCount
+          currentUserMembership {
+            _id
+          }
+        }
+      } 
+    }
+  }
+`;
+
+const MUTATION_LEAVE = gql`
+  mutation leave($input: LeaveInput!) {
+    leave(input: $input) {
+      membership {
+        _id
+        forest {
+          _id
+          membersCount
+          currentUserMembership {
+            _id
+          }
+        }
+      } 
+    }
+  }
+`;
+
+const Membership = ({ forest, viewOnly }) => {
+  // current user
+  const currentUser = useCurrentUser();
+
+  const variables = { input: { forest: forest._id } }
+
+  // mutations
+  const [join, { error: joinError, loading: joinLoading }] = useMutation(MUTATION_JOIN, {
+    variables,
+  });
+  const [leave, { error: leaveError, loading: leaveLoading }] = useMutation(MUTATION_LEAVE, {
+    variables,
+  });
+
+  const isSubmitting = joinLoading || leaveLoading;
+  const isError = joinError || leaveError;
+
+  // set always not editable for non logged in users
+  viewOnly = viewOnly || !currentUser;
+
+  /**
+   * Toogle like status for logged in users
+   */
+  const toogleMembership = async () => {
+    if (viewOnly || isSubmitting) {
+      // block submission
+      return;
+    }
+
+    forest.currentUserMembership ? await leave() : await join();
+  }
+
+  // pick icon accoridng to user like presence
+  const Icon = forest.currentUserMembership ? FaHeart : FaRegHeart;
+
+  return (
+    <div className={clsx(
+      'flex gap-sm items-center',
+      isError && 'text-error',
+    )}>
+      {!!forest.membersCount &&
+        <Text variant="span">{forest.membersCount}</Text>
+      }
+      <Icon className={clsx(
+        'text-2xl',
+        !viewOnly && 'cursor-pointer',
+      )} 
+      onClick={toogleMembership} />
+    </div>
+  );
+}
+
+export default Membership;
