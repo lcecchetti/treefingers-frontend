@@ -24,7 +24,6 @@ import { TagList } from 'components/tag';
       _id
       email
       username
-      pseudonym
     }
     tags
     likesCount

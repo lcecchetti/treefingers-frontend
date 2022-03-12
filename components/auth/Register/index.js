@@ -55,14 +55,14 @@ export default function SignUp() {
         initialValues={{
           email: '',
           password: '',
-          pseudonym: '',
+          username: '',
           bio: '',
         }}
         onSubmit={(data) => register({ variables: { input: { data } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
           password: Yup.string().min(10, 'Too short!').required('Required'),
-          pseudonym: Yup.string().min(2, 'Too short!').max(32, 'Too long!').required('Required'),
+          username: Yup.string().min(2, 'Too short!').max(32, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required('Required'),
           bio: Yup.string().max(255, 'Too long!'),
         })}
       >
@@ -88,11 +88,11 @@ export default function SignUp() {
             />
             <Field
               as={FormField}
-              label="Pseudonym"
+              label="Username"
               type="text"
-              name="pseudonym"
-              error={errors.pseudonym}
-              touched={touched.pseudonym}
+              name="username"
+              error={errors.username}
+              touched={touched.username}
             />
             <Field
               as={FormField}

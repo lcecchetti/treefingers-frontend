@@ -17,7 +17,6 @@ export const QUERY_USER = gql`
       email
       bio
       username
-      pseudonym
       followersCount
       currentUserFollowership {
         _id
@@ -46,7 +45,7 @@ const UserView = ({ className, _id }) => {
         <>
           <div className="flex flex-col gap-sm my-sm md:my-md">
             <div className="flex justify-between items-center">
-              <Text variant="pageTitle">{data.user.pseudonym}</Text>
+              <Text variant="pageTitle">{data.user.username}</Text>
               <UserFollowership user={data.user} />
             </div>
             <Text variant="p">{data.user.bio}</Text>
