@@ -20,6 +20,10 @@ export const QUERY_FOREST = gql`
       slug
       storiesCount
       commentsCount
+      membersCount
+      currentUserMembership {
+        _id
+      }
     }
   }
 `;
