@@ -2,13 +2,17 @@ import { ProfileLayout } from 'components/layout';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { Text } from 'components/ui';
 import { PageIntro } from 'components/common';
+import { Logout } from 'components/profile';
 
 const ProfileMePage = () => {
   const currentUser = useCurrentUser();
 
   return (
     <PageIntro>
-      <Text variant="pageTitle">{`Welcome ${currentUser.username}!`}</Text>
+      <div className="flex justify-between">
+        <Text variant="pageTitle">{`Welcome ${currentUser.username}!`}</Text>
+        <Logout />
+      </div>
       <Text variant="p">Here you can edit your profile details.</Text>
     </PageIntro>
   );
