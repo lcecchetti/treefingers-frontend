@@ -1,4 +1,4 @@
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaUsers, FaUserCheck } from 'react-icons/fa';
 import { gql, useMutation } from '@apollo/client';
 import { Text } from 'components/ui';
 import clsx from 'clsx';
@@ -38,7 +38,7 @@ const MUTATION_LEAVE = gql`
   }
 `;
 
-const Membership = ({ forest, viewOnly }) => {
+const ForestMembership = ({ forest, viewOnly }) => {
   // current user
   const currentUser = useCurrentUser();
 
@@ -71,7 +71,7 @@ const Membership = ({ forest, viewOnly }) => {
   }
 
   // pick icon accoridng to user like presence
-  const Icon = forest.currentUserMembership ? FaHeart : FaRegHeart;
+  const Icon = forest.currentUserMembership ? FaUserCheck : FaUsers;
 
   return (
     <div className={clsx(
@@ -90,4 +90,4 @@ const Membership = ({ forest, viewOnly }) => {
   );
 }
 
-export default Membership;
+export default ForestMembership;
