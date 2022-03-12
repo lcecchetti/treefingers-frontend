@@ -27,7 +27,7 @@ const ForestCard = ({ className, forest }) => {
     <div className={clsx('text-primary-contrast bg-primary rounded-xl flex flex-col p-md', className)}>
       <div>
         <Text variant="title">
-          <Link href={getForestUrl(forest)}>{forest.title}</Link>
+          <Link href={getForestUrl(forest)}>{forest.name}</Link>
         </Text>
         <Text variant="p">{forest.excerpt}</Text>
         <Link href={getForestUrl(forest)}>Read more</Link>
