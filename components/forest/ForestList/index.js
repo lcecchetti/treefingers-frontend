@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ForestCard, FRAGMENT_FOREST_CARD_FIELDS } from 'components/forest';
 import { InfiniteScroll } from 'components/common';
+import { Text } from 'components/ui';
 
 /**
  * Forests list query
@@ -40,11 +41,19 @@ const ForestList = ({ className, filter, first = 10 }) => {
   }, [!currentUser]);
 
   return (
-    <InfiniteScroll className={clsx('grid xl:grid-cols-3 sm:grid-cols-2 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.forests.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.forests.pageInfo.hasNextPage}>
-      {data?.forests && data.forests.edges.map(({ node }) => (
-        <ForestCard key={node._id} forest={node} />
-      ))}
-    </InfiniteScroll>
+    <>
+      {!data?.forests.edges.length &&
+        <Text>No results.</Text>
+      }
+
+      {!!data?.forests.edges.length &&
+        <InfiniteScroll className={clsx('grid xl:grid-cols-3 sm:grid-cols-2 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.forests.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.forests.pageInfo.hasNextPage}>
+          {data?.forests && data.forests.edges.map(({ node }) => (
+            <ForestCard key={node._id} forest={node} />
+          ))}
+        </InfiniteScroll>
+      }
+    </>
   );
 };
 
