@@ -4,6 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import UserFollowership from '../UserFollowership';
 
 /**
  * Single user query
@@ -17,6 +18,10 @@ export const QUERY_USER = gql`
       bio
       username
       pseudonym
+      followersCount
+      currentUserFollowership {
+        _id
+      }
     }
   }
 `;
@@ -42,6 +47,7 @@ const UserView = ({ className, _id }) => {
           <div className="flex flex-col gap-sm my-sm md:my-md">
             <div className="flex justify-between items-center">
               <Text variant="pageTitle">{data.user.pseudonym}</Text>
+              <UserFollowership user={data.user} />
             </div>
             <Text variant="p">{data.user.bio}</Text>
           </div>

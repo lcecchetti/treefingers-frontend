@@ -1,6 +1,6 @@
 import { CommentCount } from 'components/comment';
 import { useUI, flyoutTypes } from 'lib/ui/context';
-import Membership from '../Membership';
+import { ForestMembership } from 'components/forest';
 
 const ForestActions = ({ forest }) => {
   const { openFlyout } = useUI();
@@ -8,7 +8,7 @@ const ForestActions = ({ forest }) => {
   return (
     <div className="flex items-center gap-sm justify-end">
       <CommentCount count={forest.commentsCount} action={() => openFlyout(flyoutTypes.comments, { entity: forest, title: 'Comments' })} />
-      <Membership forest={forest} />
+      <ForestMembership forest={forest} />
     </div>
   );
 }
