@@ -24,7 +24,6 @@ export const QUERY_STORY = gql`
       author {
         _id
         username
-        pseudonym
       }
       tags
       parent {

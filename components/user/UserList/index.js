@@ -16,7 +16,6 @@ export const QUERY_USERS = gql`
         node {
           _id
           username
-          pseudonym
         }
       }
       pageInfo {

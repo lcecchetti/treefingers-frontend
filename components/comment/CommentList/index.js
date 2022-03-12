@@ -21,7 +21,6 @@ import { CommentNew } from 'components/comment';
     user {
       _id
       username
-      pseudonym
     }
     entity {
       _id
