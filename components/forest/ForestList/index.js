@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import { ForestCard, FRAGMENT_FOREST_CARD_FIELDS } from 'components/forest';
+import ForestCard from 'components/forest/ForestCard';
 import { InfiniteScroll } from 'components/common';
 import { Text } from 'components/ui';
 
@@ -15,7 +15,15 @@ export const QUERY_FORESTS = gql`
     forests(filter: $filter, first: $first, last: $last, before: $before, after: $after) {
       edges {
         node {
-          ...ForestCardFields
+          _id
+          name
+          title
+          excerpt
+          commentsCount
+          membersCount
+          currentUserMembership {
+            _id
+          }
         }
       }
       pageInfo {
@@ -26,7 +34,6 @@ export const QUERY_FORESTS = gql`
       }
     }
   }
-  ${FRAGMENT_FOREST_CARD_FIELDS}
 `;
 
 const ForestList = ({ className, filter, first = 10 }) => {

@@ -1,33 +1,9 @@
-import { Text, Spinner } from 'components/ui';
+import { Text } from 'components/ui';
 import { formatDate } from 'lib/helper/date';
-import { ApiError, InfiniteScroll, Like } from 'components/common';
+import { InfiniteScroll, Like } from 'components/common';
 import { Avatar } from 'components/user';
 import { gql, useQuery } from '@apollo/client';
-import { CommentNew } from 'components/comment';
-
-/**
- * Comment fields
- * @type gql
- */
- export const FRAGMENT_COMMENT_FIELDS = gql`
-  fragment CommentFields on Comment {
-    _id
-    content
-    createdAt
-    likesCount
-    currentUserLike {
-      _id
-    }
-    user {
-      _id
-      username
-    }
-    entity {
-      _id
-      commentsCount
-    }
-  }
-`;
+import CommentNew from 'components/comment/CommentNew';
 
 /**
  * Comments list query
@@ -39,7 +15,21 @@ export const QUERY_COMMENTS = gql`
       edges {
         cursor
         node {
-          ...CommentFields
+          _id
+          content
+          createdAt
+          likesCount
+          currentUserLike {
+            _id
+          }
+          user {
+            _id
+            username
+          }
+          entity {
+            _id
+            commentsCount
+          }
         }
       }
       pageInfo {
@@ -48,7 +38,6 @@ export const QUERY_COMMENTS = gql`
       }
     }
   }
-  ${FRAGMENT_COMMENT_FIELDS}
 `;
 
 const CommentList = ({ entity, last = 10 }) => {

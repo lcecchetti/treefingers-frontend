@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { FormField, Button } from 'components/ui';
 import * as Yup from 'yup';
 import { AuthRequired } from 'components/auth';
-import { QUERY_COMMENTS, FRAGMENT_COMMENT_FIELDS } from 'components/comment';
+import { QUERY_COMMENTS } from 'components/comment/CommentList';
 import { ApiError } from 'components/common';
 
 /**
@@ -14,11 +14,24 @@ const MUTATION_COMMENT = gql`
   mutation submitComment($input: CommentInput!) {
     submitComment(input: $input) {
       comment {
-        ...CommentFields
+        _id
+        content
+        createdAt
+        likesCount
+        currentUserLike {
+          _id
+        }
+        user {
+          _id
+          username
+        }
+        entity {
+          _id
+          commentsCount
+        }
       } 
     }
   }
-  ${FRAGMENT_COMMENT_FIELDS}
 `;
 
 const CommentNew = ({ entity }) => {

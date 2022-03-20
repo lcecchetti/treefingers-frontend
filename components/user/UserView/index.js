@@ -4,7 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import UserFollowership from '../UserFollowership';
+import UserFollowership from 'components/user/UserFollowership';
 
 /**
  * Single user query

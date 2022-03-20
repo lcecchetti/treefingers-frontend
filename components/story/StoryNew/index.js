@@ -1,7 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field, FieldArray } from 'formik';
-import { FormField, Button } from 'components/ui';
+import { FormField, Button, Text } from 'components/ui';
 import * as Yup from 'yup';
 import { getStoryUrl } from 'lib/helper/story';
 import { AuthRequired } from 'components/auth';
@@ -26,14 +26,15 @@ const MUTATION_STORY_CREATE = gql`
   }
 `;
 
-const StoryNew = ({ parent, forest }) => {
+const StoryNew = ({ parent, forest, className }) => {
   const [createStory, { error }] = useMutation(MUTATION_STORY_CREATE, {
     onError: (e) => {},
   });
   const router = useRouter();
 
   return (
-    <div>
+    <div className={className}>
+      <Text variant="h3" className="uppercase font-bold">Continue this story</Text>
       <AuthRequired>
         <Formik
           initialValues={{

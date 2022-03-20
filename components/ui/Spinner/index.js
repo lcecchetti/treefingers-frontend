@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { CgSpinner } from 'react-icons/cg';
-import { Text } from 'components/ui';
+import Text from 'components/ui/Text';
 
 const Spinner = ({ className, label, loading = true }) => {
 

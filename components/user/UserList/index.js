@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { InfiniteScroll } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import { Avatar } from 'components/user';
+import Avatar from 'components/user/Avatar';
 import { Text } from 'components/ui';
 
 /**

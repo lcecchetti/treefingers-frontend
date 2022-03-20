@@ -2,25 +2,7 @@ import clsx from 'clsx';
 import { gql } from '@apollo/client';
 import { getForestUrl } from 'lib/helper/forest';
 import { Text, Link } from 'components/ui';
-import { ForestActions } from 'components/forest';
-
-/**
- * Forest card fields
- * @type gql
- */
- export const FRAGMENT_FOREST_CARD_FIELDS = gql`
-  fragment ForestCardFields on Forest {
-    _id
-    name
-    title
-    excerpt
-    commentsCount
-    membersCount
-    currentUserMembership {
-      _id
-    }
-  }
-`;
+import ForestActions from 'components/forest/ForestActions';
 
 const ForestCard = ({ className, forest }) => {
   return (

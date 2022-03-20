@@ -2,37 +2,10 @@ import { Link, Text } from 'components/ui';
 import { formatDate, DATE_SHORT } from 'lib/helper/date';
 import { getStoryUrl } from 'lib/helper/story';
 import { Avatar } from 'components/user';
-import { StoryActions } from 'components/story';
+import StoryActions from 'components/story/StoryActions';
 import clsx from 'clsx';
 import { gql } from '@apollo/client';
 import { TagList } from 'components/tag';
-
-/**
- * Story card fields
- * @type gql
- */
- export const FRAGMENT_STORY_CARD_FIELDS = gql`
-  fragment StoryCardFields on Story {
-    _id
-    title
-    excerpt
-    createdAt
-    root {
-      _id
-    }
-    author {
-      _id
-      email
-      username
-    }
-    tags
-    likesCount
-    commentsCount
-    currentUserLike {
-      _id
-    }  
-  }
-`;
 
 const StoryCard = ({ className, story }) => {  
   return (

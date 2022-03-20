@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { InfiniteScroll } from 'components/common';
-import { StoryCard, FRAGMENT_STORY_CARD_FIELDS } from 'components/story';
+import StoryCard from 'components/story/StoryCard';
 import { Text } from 'components/ui';
 
 /**
@@ -15,7 +15,24 @@ export const QUERY_STORIES = gql`
     stories(filter: $filter, sort: $sort, first: $first, after: $after) {
       edges {
         node {
-          ...StoryCardFields
+          _id
+          title
+          excerpt
+          createdAt
+          root {
+            _id
+          }
+          author {
+            _id
+            email
+            username
+          }
+          tags
+          likesCount
+          commentsCount
+          currentUserLike {
+            _id
+          }  
         }
       }
       pageInfo {
@@ -24,7 +41,6 @@ export const QUERY_STORIES = gql`
       }
     }
   }
-  ${FRAGMENT_STORY_CARD_FIELDS}
 `;
 
 const StoryList = ({ className, filter, first = 10 }) => {
