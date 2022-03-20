@@ -4,5 +4,7 @@
   html,
   body {
     @apply text-base bg-base;
+    
+    -webkit-tap-highlight-color: transparent;
   }
 }
