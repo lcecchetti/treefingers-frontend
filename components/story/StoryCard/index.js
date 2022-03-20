@@ -17,7 +17,7 @@ const StoryCard = ({ className, story }) => {
         <Avatar className="justify-end" user={story.author} showName={true} />
       </div>
 
-      <div>
+      <div className="grow">
         <Text variant="title">
           <Link href={getStoryUrl(story)}>{story.title}</Link>
         </Text>
