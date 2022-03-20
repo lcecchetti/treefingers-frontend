@@ -9,6 +9,8 @@
 
   --text-color-base: var(--color-primary);
   --bg-color-base: var(--color-primary-contrast);
+
+  --swiper-theme-color: var(--color-primary-contrast);
 }
 
 .dark {

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Text } from 'components/ui';
+import Text from 'components/ui/Text';
 
 const FormField = ({ className, fieldClassName, labelClassName, type, name, label, hint, options, error, touched, ...rest }) => {
 

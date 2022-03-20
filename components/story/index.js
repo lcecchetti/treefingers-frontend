@@ -1,4 +1,4 @@
-export { default as StoryCard, FRAGMENT_STORY_CARD_FIELDS } from './StoryCard';
+export { default as StoryCard } from './StoryCard';
 export { default as StoryList, QUERY_STORIES } from './StoryList';
 export { default as StoryView, QUERY_STORY } from './StoryView';
 export { default as ChapterChoice, QUERY_CHAPTERS } from './ChapterChoice';

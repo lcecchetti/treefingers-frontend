@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Spinner } from 'components/ui';
+import Spinner from 'components/ui/Spinner';
 
 const Button = ({ children, className, loading = false, variant = 'primary', size = 'md', as, icon, ...rest }) => {
 

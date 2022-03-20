@@ -1,6 +1,6 @@
 import { CommentCount } from 'components/comment';
 import { useUI, flyoutTypes } from 'lib/ui/context';
-import { ForestMembership } from 'components/forest';
+import ForestMembership from 'components/forest/ForestMembership';
 
 const ForestActions = ({ forest }) => {
   const { openFlyout } = useUI();
