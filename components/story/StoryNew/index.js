@@ -34,7 +34,6 @@ const StoryNew = ({ parent, forest, className }) => {
 
   return (
     <div className={className}>
-      <Text variant="h3" className="uppercase font-bold">Continue this story</Text>
       <AuthRequired>
         <Formik
           initialValues={{

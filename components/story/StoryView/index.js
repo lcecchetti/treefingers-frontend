@@ -74,27 +74,33 @@ const StoryView = ({ story }) => {
               </div>
             }
 
-            <div className="flex flex-col gap-xs">
-              <div className="flex justify-between items-center">
-                <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
-                <Avatar user={data.story.author} showName={true} />
-              </div>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
               <div>
-                <Text variant="storyViewTitle">{data.story.title}</Text>
-                <Text variant="p">{data.story.content}</Text>
-              </div>
+                <div className="flex flex-col gap-xs">
+                  <div className="flex justify-between items-center">
+                    <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
+                    <Avatar user={data.story.author} showName={true} />
+                  </div>
 
-              <div className="flex justify-between items-center">
-                <TagList tags={data.story.tags} />
-                <StoryActions story={data.story} />
+                  <div>
+                    <Text variant="storyViewTitle">{data.story.title}</Text>
+                    <Text variant="p">{data.story.content}</Text>
+                  </div>
+
+                  <div className="flex justify-between items-center">
+                    <TagList tags={data.story.tags} />
+                    <StoryActions story={data.story} />
+                  </div>
+                </div>
+                <ChapterChoice parent={data.story} />
+              </div>              
+              <div>
+                <Text >TREE PLACEHOLDER</Text>
               </div>
             </div>
-
-            <ChapterChoice parent={data.story} />
           </>
         }
-    </div >
+    </div>
   );
 };
 

@@ -16,7 +16,6 @@ const Text = ({ children, className, variant = 'span', as, ...rest }) => {
         as = 'h3';
         break;
       case 'error': 
-      case 'chapterTitle': 
         as = 'span';
         break;
     }
@@ -31,7 +30,7 @@ const Text = ({ children, className, variant = 'span', as, ...rest }) => {
         {
           ['text-5xl md:text-6xl mb-md font-serif']: variant === 'storyViewTitle',
           ['text-5xl mb-sm font-serif']: ['h1', 'pageTitle'].includes(variant),
-          ['text-2xl mb-sm']: ['h2', 'pageSubtitle', 'chapterTitle'].includes(variant),
+          ['text-2xl mb-sm']: ['h2', 'pageSubtitle'].includes(variant),
           ['text-3xl mb-sm font-serif']: ['title'].includes(variant),
           ['text-xl mb-xs']: ['h3', 'subtitle'].includes(variant),
           ['text-lg mb-xs block']: ['h4', 'h5', 'h6'].includes(variant),
