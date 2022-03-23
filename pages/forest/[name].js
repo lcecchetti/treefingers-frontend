@@ -15,7 +15,7 @@ const ForestPage = ({ forest }) => {
 export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo();
 
-  // load forest by slug
+  // load forest by name
   const { data } = await apolloClient.query({
     query: QUERY_FOREST,
     variables: { filter: { name: { eq: params.name } } },
