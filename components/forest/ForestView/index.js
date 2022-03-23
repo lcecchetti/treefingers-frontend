@@ -17,7 +17,6 @@ export const QUERY_FOREST = gql`
       _id
       name
       about
-      title
       storiesCount
       commentsCount
       membersCount
@@ -49,7 +48,7 @@ const ForestView = ({ className, _id }) => {
         <>
           <div className="flex flex-col gap-sm my-sm md:my-md">
             <div className="flex justify-between sm:items-center flex-col sm:flex-row sm:items-center">
-              <Text variant="pageTitle">{data.forest.title}</Text>
+              <Text variant="pageTitle">{data.forest.name}</Text>
               <div className="flex gap-sm justify-between">
                 <Button icon={FaSeedling} onClick={() => setIsWritingStory(true)}>Plant a story</Button>
                 <ForestActions forest={data.forest} />

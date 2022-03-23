@@ -17,7 +17,6 @@ export const QUERY_FORESTS = gql`
         node {
           _id
           name
-          title
           excerpt
           commentsCount
           membersCount
