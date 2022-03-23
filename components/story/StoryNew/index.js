@@ -36,12 +36,12 @@ const StoryNew = ({ parent, forest, className }) => {
     <div className={className}>
       <AuthRequired>
         <Formik
+          enableReinitialize
           initialValues={{
             title: '',
             content: '',
+            forest: forest?._id,
             parent: parent?._id,
-            root: parent?.root?._id ?? parent?._id,
-            forest: forest?._id ?? parent.forest?._id,
             addTag: '',
             tags: [],
           }}
@@ -49,9 +49,9 @@ const StoryNew = ({ parent, forest, className }) => {
             title: Yup.string().required('Required'),
             content: Yup.string().required('Required'),
           })}
-          onSubmit={({ title, content, parent, root, tags, forest }, { resetForm }) => createStory({
+          onSubmit={({ title, content, parent, tags, forest }, { resetForm }) => createStory({
             variables: { input: { data: {
-              title, content, parent, root, forest, tags
+              title, content, parent, forest, tags
             }}},
             onCompleted: (data) => {
               resetForm();
