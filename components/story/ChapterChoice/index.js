@@ -50,6 +50,7 @@ const ChapterChoice = ({ className, parent, first = 10 }) => {
         <div className="md:px-xl">
           {!!data?.stories.edges.length && 
             <Swiper 
+              key={parent?._id}
               className=""
               modules={[EffectCards, Navigation]}
               effect="cards"
