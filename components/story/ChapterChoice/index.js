@@ -47,7 +47,7 @@ const ChapterChoice = ({ className, parent, first = 10 }) => {
       }
 
       <div className="flex flex-col gap-md">
-        <div className="md:px-xl">
+        <div>
           {!!data?.stories.edges.length && 
             <Swiper 
               key={parent?._id}
