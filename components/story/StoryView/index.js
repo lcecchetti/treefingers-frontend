@@ -10,6 +10,7 @@ import StoryActions from 'components/story/StoryActions';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
 import { TagList } from 'components/tag';
+import StoryTree from '../StoryTree';
 
 /**
  * Single story query
@@ -94,9 +95,7 @@ const StoryView = ({ story }) => {
                 </div>
                 <ChapterChoice parent={data.story} />
               </div>              
-              <div>
-                <Text >TREE PLACEHOLDER</Text>
-              </div>
+              <StoryTree story={data.story} className="w-full h-screen-no-header sticky top-0" />
             </div>
           </>
         }
