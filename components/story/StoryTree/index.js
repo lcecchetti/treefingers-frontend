@@ -12,20 +12,15 @@ const TreeView = function(canvas) {
 	this.nodeLevels = 7;
 	this.lineWidth = 8;
 	
-	
 	this.addEventListeners();
 	this.hue = Math.random() * 360;
 
   this.resizeCanvas();
-  this.render();
 };
 		
 TreeView.prototype = {
 	addEventListeners : function() {
-    window.onresize = function () {
-      this.resizeCanvas();
-      this.render();
-    };
+    window.onresize = this.resizeCanvas.bind(this);
 	},
 	
 	resizeCanvas : function(e) {
@@ -33,6 +28,8 @@ TreeView.prototype = {
 		this.canvas.height = this.canvas.offsetHeight * this.ratio;
 		this.width = this.canvas.width;
 		this.height = this.canvas.height;
+
+    this.render();
 	},
 			
 	loop : function() {
@@ -82,11 +79,9 @@ TreeView.prototype = {
 				this.generateLine( lineNode, currentLevel, totalLevels );
 			}
 		}
-		
 	},
 	
 	renderTree : function( lineNode, prevLevel, totalLevels ) {
-		
 		const ratio = prevLevel / totalLevels;
 		const ratio2 = ( (ratio * ratio) + ratio ) / 2;
 		
@@ -109,30 +104,26 @@ TreeView.prototype = {
 	   	}
 	},
 	
-	render : function() {
-		this.reset();
+	render : function() {		
+    this.reset();
 		
-		this.context.fillStyle = this.rgbToFillStyle(255, 255, 255, 0.002);
-		this.context.fillRect(0,0,this.width, this.height);
-		
-		const lineNode = new LineNode();
-		
-		lineNode.beg.x = 0;
-		lineNode.beg.y = this.height / 2;
-		lineNode.end.x = this.width / 10;
-		lineNode.end.y = this.height / 2;
+		const lineNode = new LineNode();	
+    lineNode.beg.x = this.width / 2;
+		lineNode.beg.y = this.height;
+		lineNode.end.x = this.width / 2;
+		lineNode.end.y = this.height - (this.height / 6);
 		lineNode.update();
 		
-		this.generateLine( lineNode, this.nodeLevels, this.nodeLevels );
+		this.generateLine(lineNode, this.nodeLevels, this.nodeLevels);
 		
 		this.context.strokeStyle = this.hslToFillStyle(180, 50, 50);
-		this.context.lineCap = "round";
+		this.context.lineCap = 'round';
 		
 		this.renderTree( lineNode, this.nodeLevels, this.nodeLevels );
 	},
 
   reset : function() {
-		this.context.fillStyle = this.rgbToFillStyle(255, 255, 255);
+		this.context.fillStyle = this.rgbToFillStyle(255, 255, 255, 0);
 		this.context.fillRect(0,0,this.width, this.height);
 	},
 };
