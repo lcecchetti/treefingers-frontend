@@ -76,7 +76,10 @@ const StoryView = ({ story }) => {
             }
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
-              <div>
+              <div className="">
+                <StoryTree story={data.story} className="h-screen w-full sticky top-0" />
+              </div>  
+              <div className="flex flex-col gap-md z-10">
                 <div className="flex flex-col gap-xs">
                   <div className="flex justify-between items-center">
                     <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
@@ -94,10 +97,7 @@ const StoryView = ({ story }) => {
                   </div>
                 </div>
                 <ChapterChoice parent={data.story} />
-              </div>              
-              <div className="overflow-visible flex justify-center align-center">
-                <StoryTree story={data.story} className="h-screen sticky top-0" />
-              </div>
+              </div>            
             </div>
           </>
         }
