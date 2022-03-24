@@ -95,7 +95,9 @@ const StoryView = ({ story }) => {
                 </div>
                 <ChapterChoice parent={data.story} />
               </div>              
-              <StoryTree story={data.story} className="w-full h-screen-no-header sticky top-0" />
+              <div className="overflow-visible flex justify-center align-center">
+                <StoryTree story={data.story} className="h-screen sticky top-0" />
+              </div>
             </div>
           </>
         }
