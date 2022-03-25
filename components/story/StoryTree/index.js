@@ -8,7 +8,7 @@ class TreeView {
 
 		this.root = undefined;
 
-		this.childrenCount = 3;
+		this.childrenCount = 5;
 		this.childLengthModifier = 0.9;
 		this.baseTheta = Math.PI * (100 / 180);
 		this.levels = 8;
