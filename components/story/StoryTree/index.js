@@ -10,7 +10,7 @@ class TreeView {
 
 		this.childrenCount = 3;
 		this.childLengthModifier = 0.9;
-		this.baseTheta = Math.PI * (80 / 180);
+		this.baseTheta = Math.PI * (100 / 180);
 		this.levels = 8;
 		this.baseLineWidth = 20;
 		this.hue = this.random(0, 360);
