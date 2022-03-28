@@ -1,15 +1,15 @@
-import { Link, Text } from 'components/ui';
+import { Link, Text, Button } from 'components/ui';
 import { formatDate, DATE_SHORT } from 'lib/helper/date';
 import { getStoryUrl } from 'lib/helper/story';
 import { Avatar } from 'components/user';
 import StoryActions from 'components/story/StoryActions';
 import clsx from 'clsx';
-import { gql } from '@apollo/client';
 import { TagList } from 'components/tag';
 
-const StoryCard = ({ className, story }) => {  
+const StoryCard = ({ className, story }) => {
+  console.log(story);
   return (
-    <div className={clsx('rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-xs', className)}>
+    <div className={clsx('rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-lg', className)}>
       <div className="flex justify-between items-center">
         <Text variant="span" className="text-sm">
           {formatDate(story.createdAt, DATE_SHORT)}
@@ -17,12 +17,14 @@ const StoryCard = ({ className, story }) => {
         <Avatar className="justify-end" user={story.author} showName={true} />
       </div>
 
-      <div className="grow">
-        <Text variant="title">
-          <Link href={getStoryUrl(story)}>{story.title}</Link>
-        </Text>
-        <Text variant="p">{story.excerpt}</Text>
-        <Link href={getStoryUrl(story)}>Read more</Link>
+      <div className="flex flex-col items-center gap-xs px-lg">
+        <Link href={getStoryUrl(story)}>
+          <Text variant="title">{story.title}</Text>
+        </Link>
+        {!story.root &&
+          <Text variant="p">{story.excerpt}</Text>
+        }
+        <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">Read more</Button>
       </div>
 
       <div className="flex justify-between items-center gap-md">

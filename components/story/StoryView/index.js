@@ -96,6 +96,7 @@ const StoryView = ({ story }) => {
                     <StoryActions story={data.story} />
                   </div>
                 </div>
+
                 <ChapterChoice parent={data.story} />
               </div>            
             </div>
