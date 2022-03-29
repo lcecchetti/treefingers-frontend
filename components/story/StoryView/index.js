@@ -74,7 +74,7 @@ const StoryView = ({ story }) => {
         }
 
         {data &&
-          <div className="relative flex flex-col gap-md">
+          <div className="relative flex flex-col gap-md md:min-h-screen">
             <Container className="flex justify-end">
               <div className="flex flex-col gap-md w-full md:w-1/2 z-10">
                 <div className="flex flex-col gap-xs">
