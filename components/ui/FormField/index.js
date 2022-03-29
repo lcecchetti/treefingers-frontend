@@ -29,7 +29,7 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
       }
 
       <Component className={clsx(
-        'border-primary w-full bg-transparent focus:outline-none focus:ring-0',
+        'border-primary w-full focus:outline-none focus:ring-0 bg-primary-contrast',
         {
           ['']: type === 'select',
           ['rounded-xl']: type === 'textarea',

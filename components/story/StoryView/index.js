@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Spinner, Text, Link } from 'components/ui';
+import { Spinner, Text, Link, Container } from 'components/ui';
 import { DATE_LONG, formatDate } from 'lib/helper/date';
 import { getStoryUrl } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
@@ -60,26 +60,23 @@ const StoryView = ({ story }) => {
         <Spinner loading={loading}/>
         <ApiError error={error}/>
 
-        {data &&
-          <>
-            {data.story.root &&
-              <div className="text-center mt-sm md:mt-md flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg">
-                <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
-                  <FaAngleUp className="text-3xl group-hover:animate-bounce" />
-                  <Text variant="span" className="font-bold uppercase">Back to previous chapter</Text>
-                </Link>
-                <Link href={getStoryUrl(data.story.root)} className="flex flex-col group items-center gap-xs">
-                  <FaAngleDoubleUp className="text-3xl group-hover:animate-bounce" />
-                  <Text variant="span" className="font-bold uppercase">Back to the beginning</Text>
-                </Link>
-              </div>
-            }
+        {data.story.root &&
+          <Container className="text-center mt-sm md:mt-md flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg z-10">
+            <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
+              <FaAngleUp className="text-3xl group-hover:animate-bounce" />
+              <Text variant="span" className="font-bold uppercase">Back to previous chapter</Text>
+            </Link>
+            <Link href={getStoryUrl(data.story.root)} className="flex flex-col group items-center gap-xs">
+              <FaAngleDoubleUp className="text-3xl group-hover:animate-bounce" />
+              <Text variant="span" className="font-bold uppercase">Back to the beginning</Text>
+            </Link>
+          </Container>
+        }
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
-              <div className="">
-                <StoryTree story={data.story} className="h-screen w-full sticky top-0" />
-              </div>  
-              <div className="flex flex-col gap-md z-10">
+        {data &&
+          <div className="relative flex flex-col gap-md">
+            <Container className="flex justify-end">
+              <div className="flex flex-col gap-md w-full md:w-1/2 z-10">
                 <div className="flex flex-col gap-xs">
                   <div className="flex justify-between items-center">
                     <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
@@ -99,8 +96,10 @@ const StoryView = ({ story }) => {
 
                 <ChapterChoice parent={data.story} />
               </div>            
-            </div>
-          </>
+            </Container>
+
+            <StoryTree story={data.story} className="h-screen md:h-full w-full md:absolute bottom-0 left-0 md:-left-1/4" />
+          </div>
         }
     </div>
   );

@@ -1,13 +1,10 @@
 import { DefaultLayout } from 'components/layout';
-import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { QUERY_STORIES, QUERY_STORY, StoryView } from 'components/story';
 
 const StoryPage = ({ story }) => {
   return (
-    <Container>
-      <StoryView story={story} />
-    </Container>
+    <StoryView story={story} />
   );
 };
 
