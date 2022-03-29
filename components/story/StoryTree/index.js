@@ -9,8 +9,8 @@ class TreeView {
 		this.root = undefined;
 
 		this.childrenCount = 5;
-		this.childLengthModifier = 0.9;
-		this.baseTheta = Math.PI * (100 / 180);
+		this.childLengthModifier = 0.94;
+		this.baseTheta = Math.PI * (140 / 180);
 		this.levels = 8;
 		this.baseLineWidth = 20;
 		this.hue = this.random(0, 360);
@@ -68,7 +68,7 @@ class TreeView {
 	update() {
 		this.root = new Branch(
 			new Node(this.width / 2, this.height),
-			new Node(this.width / 2, this.height - (this.height / 6))
+			new Node(this.width / 2, this.height - this.height / 6)
 		);
 
 		this.generateBranch(this.root);
