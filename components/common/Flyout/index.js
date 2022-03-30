@@ -5,6 +5,7 @@ import { useUI, flyoutTypes } from 'lib/ui/context';
 import { Text } from 'components/ui';
 import { CommentList } from 'components/comment';
 import { FaTimes } from 'react-icons/fa'
+import { StoryTree } from 'components/story';
 
 const Flyout = () => {
   const router = useRouter();
@@ -42,6 +43,9 @@ const Flyout = () => {
         </div>
         {flyoutType === flyoutTypes.comments && 
           <CommentList entity={flyoutData.entity} />
+        }
+        {flyoutType === flyoutTypes.tree && 
+          <StoryTree className="h-full w-full" story={flyoutData.entity} />
         }
       </div>
     </div>
