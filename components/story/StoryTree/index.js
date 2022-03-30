@@ -68,7 +68,7 @@ class TreeView {
 	update() {
 		this.root = new Branch(
 			new Node(this.width / 2, this.height),
-			new Node(this.width / 2, this.height - this.height / 6)
+			new Node(this.width / 2, this.height - this.height / (this.levels - 2))
 		);
 
 		this.generateBranch(this.root);
@@ -78,7 +78,7 @@ class TreeView {
 		const ratio = parent.level / this.levels;
 		const thetaChange = this.baseTheta * ratio * this.random(-1, 1);
 		const theta = parent.theta - thetaChange;
-		const hyp = parent.length * this.childLengthModifier * this.random(.9, 1);
+		const hyp = parent.length * this.childLengthModifier * this.random(.8, 1);
 
 		const branch = new Branch(
 			parent.to,
