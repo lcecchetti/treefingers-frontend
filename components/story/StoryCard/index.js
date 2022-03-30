@@ -7,9 +7,8 @@ import clsx from 'clsx';
 import { TagList } from 'components/tag';
 
 const StoryCard = ({ className, story }) => {
-  console.log(story);
   return (
-    <div className={clsx('rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-lg', className)}>
+    <div className={clsx('rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-lg justify-between', className)}>
       <div className="flex justify-between items-center">
         <Text variant="span" className="text-sm">
           {formatDate(story.createdAt, DATE_SHORT)}
@@ -17,7 +16,7 @@ const StoryCard = ({ className, story }) => {
         <Avatar className="justify-end" user={story.author} showName={true} />
       </div>
 
-      <div className="flex flex-col items-center gap-xs px-lg">
+      <div className="flex flex-col items-center gap-xs px-lg grow">
         <Link href={getStoryUrl(story)}>
           <Text variant="title">{story.title}</Text>
         </Link>
