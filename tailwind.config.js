@@ -8,6 +8,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: [...defaultTheme.fontFamily.sans],
+        serif: [...defaultTheme.fontFamily.serif],
+      },
       colors: {
         gray: '#9CA3AF',
         // custom colors
