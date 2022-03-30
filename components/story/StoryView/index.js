@@ -90,7 +90,7 @@ const StoryView = ({ story }) => {
 
                   <div className="flex justify-between items-center">
                     <TagList tags={data.story.tags} />
-                    <StoryActions story={data.story} />
+                    <StoryActions story={data.story} disabledActions={{ tree: true }} />
                   </div>
                 </div>
 
