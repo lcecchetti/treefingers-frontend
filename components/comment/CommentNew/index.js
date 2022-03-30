@@ -46,8 +46,9 @@ const CommentNew = ({ entity }) => {
           comments: { 
             edges: [
               ...comments.edges,
-              { node: data.submitComment.comment },
-            ]
+              { node: data.submitComment.comment, cursor: null },
+            ],
+            pageInfo: comments.pageInfo,
           }
         })
       );
