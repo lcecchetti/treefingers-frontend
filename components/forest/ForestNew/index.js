@@ -65,8 +65,8 @@ const ForestNew = () => {
                 type="textarea"
                 label="About"
                 rows="10"
-                error={errors.content}
-                touched={touched.content}
+                error={errors.about}
+                touched={touched.about}
               />
               <ApiError error={error} />
               <Button
