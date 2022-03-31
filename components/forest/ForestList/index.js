@@ -14,6 +14,7 @@ export const QUERY_FORESTS = gql`
   query forests($filter: FilterForestInput, $first: Int, $last: Int, $after: String, $before: String) {
     forests(filter: $filter, first: $first, last: $last, before: $before, after: $after) {
       edges {
+        cursor
         node {
           _id
           name
