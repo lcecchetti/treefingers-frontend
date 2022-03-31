@@ -26,6 +26,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_FORESTS,
+    variables: { first: 10 }
   });
 
   return addApolloState(apolloClient, {
