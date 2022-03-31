@@ -14,6 +14,7 @@ export const QUERY_USERS = gql`
   query users($filter: FilterUserInput, $first: Int, $after: String) {
     users (filter: $filter, first: $first, after: $after) {
       edges {
+        cursor
         node {
           _id
           username

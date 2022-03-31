@@ -14,6 +14,7 @@ export const QUERY_STORIES = gql`
   query stories($filter: FilterStoryInput, $sort: SortInput, $first: Int, $after: String) {
     stories(filter: $filter, sort: $sort, first: $first, after: $after) {
       edges {
+        cursor
         node {
           _id
           title
