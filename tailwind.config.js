@@ -9,8 +9,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: [...defaultTheme.fontFamily.sans],
-        serif: [...defaultTheme.fontFamily.serif],
+        sans: ['"Open Sans"', ...defaultTheme.fontFamily.sans],
+        serif: ['"DM Serif Text"', ...defaultTheme.fontFamily.serif],
       },
       colors: {
         gray: '#9CA3AF',
