@@ -10,7 +10,7 @@ const StoryActions = ({ story, className, disabledActions = {} }) => {
 
   return (
     <div className={clsx('flex items-center gap-sm', className)}>
-      {!disabledActions.tree && !story.root &&
+      {!disabledActions.tree &&
         <FaTree className="text-2xl cursor-pointer" onClick={() => openFlyout(flyoutTypes.tree, { entity: story, title: story.title })} />
       }
       {!disabledActions.comment && 

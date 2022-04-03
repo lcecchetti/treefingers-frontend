@@ -81,11 +81,11 @@ const StoryNew = ({ parent, forest, className }) => {
               <FieldArray
                 name="tags"
                 render={arrayHelpers => (
-                  <div className="flex flex-col gap-xs">
-                    <div className="flex flex-row gap-sm justify-items-stretch">
+                  <div className="flex flex-col gap-sm">
+                    <div className="flex gap-sm justify-items-stretch items-center">
                       <Field className="grow" name="addTag" as={FormField} type="text" />
                       <Button type="button" onClick={() => { 
-                        if(values.tags.includes(values.addTag)) {
+                        if(values.tags.includes(values.addTag) || !values.addTag) {
                           return;
                         } 
                         arrayHelpers.push(values.addTag);
@@ -93,7 +93,7 @@ const StoryNew = ({ parent, forest, className }) => {
                       }}>Add Tag</Button>
                     </div>
                     {!!values.tags.length && (
-                      <ul className="flex flex-row gap-xs">
+                      <ul className="flex flex-wrap gap-xs">
                         {values.tags.map((tag, index) => (
                           <Button size="sm" key={index}>{tag} <FaTimes onClick={() => arrayHelpers.remove(index)}/></Button>
                         ))}

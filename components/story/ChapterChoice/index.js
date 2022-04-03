@@ -61,7 +61,7 @@ const ChapterChoice = ({ className, parent, first = 10 }) => {
             >
             {data.stories.edges.map(({ node, index }) => (
               <SwiperSlide key={node._id} virtualIndex={index}>
-                <StoryCard story={node} asChapter />
+                <StoryCard story={node} isChapterChoice />
               </SwiperSlide>
             ))}
           </Swiper>
