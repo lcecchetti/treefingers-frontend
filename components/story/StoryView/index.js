@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Spinner, Text, Link, Container } from 'components/ui';
 import { DATE_LONG, formatDate } from 'lib/helper/date';
-import { getStoryUrl } from 'lib/helper/story';
+import { getStoryUrl, isStoryRoot } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import { FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
 import { Avatar } from 'components/user';
@@ -60,7 +60,7 @@ const StoryView = ({ story }) => {
         <Spinner loading={loading}/>
         <ApiError error={error}/>
 
-        {data.story.root &&
+        {data?.story && !isStoryRoot(data.story) &&
           <Container className="text-center mt-sm md:mt-md flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg z-10">
             <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
               <FaAngleUp className="text-3xl group-hover:animate-bounce" />
