@@ -9,7 +9,7 @@ const ProfileMePage = () => {
 
   return (
     <PageIntro>
-      <div className="flex justify-between">
+      <div className="flex flex-col sm:flex-row gap-sm justify-between">
         <Text variant="pageTitle">{`Welcome ${currentUser.username}!`}</Text>
         <Logout />
       </div>

@@ -74,19 +74,17 @@ const StoryView = ({ story }) => {
         }
 
         {data &&
-          <div className="relative flex flex-col gap-md md:min-h-screen">
+          <div className="relative flex flex-col gap-md md:min-h-screen overflow-x-hidden">
             <Container className="flex justify-end">
               <div className="flex flex-col gap-md w-full md:w-1/2 z-10">
-                <div className="flex flex-col gap-xs">
+                <div className="flex flex-col gap-md">
                   <div className="flex justify-between items-center">
                     <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
                     <Avatar user={data.story.author} showName={true} />
                   </div>
 
-                  <div>
-                    <Text variant="storyViewTitle">{data.story.title}</Text>
-                    <Text variant="p">{data.story.content}</Text>
-                  </div>
+                  <Text variant="pageTitle">{data.story.title}</Text>
+                  <Text variant="p">{data.story.content}</Text>
 
                   <div className="flex justify-between items-center">
                     <TagList tags={data.story.tags} />

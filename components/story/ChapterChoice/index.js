@@ -31,7 +31,7 @@ const ChapterChoice = ({ className, parent, first = 10 }) => {
   }, [!currentUser]);
 
   return (
-    <div className={clsx('flex flex-col gap-md ', className)}>
+    <div className={clsx('flex flex-col gap-md', className)}>
       <ApiError error={error}/>
       <Spinner loading={loading}/>
 

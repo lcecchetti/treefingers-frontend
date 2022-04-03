@@ -8,7 +8,7 @@ import { TagList } from 'components/tag';
 
 const StoryCard = ({ className, story }) => {
   return (
-    <div className={clsx('rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-lg justify-between', className)}>
+    <div className={clsx('rounded-xl p-md bg-primary text-primary-contrast flex flex-col gap-md justify-between', className)}>
       <div className="flex justify-between items-center">
         <Text variant="span" className="text-sm">
           {formatDate(story.createdAt, DATE_SHORT)}
@@ -16,10 +16,13 @@ const StoryCard = ({ className, story }) => {
         <Avatar className="justify-end" user={story.author} showName={true} />
       </div>
 
-      <div className="flex flex-col items-center gap-xs px-lg grow">
-        <Link href={getStoryUrl(story)}>
-          <Text variant="title">{story.title}</Text>
-        </Link>
+      <div className={clsx(
+        'flex flex-col items-center gap-md grow',
+        {
+          ['px-lg']: !!story.root,
+        })
+      }>
+        <Text variant="title">{story.title}</Text>
         {!story.root &&
           <Text variant="p">{story.excerpt}</Text>
         }
@@ -27,7 +30,7 @@ const StoryCard = ({ className, story }) => {
       </div>
 
       <div className="flex justify-between items-center gap-md">
-        <TagList className="flex-wrap my-xs md:my-sm" tags={story.tags} buttonVariant="primary-contrast" />
+        <TagList className="flex-wrap" tags={story.tags} buttonVariant="primary-contrast" />
         <StoryActions story={story} />
       </div>
     </div>
