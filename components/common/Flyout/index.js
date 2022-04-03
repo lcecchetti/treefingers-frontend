@@ -31,14 +31,14 @@ const Flyout = () => {
 
   return (
     <div className={clsx(
-      'fixed sm:border-l-2 top-0 left-full bg-base w-full sm:w-2/3 lg:w-1/3 h-screen transition-transform transform-gpu z-30',
+      'fixed border-2 top-0 left-full bg-base w-full sm:w-2/3 lg:w-1/3 h-screen transition-transform transform-gpu z-30 rounded-2xl',
       {
         ['-translate-x-full']: isFlyoutOpen,
       }
     )}>
       <div className="h-full flex flex-col">
         <div className="flex justify-between items-center gap-sm p-md border-b-2">
-          <Text variant="h3" className="uppercase">{flyoutData?.title}</Text>
+          <Text variant="p" as="h3" className="uppercase text-lg font-bold">{flyoutData?.title}</Text>
           <FaTimes onClick={closeFlyout} className="text-2xl cursor-pointer"/>
         </div>
         {flyoutType === flyoutTypes.comments && 

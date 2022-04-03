@@ -46,7 +46,7 @@ export default function Login() {
   }, [!currentUser]);
 
   return (
-    <div className="md:max-w-sm p-md m-md border-2 rounded-xl">
+    <div className="md:max-w-sm p-md m-md border-2 rounded-xl flex flex-col gap-md">
       <Text variant="pageTitle" className="flex justify-between items-center">
         Login
         <MdLockOutline />

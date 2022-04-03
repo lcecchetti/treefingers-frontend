@@ -19,7 +19,7 @@ const Hero = () => {
   return (
     <div className="flex flex-col md:grid md:grid-cols-3 md:items-stretch items-center min-h-screen-no-header text-center md:text-left">
       <div className="md:col-span-2 flex items-center justify-center flex-col p-md md:p-xl min-h-screen-no-header md:min-h-0">
-        <Text className="md:pb-0 pb-14" variant="h3" as={Typist} avgTypingDelay={50} startDelay={2000}>
+        <Text className="md:pb-0 pb-14 text-xl" variant="p" as={Typist} avgTypingDelay={50} startDelay={2000}>
           <span className="mb-md md:mb-sm inline-block">"What a big mouth you have!" - Said little red riding hood.</span>
           <br />
           <span className="mb-md md:mb-sm inline-block">"The better to eat you with!" - Growled the wolf.</span>
@@ -36,8 +36,8 @@ const Hero = () => {
 
         <FaAngleDoubleDown className="md:hidden text-4xl animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
       </div>
-      <div ref={detailsRef} className="text-primary-contrast bg-primary px-md py-xl md:px-xl flex flex-col md:justify-center items-start min-h-screen-no-header md:min-h-0">
-        <div className="mb-lg w-full">
+      <div ref={detailsRef} className="text-primary-contrast bg-primary px-md py-xl md:px-xl flex flex-col gap-lg md:justify-center items-start min-h-screen-no-header md:min-h-0">
+        <div className="w-full flex flex-col gap-sm">
           <Text variant="h2">What is Treefingers?</Text>
           <Text variant="p">
             Treefingers is a place where to tell never ending stories.<br />
@@ -45,7 +45,7 @@ const Hero = () => {
             It's about choosing and creating your own choice.
           </Text>
         </div>
-        <div className="md:mb-lg w-full">
+        <div className="w-full flex flex-col gap-sm">
           <Text variant="h2">How does it work?</Text>
           <Text variant="p">
             Each story is composed by multiple chapters.
