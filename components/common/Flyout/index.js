@@ -41,10 +41,10 @@ const Flyout = () => {
           <Text variant="p" as="h3" className="uppercase text-lg font-bold">{flyoutData?.title}</Text>
           <FaTimes onClick={closeFlyout} className="text-2xl cursor-pointer"/>
         </div>
-        {flyoutType === flyoutTypes.comments && 
+        {flyoutType === flyoutTypes.comments &&
           <CommentList entity={flyoutData.entity} />
         }
-        {flyoutType === flyoutTypes.tree && 
+        {flyoutType === flyoutTypes.tree && isFlyoutOpen &&
           <StoryTree className="h-full w-full" story={flyoutData.entity} />
         }
       </div>

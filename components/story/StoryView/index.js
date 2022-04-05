@@ -88,7 +88,8 @@ const StoryView = ({ story }) => {
 
                   <div className="flex justify-between items-center">
                     <TagList tags={data.story.tags} />
-                    <StoryActions story={data.story} disabledActions={{ tree: true }} />
+                    <StoryActions className="md:hidden" story={data.story} />
+                    <StoryActions className="hidden md:flex" story={data.story} disabledActions={{ tree: true }} />
                   </div>
                 </div>
 
@@ -96,7 +97,7 @@ const StoryView = ({ story }) => {
               </div>            
             </Container>
 
-            <StoryTree story={data.story.root || data.story} className="h-screen md:h-full w-full md:absolute bottom-0 left-0 md:-left-1/4" />
+            <StoryTree story={data.story.root || data.story} className="h-screen hidden md:block md:h-full w-full md:absolute bottom-0 left-0 md:-left-1/4" />
           </div>
         }
     </div>
