@@ -108,11 +108,10 @@ export default function SignUp() {
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-              className="my-sm w-full"
-            >
+              className="my-sm w-full">
               Register
             </Button>
-            <div className="text-right text-xs">
+            <div className="text-xs">
               <Link href={getLoginUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>
                 Already have an account? Login
               </Link>

@@ -94,9 +94,9 @@ export default function Login() {
               className="w-full my-sm">
               Login
             </Button>
-            <div className="flex flex-row justify-between">
-              <Link className="text-left text-xs">Forgot password?</Link>
-              <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO])} className="text-right text-xs">Don't have an account?<br />Register</Link>
+            <div className="flex flex-col gap-xs text-xs">
+              <Link>Forgot password?</Link>
+              <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>Don't have an account? Register</Link>
             </div>
           </Form>
         )}
