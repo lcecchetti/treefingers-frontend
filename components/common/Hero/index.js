@@ -13,8 +13,7 @@ const heroTexts = [
 
 const Hero = () => {
   const detailsRef = useRef(null);
-
-  const scrollToDetails = () => detailsRef.current.scrollIntoView({ behavior: 'smooth' });  
+  const scrollToDetails = () => window.scrollTo({ top: detailsRef.current.offsetTop - document.getElementById('header').offsetHeight, behavior: 'smooth' });
 
   return (
     <div className="flex flex-col md:grid md:grid-cols-3 md:items-stretch items-center min-h-screen-no-header text-center md:text-left">
