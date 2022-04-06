@@ -8,7 +8,11 @@ const ForestNewPage = () => {
     <Container>
       <PageIntro>
         <Text variant="pageTitle">New forest</Text>
-        <Text variant="p">I see too much blank space on this page...</Text>
+        <Text variant="p">
+          A forest is a place where to grow your stories and a community to take care of them. You can name it by interest, or it can a be a completely original name.
+          <br/>
+          One rule, keep it unique.
+        </Text>
       </PageIntro>
       <ForestNew />
     </Container>
