@@ -18,20 +18,19 @@ const Hero = () => {
   return (
     <div className="flex flex-col md:grid md:grid-cols-3 md:items-stretch items-center min-h-screen-no-header text-center md:text-left">
       <div className="md:col-span-2 flex items-center justify-center flex-col p-md md:p-xl min-h-screen-no-header md:min-h-0">
-        <Text className="md:pb-0 pb-14 text-xl" variant="p" as={Typist} avgTypingDelay={50} startDelay={2000}>
-          <span className="mb-md md:mb-sm inline-block">"What a big mouth you have!" - Said little red riding hood.</span>
-          <br />
-          <span className="mb-md md:mb-sm inline-block">"The better to eat you with!" - Growled the wolf.</span>
-          <br />
-          {heroTexts.map((text, index) => (
-            <span key={index}>
-              {text}
-              <Typist.Backspace count={text.length} delay={500} />
-            </span>
-          ))}
-
-          <span>Continuing this story is up to your imagination...</span>
-        </Text>
+        <div className="md:pb-0 pb-14 text-xl flex flex-col gap-md">
+          <Text>"What a big mouth you have!" - Said little red riding hood.</Text>
+          <Text>"The better to eat you with!" - Growled the wolf.</Text>
+          <Typist avgTypingDelay={50} startDelay={3000}>
+            {heroTexts.map((text, index) => (
+              <span key={index}>
+                {text}
+                <Typist.Backspace count={text.length} delay={500} />
+              </span>
+            ))}
+            <span>Continuing this story is up to your imagination...</span>
+          </Typist>
+        </div>
 
         <FaAngleDoubleDown className="md:hidden text-4xl animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
       </div>
