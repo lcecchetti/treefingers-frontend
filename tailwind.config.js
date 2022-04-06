@@ -35,7 +35,7 @@ module.exports = {
         md: defaultTheme.spacing['5'],
         lg: defaultTheme.spacing['7'],
         xl: defaultTheme.spacing['10'],
-        header: '76px',
+        header: 'var(--header-height)',
       },
     },
   },

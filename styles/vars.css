@@ -1,4 +1,5 @@
 :root {
+  /* Colors */
   --color-black: #212121;
   --color-white: #FEFEFE;
 
@@ -11,8 +12,19 @@
   --bg-color-base: var(--color-primary-contrast);
 
   --swiper-theme-color: var(--color-primary-contrast);
+
+  /* Sizes */
+  --header-height: 56px;
 }
 
+/* Desktop */
+@screen md {
+  :root {
+    --header-height: 76px;
+  }
+}
+
+/* Dark theme */
 .dark {
   --color-primary: var(--color-white);
   --color-primary-contrast: var(--color-black);
