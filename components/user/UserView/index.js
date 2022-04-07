@@ -14,7 +14,6 @@ export const QUERY_USER = gql`
   query user($filter: FilterUserInput!) {
     user(filter: $filter) {
       _id
-      email
       bio
       username
       followersCount
