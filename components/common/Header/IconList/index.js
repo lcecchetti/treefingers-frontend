@@ -46,11 +46,11 @@ const IconList = () => {
   ];
 
   return (
-    <ul className="flex flex-row gap-sm sm:gap-md">
+    <ul className="flex flex-row gap-sm md:gap-md">
       {iconListItems.map((item, index) => (
         <li key={index} className={clsx({
-          ['hidden md:inline-block']: !item.showOnMobile,
-          ['md:hidden']: !item.showOnDesktop,
+          ['hidden lg:inline-block']: !item.showOnMobile,
+          ['lg:hidden']: !item.showOnDesktop,
         })}>
           <Link href={item.href} onClick={item.onClick ? item.onClick : undefined}>
             <item.Icon className="text-2xl" />

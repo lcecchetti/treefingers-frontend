@@ -46,8 +46,8 @@ const ForestView = ({ className, _id }) => {
 
       {data &&
         <>
-          <div className="flex flex-col gap-sm my-sm md:my-md">
-            <div className="flex justify-between gap-sm flex-col sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-sm my-sm lg:my-md">
+            <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
               <Text variant="pageTitle">{data.forest.name}</Text>
               <div className="flex gap-sm justify-between">
                 <Button icon={FaSeedling} onClick={() => setIsWritingStory(true)}>Plant a story</Button>

@@ -14,13 +14,13 @@
   --swiper-theme-color: var(--color-primary-contrast);
 
   /* Sizes */
-  --header-height: 56px;
+  --header-height: 52px;
 }
 
 /* Desktop */
 @screen md {
   :root {
-    --header-height: 76px;
+    --header-height: 80px;
   }
 }
 

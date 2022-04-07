@@ -46,7 +46,7 @@ export default function SignUp() {
   }, [!currentUser]);
   
   return (
-    <div className="md:max-w-sm p-md m-md border-2 rounded-xl flex flex-col gap-md">
+    <div className="lg:max-w-sm p-md m-md border-2 rounded-xl flex flex-col gap-md">
       <Text variant="pageTitle" className="flex justify-between items-center">
         Register
         <MdAccountCircle />

@@ -47,7 +47,7 @@ const Drawer = () => {
 
   return (
     <div className={clsx(
-      'fixed md:hidden top-header left-full bg-primary w-full h-screen-no-header transition-transform transform-gpu z-40',
+      'fixed lg:hidden top-header left-full bg-primary w-full h-screen-no-header transition-transform transform-gpu z-40',
       {
         ['-translate-x-full']: isDrawerOpen,
       }

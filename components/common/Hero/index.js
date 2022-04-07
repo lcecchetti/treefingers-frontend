@@ -16,9 +16,9 @@ const Hero = () => {
   const scrollToDetails = () => window.scrollTo({ top: detailsRef.current.offsetTop - document.getElementById('header').offsetHeight, behavior: 'smooth' });
 
   return (
-    <div className="flex flex-col md:grid md:grid-cols-3 md:items-stretch items-center min-h-screen-no-header text-center md:text-left">
-      <div className="md:col-span-2 flex items-center justify-center flex-col p-md md:p-xl min-h-screen-no-header md:min-h-0">
-        <div className="md:pb-0 pb-14 text-xl flex flex-col gap-md">
+    <div className="flex flex-col lg:grid lg:grid-cols-3 lg:items-stretch items-center min-h-screen-no-header text-center lg:text-left">
+      <div className="lg:col-span-2 flex items-center justify-center flex-col p-md lg:p-xl min-h-screen-no-header lg:min-h-0">
+        <div className="lg:pb-0 pb-14 text-xl flex flex-col gap-md">
           <Text>"What a big mouth you have!" - Said little red riding hood.</Text>
           <Text>"The better to eat you with!" - Growled the wolf.</Text>
           <Typist avgTypingDelay={50} startDelay={3000}>
@@ -32,9 +32,9 @@ const Hero = () => {
           </Typist>
         </div>
 
-        <FaAngleDoubleDown className="md:hidden text-4xl animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
+        <FaAngleDoubleDown className="lg:hidden text-4xl animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
       </div>
-      <div ref={detailsRef} className="text-primary-contrast bg-primary px-md py-xl md:px-xl flex flex-col gap-lg md:justify-center items-start min-h-screen-no-header md:min-h-0">
+      <div ref={detailsRef} className="text-primary-contrast bg-primary px-md py-xl lg:px-xl flex flex-col gap-lg lg:justify-center items-start min-h-screen-no-header lg:min-h-0">
         <div className="w-full flex flex-col gap-sm">
           <Text variant="h2">What is Treefingers?</Text>
           <Text variant="p">

@@ -65,7 +65,7 @@ const StoryList = ({ className, filter, first = 10 }) => {
       }
 
       {!!data?.stories.edges.length &&
-        <InfiniteScroll className={clsx('grid xl:grid-cols-3 sm:grid-cols-2 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.stories.pageInfo.hasNextPage}>
+        <InfiniteScroll className={clsx('grid xl:grid-cols-3 md:grid-cols-2 gap-md', className)} onLoadMore={() => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.stories.pageInfo.hasNextPage}>
           {data?.stories && data.stories.edges.map(({ node }) => (
             <StoryCard key={node._id} story={node} />
           ))}

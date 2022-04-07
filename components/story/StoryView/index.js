@@ -61,7 +61,7 @@ const StoryView = ({ story }) => {
         <ApiError error={error}/>
 
         {data?.story && !isStoryRoot(data.story) &&
-          <Container className="text-center mt-sm md:mt-md flex justify-around items-center border-t-2 border-b-2 py-md md:py-lg z-10">
+          <Container className="text-center mt-sm lg:mt-md flex justify-around items-center border-t-2 border-b-2 py-md lg:py-lg z-10">
             <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
               <FaAngleUp className="text-3xl group-hover:animate-bounce" />
               <Text variant="span" className="font-bold uppercase">Back to previous chapter</Text>
@@ -74,9 +74,9 @@ const StoryView = ({ story }) => {
         }
 
         {data &&
-          <div className="relative flex flex-col gap-md md:min-h-screen overflow-hidden">
+          <div className="relative flex flex-col gap-md lg:min-h-screen overflow-hidden">
             <Container className="flex justify-end">
-              <div className="flex flex-col gap-md w-full md:w-1/2 z-10">
+              <div className="flex flex-col gap-md w-full lg:w-1/2 z-10">
                 <div className="flex flex-col gap-md">
                   <div className="flex justify-between items-center">
                     <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
@@ -88,8 +88,8 @@ const StoryView = ({ story }) => {
 
                   <div className="flex justify-between items-center">
                     <TagList tags={data.story.tags} />
-                    <StoryActions className="md:hidden" story={data.story} />
-                    <StoryActions className="hidden md:flex" story={data.story} disabledActions={{ tree: true }} />
+                    <StoryActions className="lg:hidden" story={data.story} />
+                    <StoryActions className="hidden lg:flex" story={data.story} disabledActions={{ tree: true }} />
                   </div>
                 </div>
 
@@ -97,7 +97,7 @@ const StoryView = ({ story }) => {
               </div>            
             </Container>
 
-            <StoryTree story={data.story.root || data.story} className="h-screen hidden md:block md:h-full w-full md:absolute bottom-0 left-0 md:-left-1/4" />
+            <StoryTree story={data.story.root || data.story} className="h-screen hidden lg:block lg:h-full w-full lg:absolute bottom-0 left-0 lg:-left-1/4" />
           </div>
         }
     </div>

@@ -5,7 +5,7 @@ import ForestActions from 'components/forest/ForestActions';
 
 const ForestCard = ({ className, forest }) => {
   return (
-    <div className={clsx('text-primary-contrast bg-primary rounded-xl flex flex-col gap-md p-lg justify-between', className)}>
+    <div className={clsx('text-primary-contrast bg-primary rounded-xl flex flex-col gap-md p-md justify-between', className)}>
       <div className="flex flex-col items-center px-lg grow gap-md">
         <Text variant="title">
           <Link href={getForestUrl(forest)}>{forest.name}</Link>

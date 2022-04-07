@@ -10,9 +10,9 @@ const Header = () => {
 
   return (
     <>
-      <div id="header" className="fixed md:absolute w-full h-header bg-base flex items-center z-20">
+      <div id="header" className="fixed lg:absolute w-full h-header bg-base flex items-center z-20">
         <Container>
-          <div className="flex items-center justify-between my-sm md:my-md">
+          <div className="flex items-center justify-between my-sm lg:my-md">
             <Logo main className="font-bold" />
             <MainNavigation />
             <IconList />
