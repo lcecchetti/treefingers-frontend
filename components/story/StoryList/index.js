@@ -25,7 +25,6 @@ export const QUERY_STORIES = gql`
           }
           author {
             _id
-            email
             username
           }
           tags
