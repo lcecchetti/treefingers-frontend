@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 const tabs = [
   { key: 'forests', label: 'Forests', Component: ForestList },
-  { key: 'stories', label: 'Stories', Component: StoryList },
+  { key: 'stories', label: 'Stories', Component: StoryList, filter: { root: null } },
   { key: 'users', label: 'Users', Component: UserList },
 ];
 
@@ -23,8 +23,8 @@ const SearchResult = ({ className, query }) => {
       </ul>
 
       <div>
-        {tabs.map(({ key, Component }) => (
-          currentTab === key && <Component key={key} filter={{ query }} />   
+        {tabs.map(({ key, Component, filter = {} }) => (
+          currentTab === key && <Component key={key} filter={{ query, ...filter }} />   
         ))}
       </div>
     </div>
