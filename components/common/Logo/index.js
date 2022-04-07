@@ -10,7 +10,7 @@ const Logo = ({ className, main }) => {
   const Component = isHomePage && main ? 'h1' : 'span';
 
   return (
-      <Component className={clsx('text-3xl md:text-5xl font-serif', className)}>
+      <Component className={clsx('text-3xl lg:text-5xl font-serif', className)}>
         <Link href="/">
           Treefingers
         </Link>

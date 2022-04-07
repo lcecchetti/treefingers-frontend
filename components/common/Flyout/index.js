@@ -31,7 +31,7 @@ const Flyout = () => {
 
   return (
     <div className={clsx(
-      'fixed border-2 top-0 left-full bg-base w-full sm:w-2/3 lg:w-1/3 h-screen transition-transform transform-gpu z-30 rounded-2xl',
+      'fixed border-2 top-0 left-full bg-base w-full md:w-2/3 lg:w-1/3 h-screen transition-transform transform-gpu z-30 rounded-2xl',
       {
         ['-translate-x-full']: isFlyoutOpen,
       }

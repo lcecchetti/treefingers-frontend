@@ -11,7 +11,7 @@ const mainNavigationItems = [
 const MainNavigation = () => {
 
   return (
-    <ul className="hidden md:flex flex-row gap-xl">
+    <ul className="hidden lg:flex flex-row gap-lg">
       {mainNavigationItems.map((item, index) => (
         <li key={index}>
           <Link href={item.href}>
