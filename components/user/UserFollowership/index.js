@@ -9,7 +9,7 @@ const MUTATION_FOLLOW = gql`
     follow(input: $input) {
       followership {
         _id
-        user {
+        followed {
           _id
           followersCount
           currentUserFollowership {
@@ -26,7 +26,7 @@ const MUTATION_UNFOLLOW = gql`
     unfollow(input: $input) {
       followership {
         _id
-        user {
+        followed {
           _id
           followersCount
           currentUserFollowership {
