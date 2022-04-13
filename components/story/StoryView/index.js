@@ -5,7 +5,7 @@ import { getStoryUrl, isStoryRoot } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import { FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
 import { Avatar } from 'components/user';
-import ChapterChoice from 'components/story/ChapterChoice';
+import StoryChapters from 'components/story/StoryChapters';
 import StoryActions from 'components/story/StoryActions';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
@@ -93,7 +93,7 @@ const StoryView = ({ story }) => {
                   </div>
                 </div>
 
-                <ChapterChoice parent={data.story} />
+                <StoryChapters parent={data.story} />
               </div>            
             </Container>
 
