@@ -15,7 +15,7 @@ class TreeView {
 		this.baseLineWidth = 20;
 		this.hue = this.random(0, 360);
 
-		this.addEventListeners();
+		//this.addEventListeners();
 		this.resizeCanvas();
 
 		this.update();
@@ -35,6 +35,7 @@ class TreeView {
 
 		this.canvas.width = this.canvas.offsetWidth * devicePixelRatio;
 		this.canvas.height = this.canvas.offsetHeight * devicePixelRatio;
+
 		this.width = this.canvas.width;
 		this.height = this.canvas.height;
 	}
