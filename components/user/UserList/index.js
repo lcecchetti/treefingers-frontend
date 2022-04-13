@@ -46,7 +46,7 @@ const UserList = ({ className, filter, first = 10 }) => {
       }
 
       {!!data?.users.edges.length &&
-        <InfiniteScroll className={clsx('flex gap-md wrap', className)} onLoadMore={() => fetchMore({ variables: { after: data?.users.pageInfo.endCursor } })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
+        <InfiniteScroll className={clsx('flex gap-md wrap', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
           {data?.users && data.users.edges.map(({ node }) => (
             <Avatar key={node._id} user={node} showName={true} />
           ))}

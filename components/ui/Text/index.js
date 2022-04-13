@@ -28,10 +28,10 @@ const Text = ({ children, className, variant = 'span', as, ...rest }) => {
       className={clsx(
         {
           ['text-5xl font-serif font-bold']: ['h1', 'pageTitle'].includes(variant),
-          ['text-2xl font-serif']: ['h2', 'pageSubtitle'].includes(variant),
           ['text-3xl font-serif font-bold']: ['title'].includes(variant),
-          ['text-xl font-serif']: ['h3', 'subtitle'].includes(variant),
-          ['text-lg font-serif']: ['h4', 'h5', 'h6'].includes(variant),
+          ['text-2xl font-serif font-bold']: ['h2', 'pageSubtitle'].includes(variant),
+          ['text-xl font-serif font-bold']: ['h3', 'subtitle'].includes(variant),
+          ['text-lg font-serif font-bold']: ['h4', 'h5', 'h6'].includes(variant),
           ['block']: variant === 'p',
           ['text-error']: variant === 'error',
         },

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { ApiError } from 'components/common';
 import { Spinner } from 'components/ui';
 
-const InfiniteScroll = ({ className, onLoadMore, error, loading, children, hasMore, backwards = false }) => {
+const InfiniteScroll = ({ className, onLoadMore, error, loading, children, hasMore, backwards = false, direction = 'vertical' }) => {
   const [scrollBottom, setScrollBottom] = useState(0);
   const [scrollRight, setScrollRight] = useState(0);
 
@@ -22,7 +22,7 @@ const InfiniteScroll = ({ className, onLoadMore, error, loading, children, hasMo
       if (entry.isIntersecting && hasMore && !loading) {
         setScrollBottom(ref.current.scrollHeight - ref.current.scrollTop);
         setScrollRight(ref.current.scrollWidth - ref.current.scrollLeft);
-        onLoadMore();
+        onLoadMore({ notifyOnNetworkStatusChange: true });
       }
     });
 
@@ -37,21 +37,27 @@ const InfiniteScroll = ({ className, onLoadMore, error, loading, children, hasMo
   }, [children]);
 
   return (
-    <div ref={ref} className={clsx('overflow-auto' , className)}>
+    <div ref={ref} className={clsx(
+      'overflow-auto flex gap-lg',
+      direction === 'vertical' && 'flex-col',
+      direction === 'horizontal' && 'flex-row',
+    )}>
         {backwards &&
-          <>
+          <div>
             <Spinner loading={loading}/>
             <ApiError error={error}/>
             <div ref={reachEndRef}></div>
-          </>
+          </div>
         }
-        {children}
+        <div className={clsx('overflow-auto' , className)}>
+          {children}
+        </div>
         {!backwards &&
-          <>
+          <div>
             <div ref={reachEndRef}></div>
             <Spinner loading={loading}/>
             <ApiError error={error}/>
-          </>
+          </div>
         }
     </div>
   );
