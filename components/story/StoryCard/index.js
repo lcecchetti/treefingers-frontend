@@ -6,7 +6,8 @@ import StoryActions from 'components/story/StoryActions';
 import clsx from 'clsx';
 import { TagList } from 'components/tag';
 
-const StoryCard = ({ className, story, isChapterChoice }) => {
+const StoryCard = ({ className, story }) => {
+  const isChapter = !!story.root;
   return (
     <div className={clsx('rounded-2xl p-lg bg-primary text-primary-contrast flex flex-col gap-md justify-between', className)}>
       <div className="flex justify-between items-center">
@@ -19,19 +20,19 @@ const StoryCard = ({ className, story, isChapterChoice }) => {
       <div className={clsx(
         'flex flex-col items-center gap-md grow',
         {
-          ['px-lg']: isChapterChoice,
+          ['px-lg']: isChapter,
         })
       }>
         <Text variant="title">{story.title}</Text>
-        {!isChapterChoice &&
+        {!isChapter &&
           <Text variant="p">{story.excerpt}</Text>
         }
-        <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">{isChapterChoice ? 'Select' : 'Read More'}</Button>
+        <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">{isChapter ? 'Select' : 'Read More'}</Button>
       </div>
 
       <div className="flex justify-between items-center gap-md">
         <TagList className="flex-wrap" tags={story.tags} buttonVariant="primary-contrast" />
-        <StoryActions story={story} disabledActions={{ tree: isChapterChoice }} />
+        <StoryActions story={story} disabledActions={{ tree: isChapter }} />
       </div>
     </div>
   );

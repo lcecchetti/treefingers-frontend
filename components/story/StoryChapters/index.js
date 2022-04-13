@@ -12,7 +12,7 @@ import { EffectCards, Navigation } from 'swiper';
 import { QUERY_STORIES } from 'components/story/StoryList';
 import StoryCard from 'components/story/StoryCard';
 
-const ChapterChoice = ({ className, parent, first = 10 }) => {
+const StoryChapters = ({ className, parent, first = 10 }) => {
   const currentUser = useCurrentUser();
   const [isWriting, setIsWriting] = useState(false);
 
@@ -61,7 +61,7 @@ const ChapterChoice = ({ className, parent, first = 10 }) => {
             >
             {data.stories.edges.map(({ node, index }) => (
               <SwiperSlide key={node._id} virtualIndex={index}>
-                <StoryCard story={node} isChapterChoice />
+                <StoryCard story={node} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -81,5 +81,5 @@ const ChapterChoice = ({ className, parent, first = 10 }) => {
   );
 };
 
-export default ChapterChoice;
+export default StoryChapters;
 
