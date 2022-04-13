@@ -17,7 +17,7 @@ const Hero = () => {
 
   return (
     <div className="flex flex-col lg:grid lg:grid-cols-3 lg:items-stretch items-center min-h-screen-no-header text-center lg:text-left">
-      <div className="lg:col-span-2 flex items-center justify-center flex-col p-md lg:p-xl min-h-screen-no-header lg:min-h-0">
+      <div className="lg:col-span-2 flex items-center justify-center flex-col p-md min-h-screen-no-header lg:min-h-0">
         <div className="lg:pb-0 pb-14 text-xl flex flex-col gap-md">
           <Text>"What a big mouth you have!" - Said little red riding hood.</Text>
           <Text>"The better to eat you with!" - Growled the wolf.</Text>
@@ -34,7 +34,7 @@ const Hero = () => {
 
         <FaAngleDoubleDown className="lg:hidden text-4xl animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
       </div>
-      <div ref={detailsRef} className="text-primary-contrast bg-primary px-md py-xl lg:px-xl flex flex-col gap-lg lg:justify-center items-start min-h-screen-no-header lg:min-h-0">
+      <div ref={detailsRef} className="text-primary-contrast bg-primary px-md py-xl lg:px-2xl flex flex-col gap-lg lg:justify-center items-start min-h-screen-no-header lg:min-h-0">
         <div className="w-full flex flex-col gap-sm">
           <Text variant="h2">What is Treefingers?</Text>
           <Text variant="p">

@@ -8,7 +8,7 @@ import { TagList } from 'components/tag';
 
 const StoryCard = ({ className, story, isChapterChoice }) => {
   return (
-    <div className={clsx('rounded-2xl p-md bg-primary text-primary-contrast flex flex-col gap-md justify-between', className)}>
+    <div className={clsx('rounded-2xl p-lg bg-primary text-primary-contrast flex flex-col gap-md justify-between', className)}>
       <div className="flex justify-between items-center">
         <Text variant="span" className="text-sm">
           {formatDate(story.createdAt, DATE_SHORT)}
