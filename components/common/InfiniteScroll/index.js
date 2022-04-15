@@ -38,25 +38,23 @@ const InfiniteScroll = ({ className, onLoadMore, error, loading, children, hasMo
 
   return (
     <div ref={ref} className={clsx(
-      'overflow-auto flex gap-lg',
+      'overflow-auto flex',
       direction === 'vertical' && 'flex-col',
       direction === 'horizontal' && 'flex-row',
     )}>
         {backwards &&
-          <div>
-            <Spinner loading={loading}/>
-            <ApiError error={error}/>
-            <div ref={reachEndRef}></div>
+          <div ref={reachEndRef}>
+            <Spinner loading={loading} className="mb-lg"/>
+            <ApiError error={error} className="mb-lg"/>
           </div>
         }
         <div className={clsx('overflow-auto' , className)}>
           {children}
         </div>
         {!backwards &&
-          <div>
-            <div ref={reachEndRef}></div>
-            <Spinner loading={loading}/>
-            <ApiError error={error}/>
+          <div ref={reachEndRef}>
+            <Spinner loading={loading} className="mt-lg"/>
+            <ApiError error={error} className="mt-lg"/>
           </div>
         }
     </div>
