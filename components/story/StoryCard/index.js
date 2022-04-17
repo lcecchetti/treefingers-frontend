@@ -5,7 +5,7 @@ import { Avatar } from 'components/user';
 import StoryActions from 'components/story/StoryActions';
 import clsx from 'clsx';
 import { TagList } from 'components/tag';
-import { Card, CardBody, CardFooter, CardHeader } from 'components/common/Card';
+import { Card, CardBody, CardFooter, CardHeader } from 'components/common';
 
 const StoryCard = ({ className, story }) => {
   const isChapter = !!story.root;

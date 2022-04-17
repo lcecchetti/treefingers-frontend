@@ -1,8 +1,7 @@
-import clsx from 'clsx';
 import { getForestUrl } from 'lib/helper/forest';
 import { Text, Link, Button } from 'components/ui';
 import ForestActions from 'components/forest/ForestActions';
-import { Card, CardBody, CardFooter } from 'components/common/Card';
+import { Card, CardBody, CardFooter } from 'components/common';
 
 const ForestCard = ({ className, forest }) => {
   return (
