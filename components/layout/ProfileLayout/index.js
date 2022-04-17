@@ -5,7 +5,9 @@ const ProfileLayout = ({ children }) => {
 
   return (
     <Container className="pt-header min-h-screen">
-      {children}
+      <div className="my-md lg:my-0">
+        {children}
+      </div>
     </Container>
   )
 };
