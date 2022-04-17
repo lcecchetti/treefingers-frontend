@@ -46,7 +46,7 @@ const RegisterForm = () => {
   }, [!currentUser]);
   
   return (
-    <div className="lg:max-w-sm p-md m-md border-2 rounded-xl flex flex-col gap-md">
+    <div className="lg:max-w-sm w-1/4 p-md m-md border-2 rounded-xl flex flex-col gap-md">
       <Text variant="pageTitle" className="flex justify-between items-center">
         Register
         <MdAccountCircle />

@@ -31,9 +31,11 @@ const UserEditForm = () => {
         initialValues={{
           bio: data.user.bio,
         }}
-        onSubmit={(data) => editUser({ variables: { input: { data } } })}
+        validateOnBlur
+        onSubmit={({ passwordConfirmation, ...data }) => editUser({ variables: { input: { data } } })}
         validationSchema={Yup.object().shape({
           password: Yup.string().min(10, 'Too short!'),
+          passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
           bio: Yup.string().max(255, 'Too long!'),
         })}>
           {({ isSubmitting, errors, touched }) => (
@@ -43,10 +45,18 @@ const UserEditForm = () => {
                 name="password"
                 label="Password"
                 type="password"
-                autoComplete="current-password"
                 placeholder="********"
                 error={errors.password}
                 touched={touched.password}
+              />
+              <Field
+                as={FormField}
+                name="passwordConfirmation"
+                label="Repeat password"
+                type="password"
+                placeholder="********"
+                error={errors.passwordConfirmation}
+                touched={touched.passwordConfirmation}
               />
               <Field
                 as={FormField}
