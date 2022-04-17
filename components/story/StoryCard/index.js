@@ -5,21 +5,20 @@ import { Avatar } from 'components/user';
 import StoryActions from 'components/story/StoryActions';
 import clsx from 'clsx';
 import { TagList } from 'components/tag';
+import { Card, CardBody, CardFooter, CardHeader } from 'components/common/Card';
 
 const StoryCard = ({ className, story }) => {
   const isChapter = !!story.root;
   return (
-    <div className={clsx('rounded-2xl p-lg bg-primary text-primary-contrast flex flex-col gap-md justify-between', className)}>
-      <div className="flex justify-between items-center">
+    <Card className={className}>
+      <CardHeader>
         <Text variant="span" className="text-sm">
           {formatDate(story.createdAt, DATE_SHORT)}
         </Text>
         <Avatar className="justify-end" user={story.author} showName={true} />
-      </div>
+      </CardHeader>
 
-      <div className={clsx(
-        'flex flex-col items-center gap-md grow',
-        {
+      <CardBody className={clsx({
           ['px-lg']: isChapter,
         })
       }>
@@ -28,13 +27,13 @@ const StoryCard = ({ className, story }) => {
           <Text variant="p">{story.excerpt}</Text>
         }
         <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">{isChapter ? 'Select' : 'Read More'}</Button>
-      </div>
+      </CardBody>
 
-      <div className="flex justify-between items-center gap-md">
+      <CardFooter>
         <TagList className="flex-wrap" tags={story.tags} buttonVariant="primary-contrast" />
         <StoryActions story={story} disabledActions={{ tree: isChapter }} />
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 
