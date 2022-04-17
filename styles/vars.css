@@ -18,7 +18,7 @@
 }
 
 /* Desktop */
-@screen md {
+@screen lg {
   :root {
     --header-height: 80px;
   }
