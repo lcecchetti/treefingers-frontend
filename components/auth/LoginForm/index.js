@@ -23,7 +23,7 @@ const MUTATION_LOGIN = gql`
   }
 `;
 
-export default function Login() {
+const LoginForm = () => {
   const router = useRouter();
   const client = useApolloClient();
   const currentUser = useCurrentUser();
@@ -103,4 +103,6 @@ export default function Login() {
       </Formik>
     </div>
   );
-}
+};
+
+export default LoginForm;

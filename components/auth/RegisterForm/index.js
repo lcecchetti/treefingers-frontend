@@ -23,7 +23,7 @@ const MUTATION_REGISTER = gql`
   }
 `;
 
-export default function SignUp() {
+const RegisterForm = () => {
   const router = useRouter();
   const client = useApolloClient();
   const currentUser = useCurrentUser();
@@ -121,4 +121,6 @@ export default function SignUp() {
       </Formik>
     </div>
   );
-}
+};
+
+export default RegisterForm;
