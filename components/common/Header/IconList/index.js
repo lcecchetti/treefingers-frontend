@@ -1,11 +1,10 @@
 import clsx from 'clsx';
-import { FaSearch, FaPenFancy, FaUserCircle, FaBars } from 'react-icons/fa';
+import { FaSearch, FaUserCircle, FaBars } from 'react-icons/fa';
 import { Link } from 'components/ui';
 import { useTheme } from 'next-themes';
 import { useUI } from 'lib/ui/context';
 import { getLoginUrl } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
-import { getForestNewUrl } from 'lib/helper/forest';
 import { ThemeIcon } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 

@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from 'lib/apollo/client';
-import { Header, Footer, Flyout } from 'components/common';
+import { Header, Footer, Flyout, CookieConsent } from 'components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from 'lib/ui/context';
+import { CookiesProvider } from 'react-cookie';
 
 // global style dependencies
 import 'styles/globals.css'
@@ -25,18 +26,21 @@ const App = ({ Component, pageProps }) => {
         <meta name="theme-color" content="#000" />
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
-      <ApolloProvider client={apolloClient}>
-        <ThemeProvider attribute="class">
-          <UIProvider>
-            <Header />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-            <Footer />
-            <Flyout />
-          </UIProvider>
-        </ThemeProvider>
-      </ApolloProvider>
+      <CookiesProvider>
+        <ApolloProvider client={apolloClient}>
+          <ThemeProvider attribute="class">
+            <UIProvider>
+              <Header/>
+              <Layout>
+                <Component {...pageProps}/>
+              </Layout>
+              <Footer/>
+              <Flyout/>
+              <CookieConsent/>
+            </UIProvider>
+          </ThemeProvider>
+        </ApolloProvider>
+      </CookiesProvider>
     </>
   );
 };
