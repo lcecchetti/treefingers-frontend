@@ -10,9 +10,9 @@ const ForestsPage = () => {
   return (
     <Container>
       <PageIntro>
-        <div className="flex flex-col md:flex-row gap-sm md:justify-between md:items-center">
+        <div className="flex gap-sm justify-between items-center">
           <Text variant="pageTitle">Forests</Text>
-          <Button as={Link} href={getForestNewUrl()} icon={FaTree}>Create a forest</Button>
+          <Button as={Link} href={getForestNewUrl()} icon={FaTree}>Create</Button>
         </div>
         <Text variant="p">Be careful, you might get lost in here...</Text>
       </PageIntro>
