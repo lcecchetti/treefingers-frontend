@@ -27,7 +27,8 @@ const Text = ({ children, className, variant = 'span', as, ...rest }) => {
     <Component
       className={clsx(
         {
-          ['text-5xl font-serif font-bold']: ['h1', 'pageTitle'].includes(variant),
+          ['text-5xl font-serif font-bold']: ['storyTitle'].includes(variant),
+          ['text-4xl font-serif font-bold']: ['h1', 'pageTitle'].includes(variant),
           ['text-3xl font-serif font-bold']: ['title'].includes(variant),
           ['text-2xl font-serif font-bold']: ['h2', 'pageSubtitle'].includes(variant),
           ['text-xl font-serif font-bold']: ['h3', 'subtitle'].includes(variant),
