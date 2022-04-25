@@ -83,7 +83,7 @@ const StoryView = ({ story }) => {
                     <Avatar user={data.story.author} showName={true} />
                   </div>
 
-                  <Text variant="pageTitle">{data.story.title}</Text>
+                  <Text variant="storyTitle">{data.story.title}</Text>
                   <Text variant="p">{data.story.content}</Text>
 
                   <div className="flex justify-between items-center">
