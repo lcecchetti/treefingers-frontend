@@ -61,7 +61,7 @@ const StoryView = ({ story }) => {
         <ApiError error={error}/>
 
         {data?.story && !isStoryRoot(data.story) &&
-          <Container className="text-center mt-sm lg:mt-md flex justify-around items-center border-t-2 border-b-2 py-md lg:py-lg z-10">
+          <Container fluid className="text-center mt-sm lg:mt-md flex justify-around items-center border-t-2 border-b-2 py-md lg:py-lg z-10">
             <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
               <FaAngleUp className="text-3xl group-hover:animate-bounce" />
               <Text variant="span" className="font-bold uppercase">Back to previous chapter</Text>
