@@ -46,7 +46,7 @@ const ForestView = ({ className, _id }) => {
 
       {data &&
         <>
-          <div className="flex flex-col gap-sm my-sm lg:my-md">
+          <div className="flex flex-col gap-sm my-md">
             <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
               <Text variant="pageTitle">{data.forest.name}</Text>
               <div className="flex gap-sm justify-between">

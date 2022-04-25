@@ -42,7 +42,7 @@ const UserView = ({ className, _id }) => {
 
       {data &&
         <>
-          <div className="flex flex-col gap-sm my-sm lg:my-md">
+          <div className="flex flex-col gap-sm my-md">
             <div className="flex justify-between items-center">
               <Text variant="pageTitle">{data.user.username}</Text>
               <UserFollowership user={data.user} />
