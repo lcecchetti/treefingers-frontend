@@ -10,7 +10,7 @@ import { Card, CardBody, CardFooter, CardHeader } from 'components/common';
 const StoryCard = ({ className, story }) => {
   const isChapter = !!story.root;
   return (
-    <Card className={className}>
+    <Card className={clsx('bg-primary text-primary-contrast', className)}>
       <CardHeader>
         <Text variant="span" className="text-sm">
           {formatDate(story.createdAt, DATE_SHORT)}
