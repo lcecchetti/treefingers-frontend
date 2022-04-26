@@ -35,17 +35,16 @@ const StoryChapters = ({ className, parent, first = 10 }) => {
       <ApiError error={error}/>
       <Spinner loading={loading}/>
 
+      <div className="flex flex-col items-center justify-center gap-xs">
+        <Text variant="span" className="font-bold uppercase">What's next?</Text>
+        <FaAngleDown className="text-3xl animate-bounce" />
+      </div>
+
       {!!data?.stories.edges.length && // chapter list
-        <div className="flex flex-col gap-xs">
-          <div className="flex flex-col items-center justify-center gap-xs">
-            <Text variant="span" className="font-bold uppercase">What's next?</Text>
-            <FaAngleDown className="text-3xl animate-bounce" />
-          </div>
-          <div className="flex gap-md justify-center items-center">
-            <Button variant={isWriting ? 'outlined' : 'primary'} onClick={() => setIsWriting(false)}>Pick one</Button>
-            <Text>Or</Text>
-            <Button variant={isWriting ? 'primary' : 'outlined'} onClick={() => setIsWriting(true)}>Write one</Button>
-          </div>
+        <div className="flex gap-md justify-center items-center">
+          <Button variant={isWriting ? 'outlined' : 'primary'} onClick={() => setIsWriting(false)}>Pick one</Button>
+          <Text>Or</Text>
+          <Button variant={isWriting ? 'primary' : 'outlined'} onClick={() => setIsWriting(true)}>Write one</Button>
         </div>
       }
 
@@ -73,7 +72,7 @@ const StoryChapters = ({ className, parent, first = 10 }) => {
           </div>
         }
 
-        {(isWriting || !data.stories.edges.length) &&
+        {(isWriting || (!loading && !data?.stories.edges.length)) &&
           <StoryNew parent={parent} />
         }
       </div>
