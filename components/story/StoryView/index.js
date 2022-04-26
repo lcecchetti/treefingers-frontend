@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Spinner, Text, Link, Container } from 'components/ui';
+import { Spinner, Text, Link, Container, Button } from 'components/ui';
 import { DATE_LONG, formatDate } from 'lib/helper/date';
 import { getStoryUrl, isStoryRoot } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
@@ -60,23 +60,16 @@ const StoryView = ({ story }) => {
         <Spinner loading={loading}/>
         <ApiError error={error}/>
 
-        {data?.story && !isStoryRoot(data.story) &&
-          <Container fluid className="text-center flex justify-around items-center lg:border-t-2 border-b-2 pb-md lg:py-lg z-10">
-            <Link href={getStoryUrl(data.story.parent)} className="flex flex-col group items-center gap-xs">
-              <FaAngleUp className="text-3xl group-hover:animate-bounce" />
-              <Text variant="span" className="font-bold uppercase">Back to previous chapter</Text>
-            </Link>
-            <Link href={getStoryUrl(data.story.root)} className="flex flex-col group items-center gap-xs">
-              <FaAngleDoubleUp className="text-3xl group-hover:animate-bounce" />
-              <Text variant="span" className="font-bold uppercase">Back to the beginning</Text>
-            </Link>
-          </Container>
-        }
-
         {data &&
           <div className="relative flex flex-col gap-md lg:min-h-screen overflow-hidden">
             <Container className="flex justify-end">
               <div className="flex flex-col gap-md w-full lg:w-1/2 z-10">
+                {data?.story && !isStoryRoot(data.story) &&
+                  <div className="text-center flex justify-around items-center">
+                    <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data.story.parent)} icon={FaAngleUp}>Prev chapter</Button>
+                    <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data.story.root)} icon={FaAngleDoubleUp}>Back to root</Button>
+                  </div>
+                }
                 <div className="flex flex-col gap-md">
                   <div className="flex justify-between items-center">
                     <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
