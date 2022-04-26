@@ -42,9 +42,9 @@ const StoryChapters = ({ className, parent, first = 10 }) => {
 
       {!!data?.stories.edges.length && // chapter list
         <div className="flex gap-md justify-center items-center">
-          <Button variant={isWriting ? 'outlined' : 'primary'} onClick={() => setIsWriting(false)}>Pick one</Button>
+          <Button variant={isWriting ? 'outlined' : 'primary'} onClick={() => setIsWriting(false)}>Read</Button>
           <Text>Or</Text>
-          <Button variant={isWriting ? 'primary' : 'outlined'} onClick={() => setIsWriting(true)}>Write one</Button>
+          <Button variant={isWriting ? 'primary' : 'outlined'} onClick={() => setIsWriting(true)}>Write</Button>
         </div>
       }
 

@@ -84,7 +84,7 @@ const StoryNew = ({ parent, forest, className }) => {
                   <div className="flex flex-col gap-sm">
                     <div className="flex gap-sm justify-items-stretch items-center">
                       <Field className="grow" name="addTag" as={FormField} type="text" />
-                      <Button type="button" onClick={() => { 
+                      <Button type="button" size="md" onClick={() => { 
                         if(values.tags.includes(values.addTag) || !values.addTag) {
                           return;
                         } 

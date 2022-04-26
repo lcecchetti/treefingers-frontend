@@ -38,7 +38,7 @@ const Drawer = () => {
       onClick: false,
     },
     {
-      label: 'SWITCH THEME',
+      label: 'THEME',
       href: '#',
       Icon: ThemeIcon,
       onClick: () => setTheme(getToggledTheme(theme)),
@@ -57,8 +57,8 @@ const Drawer = () => {
           {drawerItems.map((item, index) => (
             <li key={index} className="text-primary-contrast text-xl py-sm text-center">
               <Link href={item.href} className="inline-flex items-center justify-center relative" onClick={item.onClick ? item.onClick : undefined}>
-                <Text variant="span">{item.label}</Text>
-                {!!item.Icon && <item.Icon className="absolute -right-xl" />}
+                <Text>{item.label}</Text>
+                {!!item.Icon && <item.Icon className="ml-sm" />}
               </Link>
             </li>
           ))}

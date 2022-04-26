@@ -61,11 +61,9 @@ const ForestView = ({ className, _id }) => {
               <div className="flex flex-col gap-sm">
                 <div className="flex justify-between items-center">
                   <Text className="uppercase text-md font-bold" as="h3">Plant a story</Text>
-                  <FaTimes className="cursor-pointer" onClick={() => setIsWritingStory(false)} />
+                  <FaTimes className="cursor-pointer text-lg" onClick={() => setIsWritingStory(false)} />
                 </div>
                 <Text as="p">
-                  I see too much blank space down here...
-                  <br/>
                   Some writings, and a captivating title, that's all it takes for a good seed.
                 </Text>
               </div>
