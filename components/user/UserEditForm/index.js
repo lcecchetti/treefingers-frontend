@@ -63,6 +63,7 @@ const UserEditForm = () => {
                 label="Bio"
                 type="textarea"
                 name="bio"
+                rows="5"
                 error={errors.bio}
                 touched={touched.bio}
               />

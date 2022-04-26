@@ -15,7 +15,7 @@ const Button = ({ children, className, loading = false, variant = 'primary', siz
     },
     size: {
       sm: 'text-sm p-sm',
-      md: 'py-sm px-md',
+      md: 'text-md py-sm px-md',
       lg: 'text-xl py-md px-xl',
     },
     iconSize: {

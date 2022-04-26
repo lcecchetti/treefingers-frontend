@@ -28,7 +28,7 @@ const Hero = () => {
                 <Typist.Backspace count={text.length} delay={500} />
               </span>
             ))}
-            <span>Continuing this story is up to your imagination...</span>
+            <span>Continuing this story is up to you...</span>
           </Typist>
         </div>
 
