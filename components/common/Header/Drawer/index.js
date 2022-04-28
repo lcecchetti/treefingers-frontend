@@ -6,6 +6,7 @@ import { useTheme } from 'next-themes';
 import { getForestsUrl } from 'lib/helper/forest';
 import { ThemeIcon } from 'components/common';
 import { Link, Text } from 'components/ui';
+import { getStoriesUrl } from 'lib/helper/story';
 
 const Drawer = () => {
   const router = useRouter();
@@ -34,6 +35,12 @@ const Drawer = () => {
     {
       label: 'FORESTS',
       href: getForestsUrl(),
+      Icon: null,
+      onClick: false,
+    },
+    {
+      label: 'STORIES',
+      href: getStoriesUrl(),
       Icon: null,
       onClick: false,
     },
