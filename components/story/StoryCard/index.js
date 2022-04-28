@@ -24,7 +24,7 @@ const StoryCard = ({ className, story }) => {
       }>
         <Text variant="title">{story.title}</Text>
         {!isChapter &&
-          <Text variant="p">{story.excerpt}</Text>
+          <Text variant="p" className="whitespace-pre-wrap">{story.excerpt}</Text>
         }
         <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">{isChapter ? 'Select' : 'Read More'}</Button>
       </CardBody>

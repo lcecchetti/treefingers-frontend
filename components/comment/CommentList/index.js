@@ -10,7 +10,7 @@ import CommentNew from 'components/comment/CommentNew';
  * @type {gql}
  */
 export const QUERY_COMMENTS = gql`
-  query comments($filter: FilterCommentInput, $sort: SortInput, $last: Int, $before: String) {
+  query comments($filter: FilterCommentInput, $sort: SortCommentInput, $last: Int, $before: String) {
     comments(filter: $filter, sort: $sort, last: $last, before: $before) {
       edges {
         cursor
@@ -40,8 +40,8 @@ export const QUERY_COMMENTS = gql`
   }
 `;
 
-const CommentList = ({ entity, last = 10 }) => {
-  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename }, sort: { _id: 'ASC' }, last } });
+const CommentList = ({ entity, sort = { _id: 'ASC' }, last = 10 }) => {
+  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename }, sort, last } });
 
   return (
     <InfiniteScroll className="h-full flex flex-col p-md" error={error} onLoadMore={(opt) => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor }, ...opt })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
@@ -57,7 +57,7 @@ const CommentList = ({ entity, last = 10 }) => {
                 <li key={node._id}>
                   <div className="flex flex-col gap-xs">
                     <Avatar user={node.user} showName={true} />
-                    <Text variant="span">{node.content}</Text>
+                    <Text variant="span" className="whitespace-pre-wrap">{node.content}</Text>
                     <div className="flex justify-between items-center">
                       <Text variant="span" className="text-sm">{formatDate(node.createdAt)}</Text>
                       <Like entity={node} />

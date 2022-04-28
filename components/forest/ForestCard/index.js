@@ -9,7 +9,7 @@ const ForestCard = ({ className, forest }) => {
     <Card className={clsx('border-2 bg-base', className)}>
       <CardBody>
         <Text variant="title">{forest.name}</Text>
-        <Text variant="p">{forest.excerpt}</Text>
+        <Text variant="p" className="whitespace-pre-wrap">{forest.excerpt}</Text>
         <Button as={Link} variant="primary" href={getForestUrl(forest)}>Read more</Button>
       </CardBody>
       <CardFooter>

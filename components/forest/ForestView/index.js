@@ -54,7 +54,7 @@ const ForestView = ({ className, _id }) => {
                 <ForestActions forest={data.forest} />
               </div>
             </div>
-            <Text variant="p">{data.forest.about}</Text>
+            <Text variant="p" className="whitespace-pre-wrap">{data.forest.about}</Text>
           </div>
           {isWritingStory &&
             <div className="flex flex-col gap-md">

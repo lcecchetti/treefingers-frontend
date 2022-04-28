@@ -77,7 +77,7 @@ const StoryView = ({ story }) => {
                   </div>
 
                   <Text variant="storyTitle">{data.story.title}</Text>
-                  <Text variant="p">{data.story.content}</Text>
+                  <Text variant="p" className="whitespace-pre-wrap">{data.story.content}</Text>
 
                   <div className="flex justify-between items-center">
                     <TagList tags={data.story.tags} />
