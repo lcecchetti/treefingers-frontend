@@ -11,7 +11,7 @@ import { Text } from 'components/ui';
  * @type {gql}
  */
 export const QUERY_STORIES = gql`
-  query stories($filter: FilterStoryInput, $sort: SortInput, $first: Int, $after: String) {
+  query stories($filter: FilterStoryInput, $sort: SortStoryInput, $first: Int, $after: String) {
     stories(filter: $filter, sort: $sort, first: $first, after: $after) {
       edges {
         cursor
@@ -38,16 +38,17 @@ export const QUERY_STORIES = gql`
       pageInfo {
         hasNextPage
         endCursor
+        totalCount
       }
     }
   }
 `;
 
-const StoryList = ({ className, filter, first = 10 }) => {
+const StoryList = ({ className, filter, sort, first = 10 }) => {
   const currentUser = useCurrentUser();
 
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
-    variables: { filter, first },
+    variables: { filter, first, sort },
   });
 
   // refresh data with customer specific infos

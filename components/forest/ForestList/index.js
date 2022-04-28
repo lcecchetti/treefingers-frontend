@@ -11,8 +11,8 @@ import { Text } from 'components/ui';
  * @type {gql}
  */
 export const QUERY_FORESTS = gql`
-  query forests($filter: FilterForestInput, $first: Int, $after: String) {
-    forests(filter: $filter, first: $first, after: $after) {
+  query forests($filter: FilterForestInput, $sort: SortForestInput, $first: Int, $after: String) {
+    forests(filter: $filter, sort: $sort, first: $first, after: $after) {
       edges {
         cursor
         node {
@@ -27,18 +27,17 @@ export const QUERY_FORESTS = gql`
         }
       }
       pageInfo {
-        startCursor
         endCursor
         hasNextPage
-        hasPreviousPage
+        totalCount
       }
     }
   }
 `;
 
-const ForestList = ({ className, filter, first = 10 }) => {
+const ForestList = ({ className, filter, sort, first = 10 }) => {
   const currentUser = useCurrentUser();
-  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_FORESTS, { variables: { filter, first } });
+  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_FORESTS, { variables: { filter, first, sort } });
 
   // refresh data with customer specific infos
   useEffect(() => {
