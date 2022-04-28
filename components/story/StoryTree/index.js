@@ -1,18 +1,34 @@
 import { useRef, useEffect } from 'react';
 import clsx from 'clsx';
+import seedrandom from 'seedrandom';
 
 class TreeView {
-	constructor(canvas) {
+	constructor(canvas, story) {
+		// random seed based on id
+		this.seed = seedrandom(story._id);
+
+		// rendering canvas
 		this.canvas = canvas;
 		this.context = this.canvas.getContext('2d');
 
-		this.root = undefined;
-
+		// children
 		this.childrenCount = 5;
 		this.childLengthModifier = 0.94;
+
+		// base angle
 		this.baseTheta = Math.PI * (140 / 180);
-		this.levels = 8;
-		this.baseLineWidth = 20;
+
+		// levels
+		this.minLevels = 3;
+		this.maxLevels = 8;
+		this.levels = Math.min(this.maxLevels, story.descendantsCount * (Math.ceil(this.maxLevels / 20)) + this.minLevels);
+
+		// line width
+		this.minBaseLineWidth = 10;
+		this.maxBaseLineWidth = 20;
+		this.baseLineWidth = Math.min(this.maxBaseLineWidth, story.likesCount * (this.maxBaseLineWidth / 50) + this.minBaseLineWidth);
+
+		// color
 		this.hue = this.random(0, 360);
 
 		//this.addEventListeners();
@@ -63,13 +79,13 @@ class TreeView {
 	}
 
 	random(min, max) {
-		return Math.random() * (max - min) + min;
+		return this.seed() * (max - min) + min;
 	}
 
 	update() {
 		this.root = new Branch(
 			new Node(this.width / 2, this.height),
-			new Node(this.width / 2, this.height - this.height / (this.levels - 2))
+			new Node(this.width / 2, this.height - this.height / (this.maxLevels - 2))
 		);
 
 		this.generateBranch(this.root);
@@ -158,7 +174,7 @@ const StoryTree = ({ story, className }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    new TreeView(canvasRef.current);
+    new TreeView(canvasRef.current, story);
   }, [story?._id])
 
   return (story &&

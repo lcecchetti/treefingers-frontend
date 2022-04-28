@@ -15,7 +15,6 @@ const ForestsPage = () => {
           <Button as={Link} href={getForestNewUrl()} icon={FaTree}>Create</Button>
         </div>
         <Text variant="p">
-          Not even sure what you are looking for, eh?<br/>
           Forests are places where to group stories, have a look around or create your own.
         </Text>
       </PageIntro>

@@ -5,6 +5,7 @@ const Text = ({ children, className, variant = 'span', as, ...rest }) => {
   if (!as) {
     switch (variant) {
       case 'pageTitle': 
+      case 'storyTitle': 
         as = 'h1';
         break;
       case 'pageSubtitle': 
