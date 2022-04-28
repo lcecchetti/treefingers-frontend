@@ -8,6 +8,7 @@ import { ThemeIcon } from 'components/common';
 import { Link, Text } from 'components/ui';
 import { getStoriesUrl } from 'lib/helper/story';
 import { getAboutUrl } from 'lib/helper/content';
+import { getAuthorsUrl } from 'lib/helper/user';
 
 const Drawer = () => {
   const router = useRouter();
@@ -42,6 +43,12 @@ const Drawer = () => {
     {
       label: 'STORIES',
       href: getStoriesUrl(),
+      Icon: null,
+      onClick: false,
+    },
+    {
+      label: 'AUTHORS',
+      href: getAuthorsUrl(),
       Icon: null,
       onClick: false,
     },
