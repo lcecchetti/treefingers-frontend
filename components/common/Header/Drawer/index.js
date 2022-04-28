@@ -7,6 +7,7 @@ import { getForestsUrl } from 'lib/helper/forest';
 import { ThemeIcon } from 'components/common';
 import { Link, Text } from 'components/ui';
 import { getStoriesUrl } from 'lib/helper/story';
+import { getAboutUrl } from 'lib/helper/content';
 
 const Drawer = () => {
   const router = useRouter();
@@ -41,6 +42,12 @@ const Drawer = () => {
     {
       label: 'STORIES',
       href: getStoriesUrl(),
+      Icon: null,
+      onClick: false,
+    },
+    {
+      label: 'ABOUT',
+      href: getAboutUrl(),
       Icon: null,
       onClick: false,
     },
