@@ -23,6 +23,7 @@ export const QUERY_USERS = gql`
       pageInfo {
         startCursor
         hasNextPage
+        totalCount
       }
     }
   }

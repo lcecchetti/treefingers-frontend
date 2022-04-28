@@ -12,7 +12,7 @@ import { EffectCards, Navigation } from 'swiper';
 import { QUERY_STORIES } from 'components/story/StoryList';
 import StoryCard from 'components/story/StoryCard';
 
-const StoryChapters = ({ className, parent, first = 10 }) => {
+const StoryChapters = ({ className, parent, sort = { likesCount: 'DESC' }, first = 10 }) => {
   const currentUser = useCurrentUser();
   const [isWriting, setIsWriting] = useState(false);
 
@@ -20,6 +20,7 @@ const StoryChapters = ({ className, parent, first = 10 }) => {
     variables: {
       filter: { parent: { eq: parent._id } },
       first,
+      sort,
     }
   });
 
