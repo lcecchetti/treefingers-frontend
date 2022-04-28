@@ -36,6 +36,7 @@ export const QUERY_STORY = gql`
       }
       likesCount
       commentsCount
+      descendantsCount
       currentUserLike {
         _id
       }
