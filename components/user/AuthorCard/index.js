@@ -17,7 +17,7 @@ const AuthorCard = ({ className, author }) => {
 
       <CardBody>
         {!!author.stories.edges.length &&
-          <ul className="w-full">
+          <ul className="w-full flex flex-col gap-xs">
             {author.stories.edges.map(({ node }) => (
               <li key={node._id}><Link href={getStoryUrl(node)}>{node.title}</Link></li>
             ))}
