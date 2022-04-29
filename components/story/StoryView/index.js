@@ -33,6 +33,8 @@ export const QUERY_STORY = gql`
       }
       root {
         _id
+        likesCount
+        descendantsCount
       }
       likesCount
       commentsCount
