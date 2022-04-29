@@ -15,7 +15,7 @@ const StoriesPage = () => {
           Here is a list of popular stories.
         </Text>
       </PageIntro>
-      <StoryList sort={{ likesCount: 'DESC' }} />
+      <StoryList filter={{ root: null}} sort={{ likesCount: 'DESC' }} />
     </Container>
   );
 };
@@ -25,7 +25,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { first: 10, sort: { likesCount: 'DESC' } },
+    variables: { filter: { root: null }, first: 10, sort: { likesCount: 'DESC' } },
   });
 
   return addApolloState(apolloClient, {
