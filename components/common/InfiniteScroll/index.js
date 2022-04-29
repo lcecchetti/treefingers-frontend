@@ -48,13 +48,15 @@ const InfiniteScroll = ({ className, onLoadMore, error, loading, children, hasMo
             <ApiError error={error} className="my-lg"/>
           </div>
         }
-        <div className={clsx('overflow-auto' , className)}>
+        <div className={className}>
           {children}
         </div>
+        {!backwards &&
           <div ref={reachEndRef}>
             <Spinner loading={loading} className="my-lg"/>
             <ApiError error={error} className="my-lg"/>
           </div>
+        }
     </div>
   );
 };
