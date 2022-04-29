@@ -7,7 +7,7 @@ const AboutPage = () => {
     <Container>
       <PageIntro>
         <div className="flex gap-sm justify-between items-center">
-          <Text variant="pageTitle">About Treefingers</Text>
+          <Text variant="pageTitle">About</Text>
         </div>
       </PageIntro>
     </Container>
