@@ -45,7 +45,7 @@ export const QUERY_STORIES = gql`
   }
 `;
 
-const StoryList = ({ className, filter, sort, first = 10 }) => {
+const StoryList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   const currentUser = useCurrentUser();
 
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
@@ -59,20 +59,16 @@ const StoryList = ({ className, filter, sort, first = 10 }) => {
     }
   }, [!currentUser]);
 
-  return (
-    <>
-      {!data?.stories.edges.length &&
-        <Text>No results.</Text>
-      }
+  useEffect(() => {
+    setTotalCount && setTotalCount(data?.stories.pageInfo.totalCount);
+  }, [data?.stories.pageInfo.totalCount]);
 
-      {!!data?.stories.edges.length &&
-        <InfiniteScroll className={clsx('grid xl:grid-cols-3 md:grid-cols-2 gap-md', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.stories.pageInfo.hasNextPage}>
-          {data.stories.edges.map(({ node }) => (
-            <StoryCard key={node._id} story={node} />
-          ))}
-        </InfiniteScroll>
-      }
-    </>
+  return (!!data?.stories.edges.length &&
+    <InfiniteScroll className={clsx('grid xl:grid-cols-3 md:grid-cols-2 gap-md', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.stories.pageInfo.hasNextPage}>
+      {data.stories.edges.map(({ node }) => (
+        <StoryCard key={node._id} story={node} />
+      ))}
+    </InfiniteScroll>
   );
 };
 

@@ -29,7 +29,7 @@ export const QUERY_USERS = gql`
   }
 `;
 
-const UserList = ({ className, filter, first = 10 }) => {
+const UserList = ({ className, filter, first = 10, setTotalCount }) => {
   const currentUser = useCurrentUser();
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_USERS, { variables: { filter, first } });
 
@@ -40,20 +40,16 @@ const UserList = ({ className, filter, first = 10 }) => {
     }
   }, [!currentUser]);
 
-  return (
-    <>
-      {!data?.users.edges.length &&
-        <Text>No results.</Text>
-      }
+  useEffect(() => {
+    setTotalCount && setTotalCount(data?.users.pageInfo.totalCount);
+  }, [data?.users.pageInfo.totalCount]);
 
-      {!!data?.users.edges.length &&
-        <InfiniteScroll className={clsx('flex gap-md wrap', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
-          {data.users.edges.map(({ node }) => (
-            <Avatar key={node._id} user={node} showName={true} />
-          ))}
-        </InfiniteScroll>
-      }
-    </>
+  return (!!data?.users.edges.length &&
+    <InfiniteScroll className={clsx('flex gap-md wrap', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
+      {data.users.edges.map(({ node }) => (
+        <Avatar key={node._id} user={node} showName={true} />
+      ))}
+    </InfiniteScroll>
   );
 };
 
