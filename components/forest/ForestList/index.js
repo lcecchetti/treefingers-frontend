@@ -35,7 +35,7 @@ export const QUERY_FORESTS = gql`
   }
 `;
 
-const ForestList = ({ className, filter, sort, first = 10 }) => {
+const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   const currentUser = useCurrentUser();
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_FORESTS, { variables: { filter, first, sort } });
 
@@ -46,20 +46,17 @@ const ForestList = ({ className, filter, sort, first = 10 }) => {
     }
   }, [!currentUser]);
 
-  return (
-    <>
-      {!data?.forests.edges.length &&
-        <Text>No results.</Text>
-      }
 
-      {!!data?.forests.edges.length &&
-        <InfiniteScroll className={clsx('grid xl:grid-cols-3 md:grid-cols-2 gap-md', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.forests.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.forests.pageInfo.hasNextPage}>
-          {data.forests.edges.map(({ node }) => (
-            <ForestCard key={node._id} forest={node} />
-          ))}
-        </InfiniteScroll>
-      }
-    </>
+  useEffect(() => {
+    setTotalCount && setTotalCount(data?.forests.pageInfo.totalCount);
+  }, [data?.forests.pageInfo.totalCount]);
+
+  return (!!data?.forests.edges.length &&
+    <InfiniteScroll className={clsx('grid xl:grid-cols-3 md:grid-cols-2 gap-md', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.forests.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.forests.pageInfo.hasNextPage}>
+      {data.forests.edges.map(({ node }) => (
+        <ForestCard key={node._id} forest={node} />
+      ))}
+    </InfiniteScroll>
   );
 };
 
