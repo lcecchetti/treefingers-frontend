@@ -22,6 +22,8 @@ export const QUERY_STORIES = gql`
           createdAt
           root {
             _id
+            likesCount
+            descendantsCount
           }
           author {
             _id
