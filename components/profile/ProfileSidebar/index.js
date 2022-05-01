@@ -1,6 +1,21 @@
-import navData from './navData';
 import { Link, Text } from 'components/ui';
 import clsx from 'clsx';
+import { getProfileMeUrl, getProfileMyStories, getProfileMyForests } from 'lib/helper/profile';
+
+const navData = [
+  {
+    'label': 'Profile',
+    'href': getProfileMeUrl(),
+  },
+  {
+    'label': 'My stories',
+    'href': getProfileMyStories(),
+  },
+  {
+    'label': 'My forests',
+    'href': getProfileMyForests(),
+  },
+]; 
 
 const ProfileSidebar = ({ className }) => {  
   return (
