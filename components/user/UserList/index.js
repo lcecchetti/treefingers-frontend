@@ -3,8 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import { InfiniteScroll } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import Avatar from 'components/user/Avatar';
-import { Text } from 'components/ui';
+import UserCard from '../UserCard';
 
 /**
  * Users list query
@@ -17,7 +16,12 @@ export const QUERY_USERS = gql`
         cursor
         node {
           _id
+          excerpt
           username
+          followersCount
+          currentUserFollowership {
+            _id
+          }
         }
       }
       pageInfo {
@@ -29,9 +33,9 @@ export const QUERY_USERS = gql`
   }
 `;
 
-const UserList = ({ className, filter, first = 10, setTotalCount }) => {
+const UserList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   const currentUser = useCurrentUser();
-  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_USERS, { variables: { filter, first } });
+  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_USERS, { variables: { filter, first, sort } });
 
   // refresh data with customer specific infos
   useEffect(() => {
@@ -44,12 +48,16 @@ const UserList = ({ className, filter, first = 10, setTotalCount }) => {
     setTotalCount && setTotalCount(data?.users.pageInfo.totalCount);
   }, [data?.users.pageInfo.totalCount]);
 
-  return (!!data?.users.edges.length &&
-    <InfiniteScroll className={clsx('flex gap-md wrap', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
-      {data.users.edges.map(({ node }) => (
-        <Avatar key={node._id} user={node} showName={true} />
-      ))}
-    </InfiniteScroll>
+  return (
+    <>
+      {!!data?.users.edges.length &&
+        <InfiniteScroll className={clsx('grid xl:grid-cols-3 md:grid-cols-2 gap-md', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
+          {data.users.edges.map(({ node }) => (
+            <UserCard key={node._id} user={node} />
+          ))}
+        </InfiniteScroll>
+      }
+    </>
   );
 };
 
