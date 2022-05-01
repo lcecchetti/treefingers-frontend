@@ -18,7 +18,7 @@ const ForestsPage = () => {
           Forests are places where to group stories, have a look around or create your own.
         </Text>
       </PageIntro>
-      <ForestList sort={{ membersCount: 'DESC' }} />
+      <ForestList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" sort={{ membersCount: 'DESC' }} />
     </Container>
   );
 };

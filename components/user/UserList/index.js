@@ -51,7 +51,7 @@ const UserList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   return (
     <>
       {!!data?.users.edges.length &&
-        <InfiniteScroll className={clsx('grid xl:grid-cols-3 md:grid-cols-2 gap-md', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
+        <InfiniteScroll className={className} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
           {data.users.edges.map(({ node }) => (
             <UserCard key={node._id} user={node} />
           ))}

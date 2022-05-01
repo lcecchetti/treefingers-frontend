@@ -52,7 +52,7 @@ const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   }, [data?.forests.pageInfo.totalCount]);
 
   return (!!data?.forests.edges.length &&
-    <InfiniteScroll className={clsx('grid xl:grid-cols-3 md:grid-cols-2 gap-md', className)} onLoadMore={(opt) => fetchMore({ variables: { after: data?.forests.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.forests.pageInfo.hasNextPage}>
+    <InfiniteScroll className={className} onLoadMore={(opt) => fetchMore({ variables: { after: data?.forests.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.forests.pageInfo.hasNextPage}>
       {data.forests.edges.map(({ node }) => (
         <ForestCard key={node._id} forest={node} />
       ))}

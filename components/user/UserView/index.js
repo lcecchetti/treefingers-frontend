@@ -49,7 +49,7 @@ const UserView = ({ className, _id }) => {
             </div>
             <Text variant="p">{data.user.bio}</Text>
           </div>
-          <StoryList filter={{ author: { eq: data.user._id }, root: null }} />
+          <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ author: { eq: data.user._id }, root: null }} />
         </>
       }
     </div>
