@@ -2,7 +2,7 @@ import { DefaultLayout } from 'components/layout';
 import { Container, Text } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro } from 'components/common';
-import { AuthorList, QUERY_AUTHORS } from 'components/user';
+import { UserList, QUERY_USERS } from 'components/user';
 
 const AuthorsPage = () => {
   return (
@@ -15,7 +15,7 @@ const AuthorsPage = () => {
           Here is a list of popular authors.
         </Text>
       </PageIntro>
-      <AuthorList sort={{ followersCount: 'DESC' }} />
+      <UserList filter={{ storiesCount: { gt: 0 } }}  sort={{ followersCount: 'DESC' }} />
     </Container>
   );
 };
@@ -24,8 +24,8 @@ export async function getStaticProps() {
   const apolloClient = initializeApollo();
 
   await apolloClient.query({
-    query: QUERY_AUTHORS,
-    variables: { first: 10, sort: { followersCount: 'DESC' } },
+    query: QUERY_USERS,
+    variables: { filter: { storiesCount: { gt: 0 } }, first: 10, sort: { followersCount: 'DESC' } },
   });
 
   return addApolloState(apolloClient, {
