@@ -26,7 +26,7 @@ const MUTATION_LOGIN = gql`
 const LoginForm = () => {
   const router = useRouter();
   const client = useApolloClient();
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const [login, { error }] = useMutation(MUTATION_LOGIN, {
     onCompleted: async ({ login }) => {      

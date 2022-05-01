@@ -47,7 +47,7 @@ export const QUERY_STORY = gql`
 `;
 
 const StoryView = ({ story }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { filter: { _id: { eq: story._id } } } });
 

@@ -11,7 +11,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 const IconList = () => {
   const { theme, setTheme } = useTheme();
   const { toggleDrawer, getToggledTheme, openSearch } = useUI();
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const iconListItems = [
     {

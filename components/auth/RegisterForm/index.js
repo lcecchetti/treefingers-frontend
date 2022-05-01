@@ -26,7 +26,7 @@ const MUTATION_REGISTER = gql`
 const RegisterForm = () => {
   const router = useRouter();
   const client = useApolloClient();
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const [register, { error }] = useMutation(MUTATION_REGISTER, {
     onCompleted: async ({ register }) => {

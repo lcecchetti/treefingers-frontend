@@ -34,7 +34,7 @@ export const QUERY_USERS = gql`
 `;
 
 const UserList = ({ className, filter, sort, first = 10, setTotalCount }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_USERS, { variables: { filter, first, sort } });
 
   // refresh data with customer specific infos

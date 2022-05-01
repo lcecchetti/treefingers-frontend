@@ -25,7 +25,7 @@ export const QUERY_USER = gql`
 `;
 
 const UserView = ({ className, _id }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { data, loading, error, refetch } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: _id } } } });
 
   // refresh data with customer specific infos

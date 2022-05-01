@@ -48,7 +48,7 @@ export const QUERY_STORIES = gql`
 `;
 
 const StoryList = ({ className, filter, sort, first = 10, setTotalCount }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
     variables: { filter, first, sort },

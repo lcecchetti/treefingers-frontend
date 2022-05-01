@@ -18,7 +18,7 @@ const MUTATION_EDIT_USER = gql`
 `;
 
 const UserEditForm = () => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const [editUser, { error: editError }] = useMutation(MUTATION_EDIT_USER);
   const { data, loading, error } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: currentUser._id } } } });
 

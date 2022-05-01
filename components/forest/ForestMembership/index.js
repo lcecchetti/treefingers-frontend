@@ -39,9 +39,8 @@ const MUTATION_LEAVE = gql`
 `;
 
 const ForestMembership = ({ forest, viewOnly }) => {
-  // current user
-  const currentUser = useCurrentUser();
-
+  const { currentUser } = useCurrentUser();
+  
   const variables = { input: { forest: forest._id } }
 
   // mutations

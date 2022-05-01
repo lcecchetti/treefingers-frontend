@@ -6,7 +6,7 @@ import { Logout } from 'components/profile';
 import { UserEditForm } from 'components/user';
 
 const ProfileMePage = () => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   return (
     <>

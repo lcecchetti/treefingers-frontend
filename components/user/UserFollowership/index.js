@@ -39,8 +39,7 @@ const MUTATION_UNFOLLOW = gql`
 `;
 
 const UserFollowership = ({ user, viewOnly }) => {
-  // current user
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const variables = { input: { followed: user._id } }
 

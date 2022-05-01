@@ -5,7 +5,7 @@ import { StoryList } from 'components/story';
 import { useCurrentUser } from 'lib/auth/currentUser';
 
 const ProfileMyStoriesPage = () => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   return (
     <>
