@@ -5,7 +5,7 @@ import { ForestList } from 'components/forest';
 import { useCurrentUser } from 'lib/auth/currentUser';
 
 const ProfileMyForestsPage = () => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   return (
     <>

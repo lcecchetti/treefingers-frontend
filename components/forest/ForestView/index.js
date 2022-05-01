@@ -28,7 +28,7 @@ export const QUERY_FOREST = gql`
 `;
 
 const ForestView = ({ className, _id }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const [isWritingStory, setIsWritingStory] = useState(false);
   const { data, loading, error, refetch } = useQuery(QUERY_FOREST, { variables: { filter: { _id: { eq: _id } } } });
 

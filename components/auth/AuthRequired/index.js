@@ -4,7 +4,7 @@ import { getLoginUrl } from 'lib/helper/auth';
 import { useRouter } from 'next/router';
 
 const AuthRequired = ({ children, text }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const router = useRouter();
 
   text = text ?? "Hey, it looks like you are not logged in. Login or create an account and you'll be ready to go.";

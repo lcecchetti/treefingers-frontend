@@ -49,9 +49,7 @@ const MUTATION_DISLIKE = gql`
 `;
 
 const Like = ({ entity, viewOnly }) => {
-
-  // current user
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const variables = { input: { entityType: entity.__typename, entity: entity._id } }
 

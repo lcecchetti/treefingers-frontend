@@ -36,7 +36,7 @@ export const QUERY_FORESTS = gql`
 `;
 
 const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_FORESTS, { variables: { filter, first, sort } });
 
   // refresh data with customer specific infos

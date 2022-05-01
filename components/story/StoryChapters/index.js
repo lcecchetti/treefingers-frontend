@@ -13,7 +13,7 @@ import { QUERY_STORIES } from 'components/story/StoryList';
 import StoryCard from 'components/story/StoryCard';
 
 const StoryChapters = ({ className, parent, sort = { likesCount: 'DESC' }, first = 10 }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const [isWriting, setIsWriting] = useState(false);
 
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
