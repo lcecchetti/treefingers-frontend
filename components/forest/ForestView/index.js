@@ -71,7 +71,7 @@ const ForestView = ({ className, _id }) => {
             </div>
           }
           {!isWritingStory &&
-            <StoryList filter={{ forest: { eq: data.forest._id } }} />
+            <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest._id } }} />
           }
         </>
       }

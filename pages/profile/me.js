@@ -3,7 +3,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 import { Text } from 'components/ui';
 import { PageIntro } from 'components/common';
 import { Logout } from 'components/profile';
-import EditProfileForm from 'components/user/UserEditForm';
+import { UserEditForm } from 'components/user';
 
 const ProfileMePage = () => {
   const currentUser = useCurrentUser();
@@ -17,7 +17,7 @@ const ProfileMePage = () => {
         </div>
         <Text variant="p">Here you can edit your profile details.</Text>
       </PageIntro>
-      <EditProfileForm/>
+      <UserEditForm/>
     </>
   );
 };
