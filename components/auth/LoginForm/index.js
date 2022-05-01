@@ -7,7 +7,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
-import { getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
+import { getRecoverPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
 import { ApiError } from 'components/common';
 
@@ -95,7 +95,7 @@ const LoginForm = () => {
               Login
             </Button>
             <div className="flex flex-col gap-xs text-xs">
-              <Link>Forgot password?</Link>
+              <Link href={getRecoverPasswordUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>Forgot password?</Link>
               <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>Don't have an account? Register</Link>
             </div>
           </Form>
