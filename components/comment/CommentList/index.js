@@ -44,7 +44,7 @@ const CommentList = ({ entity, sort = { _id: 'ASC' }, last = 10 }) => {
   const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename }, sort, last } });
 
   return (
-    <InfiniteScroll className="h-full flex flex-col p-md" error={error} onLoadMore={(opt) => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor }, ...opt })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
+    <InfiniteScroll className="flex flex-col p-md" error={error} onLoadMore={(opt) => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor }, ...opt })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
       {data &&
         <div className="flex flex-col gap-md">
           {!data?.comments.edges.length &&
@@ -68,7 +68,7 @@ const CommentList = ({ entity, sort = { _id: 'ASC' }, last = 10 }) => {
             </ol>
           }
 
-          <CommentNew entity={entity} />
+          <CommentNew entity={entity} sort={sort} last={last} />
         </div>
       }
     </InfiniteScroll>

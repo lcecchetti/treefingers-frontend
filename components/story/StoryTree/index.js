@@ -19,7 +19,7 @@ class TreeView {
 		this.baseTheta = Math.PI * (140 / 180);
 
 		// levels
-		this.minLevels = 2;
+		this.minLevels = 3;
 		this.maxLevels = 8;
 		this.levels = Math.min(this.maxLevels, story.descendantsCount * (Math.ceil(this.maxLevels / 20)) + this.minLevels);
 

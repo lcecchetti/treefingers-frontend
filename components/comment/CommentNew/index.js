@@ -34,13 +34,13 @@ const MUTATION_COMMENT = gql`
   }
 `;
 
-const CommentNew = ({ entity }) => {
+const CommentNew = ({ entity, sort, last }) => {
   const [comment, { error }] = useMutation(MUTATION_COMMENT, {
     update(cache, { data }) {
       // add new comment to the cache
       cache.updateQuery({
           query: QUERY_COMMENTS,
-          variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename } },
+          variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename }, sort, last },
         },
         ({ comments }) => ({
           comments: { 
