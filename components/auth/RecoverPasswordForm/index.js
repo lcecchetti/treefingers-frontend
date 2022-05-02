@@ -1,21 +1,32 @@
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Text, Link, FormField, Button } from 'components/ui';
+import { Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getLoginUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { useRouter } from 'next/router';
+import AuthFormContainer from '../AuthFormContainer';
+import { gql, useMutation } from '@apollo/client';
 
-const LoginForm = () => {
+const MUTATION_RECOVER_PASSWORD = gql`
+  mutation recoverPassword($input: RecoverPasswordInput!) {
+    recoverPassword(input: $input) {
+      token
+    }
+  }
+`;
 
+const RecoverPasswordForm = () => {
   const router = useRouter();
 
-  return (
-    <div className="lg:max-w-sm lg:w-1/4 p-md m-md border-2 rounded-xl flex flex-col gap-md">
-      <Text variant="pageTitle" className="flex justify-between items-center">
-        Recover password
-        <MdLockOutline />
-      </Text>
+  const [recoverPassword, { error }] = useMutation(MUTATION_RECOVER_PASSWORD, {
+    onCompleted: async ({ recoverPassword }) => {      
+      console.log('completed')
+    },
+    onError: (e) => {}
+  });
 
+  return (
+    <AuthFormContainer title="Recover password" icon={MdLockOutline}>
       <Formik
         initialValues={{
           email: '',
@@ -53,8 +64,8 @@ const LoginForm = () => {
           </Form>
         )}
       </Formik>
-    </div>
+    </AuthFormContainer>
   );
 };
 
-export default LoginForm;
+export default RecoverPasswordForm;
