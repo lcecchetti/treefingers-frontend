@@ -4,6 +4,7 @@
   --color-white: #FEFEFE;
 
   --color-error: #f44336;
+  --color-success: #198754;
 
   --color-primary: var(--color-black);
   --color-primary-contrast: var(--color-white);
