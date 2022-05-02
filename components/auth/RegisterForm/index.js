@@ -4,17 +4,14 @@ import { useRouter } from 'next/router';
 import { useMutation, gql, useApolloClient } from '@apollo/client';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Text, Button, Link, FormField } from 'components/ui';
+import { Button, Link, FormField } from 'components/ui';
 import { getLoginUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
 import { setAuthToken } from 'lib/auth/token';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
+import AuthFormContainer from '../AuthFormContainer';
 
-/**
- * Register mutation
- * @type {gql}
- */
 const MUTATION_REGISTER = gql`
   mutation register($input: RegisterInput!) {
     register(input: $input) {
@@ -46,11 +43,7 @@ const RegisterForm = () => {
   }, [!currentUser]);
   
   return (
-    <div className="lg:max-w-sm lg:w-1/4 p-md m-md border-2 rounded-xl flex flex-col gap-md">
-      <Text variant="pageTitle" className="flex justify-between items-center">
-        Register
-        <MdAccountCircle />
-      </Text>
+    <AuthFormContainer title="Register" icon={MdAccountCircle}>
       <Formik
         initialValues={{
           email: '',
@@ -119,7 +112,7 @@ const RegisterForm = () => {
           </Form>
         )}
       </Formik>
-    </div>
+    </AuthFormContainer>
   );
 };
 

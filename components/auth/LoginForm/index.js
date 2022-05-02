@@ -5,16 +5,13 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 import { setAuthToken } from 'lib/auth/token';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Text, Link, FormField, Button } from 'components/ui';
+import { Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getRecoverPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
 import { ApiError } from 'components/common';
+import AuthFormContainer from '../AuthFormContainer';
 
-/**
- * Login mutation
- * @type {gql}
- */
 const MUTATION_LOGIN = gql`
   mutation login($input: LoginInput!) {
     login(input: $input) {
@@ -46,12 +43,7 @@ const LoginForm = () => {
   }, [!currentUser]);
 
   return (
-    <div className="lg:max-w-sm lg:w-1/4 p-md m-md border-2 rounded-xl flex flex-col gap-md">
-      <Text variant="pageTitle" className="flex justify-between items-center">
-        Login
-        <MdLockOutline />
-      </Text>
-
+    <AuthFormContainer title="Login" icon={MdLockOutline}>
       <Formik
         initialValues={{
           email: '',
@@ -101,7 +93,7 @@ const LoginForm = () => {
           </Form>
         )}
       </Formik>
-    </div>
+    </AuthFormContainer>
   );
 };
 
