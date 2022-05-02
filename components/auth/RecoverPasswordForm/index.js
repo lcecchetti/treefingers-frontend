@@ -1,16 +1,17 @@
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Link, FormField, Button } from 'components/ui';
+import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getLoginUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { useRouter } from 'next/router';
 import AuthFormContainer from '../AuthFormContainer';
 import { gql, useMutation } from '@apollo/client';
+import { ApiError } from 'components/common';
 
 const MUTATION_RECOVER_PASSWORD = gql`
   mutation recoverPassword($input: RecoverPasswordInput!) {
     recoverPassword(input: $input) {
-      token
+      emailSent
     }
   }
 `;
@@ -18,12 +19,7 @@ const MUTATION_RECOVER_PASSWORD = gql`
 const RecoverPasswordForm = () => {
   const router = useRouter();
 
-  const [recoverPassword, { error }] = useMutation(MUTATION_RECOVER_PASSWORD, {
-    onCompleted: async ({ recoverPassword }) => {      
-      console.log('completed')
-    },
-    onError: (e) => {}
-  });
+  const [recoverPassword, { data, error }] = useMutation(MUTATION_RECOVER_PASSWORD);
 
   return (
     <AuthFormContainer title="Recover password" icon={MdLockOutline}>
@@ -31,7 +27,7 @@ const RecoverPasswordForm = () => {
         initialValues={{
           email: '',
         }}
-        onSubmit={({ email }) => alert(email)}
+        onSubmit={({ email }) => recoverPassword({ variables: { input: { email } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
         })}
@@ -57,6 +53,14 @@ const RecoverPasswordForm = () => {
               className="w-full my-sm">
               Send email
             </Button>
+
+            {data?.recoverPassword.emailSent &&
+              <Text className="text-success">
+                Check your emails, we've sent a recover link
+              </Text>
+            }
+
+            <ApiError error={error} />
             <div className="flex flex-col gap-xs text-xs">
               <Link href={getLoginUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>Already have an account? Login</Link>
               <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>Don't have an account? Register</Link>

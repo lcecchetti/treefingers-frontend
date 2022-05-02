@@ -20,6 +20,7 @@ module.exports = {
           contrast: 'var(--color-primary-contrast)',
         },
         error: 'var(--color-error)',
+        success: 'var(--color-success)',
       },
       textColor: {
         // base font color
