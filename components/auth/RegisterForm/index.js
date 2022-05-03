@@ -53,9 +53,9 @@ const RegisterForm = () => {
         }}
         onSubmit={(data) => register({ variables: { input: { data } } })}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Invalid email').required('Required'),
-          password: Yup.string().min(10, 'Too short!').required('Required'),
-          username: Yup.string().min(2, 'Too short!').max(32, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required('Required'),
+          email: Yup.string().email('Invalid email').required(true),
+          password: Yup.string().min(10, 'Too short!').required(true),
+          username: Yup.string().min(2, 'Too short!').max(32, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(true),
           bio: Yup.string().max(255, 'Too long!'),
         })}
       >

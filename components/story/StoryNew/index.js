@@ -46,8 +46,8 @@ const StoryNew = ({ parent, forest, className }) => {
             tags: [],
           }}
           validationSchema={Yup.object().shape({
-            title: Yup.string().required('Required'),
-            content: Yup.string().required('Required'),
+            title: Yup.string().required(true),
+            content: Yup.string().required(true),
           })}
           onSubmit={({ title, content, parent, tags, forest }, { resetForm }) => createStory({
             variables: { input: { data: {
