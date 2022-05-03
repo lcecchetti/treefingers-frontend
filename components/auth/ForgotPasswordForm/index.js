@@ -8,7 +8,7 @@ import AuthFormContainer from '../AuthFormContainer';
 import { gql, useMutation } from '@apollo/client';
 import { ApiError } from 'components/common';
 
-const MUTATION_RESET_PASSWORD = gql`
+const MUTATION_FORGOT_PASSWORD = gql`
   mutation forgotPassword($input: ForgotPasswordInput!) {
     forgotPassword(input: $input) {
       emailSent
@@ -19,7 +19,7 @@ const MUTATION_RESET_PASSWORD = gql`
 const ForgotPasswordForm = () => {
   const router = useRouter();
 
-  const [forgotPassword, { data, error }] = useMutation(MUTATION_RESET_PASSWORD);
+  const [forgotPassword, { data, error }] = useMutation(MUTATION_FORGOT_PASSWORD);
 
   return (
     <AuthFormContainer title="Forgot password" icon={MdLockOutline}>
@@ -29,7 +29,7 @@ const ForgotPasswordForm = () => {
         }}
         onSubmit={({ email }) => forgotPassword({ variables: { input: { email } } })}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Invalid email').required(true),
+          email: Yup.string().email('Invalid email').required('Required'),
         })}
         validateOnChange={false}
         validateOnBlur={false}

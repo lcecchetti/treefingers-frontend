@@ -1,7 +1,7 @@
 import { useMutation, useQuery, gql } from '@apollo/client';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Button, FormField, Spinner } from 'components/ui';
+import { Text, Button, FormField, Spinner } from 'components/ui';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { QUERY_USER } from 'components/user';
@@ -19,7 +19,7 @@ const MUTATION_EDIT_USER = gql`
 
 const UserEditForm = () => {
   const { currentUser } = useCurrentUser();
-  const [editUser, { error: editError }] = useMutation(MUTATION_EDIT_USER);
+  const [editUser, { data: editData, error: editError }] = useMutation(MUTATION_EDIT_USER);
   const { data, loading, error } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: currentUser._id } } } });
 
   return (
@@ -29,13 +29,15 @@ const UserEditForm = () => {
       {data?.user && 
         <Formik
         initialValues={{
+          password: '',
+          confirmPassword: '',
           bio: data.user.bio,
         }}
         validateOnBlur
-        onSubmit={({ passwordConfirmation, ...data }) => editUser({ variables: { input: { data } } })}
+        onSubmit={({ confirmPassword, ...data }) => editUser({ variables: { input: { data } } })}
         validationSchema={Yup.object().shape({
           password: Yup.string().min(10, 'Too short!'),
-          passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+          confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
           bio: Yup.string().max(255, 'Too long!'),
         })}>
           {({ isSubmitting, errors, touched }) => (
@@ -51,12 +53,12 @@ const UserEditForm = () => {
               />
               <Field
                 as={FormField}
-                name="passwordConfirmation"
-                label="Repeat password"
+                name="confirmPassword"
+                label="Confirm password"
                 type="password"
                 placeholder="********"
-                error={errors.passwordConfirmation}
-                touched={touched.passwordConfirmation}
+                error={errors.confirmPassword}
+                touched={touched.confirmPassword}
               />
               <Field
                 as={FormField}
@@ -68,6 +70,9 @@ const UserEditForm = () => {
                 touched={touched.bio}
               />
               <ApiError error={editError}/>
+              {!!editData?.editUser.user &&
+                <Text className="text-success">Successfully updated!</Text>
+              }
               <Button
                 type="submit"
                 disabled={isSubmitting}
