@@ -9,25 +9,25 @@ import { gql, useMutation } from '@apollo/client';
 import { ApiError } from 'components/common';
 
 const MUTATION_RESET_PASSWORD = gql`
-  mutation resetPassword($input: ResetPasswordInput!) {
-    resetPassword(input: $input) {
+  mutation forgotPassword($input: ForgotPasswordInput!) {
+    forgotPassword(input: $input) {
       emailSent
     }
   }
 `;
 
-const ResetPasswordForm = () => {
+const ForgotPasswordForm = () => {
   const router = useRouter();
 
-  const [resetPassword, { data, error }] = useMutation(MUTATION_RESET_PASSWORD);
+  const [forgotPassword, { data, error }] = useMutation(MUTATION_RESET_PASSWORD);
 
   return (
-    <AuthFormContainer title="Reset password" icon={MdLockOutline}>
+    <AuthFormContainer title="Forgot password" icon={MdLockOutline}>
       <Formik
         initialValues={{
           email: '',
         }}
-        onSubmit={({ email }) => resetPassword({ variables: { input: { email } } })}
+        onSubmit={({ email }) => forgotPassword({ variables: { input: { email } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required(true),
         })}
@@ -54,7 +54,7 @@ const ResetPasswordForm = () => {
               Send email
             </Button>
 
-            {data?.resetPassword.emailSent &&
+            {data?.forgotPassword.emailSent &&
               <Text className="text-success">
                 Check your emails, we've sent a reset link
               </Text>
@@ -72,4 +72,4 @@ const ResetPasswordForm = () => {
   );
 };
 
-export default ResetPasswordForm;
+export default ForgotPasswordForm;
