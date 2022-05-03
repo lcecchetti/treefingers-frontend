@@ -7,7 +7,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
-import { getRecoverPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
+import { getResetPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
@@ -83,11 +83,11 @@ const LoginForm = () => {
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-              className="w-full my-sm">
+              className="w-full">
               Login
             </Button>
             <div className="flex flex-col gap-xs text-xs">
-              <Link href={getRecoverPasswordUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>Forgot password?</Link>
+              <Link href={getResetPasswordUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>Forgot password?</Link>
               <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO])}>Don't have an account? Register</Link>
             </div>
           </Form>

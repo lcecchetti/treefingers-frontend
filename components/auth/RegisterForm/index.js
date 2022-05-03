@@ -101,7 +101,7 @@ const RegisterForm = () => {
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-              className="my-sm w-full">
+              className="w-full">
               Register
             </Button>
             <div className="text-xs">
