@@ -8,26 +8,26 @@ import AuthFormContainer from '../AuthFormContainer';
 import { gql, useMutation } from '@apollo/client';
 import { ApiError } from 'components/common';
 
-const MUTATION_RECOVER_PASSWORD = gql`
-  mutation recoverPassword($input: RecoverPasswordInput!) {
-    recoverPassword(input: $input) {
+const MUTATION_RESET_PASSWORD = gql`
+  mutation resetPassword($input: ResetPasswordInput!) {
+    resetPassword(input: $input) {
       emailSent
     }
   }
 `;
 
-const RecoverPasswordForm = () => {
+const ResetPasswordForm = () => {
   const router = useRouter();
 
-  const [recoverPassword, { data, error }] = useMutation(MUTATION_RECOVER_PASSWORD);
+  const [resetPassword, { data, error }] = useMutation(MUTATION_RESET_PASSWORD);
 
   return (
-    <AuthFormContainer title="Recover password" icon={MdLockOutline}>
+    <AuthFormContainer title="Reset password" icon={MdLockOutline}>
       <Formik
         initialValues={{
           email: '',
         }}
-        onSubmit={({ email }) => recoverPassword({ variables: { input: { email } } })}
+        onSubmit={({ email }) => resetPassword({ variables: { input: { email } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required('Required'),
         })}
@@ -50,13 +50,13 @@ const RecoverPasswordForm = () => {
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-              className="w-full my-sm">
+              className="w-full">
               Send email
             </Button>
 
-            {data?.recoverPassword.emailSent &&
+            {data?.resetPassword.emailSent &&
               <Text className="text-success">
-                Check your emails, we've sent a recover link
+                Check your emails, we've sent a reset link
               </Text>
             }
 
@@ -72,4 +72,4 @@ const RecoverPasswordForm = () => {
   );
 };
 
-export default RecoverPasswordForm;
+export default ResetPasswordForm;
