@@ -51,8 +51,8 @@ const LoginForm = () => {
         }}
         onSubmit={({ email, password }) => login({ variables: { input: { email, password } } })}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Invalid email').required('Required'),
-          password: Yup.string().min(10, 'Too Short!').required('Required'),
+          email: Yup.string().email('Invalid email').required(true),
+          password: Yup.string().min(10, 'Too Short!').required(true),
         })}
         validateOnChange={false}
         validateOnBlur={false}

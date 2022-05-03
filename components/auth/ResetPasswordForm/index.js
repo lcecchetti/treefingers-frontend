@@ -29,7 +29,7 @@ const ResetPasswordForm = () => {
         }}
         onSubmit={({ email }) => resetPassword({ variables: { input: { email } } })}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Invalid email').required('Required'),
+          email: Yup.string().email('Invalid email').required(true),
         })}
         validateOnChange={false}
         validateOnBlur={false}

@@ -64,7 +64,7 @@ const CommentNew = ({ entity, sort, last }) => {
             content: '',
           }}
           validationSchema={Yup.object().shape({
-            content: Yup.string().required('Required'),
+            content: Yup.string().required(true),
           })}
           onSubmit={(values, { resetForm }) => {
             comment({
