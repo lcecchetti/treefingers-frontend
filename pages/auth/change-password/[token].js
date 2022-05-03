@@ -1,23 +1,23 @@
 import { DefaultLayout } from 'components/layout';
 import { ChangePasswordForm } from 'components/auth';
 
-const ChangePasswordPage = ({ user, token }) => {
+const ChangePasswordPage = ({ token }) => {
   return (
     <div className="flex justify-center items-center min-h-full min-h-screen-no-header">
-      <ChangePasswordForm user={user} token={token} />
+      <ChangePasswordForm token={token} />
     </div>
   );
 };
 
-export async function getStaticProps({ params: { user, token } }) {
-  if (!user || !token) {
+export async function getStaticProps({ params: { token } }) {
+  if (!token) {
     return {
       notFound: true,
     }
   }
 
   return {
-    props: { user, token },
+    props: { token },
   };
 }
 

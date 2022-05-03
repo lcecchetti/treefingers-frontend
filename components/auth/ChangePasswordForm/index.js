@@ -17,7 +17,7 @@ const MUTATION_CHANGE_PASSWORD = gql`
   }
 `;
 
-const ChangePasswordForm = ({ user, token }) => {
+const ChangePasswordForm = ({ token }) => {
   const router = useRouter();
   const [error, setError] = useState(false);
 
@@ -37,7 +37,7 @@ const ChangePasswordForm = ({ user, token }) => {
           password: '',
           confirmPassword: '',
         }}
-        onSubmit={({ password }) => changePassword({ variables: { input: { password, user, token } } })}
+        onSubmit={({ password }) => changePassword({ variables: { input: { password, token } } })}
         validationSchema={Yup.object().shape({
           password: Yup.string().min(10, 'Too short!'),
           confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
