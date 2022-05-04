@@ -3,6 +3,7 @@ import { gql, useMutation } from '@apollo/client';
 import { Text } from 'components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import { useState } from 'react';
 
 const MUTATION_JOIN = gql`
   mutation join($input: JoinInput!) {
@@ -40,19 +41,23 @@ const MUTATION_LEAVE = gql`
 
 const ForestMembership = ({ forest, viewOnly }) => {
   const { currentUser } = useCurrentUser();
+  const [error, setError] = useState(false);
   
   const variables = { input: { forest: forest._id } }
 
   // mutations
-  const [join, { error: joinError, loading: joinLoading }] = useMutation(MUTATION_JOIN, {
+  const [join, { loading: joinLoading }] = useMutation(MUTATION_JOIN, {
     variables,
+    onCompleted: () => setError(false),
+    onError: () => setError(true),
   });
-  const [leave, { error: leaveError, loading: leaveLoading }] = useMutation(MUTATION_LEAVE, {
+  const [leave, { loading: leaveLoading }] = useMutation(MUTATION_LEAVE, {
     variables,
+    onCompleted: () => setError(false),
+    onError: () => setError(true),
   });
 
   const isSubmitting = joinLoading || leaveLoading;
-  const isError = joinError || leaveError;
 
   // set always not editable for non logged in users
   viewOnly = viewOnly || !currentUser;
@@ -75,7 +80,7 @@ const ForestMembership = ({ forest, viewOnly }) => {
   return (
     <div className={clsx(
       'flex gap-sm items-center',
-      isError && 'text-error',
+      error && 'text-error',
     )}>
       {!!forest.membersCount &&
         <Text variant="span">{forest.membersCount}</Text>

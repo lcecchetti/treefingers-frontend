@@ -29,7 +29,7 @@ const ActivateAccountPage = ({ token }) => {
 
   useEffect(() => {
     activateAccount({ variables: { input: { token } } });
-  })
+  }, [])
   
 
   return (

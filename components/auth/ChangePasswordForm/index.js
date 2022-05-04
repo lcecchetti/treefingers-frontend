@@ -23,7 +23,7 @@ const ChangePasswordForm = ({ token }) => {
 
   const [changePassword] = useMutation(MUTATION_CHANGE_PASSWORD, {
     onCompleted() {
-      router.push(getLoginUrl());
+      router.push(getLoginUrl(false, 'passwordChanged'));
     },
     onError(e) {
       setError(e);

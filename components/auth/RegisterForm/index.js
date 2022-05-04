@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import { useRouter } from 'next/router';
-import { useMutation, gql, useApolloClient } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Link, FormField } from 'components/ui';
@@ -20,16 +20,16 @@ const MUTATION_REGISTER = gql`
 
 const RegisterForm = () => {
   const router = useRouter();
-  const client = useApolloClient();
   const { currentUser } = useCurrentUser();
+  const [error, setError] = useState(false);
 
-  const [register, { error }] = useMutation(MUTATION_REGISTER, {
-    onCompleted: async ({ register }) => {
-      await client.resetStore();
-      const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getLoginUrl();
-      router.push(redirect);
+  const [register] = useMutation(MUTATION_REGISTER, {
+    onCompleted: async () => {
+      router.push(getLoginUrl(null, 'newUser'));
     },
-    onError: (e) => {},
+    onError: (e) => {
+      setError(e);
+    },
   });
 
   // logged in users should not visit login/register page
