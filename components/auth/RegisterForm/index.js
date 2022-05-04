@@ -6,8 +6,6 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Link, FormField } from 'components/ui';
 import { getLoginUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
-import { getProfileMeUrl } from 'lib/helper/profile';
-import { setAuthToken } from 'lib/auth/token';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
@@ -15,7 +13,7 @@ import AuthFormContainer from '../AuthFormContainer';
 const MUTATION_REGISTER = gql`
   mutation register($input: RegisterInput!) {
     register(input: $input) {
-      token
+      registrationResult
     }
   }
 `;
@@ -27,9 +25,8 @@ const RegisterForm = () => {
 
   const [register, { error }] = useMutation(MUTATION_REGISTER, {
     onCompleted: async ({ register }) => {
-      setAuthToken(register.token);
       await client.resetStore();
-      const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
+      const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getLoginUrl();
       router.push(redirect);
     },
     onError: (e) => {},
