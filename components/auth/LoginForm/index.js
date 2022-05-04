@@ -5,9 +5,9 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 import { setAuthToken } from 'lib/auth/token';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Link, FormField, Button } from 'components/ui';
+import { Text, Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
-import { getForgotPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
+import { getForgotPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO, PARAM_AUTH_FROM } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
@@ -52,7 +52,7 @@ const LoginForm = () => {
         onSubmit={({ email, password }) => login({ variables: { input: { email, password } } })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required(true),
-          password: Yup.string().min(10, 'Too Short!').required(true),
+          password: Yup.string().required(true),
         })}
         validateOnChange={false}
         validateOnBlur={false}
@@ -79,6 +79,12 @@ const LoginForm = () => {
               touched={touched.password}
             />
             <ApiError error={error} />
+            {router.query[PARAM_AUTH_FROM] === 'newUser' &&
+              <Text variant="success">Welcome! Check your emails to activate your account</Text>
+            }
+            {router.query[PARAM_AUTH_FROM] === 'passwordChanged' &&
+              <Text variant="success">Your password has been updated</Text>
+            }
             <Button
               type="submit"
               disabled={isSubmitting}

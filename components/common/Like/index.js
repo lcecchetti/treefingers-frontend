@@ -3,6 +3,7 @@ import { gql, useMutation } from '@apollo/client';
 import { Text } from 'components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import { useState } from 'react';
 
 /**
  * Create like mutation
@@ -50,19 +51,23 @@ const MUTATION_DISLIKE = gql`
 
 const Like = ({ entity, viewOnly }) => {
   const { currentUser } = useCurrentUser();
+  const [error, setError] = useState(false);
 
   const variables = { input: { entityType: entity.__typename, entity: entity._id } }
 
   // mutations
-  const [createLike, { error: createError, loading: createLoading }] = useMutation(MUTATION_LIKE, {
+  const [createLike, { loading: createLoading }] = useMutation(MUTATION_LIKE, {
     variables,
+    onCompleted: () => setError(false),
+    onError: () => setError(true),
   });
-  const [deleteLike, { error: deleteError, loading: deleteLoading }] = useMutation(MUTATION_DISLIKE, {
+  const [deleteLike, { loading: deleteLoading }] = useMutation(MUTATION_DISLIKE, {
     variables,
+    onCompleted: () => setError(false),
+    onError: () => setError(true),
   });
 
   const isSubmitting = createLoading || deleteLoading;
-  const isError = createError || deleteError;
 
   // set always not editable for non logged in users
   viewOnly = viewOnly || !currentUser;
@@ -85,7 +90,7 @@ const Like = ({ entity, viewOnly }) => {
   return (
     <div className={clsx(
       'flex gap-sm items-center',
-      isError && 'text-error',
+      error && 'text-error',
     )}>
       {!!entity.likesCount &&
         <Text variant="span">{entity.likesCount}</Text>

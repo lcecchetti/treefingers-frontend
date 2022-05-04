@@ -37,7 +37,7 @@ const Text = ({ children, className, variant = 'span', as, ...rest }) => {
           ['text-lg font-serif font-bold']: ['h4', 'h5', 'h6'].includes(variant),
           ['block']: variant === 'p',
           ['text-error']: variant === 'error',
-          ['text-success']: variant === 'error',
+          ['text-success']: variant === 'success',
         },
         className
       )}

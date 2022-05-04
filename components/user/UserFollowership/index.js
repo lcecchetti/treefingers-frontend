@@ -3,6 +3,7 @@ import { gql, useMutation } from '@apollo/client';
 import { Text } from 'components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import { useState } from 'react';
 
 const MUTATION_FOLLOW = gql`
   mutation follow($input: FollowInput!) {
@@ -40,19 +41,22 @@ const MUTATION_UNFOLLOW = gql`
 
 const UserFollowership = ({ user, viewOnly }) => {
   const { currentUser } = useCurrentUser();
-
+  const [error, setError] = useState(false);
   const variables = { input: { followed: user._id } }
 
   // mutations
-  const [follow, { error: followError, loading: followLoading }] = useMutation(MUTATION_FOLLOW, {
+  const [follow, { loading: followLoading }] = useMutation(MUTATION_FOLLOW, {
     variables,
+    onCompleted: () => setError(false),
+    onError: () => setError(true),
   });
-  const [unfollow, { error: unfollowError, loading: unfollowLoading }] = useMutation(MUTATION_UNFOLLOW, {
+  const [unfollow, { loading: unfollowLoading }] = useMutation(MUTATION_UNFOLLOW, {
     variables,
+    onCompleted: () => setError(false),
+    onError: () => setError(true),
   });
 
   const isSubmitting = followLoading || unfollowLoading;
-  const isError = followError || unfollowError;
 
   // set always not editable for non logged in users
   viewOnly = viewOnly || !currentUser;
@@ -75,7 +79,7 @@ const UserFollowership = ({ user, viewOnly }) => {
   return (
     <div className={clsx(
       'flex gap-sm items-center',
-      isError && 'text-error',
+      error && 'text-error',
     )}>
       {!!user.followersCount &&
         <Text variant="span">{user.followersCount}</Text>
