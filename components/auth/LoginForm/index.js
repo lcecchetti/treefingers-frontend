@@ -11,6 +11,7 @@ import { getForgotPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO, PARAM_AUT
 import { getProfileMeUrl } from 'lib/helper/profile';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
+import * as gtag from 'lib/gtag';
 
 const MUTATION_LOGIN = gql`
   mutation login($input: LoginInput!) {
@@ -29,10 +30,21 @@ const LoginForm = () => {
     onCompleted: async ({ login }) => {      
       setAuthToken(login.token);
       await client.resetStore();
+      gtag.event({
+        action: 'login',
+        category: 'auth',
+        label: 'success',
+      });
       const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
       router.push(redirect);
     },
-    onError: (e) => {}
+    onError: (e) => {
+      gtag.event({
+        action: 'login',
+        category: 'auth',
+        label: 'error',
+      });
+    }
   });
 
   // logged in users should not visit login/register page

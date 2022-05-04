@@ -4,6 +4,7 @@ import { Text } from 'components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { useState } from 'react';
+import * as gtag from 'lib/gtag';
 
 const MUTATION_FOLLOW = gql`
   mutation follow($input: FollowInput!) {
@@ -47,13 +48,41 @@ const UserFollowership = ({ user, viewOnly }) => {
   // mutations
   const [follow, { loading: followLoading }] = useMutation(MUTATION_FOLLOW, {
     variables,
-    onCompleted: () => setError(false),
-    onError: () => setError(true),
+    onCompleted: () => {
+      gtag.event({
+        action: 'follow',
+        category: 'user',
+        label: 'success',
+      });
+      setError(false);
+    },
+    onError: () => {
+      gtag.event({
+        action: 'follow',
+        category: 'user',
+        label: 'error',
+      });
+      setError(true);
+    }
   });
   const [unfollow, { loading: unfollowLoading }] = useMutation(MUTATION_UNFOLLOW, {
     variables,
-    onCompleted: () => setError(false),
-    onError: () => setError(true),
+    onCompleted: () => {
+      gtag.event({
+        action: 'unfollow',
+        category: 'user',
+        label: 'success',
+      });
+      setError(false);
+    },
+    onError: () => {
+      gtag.event({
+        action: 'unfollow',
+        category: 'user',
+        label: 'error',
+      });
+      setError(true);
+    },
   });
 
   const isSubmitting = followLoading || unfollowLoading;

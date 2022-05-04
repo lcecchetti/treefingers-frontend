@@ -7,6 +7,7 @@ import { getLoginUrl } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
 import { ThemeIcon } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import * as gtag from 'lib/gtag';
 
 const IconList = () => {
   const { theme, setTheme } = useTheme();
@@ -24,7 +25,15 @@ const IconList = () => {
     {
       href: '#',
       Icon: ThemeIcon,
-      onClick: () => setTheme(getToggledTheme(theme)),
+      onClick: () => {
+        const toggledTheme = getToggledTheme(theme);
+        gtag.event({
+          action: 'change-theme',
+          category: 'theme',
+          label: toggledTheme,
+        });
+        setTheme(toggledTheme);
+      },
       showOnMobile: false,
       showOnDesktop: true,
     },

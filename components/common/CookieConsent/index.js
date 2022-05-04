@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Button, Text, Container } from 'components/ui';
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import * as gtag from 'lib/gtag';
 
 const cookieName = 'cookie-consent';
 const CookieConsent = ({ className }) => {
@@ -10,6 +11,10 @@ const CookieConsent = ({ className }) => {
 
   useEffect(() => {
     if (cookie[cookieName]) {
+      gtag.event({
+        action: 'accept-cookie-consent',
+        category: 'cookie-consent',
+      });
       setAccepted(true);
     }
   }, [cookie[cookieName]]);

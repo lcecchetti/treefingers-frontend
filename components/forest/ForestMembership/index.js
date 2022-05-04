@@ -4,6 +4,7 @@ import { Text } from 'components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { useState } from 'react';
+import * as gtag from 'lib/gtag';
 
 const MUTATION_JOIN = gql`
   mutation join($input: JoinInput!) {
@@ -48,13 +49,41 @@ const ForestMembership = ({ forest, viewOnly }) => {
   // mutations
   const [join, { loading: joinLoading }] = useMutation(MUTATION_JOIN, {
     variables,
-    onCompleted: () => setError(false),
-    onError: () => setError(true),
+    onCompleted: () => {
+      gtag.event({
+        action: 'join',
+        category: 'forest',
+        label: 'success',
+      });
+      setError(false);
+    },
+    onError: () => {
+      gtag.event({
+        action: 'join',
+        category: 'forest',
+        label: 'error',
+      });
+      setError(true);
+    },
   });
   const [leave, { loading: leaveLoading }] = useMutation(MUTATION_LEAVE, {
     variables,
-    onCompleted: () => setError(false),
-    onError: () => setError(true),
+    onCompleted: () => {
+      gtag.event({
+        action: 'leave',
+        category: 'forest',
+        label: 'success',
+      });
+      setError(false);
+    },
+    onError: () => {
+      gtag.event({
+        action: 'leave',
+        category: 'forest',
+        label: 'error',
+      });
+      setError(true);
+    },
   });
 
   const isSubmitting = joinLoading || leaveLoading;
