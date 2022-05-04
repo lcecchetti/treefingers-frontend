@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards, Navigation } from 'swiper';
 import { QUERY_STORIES } from 'components/story/StoryList';
 import StoryCard from 'components/story/StoryCard';
+import * as gtag from 'lib/gtag';
 
 const StoryChapters = ({ className, parent, sort = { likesCount: 'DESC' }, first = 10 }) => {
   const { currentUser } = useCurrentUser();
@@ -30,6 +31,15 @@ const StoryChapters = ({ className, parent, sort = { likesCount: 'DESC' }, first
       refetch();
     }
   }, [!currentUser]);
+  
+  const toggleWriting = (show) => {
+    gtag.event({
+      action: 'toggle-writing',
+      category: 'chapters',
+      label: show ? 'show' : 'hide',
+    });
+    setIsWriting(show);
+  };
 
   return (
     <div className={clsx('flex flex-col gap-md', className)}>
@@ -43,9 +53,9 @@ const StoryChapters = ({ className, parent, sort = { likesCount: 'DESC' }, first
 
       {!!data?.stories.edges.length && // chapter list
         <div className="flex gap-md justify-center items-center">
-          <Button variant={isWriting ? 'outlined' : 'primary'} onClick={() => setIsWriting(false)}>Read</Button>
+          <Button variant={isWriting ? 'outlined' : 'primary'} onClick={() => toggleWriting(false)}>Read</Button>
           <Text>Or</Text>
-          <Button variant={isWriting ? 'primary' : 'outlined'} onClick={() => setIsWriting(true)}>Write</Button>
+          <Button variant={isWriting ? 'primary' : 'outlined'} onClick={() => toggleWriting(true)}>Write</Button>
         </div>
       }
 

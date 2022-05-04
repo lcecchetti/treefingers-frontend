@@ -9,6 +9,7 @@ import { Link, Text } from 'components/ui';
 import { getStoriesUrl } from 'lib/helper/story';
 import { getAboutUrl } from 'lib/helper/content';
 import { getAuthorsUrl } from 'lib/helper/user';
+import * as gtag from 'lib/gtag';
 
 const Drawer = () => {
   const router = useRouter();
@@ -62,7 +63,15 @@ const Drawer = () => {
       label: 'THEME',
       href: '#',
       Icon: ThemeIcon,
-      onClick: () => setTheme(getToggledTheme(theme)),
+      onClick: () => {
+        const toggledTheme = getToggledTheme(theme);
+        gtag.event({
+          action: 'change-theme',
+          category: 'theme',
+          label: toggledTheme,
+        });
+        setTheme(toggledTheme);
+      },
     },
   ];
 

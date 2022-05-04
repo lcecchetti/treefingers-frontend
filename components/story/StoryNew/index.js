@@ -7,6 +7,7 @@ import { getStoryUrl } from 'lib/helper/story';
 import { AuthRequired } from 'components/auth';
 import { ApiError } from 'components/common';
 import { FaTimes } from 'react-icons/fa';
+import * as gtag from 'lib/gtag';
 
 /**
  * Create story mutation
@@ -28,7 +29,13 @@ const MUTATION_STORY_CREATE = gql`
 
 const StoryNew = ({ parent, forest, className }) => {
   const [createStory, { error }] = useMutation(MUTATION_STORY_CREATE, {
-    onError: (e) => {},
+    onError: (e) => {
+      gtag.event({
+        action: 'create-story',
+        category: 'story',
+        label: 'error',
+      });
+    },
   });
   const router = useRouter();
 
@@ -55,6 +62,11 @@ const StoryNew = ({ parent, forest, className }) => {
             }}},
             onCompleted: (data) => {
               resetForm();
+              gtag.event({
+                action: 'create-story',
+                category: 'story',
+                label: 'success',
+              });
               router.push(getStoryUrl(data.createStory.story));
             },
           })}

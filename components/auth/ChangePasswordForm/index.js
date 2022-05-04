@@ -8,6 +8,7 @@ import AuthFormContainer from '../AuthFormContainer';
 import { gql, useMutation } from '@apollo/client';
 import { ApiError } from 'components/common';
 import { useState } from 'react';
+import * as gtag from 'lib/gtag';
 
 const MUTATION_CHANGE_PASSWORD = gql`
   mutation changePassword($input: ChangePasswordInput!) {
@@ -23,9 +24,19 @@ const ChangePasswordForm = ({ token }) => {
 
   const [changePassword] = useMutation(MUTATION_CHANGE_PASSWORD, {
     onCompleted() {
+      gtag.event({
+        action: 'change-password',
+        category: 'auth',
+        label: 'success',
+      });
       router.push(getLoginUrl(false, 'passwordChanged'));
     },
     onError(e) {
+      gtag.event({
+        action: 'change-password',
+        category: 'auth',
+        label: 'error',
+      });
       setError(e);
     }
   });

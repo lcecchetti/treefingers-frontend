@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { AuthRequired } from 'components/auth';
 import { QUERY_COMMENTS } from 'components/comment/CommentList';
 import { ApiError } from 'components/common';
+import * as gtag from 'lib/gtag';
 
 /**
  * Create comment mutation
@@ -53,7 +54,13 @@ const CommentNew = ({ entity, sort, last }) => {
         })
       );
     }, 
-    onError(e) {}
+    onError(e) {
+      gtag.event({
+        action: `submit-comment-${entity.__typename}`,
+        category: 'comment',
+        label: 'error',
+      });
+    }
   });
 
   return (
@@ -70,6 +77,11 @@ const CommentNew = ({ entity, sort, last }) => {
             comment({
               variables: { input: { data: { ...values, entity: entity._id, entityType: entity.__typename } } },
               onCompleted: () => {
+                gtag.event({
+                  action: `submit-comment-${entity.__typename}`,
+                  category: 'comment',
+                  label: 'success'
+                });
                 resetForm();
               },
             });

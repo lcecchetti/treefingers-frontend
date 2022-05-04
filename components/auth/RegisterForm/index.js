@@ -25,9 +25,19 @@ const RegisterForm = () => {
 
   const [register] = useMutation(MUTATION_REGISTER, {
     onCompleted: async () => {
+      gtag.event({
+        action: 'register',
+        category: 'auth',
+        label: 'success',
+      });
       router.push(getLoginUrl(null, 'newUser'));
     },
     onError: (e) => {
+      gtag.event({
+        action: 'login',
+        category: 'auth',
+        label: 'error',
+      });
       setError(e);
     },
   });

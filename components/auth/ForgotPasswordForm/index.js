@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import AuthFormContainer from '../AuthFormContainer';
 import { gql, useMutation } from '@apollo/client';
 import { ApiError } from 'components/common';
+import * as gtag from 'lib/gtag';
+import { useState } from 'react';
 
 const MUTATION_FORGOT_PASSWORD = gql`
   mutation forgotPassword($input: ForgotPasswordInput!) {
@@ -18,8 +20,26 @@ const MUTATION_FORGOT_PASSWORD = gql`
 
 const ForgotPasswordForm = () => {
   const router = useRouter();
+  const [error, setError] = useState(false);
 
-  const [forgotPassword, { data, error }] = useMutation(MUTATION_FORGOT_PASSWORD);
+  const [forgotPassword, { data }] = useMutation(MUTATION_FORGOT_PASSWORD, {
+    onCompleted: () => {
+      gtag.event({
+        action: 'forgot-password',
+        category: 'auth',
+        label: 'success',
+      });
+      setError(false);
+    },
+    onError: (e) => {
+      gtag.event({
+        action: 'forgot-password',
+        category: 'auth',
+        label: 'error',
+      });
+      setError(e);
+    },
+  });
 
   return (
     <AuthFormContainer title="Forgot password" icon={MdLockOutline}>

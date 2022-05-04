@@ -5,6 +5,7 @@ import { Text, Button, FormField, Spinner } from 'components/ui';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { QUERY_USER } from 'components/user';
+import * as gtag from 'lib/gtag';
 
 const MUTATION_EDIT_USER = gql`
   mutation editUser($input: EditUserInput!) {
@@ -19,7 +20,22 @@ const MUTATION_EDIT_USER = gql`
 
 const UserEditForm = () => {
   const { currentUser } = useCurrentUser();
-  const [editUser, { data: editData, error: editError }] = useMutation(MUTATION_EDIT_USER);
+  const [editUser, { data: editData, error: editError }] = useMutation(MUTATION_EDIT_USER, {
+    onCompleted: () => {
+      gtag.event({
+        action: 'edit-user',
+        category: 'user',
+        label: 'success',
+      });
+    },
+    onError: () => {
+      gtag.event({
+        action: 'edit-user',
+        category: 'user',
+        label: 'error',
+      });
+    }
+  });
   const { data, loading, error } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: currentUser._id } } } });
 
   return (
@@ -34,7 +50,9 @@ const UserEditForm = () => {
           bio: data.user.bio,
         }}
         validateOnBlur
-        onSubmit={({ confirmPassword, ...data }) => editUser({ variables: { input: { data } } })}
+        onSubmit={({ confirmPassword, ...data }) => {
+          return editUser({ variables: { input: { data } } });
+        }}
         validationSchema={Yup.object().shape({
           password: Yup.string().min(10, 'Too short!'),
           confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),

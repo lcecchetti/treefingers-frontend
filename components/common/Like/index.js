@@ -4,6 +4,7 @@ import { Text } from 'components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { useState } from 'react';
+import * as gtag from 'lib/gtag';
 
 /**
  * Create like mutation
@@ -58,13 +59,41 @@ const Like = ({ entity, viewOnly }) => {
   // mutations
   const [createLike, { loading: createLoading }] = useMutation(MUTATION_LIKE, {
     variables,
-    onCompleted: () => setError(false),
-    onError: () => setError(true),
+    onCompleted: () => {
+      gtag.event({
+        action: `like-${entity.__typename}`,
+        category: 'like',
+        label: 'success',
+      });
+      setError(false);
+    },
+    onError: () => {
+      gtag.event({
+        action: `like-${entity.__typename}`,
+        category: 'like',
+        label: 'error'
+      });
+      setError(true);
+    },
   });
   const [deleteLike, { loading: deleteLoading }] = useMutation(MUTATION_DISLIKE, {
     variables,
-    onCompleted: () => setError(false),
-    onError: () => setError(true),
+    onCompleted: () => {
+      gtag.event({
+        action: `dislike-${entity.__typename}`,
+        category: 'like',
+        label: 'success',
+      });
+      setError(false);
+    },
+    onError: () => {
+      gtag.event({
+        action: `dislike-${entity.__typename}`,
+        category: 'like',
+        label: 'error',
+      });
+      setError(true);
+    },
   });
 
   const isSubmitting = createLoading || deleteLoading;

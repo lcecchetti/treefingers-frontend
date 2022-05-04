@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { getForestUrl } from 'lib/helper/forest';
 import { AuthRequired } from 'components/auth';
 import { ApiError } from 'components/common';
+import * as gtag from 'lib/gtag';
 
 /**
  * Create forest mutation
@@ -24,7 +25,13 @@ const MUTATION_FOREST_CREATE = gql`
 
 const ForestNew = () => {
   const [createForest, { error }] = useMutation(MUTATION_FOREST_CREATE, {
-    onError: (e) => {},
+    onError: (e) => {
+      gtag.event({
+        action: 'create-forest',
+        category: 'forest',
+        label: 'error',
+      });
+    },
   });
   const router = useRouter();
 
@@ -45,6 +52,11 @@ const ForestNew = () => {
               name, about
             }}},
             onCompleted: (data) => {
+              gtag.event({
+                action: 'create-forest',
+                category: 'forest',
+                label: 'success',
+              });
               router.push(getForestUrl(data.createForest.forest));
             },
           })}>
