@@ -40,7 +40,7 @@ const ActivateAccountPage = ({ token }) => {
   );
 };
 
-export async function getStaticProps({ params: { token } }) {
+export async function getServerSideProps({ params: { token } }) {
   if (!token) {
     return {
       notFound: true,
@@ -49,13 +49,6 @@ export async function getStaticProps({ params: { token } }) {
 
   return {
     props: { token },
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking',
   };
 }
 
