@@ -9,6 +9,7 @@ import { getLoginUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
+import * as gtag from 'lib/gtag';
 
 const MUTATION_REGISTER = gql`
   mutation register($input: RegisterInput!) {

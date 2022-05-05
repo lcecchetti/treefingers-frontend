@@ -20,7 +20,7 @@ const ActivateAccountPage = ({ token }) => {
 
   const [activateAccount, { loading }] = useMutation(MUTATION_ACTIVATE_ACCOUNT, {
     onCompleted() {
-      router.push(getLoginUrl());
+      router.push(getLoginUrl(false, 'activated'));
     },
     onError(e) {
       setError(e);
