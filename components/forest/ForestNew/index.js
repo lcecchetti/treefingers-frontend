@@ -7,6 +7,7 @@ import { getForestUrl } from 'lib/helper/forest';
 import { AuthRequired } from 'components/auth';
 import { ApiError } from 'components/common';
 import * as gtag from 'lib/gtag';
+import { useState } from 'react';
 
 /**
  * Create forest mutation
@@ -24,13 +25,15 @@ const MUTATION_FOREST_CREATE = gql`
 `;
 
 const ForestNew = () => {
-  const [createForest, { error }] = useMutation(MUTATION_FOREST_CREATE, {
+  const [error, setError] = useState(false);
+  const [createForest] = useMutation(MUTATION_FOREST_CREATE, {
     onError: (e) => {
       gtag.event({
         action: 'create-forest',
         category: 'forest',
         label: 'error',
       });
+      setError(e);
     },
   });
   const router = useRouter();

@@ -8,6 +8,7 @@ import { AuthRequired } from 'components/auth';
 import { ApiError } from 'components/common';
 import { FaTimes } from 'react-icons/fa';
 import * as gtag from 'lib/gtag';
+import { useState } from 'react';
 
 /**
  * Create story mutation
@@ -28,13 +29,15 @@ const MUTATION_STORY_CREATE = gql`
 `;
 
 const StoryNew = ({ parent, forest, className }) => {
-  const [createStory, { error }] = useMutation(MUTATION_STORY_CREATE, {
+  const [error, setError] = useState(false);
+  const [createStory] = useMutation(MUTATION_STORY_CREATE, {
     onError: (e) => {
       gtag.event({
         action: 'create-story',
         category: 'story',
         label: 'error',
       });
+      setError(e);
     },
   });
   const router = useRouter();
