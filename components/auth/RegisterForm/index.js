@@ -33,7 +33,7 @@ const RegisterForm = () => {
         category: 'auth',
         label: 'success',
       });
-      showToast('Welcome! Please check your emails to activate your account', { duration: 0 });
+      showToast('Check your emails to activate your account', { duration: 0 });
       router.push(getLoginUrl());
     },
     onError: (e) => {

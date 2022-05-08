@@ -12,11 +12,16 @@ import { getProfileMeUrl } from 'lib/helper/profile';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
 import * as gtag from 'lib/gtag';
+import { useUI } from 'lib/ui/context';
 
 const MUTATION_LOGIN = gql`
   mutation login($input: LoginInput!) {
     login(input: $input) {
       token
+      currentUser {
+        _id
+        username
+      }
     }
   }
 `;
@@ -25,6 +30,7 @@ const LoginForm = () => {
   const router = useRouter();
   const client = useApolloClient();
   const { currentUser } = useCurrentUser();
+  const { showToast } = useUI();
 
   const [login, { error }] = useMutation(MUTATION_LOGIN, {
     onCompleted: async ({ login }) => {      
@@ -35,7 +41,8 @@ const LoginForm = () => {
         category: 'auth',
         label: 'success',
       });
-      const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? getProfileMeUrl();
+      const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? '/';
+      showToast(`Hey ${login.currentUser.username}, welcome!`);
       router.push(redirect);
     },
     onError: (e) => {
