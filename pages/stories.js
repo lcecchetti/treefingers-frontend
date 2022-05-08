@@ -1,8 +1,10 @@
 import { DefaultLayout } from 'components/layout';
-import { Container, Text } from 'components/ui';
+import { Container, Text, Button, Link } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro } from 'components/common';
 import { StoryList, QUERY_STORIES } from 'components/story';
+import { getStoryNewUrl } from 'lib/helper/story';
+import { FaTree } from 'react-icons/fa';
 
 const StoriesPage = () => {
   return (
@@ -10,6 +12,7 @@ const StoriesPage = () => {
       <PageIntro>
         <div className="flex gap-sm justify-between items-center">
           <Text variant="pageTitle">Stories</Text>
+          <Button as={Link} href={getStoryNewUrl()} icon={FaTree}>Plant a story</Button>
         </div>
         <Text variant="p">
           Here is a list of popular stories.
