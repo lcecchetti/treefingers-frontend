@@ -9,6 +9,7 @@ import { gql, useMutation } from '@apollo/client';
 import { ApiError } from 'components/common';
 import * as gtag from 'lib/gtag';
 import { useState } from 'react';
+import { useUI } from 'lib/ui/context';
 
 const MUTATION_FORGOT_PASSWORD = gql`
   mutation forgotPassword($input: ForgotPasswordInput!) {
@@ -21,14 +22,16 @@ const MUTATION_FORGOT_PASSWORD = gql`
 const ForgotPasswordForm = () => {
   const router = useRouter();
   const [error, setError] = useState(false);
+  const { showToast } = useUI();
 
-  const [forgotPassword, { data }] = useMutation(MUTATION_FORGOT_PASSWORD, {
+  const [forgotPassword] = useMutation(MUTATION_FORGOT_PASSWORD, {
     onCompleted: () => {
       gtag.event({
         action: 'forgot-password',
         category: 'auth',
         label: 'success',
       });
+      showToast('Check your emails, we\'ve sent a reset link', { duration: 0 })
       setError(false);
     },
     onError: (e) => {
@@ -73,12 +76,6 @@ const ForgotPasswordForm = () => {
               className="w-full">
               Send email
             </Button>
-
-            {data?.forgotPassword.emailSent &&
-              <Text className="text-success">
-                Check your emails, we've sent a reset link
-              </Text>
-            }
 
             <ApiError error={error} />
             <div className="flex flex-col gap-xs text-xs">

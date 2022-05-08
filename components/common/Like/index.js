@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { useState } from 'react';
 import * as gtag from 'lib/gtag';
+import { useUI } from 'lib/ui/context';
 
 /**
  * Create like mutation
@@ -53,6 +54,7 @@ const MUTATION_DISLIKE = gql`
 const Like = ({ entity, viewOnly }) => {
   const { currentUser } = useCurrentUser();
   const [error, setError] = useState(false);
+  const { showToast } = useUI();
 
   const variables = { input: { entityType: entity.__typename, entity: entity._id } }
 
@@ -98,15 +100,17 @@ const Like = ({ entity, viewOnly }) => {
 
   const isSubmitting = createLoading || deleteLoading;
 
-  // set always not editable for non logged in users
-  viewOnly = viewOnly || !currentUser;
-
   /**
    * Toogle like status for logged in users
    */
   const toogleLike = async () => {
     if (viewOnly || isSubmitting) {
       // block submission
+      return;
+    }
+
+    if (!currentUser) {
+      showToast('You need to be logged in.');
       return;
     }
 

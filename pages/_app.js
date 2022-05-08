@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from 'lib/apollo/client';
-import { Header, Footer, Flyout, CookieConsent } from 'components/common';
+import { Header, Footer, Flyout, CookieConsent, Toasts } from 'components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from 'lib/ui/context';
 import { CookiesProvider } from 'react-cookie';
@@ -72,6 +72,7 @@ const App = ({ Component, pageProps }) => {
               </Layout>
               <Footer/>
               <Flyout/>
+              <Toasts/>
               <CookieConsent/>
             </UIProvider>
           </ThemeProvider>

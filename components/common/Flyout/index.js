@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useUI, flyoutTypes } from 'lib/ui/context';
 import { Text } from 'components/ui';
 import { CommentList } from 'components/comment';
-import { FaTimes } from 'react-icons/fa'
+import { FaTimes } from 'react-icons/fa';
 import { StoryTree } from 'components/story';
 
 const Flyout = () => {
