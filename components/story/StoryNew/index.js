@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import { FormField, Button } from 'components/ui';
@@ -10,10 +10,6 @@ import { FaTimes } from 'react-icons/fa';
 import * as gtag from 'lib/gtag';
 import { useState } from 'react';
 
-/**
- * Create story mutation
- * @type {gql}
- */
 const MUTATION_STORY_CREATE = gql`
   mutation createStory($input: CreateStoryInput!) {
     createStory(input: $input) {
@@ -28,7 +24,22 @@ const MUTATION_STORY_CREATE = gql`
   }
 `;
 
-const StoryNew = ({ parent, forest, className }) => {
+const QUERY_CHOOSE_FOREST = gql`
+  query forests($filter: FilterForestInput) {
+    forests(filter: $filter, sort: { storiesCount: DESC }, first: 10) {
+      edges {
+        node {
+          _id
+          name
+          storiesCount
+        }
+      }
+    }
+  }
+`;
+
+const StoryNew = ({ parent, className }) => {
+  const router = useRouter();
   const [error, setError] = useState(false);
   const [createStory] = useMutation(MUTATION_STORY_CREATE, {
     onError: (e) => {
@@ -40,7 +51,14 @@ const StoryNew = ({ parent, forest, className }) => {
       setError(e);
     },
   });
-  const router = useRouter();
+
+  const { data: forestsData, refetch: refetchForests } = useQuery(QUERY_CHOOSE_FOREST, {
+    variables: {
+      filter: {
+        _id: { eq: router.query.forest },
+      },
+    },
+  });
 
   return (
     <div className={className}>
@@ -50,14 +68,19 @@ const StoryNew = ({ parent, forest, className }) => {
           initialValues={{
             title: '',
             content: '',
-            forest: forest?._id,
+            forest: forestsData?.forests.edges.slice(0, 1).pop()?.node._id,
             parent: parent?._id,
             addTag: '',
             tags: [],
+            forests: forestsData?.forests.edges.map(({ node }) =>({
+              value: node._id,
+              label: node.name,
+            })),
           }}
           validationSchema={Yup.object().shape({
             title: Yup.string().required(true),
             content: Yup.string().required(true),
+            forest: Yup.string().required(true),
           })}
           onSubmit={({ title, content, parent, tags, forest }, { resetForm }) => createStory({
             variables: { input: { data: {
@@ -117,6 +140,33 @@ const StoryNew = ({ parent, forest, className }) => {
                   </div>
                 )}
               />
+
+              <div className="flex gap-md w-full items-stretch">
+                <Field
+                  as={FormField} 
+                  name="searchForest"
+                  className="grow"
+                  type="text" 
+                  label="Search forest:"
+                  onChange={(e) => {
+                    setFieldValue('searchForest', e.target.value);
+                    refetchForests({
+                      filter: {
+                        query: e.target.value,
+                      }
+                    });
+                  }} 
+                />
+                <Field 
+                  label="Forest"
+                  className="grow"
+                  as={FormField}
+                  name="forest"
+                  type="select"
+                  options={values.forests}
+                />
+              </div>
+
               <ApiError error={error} />
               <Button
                 type="submit"
