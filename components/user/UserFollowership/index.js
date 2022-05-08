@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { useState } from 'react';
 import * as gtag from 'lib/gtag';
+import { useUI } from 'lib/ui/context';
 
 const MUTATION_FOLLOW = gql`
   mutation follow($input: FollowInput!) {
@@ -43,6 +44,7 @@ const MUTATION_UNFOLLOW = gql`
 const UserFollowership = ({ user, viewOnly }) => {
   const { currentUser } = useCurrentUser();
   const [error, setError] = useState(false);
+  const { showToast } = useUI();
   const variables = { input: { followed: user._id } }
 
   // mutations
@@ -87,15 +89,17 @@ const UserFollowership = ({ user, viewOnly }) => {
 
   const isSubmitting = followLoading || unfollowLoading;
 
-  // set always not editable for non logged in users
-  viewOnly = viewOnly || !currentUser;
-
   /**
    * Toogle followership status for logged in users
    */
   const toogleFollowership = async () => {
     if (viewOnly || isSubmitting) {
       // block submission
+      return;
+    }
+
+    if (!currentUser) {
+      showToast('You need to be logged in to follow.');
       return;
     }
 

@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { useState } from 'react';
 import * as gtag from 'lib/gtag';
+import { useUI } from 'lib/ui/context';
 
 const MUTATION_JOIN = gql`
   mutation join($input: JoinInput!) {
@@ -43,6 +44,7 @@ const MUTATION_LEAVE = gql`
 const ForestMembership = ({ forest, viewOnly }) => {
   const { currentUser } = useCurrentUser();
   const [error, setError] = useState(false);
+  const { showToast } = useUI();
   
   const variables = { input: { forest: forest._id } }
 
@@ -88,15 +90,17 @@ const ForestMembership = ({ forest, viewOnly }) => {
 
   const isSubmitting = joinLoading || leaveLoading;
 
-  // set always not editable for non logged in users
-  viewOnly = viewOnly || !currentUser;
-
   /**
    * Toogle like status for logged in users
    */
   const toogleMembership = async () => {
     if (viewOnly || isSubmitting) {
       // block submission
+      return;
+    }
+
+    if (!currentUser) {
+      showToast('You need to be logged in to join.');
       return;
     }
 

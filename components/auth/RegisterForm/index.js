@@ -10,6 +10,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
 import * as gtag from 'lib/gtag';
+import { useUI } from 'lib/ui/context';
 
 const MUTATION_REGISTER = gql`
   mutation register($input: RegisterInput!) {
@@ -23,6 +24,7 @@ const RegisterForm = () => {
   const router = useRouter();
   const { currentUser } = useCurrentUser();
   const [error, setError] = useState(false);
+  const { showToast } = useUI();
 
   const [register] = useMutation(MUTATION_REGISTER, {
     onCompleted: async () => {
@@ -31,7 +33,8 @@ const RegisterForm = () => {
         category: 'auth',
         label: 'success',
       });
-      router.push(getLoginUrl(null, 'newUser'));
+      showToast('Welcome! Please check your emails to activate your account', { duration: 0 });
+      router.push(getLoginUrl());
     },
     onError: (e) => {
       gtag.event({

@@ -91,15 +91,6 @@ const LoginForm = () => {
               touched={touched.password}
             />
             <ApiError error={error} />
-            {router.query[PARAM_AUTH_FROM] === 'activated' &&
-              <Text variant="success">Your account is now active. See you around!</Text>
-            }
-            {router.query[PARAM_AUTH_FROM] === 'newUser' &&
-              <Text variant="success">Welcome! Check your emails to activate your account</Text>
-            }
-            {router.query[PARAM_AUTH_FROM] === 'passwordChanged' &&
-              <Text variant="success">Your password has been updated</Text>
-            }
             <Button
               type="submit"
               disabled={isSubmitting}

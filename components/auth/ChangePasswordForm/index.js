@@ -9,6 +9,7 @@ import { gql, useMutation } from '@apollo/client';
 import { ApiError } from 'components/common';
 import { useState } from 'react';
 import * as gtag from 'lib/gtag';
+import { useUI } from 'lib/ui/context';
 
 const MUTATION_CHANGE_PASSWORD = gql`
   mutation changePassword($input: ChangePasswordInput!) {
@@ -21,6 +22,7 @@ const MUTATION_CHANGE_PASSWORD = gql`
 const ChangePasswordForm = ({ token }) => {
   const router = useRouter();
   const [error, setError] = useState(false);
+  const { showToast } = useUI();
 
   const [changePassword] = useMutation(MUTATION_CHANGE_PASSWORD, {
     onCompleted() {
@@ -29,7 +31,8 @@ const ChangePasswordForm = ({ token }) => {
         category: 'auth',
         label: 'success',
       });
-      router.push(getLoginUrl(false, 'passwordChanged'));
+      showToast('Your password has been changed', { type: 'success' });
+      router.push(getLoginUrl());
     },
     onError(e) {
       gtag.event({

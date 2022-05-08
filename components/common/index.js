@@ -11,3 +11,4 @@ export { default as ApiError } from './ApiError';
 export { default as InfiniteScroll } from './InfiniteScroll';
 export { default as Card, CardHeader, CardBody, CardFooter } from './Card';
 export { default as CookieConsent } from './CookieConsent';
+export { default as Toasts } from './Toasts';

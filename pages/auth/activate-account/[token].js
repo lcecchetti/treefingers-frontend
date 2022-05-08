@@ -5,6 +5,7 @@ import { gql, useMutation } from '@apollo/client';
 import { getLoginUrl } from 'lib/helper/auth';
 import { Spinner } from 'components/ui';
 import { ApiError } from 'components/common';
+import { useUI } from 'lib/ui/context';
 
 const MUTATION_ACTIVATE_ACCOUNT = gql`
   mutation activateAccount($input: ActivateAccountInput!) {
@@ -16,14 +17,16 @@ const MUTATION_ACTIVATE_ACCOUNT = gql`
 
 const ActivateAccountPage = ({ token }) => {
   const router = useRouter();
-  const [error, setError] = useState(false);
+  const { showToast } = useUI();
 
   const [activateAccount, { loading }] = useMutation(MUTATION_ACTIVATE_ACCOUNT, {
     onCompleted() {
-      router.push(getLoginUrl(false, 'activated'));
+      showToast('Your account is now active. See you around!', { type: 'success' });
+      router.push(getLoginUrl());
     },
     onError(e) {
-      setError(e);
+      showToast(<ApiError error={e} />, { type: 'error' });
+      router.push(getLoginUrl());
     }
   });
 
@@ -35,7 +38,6 @@ const ActivateAccountPage = ({ token }) => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen-no-header">
       <Spinner label="Activating your account..." loading={loading} />
-      <ApiError error={error} />
     </div>
   );
 };
