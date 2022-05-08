@@ -12,6 +12,7 @@ import { ApiError } from 'components/common';
 import { TagList } from 'components/tag';
 import StoryTree from '../StoryTree';
 import clsx from 'clsx';
+import { getForestUrl } from 'lib/helper/forest';
 
 /**
  * Single story query
@@ -36,6 +37,10 @@ export const QUERY_STORY = gql`
         _id
         likesCount
         descendantsCount
+      }
+      forest {
+        _id
+        name
       }
       likesCount
       commentsCount
@@ -68,10 +73,17 @@ const StoryView = ({ className, story }) => {
           <div className="relative flex flex-col gap-md lg:min-h-screen overflow-hidden">
             <Container className="flex justify-end">
               <div className="flex flex-col gap-md w-full lg:w-1/2 z-10">
-                {data?.story && !isStoryRoot(data.story) &&
+                {data?.story &&
                   <div className="text-center flex justify-around items-center">
-                    <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data.story.parent)} icon={FaAngleUp}>Prev chapter</Button>
-                    <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data.story.root)} icon={FaAngleDoubleUp}>Back to root</Button>
+                    {!isStoryRoot(data.story) && 
+                      <>
+                        <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data.story.parent)} icon={FaAngleUp}>Prev chapter</Button>
+                        <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data.story.root)} icon={FaAngleDoubleUp}>Back to root</Button>
+                      </>
+                    }
+                    {data?.story.forest && 
+                      <Button as={Link} variant="outlined" size="sm" href={getForestUrl(data.story.forest)} icon={FaAngleDoubleUp}>Back to forest</Button>
+                    }
                   </div>
                 }
                 <div className="flex flex-col gap-md">
