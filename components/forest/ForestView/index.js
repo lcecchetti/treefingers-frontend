@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Spinner, Text, Button } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList, StoryNew } from 'components/story';
-import { ApiError } from 'components/common';
+import { ApiError, PageIntro } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { FaSeedling, FaTimes } from 'react-icons/fa';
 import ForestActions from 'components/forest/ForestActions';
@@ -46,7 +46,7 @@ const ForestView = ({ className, _id }) => {
 
       {data &&
         <>
-          <div className="flex flex-col gap-sm my-md">
+          <PageIntro className="flex flex-col gap-sm">
             <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
               <Text variant="pageTitle">{data.forest.name}</Text>
               <div className="flex gap-sm justify-between">
@@ -55,7 +55,7 @@ const ForestView = ({ className, _id }) => {
               </div>
             </div>
             <Text variant="p" className="whitespace-pre-wrap">{data.forest.about}</Text>
-          </div>
+          </PageIntro>
           {isWritingStory &&
             <div className="flex flex-col gap-md">
               <div className="flex flex-col gap-sm">

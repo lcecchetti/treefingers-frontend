@@ -1,6 +1,6 @@
 const PageIntro = ({ children }) => {
   return (
-    <div className="mb-md flex flex-col gap-sm">
+    <div className="mt-sm mb-md lg:my-md flex flex-col gap-sm">
       {children}
     </div>
   );

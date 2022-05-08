@@ -3,7 +3,7 @@ import { ChangePasswordForm } from 'components/auth';
 
 const ChangePasswordPage = ({ token }) => {
   return (
-    <div className="flex justify-center items-center min-h-full min-h-screen-no-header">
+    <div className="flex justify-center items-center min-h-screen-no-header">
       <ChangePasswordForm token={token} />
     </div>
   );

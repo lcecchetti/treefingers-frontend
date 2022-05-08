@@ -33,7 +33,7 @@ const ActivateAccountPage = ({ token }) => {
   
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-full min-h-screen-no-header">
+    <div className="flex flex-col justify-center items-center min-h-screen-no-header">
       <Spinner label="Activating your account..." loading={loading} />
       <ApiError error={error} />
     </div>

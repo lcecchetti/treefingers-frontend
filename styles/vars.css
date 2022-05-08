@@ -15,13 +15,13 @@
   --swiper-theme-color: var(--color-primary-contrast);
 
   /* Sizes */
-  --header-height: 62px;
+  --header-height: 54px;
 }
 
 /* Desktop */
 @screen lg {
   :root {
-    --header-height: 80px;
+    --header-height: 64px;
   }
 }
 
