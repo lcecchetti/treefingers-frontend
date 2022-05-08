@@ -1,5 +1,6 @@
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import { Link } from 'components/ui';
+import * as gtag from 'lib/gtag';
 
 const socials = [
   {
@@ -23,10 +24,17 @@ const SocialLinks = () => {
 
   return (
     <ul className="flex justify-between gap-md">
-      {socials.map((social, index) => (
+      {socials.map(({ href, label, Icon }, index) => (
         <li key={index}>
-          <Link href={social.href}>
-            <social.Icon className="text-2xl" />
+          <Link href={href} onClick={() => {
+            gtag.event({
+              action: 'social-icon-click',
+              category: 'social',
+              label,
+            });
+            location.href = href;
+          }}>
+            <Icon className="text-2xl" />
           </Link>
         </li>
       ))}

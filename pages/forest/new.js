@@ -9,6 +9,7 @@ const ForestNewPage = () => {
       <PageIntro>
         <Text variant="pageTitle">New forest</Text>
         <Text variant="p">
+          A forest is a place where to group stories.<br/>
           You can name it by interest, or it can a be a completely original name.<br/>
           One rule, keep it unique.
         </Text>
