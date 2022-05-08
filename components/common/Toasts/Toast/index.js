@@ -29,7 +29,7 @@ const Toast = ({ toast }) => {
   
   return (
     <div className={clsx(
-      'bg-base border-2 px-md py-sm rounded-full transition-[transform,opacity] flex justify-between items-center gap-md whitespace-pre',
+      'bg-base border-2 px-md py-sm rounded-full transition-[transform,opacity] flex justify-between items-center gap-md max-w-xs pointer-events-auto',
       !shown && 'translate-y-full opacity-0',
       dismissing && 'opacity-0',
       toast.type === 'error' && 'text-error',
