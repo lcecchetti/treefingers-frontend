@@ -11,6 +11,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
 import { TagList } from 'components/tag';
 import StoryTree from '../StoryTree';
+import clsx from 'clsx';
 
 /**
  * Single story query
@@ -46,7 +47,7 @@ export const QUERY_STORY = gql`
   }
 `;
 
-const StoryView = ({ story }) => {
+const StoryView = ({ className, story }) => {
   const { currentUser } = useCurrentUser();
 
   const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { filter: { _id: { eq: story._id } } } });
@@ -59,7 +60,7 @@ const StoryView = ({ story }) => {
   }, [!currentUser]);
 
   return (
-    <div className="flex flex-col gap-md">
+    <div className={clsx('flex flex-col gap-md', className)}>
         <Spinner loading={loading}/>
         <ApiError error={error}/>
 

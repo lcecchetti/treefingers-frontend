@@ -4,7 +4,7 @@ import { QUERY_STORIES, QUERY_STORY, StoryView } from 'components/story';
 
 const StoryPage = ({ story }) => {
   return (
-    <StoryView story={story} />
+    <StoryView story={story} className="mt-sm" />
   );
 };
 

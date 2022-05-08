@@ -5,7 +5,7 @@ import { ProfileSidebar } from 'components/profile';
 const ProfileLayout = ({ children }) => {
   return (
     <Container className="pt-header min-h-screen">
-      <div className="my-md lg:my-0 flex flex-col lg:flex-row gap-md">
+      <div className="flex flex-col lg:flex-row gap-md">
         <ProfileSidebar className="lg:w-1/4" />
         <div className="lg:w-3/4">
           {children}

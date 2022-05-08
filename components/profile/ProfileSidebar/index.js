@@ -19,7 +19,7 @@ const navData = [
 
 const ProfileSidebar = ({ className }) => {  
   return (
-    <nav className={clsx('flex flex-col gap-sm', className)}>
+    <nav className={clsx('flex flex-col gap-sm my-sm lg:my-md', className)}>
       <ul className="flex-col gap-px bg-primary-contrast text-primary-contrast rounded-xl overflow-hidden">
         {navData.map((item, index) => (
           <li key={index} className="border-b border-primary-contrast bg-primary relative">

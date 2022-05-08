@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
-import { ApiError } from 'components/common';
+import { ApiError, PageIntro } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import UserFollowership from 'components/user/UserFollowership';
 
@@ -42,13 +42,13 @@ const UserView = ({ className, _id }) => {
 
       {data &&
         <>
-          <div className="flex flex-col gap-sm my-md">
+          <PageIntro className="flex flex-col gap-sm">
             <div className="flex justify-between items-center">
               <Text variant="pageTitle" className="whitespace-pre-wrap">{data.user.username}</Text>
               <UserFollowership user={data.user} />
             </div>
             <Text variant="p">{data.user.bio}</Text>
-          </div>
+          </PageIntro>
           <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ author: { eq: data.user._id }, root: null }} />
         </>
       }
