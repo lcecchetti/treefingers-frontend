@@ -2,8 +2,10 @@ import { DefaultLayout } from 'components/layout';
 import { Text, Container } from 'components/ui';
 import { PageIntro } from 'components/common';
 import { StoryNew } from 'components/story';
+import { useRouter } from 'next/router';
 
 const StoryNewPage = () => {
+  const router = useRouter();
   return (
     <Container>
       <PageIntro>
@@ -14,7 +16,7 @@ const StoryNewPage = () => {
           Forests are containers and communities that group stories.
         </Text>
       </PageIntro>
-      <StoryNew />
+      <StoryNew forest={router.query.forest} />
     </Container>
   );
 };

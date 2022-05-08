@@ -1,7 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { useRouter } from 'next/router';
 import { Formik, Form, Field, FieldArray } from 'formik';
-import { FormField, Button } from 'components/ui';
+import { FormField, Button, Text } from 'components/ui';
 import * as Yup from 'yup';
 import { getStoryUrl } from 'lib/helper/story';
 import { AuthRequired } from 'components/auth';
@@ -9,6 +8,7 @@ import { ApiError } from 'components/common';
 import { FaTimes } from 'react-icons/fa';
 import * as gtag from 'lib/gtag';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const MUTATION_STORY_CREATE = gql`
   mutation createStory($input: CreateStoryInput!) {
@@ -38,7 +38,7 @@ const QUERY_CHOOSE_FOREST = gql`
   }
 `;
 
-const StoryNew = ({ parent, className }) => {
+const StoryNew = ({ parent, forest, className }) => {
   const router = useRouter();
   const [error, setError] = useState(false);
   const [createStory] = useMutation(MUTATION_STORY_CREATE, {
@@ -52,12 +52,13 @@ const StoryNew = ({ parent, className }) => {
     },
   });
 
-  const { data: forestsData, refetch: refetchForests } = useQuery(QUERY_CHOOSE_FOREST, {
+  const { data: forestsData, refetch: refetchForests, loading: loadingForests } = useQuery(QUERY_CHOOSE_FOREST, {
     variables: {
       filter: {
-        _id: { eq: router.query.forest },
+        _id: { eq: forest },
       },
     },
+    skip: !!parent,
   });
 
   return (
@@ -74,13 +75,16 @@ const StoryNew = ({ parent, className }) => {
             tags: [],
             forests: forestsData?.forests.edges.map(({ node }) =>({
               value: node._id,
-              label: node.name,
+              label: `${node.name} (${node.storiesCount} stories)`,
             })),
           }}
           validationSchema={Yup.object().shape({
             title: Yup.string().required(true),
             content: Yup.string().required(true),
-            forest: Yup.string().required(true),
+            forest: Yup.string().when('parent', {
+              is: () => !parent,
+              then: Yup.string().required(true),
+            })
           })}
           onSubmit={({ title, content, parent, tags, forest }, { resetForm }) => createStory({
             variables: { input: { data: {
@@ -141,31 +145,36 @@ const StoryNew = ({ parent, className }) => {
                 )}
               />
 
-              <div className="flex gap-md w-full items-stretch">
-                <Field
-                  as={FormField} 
-                  name="searchForest"
-                  className="grow"
-                  type="text" 
-                  label="Search forest:"
-                  onChange={(e) => {
-                    setFieldValue('searchForest', e.target.value);
-                    refetchForests({
-                      filter: {
-                        query: e.target.value,
-                      }
-                    });
-                  }} 
-                />
-                <Field 
-                  label="Forest"
-                  className="grow"
-                  as={FormField}
-                  name="forest"
-                  type="select"
-                  options={values.forests}
-                />
-              </div>
+              {!values.parent &&
+                <div className="flex flex-col gap-sm">
+                  <Text>Forest</Text>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-sm w-full"> 
+                    <Field
+                      as={FormField} 
+                      name="searchForest"
+                      className="grow"
+                      placeholder="Search..."
+                      type="text" 
+                      onChange={(e) => {
+                        setFieldValue('searchForest', e.target.value);
+                        refetchForests({
+                          filter: {
+                            query: e.target.value,
+                          }
+                        });
+                      }} 
+                    />
+                    <Field 
+                      as={FormField}
+                      name="forest"
+                      type="select"
+                      error={errors.forest}
+                      touched={touched.forest}
+                      options={values.forests}
+                    />
+                  </div>
+                </div>
+              }
 
               <ApiError error={error} />
               <Button
