@@ -2,7 +2,8 @@ import { useRef } from 'react';
 import { Link, Button, Text } from 'components/ui';
 import Typist from 'react-typist';
 import { FaAngleDoubleDown } from 'react-icons/fa';
-import { getForestNewUrl, getForestsUrl } from 'lib/helper/forest';
+import { getForestsUrl } from 'lib/helper/forest';
+import { getStoryNewUrl } from 'lib/helper/story';
 
 const heroTexts = [
   'Jumping out of the bed and swallowing her in just one bite.',
@@ -55,7 +56,7 @@ const Hero = () => {
         <div className="w-full">
           <Button as={Link} href={getForestsUrl()} variant="primary-contrast" className="my-sm">Read</Button>
           <Text variant="span" className="m-sm">- Or -</Text>
-          <Button as={Link} href={getForestNewUrl()} variant="primary-contrast" className="my-sm">Write</Button>
+          <Button as={Link} href={getStoryNewUrl()} variant="primary-contrast" className="my-sm">Write</Button>
         </div>
       </div>
     </div>

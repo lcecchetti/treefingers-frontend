@@ -14,7 +14,7 @@ const AuthRequired = ({ children, text }) => {
       {!currentUser && 
         <div className="my-md flex flex-col gap-sm items-center p-lg border-t-2 border-b-2">
           <Text variant="p">{text}</Text>
-          <Button as={Link} href={getLoginUrl(router.asPath)}>Login / Register</Button>
+          <Button as={Link} href={getLoginUrl(router.pathname)}>Login / Register</Button>
         </div>
       }
 

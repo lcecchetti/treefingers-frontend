@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Spinner, Text, Button } from 'components/ui';
+import { useEffect } from 'react';
+import { Spinner, Text, Button, Link } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
-import { StoryList, StoryNew } from 'components/story';
+import { StoryList } from 'components/story';
 import { ApiError, PageIntro } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import { FaSeedling, FaTimes } from 'react-icons/fa';
+import { FaSeedling } from 'react-icons/fa';
 import ForestActions from 'components/forest/ForestActions';
+import { getStoryNewUrl } from 'lib/helper/story';
 
 /**
  * Single forest query
@@ -29,7 +30,6 @@ export const QUERY_FOREST = gql`
 
 const ForestView = ({ className, _id }) => {
   const { currentUser } = useCurrentUser();
-  const [isWritingStory, setIsWritingStory] = useState(false);
   const { data, loading, error, refetch } = useQuery(QUERY_FOREST, { variables: { filter: { _id: { eq: _id } } } });
 
   // refresh data with customer specific infos
@@ -50,29 +50,13 @@ const ForestView = ({ className, _id }) => {
             <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
               <Text variant="pageTitle">{data.forest.name}</Text>
               <div className="flex gap-sm justify-between">
-                <Button icon={FaSeedling} onClick={() => setIsWritingStory(true)}>Plant a story</Button>
+                <Button as={Link} icon={FaSeedling} href={getStoryNewUrl(data.forest)}>Plant a story</Button>
                 <ForestActions forest={data.forest} />
               </div>
             </div>
             <Text variant="p" className="whitespace-pre-wrap">{data.forest.about}</Text>
           </PageIntro>
-          {isWritingStory &&
-            <div className="flex flex-col gap-md">
-              <div className="flex flex-col gap-sm">
-                <div className="flex justify-between items-center">
-                  <Text className="uppercase text-md font-bold" as="h3">Plant a story</Text>
-                  <FaTimes className="cursor-pointer text-lg" onClick={() => setIsWritingStory(false)} />
-                </div>
-                <Text as="p">
-                  Some writings, and a captivating title, that's all it takes for a good seed.
-                </Text>
-              </div>
-              <StoryNew forest={data.forest} />
-            </div>
-          }
-          {!isWritingStory &&
-            <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest._id } }} />
-          }
+          <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest._id } }} />
         </>
       }
     </div>

@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import Text from 'components/ui/Text';
 
 const FormField = ({ className, fieldClassName, labelClassName, type, name, label, hint, options, error, touched, ...rest }) => {
-
   const componentMap = {
     'select': 'select',
     'textarea': 'textarea',
@@ -46,8 +45,8 @@ const FormField = ({ className, fieldClassName, labelClassName, type, name, labe
         {...rest}>
 
         {options &&
-          options.map(({ value, selected }, index) => (
-            <option key={index} selected>{value}</option>
+          options.map(({ value, label }, index) => (
+            <option key={index} value={value}>{label}</option>
           ))
         }
 
