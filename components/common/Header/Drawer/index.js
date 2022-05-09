@@ -36,6 +36,12 @@ const Drawer = () => {
 
   const drawerItems = [
     {
+      label: 'HOME',
+      href: '/',
+      Icon: null,
+      onClick: false,
+    },
+    {
       label: 'FORESTS',
       href: getForestsUrl(),
       Icon: null,
