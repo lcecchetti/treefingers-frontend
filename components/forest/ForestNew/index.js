@@ -49,8 +49,8 @@ const ForestNew = ({ className, afterCreationCallback }) => {
             about: '',
           }}
           validationSchema={Yup.object().shape({
-            name: Yup.string().min(2, 'Too short!').max(32, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(true),
-            about: Yup.string().required(true),
+            name: Yup.string().max(21, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(true),
+            about: Yup.string().max(4096, 'Too long!').required(true),
           })}
           onSubmit={({ name, about }, { resetForm }) => createForest({
             variables: { input: { data: {

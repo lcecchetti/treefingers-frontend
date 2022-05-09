@@ -66,8 +66,8 @@ const RegisterForm = () => {
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required(true),
           password: Yup.string().min(10, 'Too short!').required(true),
-          username: Yup.string().min(2, 'Too short!').max(32, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(true),
-          bio: Yup.string().max(255, 'Too long!'),
+          username: Yup.string().min(3, 'Too short!').max(20, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(true),
+          bio: Yup.string().max(4096, 'Too long!'),
         })}
       >
         {({ isSubmitting, errors, touched }) => (
