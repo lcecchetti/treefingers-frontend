@@ -98,9 +98,9 @@ const StoryNew = ({ parent, forest, className }) => {
             hasForestSelection,
           }}
           validationSchema={Yup.object().shape({
-            title: Yup.string().required(true),
-            content: Yup.string().required(true),
-            forest: Yup.string().when('parent', {
+            title: Yup.string().max(300, 'Too long!').required(true),
+            content: Yup.string().max(4096, 'Too long!').required(true),
+            forest: Yup.string().when('hasForestSelection', {
               is: () => hasForestSelection,
               then: Yup.string().required(true),
             })
