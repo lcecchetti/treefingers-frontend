@@ -50,7 +50,7 @@ const ForestView = ({ className, _id }) => {
             <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
               <Text variant="pageTitle" className="break-words w-full">{data.forest.name}</Text>
               <div className="flex gap-sm justify-between">
-                <Button as={Link} icon={FaSeedling} href={getStoryNewUrl(data.forest)}>Plant a story</Button>
+                <Button as={Link} icon={FaSeedling} href={getStoryNewUrl(data.forest)}>Plant</Button>
                 <ForestActions forest={data.forest} />
               </div>
             </div>
