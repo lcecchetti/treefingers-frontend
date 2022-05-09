@@ -1,6 +1,7 @@
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import { Link } from 'components/ui';
 import * as gtag from 'lib/gtag';
+import { useUI } from 'lib/ui/context';
 
 const socials = [
   {
@@ -21,6 +22,7 @@ const socials = [
 ];
 
 const SocialLinks = () => {
+  const { showToast } = useUI();
 
   return (
     <ul className="flex justify-between gap-md">
@@ -32,7 +34,8 @@ const SocialLinks = () => {
               category: 'social',
               label,
             });
-            location.href = href;
+            showToast(`We're not on ${label} yet, but we'll be soon!`);
+            //location.href = href;
           }}>
             <Icon className="text-2xl" />
           </Link>
