@@ -72,7 +72,7 @@ const StoryView = ({ className, story }) => {
         {data &&
           <div className="relative flex flex-col gap-md lg:min-h-screen overflow-hidden">
             <Container className="flex justify-end">
-              <div className="flex flex-col gap-md w-full lg:w-1/2 z-10">
+              <div className="flex flex-col gap-md w-full lg:w-1/2 z-10 mb-xl">
                 {data?.story &&
                   <div className="text-center flex justify-around items-center">
                     {!isStoryRoot(data.story) && 
