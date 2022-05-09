@@ -28,7 +28,8 @@ const SocialLinks = () => {
     <ul className="flex justify-between gap-md">
       {socials.map(({ href, label, Icon }, index) => (
         <li key={index}>
-          <Link href={href} onClick={() => {
+          <Link href={href} onClick={(e) => {
+            e.preventDefault();
             gtag.event({
               action: 'social-icon-click',
               category: 'social',

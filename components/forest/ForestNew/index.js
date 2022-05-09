@@ -8,6 +8,7 @@ import { AuthRequired } from 'components/auth';
 import { ApiError } from 'components/common';
 import * as gtag from 'lib/gtag';
 import { useState } from 'react';
+import { useUI } from 'lib/ui/context';
 
 /**
  * Create forest mutation
@@ -24,7 +25,7 @@ const MUTATION_FOREST_CREATE = gql`
   }
 `;
 
-const ForestNew = () => {
+const ForestNew = ({ className, afterCreationCallback }) => {
   const [error, setError] = useState(false);
   const [createForest] = useMutation(MUTATION_FOREST_CREATE, {
     onError: (e) => {
@@ -37,9 +38,10 @@ const ForestNew = () => {
     },
   });
   const router = useRouter();
+  const { showToast } = useUI();
 
   return (
-    <div>
+    <div className={className}>
       <AuthRequired>
         <Formik
           initialValues={{
@@ -50,7 +52,7 @@ const ForestNew = () => {
             name: Yup.string().min(2, 'Too short!').max(32, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(true),
             about: Yup.string().required(true),
           })}
-          onSubmit={({ name, about }) => createForest({
+          onSubmit={({ name, about }, { resetForm }) => createForest({
             variables: { input: { data: {
               name, about
             }}},
@@ -60,7 +62,14 @@ const ForestNew = () => {
                 category: 'forest',
                 label: 'success',
               });
-              router.push(getForestUrl(data.createForest.forest));
+              showToast(`${data.createForest.forest.name} created!`);
+              if (afterCreationCallback) {
+                afterCreationCallback();
+              } else {
+                router.push(getForestUrl(data.createForest.forest));
+              }
+
+              resetForm();
             },
           })}>
           {({ isSubmitting, errors, touched }) => (
