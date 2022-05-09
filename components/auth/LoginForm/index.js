@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { gql, useMutation, useApolloClient } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useCurrentUser } from 'lib/auth/currentUser';
@@ -29,10 +29,11 @@ const MUTATION_LOGIN = gql`
 const LoginForm = () => {
   const router = useRouter();
   const client = useApolloClient();
+  const [error, setError] = useState(false);
   const { currentUser } = useCurrentUser();
   const { showToast } = useUI();
 
-  const [login, { error }] = useMutation(MUTATION_LOGIN, {
+  const [login] = useMutation(MUTATION_LOGIN, {
     onCompleted: async ({ login }) => {      
       setAuthToken(login.token);
       await client.resetStore();
@@ -51,6 +52,8 @@ const LoginForm = () => {
         category: 'auth',
         label: 'error',
       });
+
+      setError(e);
     }
   });
 
