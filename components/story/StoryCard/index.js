@@ -24,13 +24,14 @@ const StoryCard = ({ className, story }) => {
       }>
         <Text variant="title">{story.title}</Text>
         {!isChapter &&
-          <Text variant="p" className="whitespace-pre-wrap">{story.excerpt}</Text>
+          <Text variant="p">{story.excerpt}</Text>
         }
         <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">{isChapter ? 'Select' : 'Read More'}</Button>
+        <TagList className="flex-wrap" tags={story.tags} buttonVariant="primary-contrast" />
       </CardBody>
 
       <CardFooter>
-        <TagList className="flex-wrap" tags={story.tags} buttonVariant="primary-contrast" />
+        <div></div>
         <StoryActions story={story} disabledActions={{ tree: isChapter }} />
       </CardFooter>
     </Card>
