@@ -190,12 +190,20 @@ const StoryNew = ({ parent, forest, className }) => {
                       onChange={async (e) => {
                         setFieldValue('forestsLoading', true);
                         setFieldValue('forest', '');
-                        const { data } = await apolloClient.query({
+                        const { data, error } = await apolloClient.query({
                           query: QUERY_CHOOSE_FOREST,
                           variables: { filter: { query: e.target.value } },
                         });
-                        setFieldValue('forests', prepareForestOptions(data));
-                        setFieldValue('forest', prepareForestOptions(data).shift()?.value);
+
+                        if(error) {
+                          setError(error);
+                        }
+
+                        if (data) {
+                          setFieldValue('forests', prepareForestOptions(data));
+                          setFieldValue('forest', prepareForestOptions(data).shift()?.value);
+                        }
+
                         setFieldValue('forestsLoading', false);
                       }} 
                     />

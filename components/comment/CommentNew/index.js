@@ -6,6 +6,7 @@ import { AuthRequired } from 'components/auth';
 import { QUERY_COMMENTS } from 'components/comment/CommentList';
 import { ApiError } from 'components/common';
 import * as gtag from 'lib/gtag';
+import { useState } from 'react';
 
 /**
  * Create comment mutation
@@ -36,7 +37,8 @@ const MUTATION_COMMENT = gql`
 `;
 
 const CommentNew = ({ entity, sort, last }) => {
-  const [comment, { error }] = useMutation(MUTATION_COMMENT, {
+  const [error, setError] = useState();
+  const [comment] = useMutation(MUTATION_COMMENT, {
     update(cache, { data }) {
       // add new comment to the cache
       cache.updateQuery({
@@ -60,6 +62,7 @@ const CommentNew = ({ entity, sort, last }) => {
         category: 'comment',
         label: 'error',
       });
+      setError(e);
     }
   });
 
@@ -67,15 +70,18 @@ const CommentNew = ({ entity, sort, last }) => {
     <div>
       <AuthRequired>
         <Formik
+          enableReinitialize
           initialValues={{
             content: '',
+            entity: entity._id,
+            entityType: entity.__typename,
           }}
           validationSchema={Yup.object().shape({
             content: Yup.string().max(512, 'Too long!').required(true),
           })}
-          onSubmit={(values, { resetForm }) => {
+          onSubmit={({ content, entity, entityType }, { resetForm }) => {
             comment({
-              variables: { input: { data: { ...values, entity: entity._id, entityType: entity.__typename } } },
+              variables: { input: { data: { content, entity, entityType} } },
               onCompleted: () => {
                 gtag.event({
                   action: `submit-comment-${entity.__typename}`,
