@@ -10,7 +10,7 @@ const StoriesPage = () => {
   return (
     <Container>
       <PageIntro>
-        <div className="flex gap-sm justify-between items-center">
+        <div className="flex gap-sm justify-between items-center text-center">
           <Text variant="pageTitle">Stories</Text>
           <Button as={Link} href={getStoryNewUrl()} icon={FaTree}>Plant a story</Button>
         </div>

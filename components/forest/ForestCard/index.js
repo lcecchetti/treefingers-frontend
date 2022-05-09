@@ -8,8 +8,10 @@ const ForestCard = ({ className, forest }) => {
   return (
     <Card className={clsx('border-2 bg-base', className)}>
       <CardBody>
-        <Text variant="title">{forest.name}</Text>
-        <Text variant="p">{forest.excerpt}</Text>
+        <Link href={getForestUrl(forest)} className="w-full">
+          <Text variant="title" className="break-words text-center">{forest.name}</Text>
+        </Link>
+        <Text variant="p" className="break-words w-full text-center">{forest.excerpt}</Text>
         <Button as={Link} variant="primary" href={getForestUrl(forest)}>Read more</Button>
       </CardBody>
       <CardFooter>
