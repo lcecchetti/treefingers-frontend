@@ -16,7 +16,7 @@ const Avatar = ({ className, user, size = 'md', showName = false }) => {
         ['text-5xl']: size === 'lg',
       })} />
       {showName && 
-        <Text variant="span">{user.username}</Text>
+        <Text variant="span" className="break-words max-w-full">{user.username}</Text>
       }
     </Link>
   );

@@ -44,10 +44,10 @@ const UserView = ({ className, _id }) => {
         <>
           <PageIntro className="flex flex-col gap-sm">
             <div className="flex justify-between items-center">
-              <Text variant="pageTitle" className="whitespace-pre-wrap">{data.user.username}</Text>
+              <Text variant="pageTitle" className="whitespace-pre-wrap w-full break-words">{data.user.username}</Text>
               <UserFollowership user={data.user} />
             </div>
-            <Text variant="p">{data.user.bio}</Text>
+            <Text variant="p" className="break-words w-full">{data.user.bio}</Text>
           </PageIntro>
           <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ author: { eq: data.user._id }, root: null }} />
         </>

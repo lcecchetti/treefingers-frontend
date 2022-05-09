@@ -22,9 +22,11 @@ const StoryCard = ({ className, story }) => {
           ['px-lg']: isChapter,
         })
       }>
-        <Text variant="title">{story.title}</Text>
+        <Link href={getStoryUrl(story)} className="w-full">
+          <Text variant="title" className="break-words text-center">{story.title}</Text>
+        </Link>
         {!isChapter &&
-          <Text variant="p">{story.excerpt}</Text>
+          <Text variant="p" className="break-words w-full text-center">{story.excerpt}</Text>
         }
         <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">{isChapter ? 'Select' : 'Read More'}</Button>
         <TagList className="flex-wrap" tags={story.tags} buttonVariant="primary-contrast" />

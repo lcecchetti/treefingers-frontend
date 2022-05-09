@@ -92,8 +92,8 @@ const StoryView = ({ className, story }) => {
                     <Avatar user={data.story.author} showName={true} />
                   </div>
 
-                  <Text variant="storyTitle">{data.story.title}</Text>
-                  <Text variant="p" className="whitespace-pre-wrap">{data.story.content}</Text>
+                  <Text variant="storyTitle" className="break-words w-full">{data.story.title}</Text>
+                  <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data.story.content}</Text>
 
                   <div className="flex justify-between items-center">
                     <TagList tags={data.story.tags} />

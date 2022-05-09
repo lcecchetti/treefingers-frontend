@@ -14,7 +14,7 @@ const UserCard = ({ className, user }) => {
       </CardHeader>
 
       <CardBody>
-        <Text>{user.excerpt}</Text>
+        <Text className="break-words w-full text-center">{user.excerpt}</Text>
         <Button as={Link} href={getUserUrl(user)} variant="primary-contrast">View profile</Button>
       </CardBody>
     </Card>

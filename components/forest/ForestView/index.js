@@ -48,13 +48,13 @@ const ForestView = ({ className, _id }) => {
         <>
           <PageIntro className="flex flex-col gap-sm">
             <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
-              <Text variant="pageTitle">{data.forest.name}</Text>
+              <Text variant="pageTitle" className="break-words w-full">{data.forest.name}</Text>
               <div className="flex gap-sm justify-between">
                 <Button as={Link} icon={FaSeedling} href={getStoryNewUrl(data.forest)}>Plant a story</Button>
                 <ForestActions forest={data.forest} />
               </div>
             </div>
-            <Text variant="p" className="whitespace-pre-wrap">{data.forest.about}</Text>
+            <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data.forest.about}</Text>
           </PageIntro>
           <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest._id } }} />
         </>
