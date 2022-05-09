@@ -143,7 +143,10 @@ const StoryNew = ({ parent, forest, className }) => {
                 render={arrayHelpers => (
                   <div className="flex flex-col gap-sm">
                     <div className="flex gap-sm justify-items-stretch items-center">
-                      <Field className="grow" name="addTag" as={FormField} type="text" />
+                      <Field className="grow" name="addTag" as={FormField} type="text" 
+                        label="Tag your story" 
+                        hint="Use meaningful keywords, it'll make it easier to search for it"
+                      />
                       <Button className="whitespace-nowrap" type="button" size="md" onClick={() => { 
                         if(values.tags.includes(values.addTag) || !values.addTag) {
                           return;
@@ -166,8 +169,13 @@ const StoryNew = ({ parent, forest, className }) => {
               {values.hasForestSelection &&
                 <div className="flex flex-col gap-sm">
                   <div>
-                    <Text>Select a forest</Text>
-                    <Text className="cursor-pointer ml-sm text-xs" onClick={() => openFlyout(flyoutTypes.forestNew, { title: 'Create forest' })}>(Or click here to create it)</Text>
+                    <Text variant="p">
+                      Select a forest
+                    </Text>
+                    <Text variant="p" className="text-sm">
+                      Forests are places where to group stories. Pick the one that suits your story the most, or create your own by clicking
+                      <Text className="cursor-pointer text-primary-light font-bold" onClick={() => openFlyout(flyoutTypes.forestNew, { title: 'Create forest' })}> here</Text> 
+                    </Text>
                   </div>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-sm w-full"> 
                     <Field
