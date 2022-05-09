@@ -12,7 +12,7 @@ const StoriesPage = () => {
       <PageIntro>
         <div className="flex gap-sm justify-between items-center text-center">
           <Text variant="pageTitle">Stories</Text>
-          <Button as={Link} href={getStoryNewUrl()} icon={FaTree}>Plant a story</Button>
+          <Button as={Link} href={getStoryNewUrl()} icon={FaTree}>Plant</Button>
         </div>
         <Text variant="p">
           Here is a list of popular stories.
