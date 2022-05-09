@@ -144,7 +144,7 @@ const StoryNew = ({ parent, forest, className }) => {
                   <div className="flex flex-col gap-sm">
                     <div className="flex gap-sm justify-items-stretch items-center">
                       <Field className="grow" name="addTag" as={FormField} type="text" />
-                      <Button type="button" size="md" onClick={() => { 
+                      <Button className="whitespace-nowrap" type="button" size="md" onClick={() => { 
                         if(values.tags.includes(values.addTag) || !values.addTag) {
                           return;
                         } 
@@ -167,7 +167,7 @@ const StoryNew = ({ parent, forest, className }) => {
                 <div className="flex flex-col gap-sm">
                   <div>
                     <Text>Select a forest</Text>
-                    <Text className="cursor-pointer ml-sm" onClick={() => openFlyout(flyoutTypes.forestNew, { title: 'Create forest' })}>(Or create it...)</Text>
+                    <Text className="cursor-pointer ml-sm text-xs" onClick={() => openFlyout(flyoutTypes.forestNew, { title: 'Create forest' })}>(Or click here to create it)</Text>
                   </div>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-sm w-full"> 
                     <Field
