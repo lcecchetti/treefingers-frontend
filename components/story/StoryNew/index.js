@@ -92,7 +92,7 @@ const StoryNew = ({ parent, forest, className }) => {
             parent: parent?._id,
             addTag: '',
             tags: [],
-            forest: forestsData ? prepareForestOptions(forestsData).pop()?.value : '',
+            forest: forestsData ? prepareForestOptions(forestsData).shift()?.value : '',
             forests: forestsData ? prepareForestOptions(forestsData) : [],
             forestsLoading: forestsLoading,
             hasForestSelection,
@@ -184,7 +184,7 @@ const StoryNew = ({ parent, forest, className }) => {
                           variables: { filter: { query: e.target.value } },
                         });
                         setFieldValue('forests', prepareForestOptions(data));
-                        setFieldValue('forest', prepareForestOptions(data).pop()?.value);
+                        setFieldValue('forest', prepareForestOptions(data).shift()?.value);
                         setFieldValue('forestsLoading', false);
                       }} 
                     />
