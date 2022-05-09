@@ -98,8 +98,9 @@ const StoryNew = ({ parent, forest, className }) => {
             hasForestSelection,
           }}
           validationSchema={Yup.object().shape({
-            title: Yup.string().max(300, 'Too long!').required(true),
+            title: Yup.string().max(64, 'Too long!').required(true),
             content: Yup.string().max(4096, 'Too long!').required(true),
+            addTag: Yup.string().max(16, 'Too long'),
             forest: Yup.string().when('hasForestSelection', {
               is: () => hasForestSelection,
               then: Yup.string().required(true),
@@ -145,13 +146,15 @@ const StoryNew = ({ parent, forest, className }) => {
                     <div className="flex gap-sm justify-items-stretch items-center">
                       <Field className="grow" name="addTag" as={FormField} type="text" 
                         label="Tag your story" 
+                        error={errors.addTag}
+                        touched={errors.addTag}
                         hint="Use meaningful keywords, it'll make it easier to search for it"
                       />
-                      <Button className="whitespace-nowrap" type="button" size="md" onClick={() => { 
+                      <Button className="whitespace-nowrap" disabled={values.tags.length >= 5} type="button" size="md" onClick={() => { 
                         if(values.tags.includes(values.addTag) || !values.addTag) {
                           return;
                         } 
-                        arrayHelpers.push(values.addTag);
+                        arrayHelpers.push(values.addTag.replace(/\s/g,''));
                         setFieldValue('addTag', '');
                       }}>Add Tag</Button>
                     </div>
