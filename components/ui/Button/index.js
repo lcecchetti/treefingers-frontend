@@ -14,6 +14,7 @@ const Button = ({ children, className, loading = false, variant = 'primary', siz
       outlined: 'bg-primary-contrast text-primary border-primary border-2 disabled:line-through',
     },
     size: {
+      xs: 'text-xs p-xs',
       sm: 'text-sm p-sm',
       md: 'text-md py-sm px-md',
       lg: 'text-xl py-md px-xl',

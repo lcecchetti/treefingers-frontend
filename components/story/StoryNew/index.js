@@ -1,6 +1,6 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { Formik, Form, Field, FieldArray } from 'formik';
-import { FormField, Button, Text } from 'components/ui';
+import { FormField, Button, Text, Link } from 'components/ui';
 import * as Yup from 'yup';
 import { getStoryUrl } from 'lib/helper/story';
 import { AuthRequired } from 'components/auth';
@@ -10,6 +10,7 @@ import * as gtag from 'lib/gtag';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
+import { flyoutTypes, useUI } from 'lib/ui/context';
 
 const MUTATION_STORY_CREATE = gql`
   mutation createStory($input: CreateStoryInput!) {
@@ -42,6 +43,7 @@ const QUERY_CHOOSE_FOREST = gql`
 const StoryNew = ({ parent, forest, className }) => {
   const router = useRouter();
   const apolloClient = useApolloClient();
+  const { openFlyout } = useUI();
   const [error, setError] = useState(false);
   const [createStory] = useMutation(MUTATION_STORY_CREATE, {
     onError: (e) => {
@@ -90,7 +92,7 @@ const StoryNew = ({ parent, forest, className }) => {
             parent: parent?._id,
             addTag: '',
             tags: [],
-            forest: forestsData ? prepareForestOptions(forestsData).pop() : '',
+            forest: forestsData ? prepareForestOptions(forestsData).pop()?.value : '',
             forests: forestsData ? prepareForestOptions(forestsData) : [],
             forestsLoading: forestsLoading,
             hasForestSelection,
@@ -163,7 +165,10 @@ const StoryNew = ({ parent, forest, className }) => {
 
               {values.hasForestSelection &&
                 <div className="flex flex-col gap-sm">
-                  <Text>Forest</Text>
+                  <div>
+                    <Text>Select a forest</Text>
+                    <Text className="cursor-pointer ml-sm" onClick={() => openFlyout(flyoutTypes.forestNew, { title: 'Create forest' })}>(Or create it...)</Text>
+                  </div>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-sm w-full"> 
                     <Field
                       as={FormField} 

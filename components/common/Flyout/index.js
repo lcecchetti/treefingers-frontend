@@ -6,6 +6,7 @@ import { Text } from 'components/ui';
 import { CommentList } from 'components/comment';
 import { FaTimes } from 'react-icons/fa';
 import { StoryTree } from 'components/story';
+import { ForestNew } from 'components/forest';
 
 const Flyout = () => {
   const router = useRouter();
@@ -46,6 +47,9 @@ const Flyout = () => {
         }
         {flyoutType === flyoutTypes.tree && isFlyoutOpen &&
           <StoryTree className="h-full w-full" story={flyoutData.entity} />
+        }
+        {flyoutType === flyoutTypes.forestNew &&
+          <ForestNew className="p-md overflow-auto" afterCreationCallback={() => closeFlyout()} />
         }
       </div>
     </div>
