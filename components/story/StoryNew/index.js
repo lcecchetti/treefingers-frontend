@@ -126,7 +126,7 @@ const StoryNew = ({ parent, forest, className }) => {
                 as={FormField}
                 name="title"
                 type="text"
-                label="Title"
+                label={!parent ? 'Title' : 'Action'}
                 error={errors.title}
                 touched={touched.title}
               />
