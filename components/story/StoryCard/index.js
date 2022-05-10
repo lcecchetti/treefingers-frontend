@@ -29,11 +29,10 @@ const StoryCard = ({ className, story }) => {
           <Text variant="p" className="break-words w-full text-center">{story.excerpt}</Text>
         }
         <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">{isChapter ? 'Select' : 'Read More'}</Button>
-        <TagList className="flex-wrap" tags={story.tags} buttonVariant="primary-contrast" />
       </CardBody>
 
       <CardFooter>
-        <div></div>
+        <TagList className="max-h-[36px] overflow-hidden" tags={story.tags} buttonVariant="primary-contrast" />
         <StoryActions story={story} disabledActions={{ tree: isChapter }} />
       </CardFooter>
     </Card>

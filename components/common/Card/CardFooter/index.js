@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 const CardFooter = ({ className, children }) => {
   return (
-    <div className={clsx('flex justify-between items-end gap-md', className)}>
+    <div className={clsx('flex justify-between items-center gap-md', className)}>
       {children}
     </div>
   );
