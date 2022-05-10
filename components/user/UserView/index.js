@@ -20,9 +20,9 @@ export const QUERY_USER = gql`
   }
 `;
 
-const UserView = ({ className, _id }) => {
+const UserView = ({ className, user }) => {
   const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: _id } } } });
+  const { data, loading, error, refetch } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: user._id } } } });
 
   // refresh data with customer specific infos
   useEffect(() => {
@@ -36,18 +36,14 @@ const UserView = ({ className, _id }) => {
       <Spinner loading={loading}/>
       <ApiError error={error}/>
 
-      {data &&
-        <>
-          <PageIntro className="flex flex-col gap-sm">
-            <div className="flex justify-between items-center">
-              <Text variant="pageTitle" className="whitespace-pre-wrap w-full break-words">{data.user.username}</Text>
-              <UserFollowership user={data.user} />
-            </div>
-            <Text variant="p" className="break-words w-full">{data.user.bio}</Text>
-          </PageIntro>
-          <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ author: { eq: data.user._id }, root: null }} />
-        </>
-      }
+      <PageIntro className="flex flex-col gap-sm">
+        <div className="flex justify-between items-center">
+          <Text variant="pageTitle" className="whitespace-pre-wrap w-full break-words">{data.user.username}</Text>
+          <UserFollowership user={data.user} />
+        </div>
+        <Text variant="p" className="break-words w-full">{data.user.bio}</Text>
+      </PageIntro>
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ author: { eq: data.user._id }, root: null }} />
     </div>
   );
 };

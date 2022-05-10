@@ -7,9 +7,9 @@ import { useState } from 'react';
 import * as gtag from 'lib/gtag';
 
 const SearchResult = ({ className, query }) => {
-  const [forestsCount, setForestsCount] = useState(0);
-  const [storiesCount, setStoriesCount] = useState(0);
-  const [usersCount, setUsersCount] = useState(0);
+  const [forestsCount, setForestsCount] = useState();
+  const [storiesCount, setStoriesCount] = useState();
+  const [usersCount, setUsersCount] = useState();
 
   const tabs = [
     { key: 'stories', label: 'Stories', Component: StoryList, filter: { root: null }, totalCount: storiesCount, setTotalCount: setStoriesCount },
@@ -38,7 +38,7 @@ const SearchResult = ({ className, query }) => {
       <div>
         {tabs.map(({ key, Component, filter = {}, totalCount, setTotalCount }) => (
           <div key={key} className={clsx(currentTab === key && 'block', currentTab !== key && 'hidden')}>
-            {!totalCount &&
+            {totalCount === 0 &&
               <Text>No results.</Text>
             }
             <Component className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ query, ...filter }} setTotalCount={setTotalCount} />   

@@ -56,7 +56,7 @@ const StoryList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   }, [!currentUser]);
 
   useEffect(() => {
-    setTotalCount && setTotalCount(data?.stories.pageInfo.totalCount);
+    setTotalCount && !loading && setTotalCount(data?.stories.pageInfo.totalCount);
   }, [data?.stories.pageInfo.totalCount]);
 
   return (!!data?.stories.edges.length &&

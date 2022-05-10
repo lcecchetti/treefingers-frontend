@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import clsx from 'clsx';
 import { InfiniteScroll } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import UserCard from '../UserCard';
@@ -41,19 +40,15 @@ const UserList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   }, [!currentUser]);
 
   useEffect(() => {
-    setTotalCount && setTotalCount(data?.users.pageInfo.totalCount);
+    setTotalCount && !loading && setTotalCount(data?.users.pageInfo.totalCount);
   }, [data?.users.pageInfo.totalCount]);
 
-  return (
-    <>
-      {!!data?.users.edges.length &&
-        <InfiniteScroll className={className} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
-          {data.users.edges.map(({ node }) => (
-            <UserCard key={node._id} user={node} />
-          ))}
-        </InfiniteScroll>
-      }
-    </>
+  return (!!data?.users.edges.length &&
+    <InfiniteScroll className={className} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
+      {data.users.edges.map(({ node }) => (
+        <UserCard key={node._id} user={node} />
+      ))}
+    </InfiniteScroll>
   );
 };
 

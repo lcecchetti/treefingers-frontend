@@ -11,7 +11,7 @@ const UserPage = ({ user }) => {
       <Head>
         <title>{user.username} | User | Treefingers</title>
       </Head>
-      <UserView _id={user._id} />
+      <UserView user={user} />
     </Container>
   );
 };
