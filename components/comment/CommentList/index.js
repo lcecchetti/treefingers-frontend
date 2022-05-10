@@ -5,10 +5,6 @@ import { Avatar } from 'components/user';
 import { gql, useQuery } from '@apollo/client';
 import CommentNew from 'components/comment/CommentNew';
 
-/**
- * Comments list query
- * @type {gql}
- */
 export const QUERY_COMMENTS = gql`
   query comments($filter: FilterCommentInput, $sort: SortCommentInput, $last: Int, $before: String) {
     comments(filter: $filter, sort: $sort, last: $last, before: $before) {

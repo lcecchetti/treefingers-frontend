@@ -89,9 +89,6 @@ const UserFollowership = ({ user, viewOnly }) => {
 
   const isSubmitting = followLoading || unfollowLoading;
 
-  /**
-   * Toogle followership status for logged in users
-   */
   const toogleFollowership = async () => {
     if (viewOnly || isSubmitting) {
       // block submission

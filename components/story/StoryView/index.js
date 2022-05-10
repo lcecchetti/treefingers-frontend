@@ -14,10 +14,6 @@ import StoryTree from '../StoryTree';
 import clsx from 'clsx';
 import { getForestUrl } from 'lib/helper/forest';
 
-/**
- * Single story query
- * @type {gql}
- */
 export const QUERY_STORY = gql`
   query story($filter: FilterStoryInput!) {
     story(filter: $filter) {

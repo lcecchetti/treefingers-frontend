@@ -1,6 +1,6 @@
 import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { Formik, Form, Field, FieldArray } from 'formik';
-import { FormField, Button, Text, Link } from 'components/ui';
+import { FormField, Button, Text } from 'components/ui';
 import * as Yup from 'yup';
 import { getStoryUrl } from 'lib/helper/story';
 import { AuthRequired } from 'components/auth';

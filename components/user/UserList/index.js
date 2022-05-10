@@ -5,10 +5,6 @@ import { InfiniteScroll } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import UserCard from '../UserCard';
 
-/**
- * Users list query
- * @type {gql}
- */
 export const QUERY_USERS = gql`
   query users($filter: FilterUserInput, $first: Int, $after: String) {
     users (filter: $filter, first: $first, after: $after) {

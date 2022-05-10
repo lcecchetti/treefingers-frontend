@@ -90,9 +90,6 @@ const ForestMembership = ({ forest, viewOnly }) => {
 
   const isSubmitting = joinLoading || leaveLoading;
 
-  /**
-   * Toogle like status for logged in users
-   */
   const toogleMembership = async () => {
     if (viewOnly || isSubmitting) {
       // block submission

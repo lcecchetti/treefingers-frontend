@@ -10,10 +10,6 @@ import * as gtag from 'lib/gtag';
 import { useState } from 'react';
 import { useUI } from 'lib/ui/context';
 
-/**
- * Create forest mutation
- * @type {gql}
- */
 const MUTATION_FOREST_CREATE = gql`
   mutation createForest($input: CreateForestInput!) {
     createForest(input: $input) {
