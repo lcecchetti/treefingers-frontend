@@ -24,9 +24,9 @@ export const QUERY_FOREST = gql`
   }
 `;
 
-const ForestView = ({ className, _id }) => {
+const ForestView = ({ className, forest }) => {
   const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch } = useQuery(QUERY_FOREST, { variables: { filter: { _id: { eq: _id } } } });
+  const { data, loading, error, refetch } = useQuery(QUERY_FOREST, { variables: { filter: { _id: { eq: forest._id } } } });
 
   // refresh data with customer specific infos
   useEffect(() => {
@@ -40,21 +40,20 @@ const ForestView = ({ className, _id }) => {
       <Spinner loading={loading}/>
       <ApiError error={error}/>
 
-      {data &&
-        <>
-          <PageIntro className="flex flex-col gap-sm">
-            <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
-              <Text variant="pageTitle" className="break-words w-full">{data.forest.name}</Text>
-              <div className="flex gap-sm justify-between">
-                <Button as={Link} icon={FaSeedling} href={getStoryNewUrl(data.forest)}>Plant</Button>
-                <ForestActions forest={data.forest} />
-              </div>
-            </div>
-            <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data.forest.about}</Text>
-          </PageIntro>
-          <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest._id } }} />
-        </>
+      <PageIntro className="flex flex-col gap-sm">
+        <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
+          <Text variant="pageTitle" className="break-words w-full">{data.forest.name}</Text>
+          <div className="flex gap-sm justify-between">
+            <Button as={Link} icon={FaSeedling} href={getStoryNewUrl(data.forest)}>Plant</Button>
+            <ForestActions forest={data.forest} />
+          </div>
+        </div>
+        <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data.forest.about}</Text>
+      </PageIntro>
+      {forest.storiesCount === 0 &&
+        <Text>I see too much blank space on this page, let's plant some stories!</Text>
       }
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest._id } }} />
     </div>
   );
 };

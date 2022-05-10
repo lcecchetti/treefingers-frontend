@@ -42,7 +42,7 @@ const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
 
 
   useEffect(() => {
-    setTotalCount && setTotalCount(data?.forests.pageInfo.totalCount);
+    setTotalCount && !loading && setTotalCount(data?.forests.pageInfo.totalCount);
   }, [data?.forests.pageInfo.totalCount]);
 
   return (!!data?.forests.edges.length &&

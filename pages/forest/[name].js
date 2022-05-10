@@ -1,5 +1,5 @@
 import { DefaultLayout } from 'components/layout';
-import { Container } from 'components/ui';
+import { Container, Text } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { ForestView, QUERY_FOREST } from 'components/forest';
 import { QUERY_STORIES } from 'components/story';
@@ -11,7 +11,7 @@ const ForestPage = ({ forest }) => {
       <Head>
         <title>{forest.name} | Forest | Treefingers</title>
       </Head>
-      <ForestView _id={forest._id} />
+      <ForestView forest={forest} />
     </Container>
   );
 };

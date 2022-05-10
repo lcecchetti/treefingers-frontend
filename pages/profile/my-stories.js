@@ -4,9 +4,11 @@ import { PageIntro } from 'components/common';
 import { StoryList } from 'components/story';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import Head from 'next/head';
+import { useState } from 'react';
 
 const ProfileMyStoriesPage = () => {
   const { currentUser } = useCurrentUser();
+  const [storiesCount, setStoriesCount] = useState();
 
   return (
     <>
@@ -21,7 +23,10 @@ const ProfileMyStoriesPage = () => {
           Here is a list of the stories you've created.
         </Text>
       </PageIntro>
-      <StoryList className="grid md:grid-cols-2 gap-md" filter={{ author: { eq: currentUser._id } }} />
+      {storiesCount === 0 &&
+        <Text>You haven't planted any story yet. What are you waiting for?</Text>
+      }
+      <StoryList className="grid md:grid-cols-2 gap-md" filter={{ author: { eq: currentUser._id } }} setTotalCount={setStoriesCount}/>
     </>
   );
 };

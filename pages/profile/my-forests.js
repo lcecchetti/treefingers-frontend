@@ -4,9 +4,11 @@ import { PageIntro } from 'components/common';
 import { ForestList } from 'components/forest';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import Head from 'next/head';
+import { useState } from 'react';
 
 const ProfileMyForestsPage = () => {
   const { currentUser } = useCurrentUser();
+  const [forestsCount, setForestsCount] = useState();
 
   return (
     <>
@@ -21,7 +23,10 @@ const ProfileMyForestsPage = () => {
           Here is a list of the forests you've created.
         </Text>
       </PageIntro>
-      <ForestList className="grid md:grid-cols-2 gap-md" filter={{ founder: { eq: currentUser._id } }}/>
+      {forestsCount === 0 &&
+        <Text>You haven't create any forest yet. What are you waiting for?</Text>
+      }
+      <ForestList className="grid md:grid-cols-2 gap-md" filter={{ founder: { eq: currentUser._id } }} setTotalCount={setForestsCount}/>
     </>
   );
 };
