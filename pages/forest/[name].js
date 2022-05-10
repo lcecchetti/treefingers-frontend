@@ -3,10 +3,14 @@ import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { ForestView, QUERY_FOREST } from 'components/forest';
 import { QUERY_STORIES } from 'components/story';
+import Head from 'next/head';
 
 const ForestPage = ({ forest }) => {
   return (
     <Container>
+      <Head>
+        <title>{forest.name} | Forest | Treefingers</title>
+      </Head>
       <ForestView _id={forest._id} />
     </Container>
   );

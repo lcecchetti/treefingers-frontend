@@ -58,7 +58,7 @@ const App = ({ Component, pageProps }) => {
         }}
       />
       <Head>
-        <title>Treefingers</title>
+        <title>Treefingers | Collaborative writing</title>
         <meta name="theme-color" content="#000" />
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>

@@ -5,10 +5,14 @@ import { PageIntro } from 'components/common';
 import { StoryList, QUERY_STORIES } from 'components/story';
 import { getStoryNewUrl } from 'lib/helper/story';
 import { FaTree } from 'react-icons/fa';
+import Head from 'next/head';
 
 const StoriesPage = () => {
   return (
     <Container>
+      <Head>
+        <title>Stories | Treefingers</title>
+      </Head>
       <PageIntro>
         <div className="flex gap-sm justify-between items-center text-center">
           <Text variant="pageTitle">Stories</Text>

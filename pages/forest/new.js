@@ -2,10 +2,14 @@ import { DefaultLayout } from 'components/layout';
 import { Text, Container } from 'components/ui';
 import { PageIntro } from 'components/common';
 import { ForestNew } from 'components/forest';
+import Head from 'next/head';
 
 const ForestNewPage = () => {
   return (
     <Container>
+      <Head>
+        <title>New forest | Treefingers</title>
+      </Head>
       <PageIntro>
         <Text variant="pageTitle">New forest</Text>
         <Text variant="p">

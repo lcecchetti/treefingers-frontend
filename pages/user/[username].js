@@ -3,10 +3,14 @@ import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { QUERY_USER, UserView } from 'components/user';
 import { QUERY_STORIES } from 'components/story';
+import Head from 'next/head';
 
 const UserPage = ({ user }) => {
   return (
     <Container>
+      <Head>
+        <title>{user.username} | User | Treefingers</title>
+      </Head>
       <UserView _id={user._id} />
     </Container>
   );

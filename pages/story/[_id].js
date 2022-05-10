@@ -1,10 +1,16 @@
 import { DefaultLayout } from 'components/layout';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { QUERY_STORIES, QUERY_STORY, StoryView } from 'components/story';
+import Head from 'next/head';
 
 const StoryPage = ({ story }) => {
   return (
-    <StoryView story={story} className="mt-sm" />
+    <>
+      <Head>
+        <title>{story.title} | Story | Treefingers</title>
+      </Head>
+      <StoryView story={story} className="mt-sm" />
+    </>
   );
 };
 

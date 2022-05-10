@@ -1,9 +1,13 @@
 import { DefaultLayout } from 'components/layout';
 import { Container, Text, Link } from 'components/ui';
+import Head from 'next/head';
 
 const AboutPage = () => {
   return (
     <Container className="flex flex-col gap-lg">
+      <Head>
+        <title>About | Treefingers</title>
+      </Head>
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-md lg:items-stretch">
         <div className="lg:col-span-2 flex flex-col gap-lg min-h-screen-no-header justify-center">
           <Text variant="pageTitle" className="text-center">About Treefingers</Text>
