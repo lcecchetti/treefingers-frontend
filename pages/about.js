@@ -1,15 +1,40 @@
 import { DefaultLayout } from 'components/layout';
-import { Container, Text } from 'components/ui';
-import { PageIntro } from 'components/common';
+import { Container, Text, Link } from 'components/ui';
 
 const AboutPage = () => {
   return (
-    <Container>
-      <PageIntro>
-        <div className="flex gap-sm justify-between items-center">
-          <Text variant="pageTitle">About</Text>
+    <Container className="flex flex-col gap-lg">
+      <div className="flex flex-col lg:grid lg:grid-cols-3 gap-md lg:items-stretch">
+        <div className="lg:col-span-2 flex flex-col gap-lg min-h-screen-no-header justify-center">
+          <Text variant="pageTitle" className="text-center">About Treefingers</Text>
+          <div className="flex flex-col gap-sm">
+            <Text variant="subtitle" as="h2">Collaborative writing</Text>
+            <Text>Collaborative writing is the process of producing a text by sharing the result of the creativity of a multiple individuals. Treefingers tries to gamify this experience in a way similar to the old adventure books that were popular in the 90s. Those kind of books had the problem of proposing a unidirectional communication, where the reader could not take any action a part from the ones available at the end of each chapter. And all of those actions would take to some dead end eventually. Treefingers tries to remove this limitation by giving each reader the title of author, and each author the title of reader. "Author" will in this case be just the person planting the seed, but the tree, the forest, and the growing process will be on community hands.</Text>
+          </div>
+          <div className="flex flex-col gap-sm">
+            <Text variant="subtitle">Feedback</Text>
+            <Text>You got any good idea you'd like to see on Treefingers? Any issue to report?<br/>Send us a message at <Link href="mailto:treefingers.co@gmail.com" className="font-bold">treefingers.co@gmail.com</Link></Text>
+          </div>
         </div>
-      </PageIntro>
+        <div className="text-primary-contrast p-lg bg-primary min-h-screen-no-header justify-center flex flex-col gap-md">
+          <Text variant="pageSubtitle">F.A.Q.</Text>
+
+          <div className="flex flex-col gap-sm">
+            <Text variant="h3">What is a forest?</Text>
+            <Text>A forest is a container of stories. It's both a place where to grow common themed stories and a community to take care of them. Look through the topics other authors created, or create your own.</Text>
+          </div>
+
+          <div className="flex flex-col gap-sm">
+            <Text variant="h3">What is a story?</Text>
+            <Text>A story is a tree of chapters. Title, content and a forest where to grow it: you'll need nothing more. Tag it, if you wish, to let it be found more easily. Each story is rapresented as a unique tree which will grow depending on the interactions on the story.</Text>
+          </div>
+
+          <div className="flex flex-col gap-sm">
+            <Text variant="h3">What is a chapter?</Text>
+            <Text>A chapter is the continuation of a story. It's the smallest bulding block and yet the more creative one. In case of chapters, their title is the action that will appear in the chapters selection for the next person to come.</Text>
+          </div>
+        </div>
+      </div>
     </Container>
   );
 };
