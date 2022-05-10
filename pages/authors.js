@@ -3,10 +3,14 @@ import { Container, Text } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro } from 'components/common';
 import { UserList, QUERY_USERS } from 'components/user';
+import Head from 'next/head';
 
 const AuthorsPage = () => {
   return (
     <Container>
+      <Head>
+        <title>Authors | Treefingers</title>
+      </Head>
       <PageIntro>
         <div className="flex gap-sm justify-between items-center">
           <Text variant="pageTitle">Authors</Text>

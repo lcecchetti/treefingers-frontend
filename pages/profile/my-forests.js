@@ -3,6 +3,7 @@ import { Text } from 'components/ui';
 import { PageIntro } from 'components/common';
 import { ForestList } from 'components/forest';
 import { useCurrentUser } from 'lib/auth/currentUser';
+import Head from 'next/head';
 
 const ProfileMyForestsPage = () => {
   const { currentUser } = useCurrentUser();
@@ -10,6 +11,9 @@ const ProfileMyForestsPage = () => {
   return (
     <>
       <PageIntro>
+        <Head>
+          <title>My forests - Treefingers</title>
+        </Head>
         <div className="flex gap-sm justify-between items-center">
           <Text variant="pageTitle">My forests</Text>
         </div>

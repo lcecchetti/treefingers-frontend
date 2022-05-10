@@ -5,10 +5,14 @@ import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { PageIntro } from 'components/common';
 import { FaTree } from 'react-icons/fa';
 import { getForestNewUrl } from 'lib/helper/forest';
+import Head from 'next/head';
 
 const ForestsPage = () => {
   return (
     <Container>
+      <Head>
+        <title>Forests | Treefingers</title>
+      </Head>
       <PageIntro>
         <div className="flex gap-sm justify-between items-center">
           <Text variant="pageTitle">Forests</Text>

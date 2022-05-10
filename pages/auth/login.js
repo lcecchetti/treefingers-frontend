@@ -1,9 +1,13 @@
 import { DefaultLayout } from 'components/layout';
 import { LoginForm } from 'components/auth';
+import Head from 'next/head';
 
 const LoginPage = () => {
   return (
     <div className="flex justify-center items-center min-h-screen-no-header">
+      <Head>
+        <title>Login | Treefingers</title>
+      </Head>
       <LoginForm/>
     </div>
   );
