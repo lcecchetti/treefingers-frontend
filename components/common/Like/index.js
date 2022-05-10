@@ -7,10 +7,6 @@ import { useState } from 'react';
 import * as gtag from 'lib/gtag';
 import { useUI } from 'lib/ui/context';
 
-/**
- * Create like mutation
- * @type {gql}
- */
 const MUTATION_LIKE = gql`
   mutation like($input: LikeInput!) {
     like(input: $input) {
@@ -29,10 +25,6 @@ const MUTATION_LIKE = gql`
   }
 `;
 
-/**
- * Delete like mutation
- * @type {gql}
- */
 const MUTATION_DISLIKE = gql`
   mutation dislike($input: DislikeInput!) {
     dislike(input: $input) {
@@ -100,9 +92,6 @@ const Like = ({ entity, viewOnly }) => {
 
   const isSubmitting = createLoading || deleteLoading;
 
-  /**
-   * Toogle like status for logged in users
-   */
   const toogleLike = async () => {
     if (viewOnly || isSubmitting) {
       // block submission

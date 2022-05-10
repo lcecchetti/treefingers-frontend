@@ -6,10 +6,6 @@ import { ApiError, PageIntro } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import UserFollowership from 'components/user/UserFollowership';
 
-/**
- * Single user query
- * @type {gql}
- */
 export const QUERY_USER = gql`
   query user($filter: FilterUserInput!) {
     user(filter: $filter) {

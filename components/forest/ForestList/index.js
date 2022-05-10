@@ -1,15 +1,9 @@
 import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import ForestCard from 'components/forest/ForestCard';
 import { InfiniteScroll } from 'components/common';
-import { Text } from 'components/ui';
 
-/**
- * Forests list query
- * @type {gql}
- */
 export const QUERY_FORESTS = gql`
   query forests($filter: FilterForestInput, $sort: SortForestInput, $first: Int, $after: String) {
     forests(filter: $filter, sort: $sort, first: $first, after: $after) {

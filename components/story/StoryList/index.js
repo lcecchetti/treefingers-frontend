@@ -1,15 +1,9 @@
 import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import clsx from 'clsx';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { InfiniteScroll } from 'components/common';
 import StoryCard from 'components/story/StoryCard';
-import { Text } from 'components/ui';
 
-/**
- * Story list query
- * @type {gql}
- */
 export const QUERY_STORIES = gql`
   query stories($filter: FilterStoryInput, $sort: SortStoryInput, $first: Int, $after: String) {
     stories(filter: $filter, sort: $sort, first: $first, after: $after) {

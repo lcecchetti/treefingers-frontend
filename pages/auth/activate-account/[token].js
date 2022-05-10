@@ -1,6 +1,6 @@
 import { DefaultLayout } from 'components/layout';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { getLoginUrl } from 'lib/helper/auth';
 import { Spinner } from 'components/ui';

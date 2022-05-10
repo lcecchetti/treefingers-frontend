@@ -8,10 +8,6 @@ import { FaSeedling } from 'react-icons/fa';
 import ForestActions from 'components/forest/ForestActions';
 import { getStoryNewUrl } from 'lib/helper/story';
 
-/**
- * Single forest query
- * @type {gql}
- */
 export const QUERY_FOREST = gql`
   query forest($filter: FilterForestInput!) {
     forest(filter: $filter) {

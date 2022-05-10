@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import { DefaultLayout } from 'components/layout';
 import { Button, Container, FormField, Text, Link } from 'components/ui';
 
-
 const UiSection = ({ children, className, title }) => {
   return (
     <div className={clsx('mb-lg', className)}>

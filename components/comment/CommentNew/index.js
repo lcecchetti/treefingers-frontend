@@ -8,10 +8,6 @@ import { ApiError } from 'components/common';
 import * as gtag from 'lib/gtag';
 import { useState } from 'react';
 
-/**
- * Create comment mutation
- * @type {gql}
- */
 const MUTATION_COMMENT = gql`
   mutation submitComment($input: CommentInput!) {
     submitComment(input: $input) {
