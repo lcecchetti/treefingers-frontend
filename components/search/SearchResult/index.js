@@ -4,6 +4,7 @@ import { StoryList } from 'components/story';
 import { UserList } from 'components/user';
 import { Button, Text } from 'components/ui';
 import { useState } from 'react';
+import * as gtag from 'lib/gtag';
 
 const SearchResult = ({ className, query }) => {
   const [forestsCount, setForestsCount] = useState(0);
@@ -11,8 +12,8 @@ const SearchResult = ({ className, query }) => {
   const [usersCount, setUsersCount] = useState(0);
 
   const tabs = [
-    { key: 'forests', label: 'Forests', Component: ForestList, totalCount: forestsCount, setTotalCount: setForestsCount },
     { key: 'stories', label: 'Stories', Component: StoryList, filter: { root: null }, totalCount: storiesCount, setTotalCount: setStoriesCount },
+    { key: 'forests', label: 'Forests', Component: ForestList, totalCount: forestsCount, setTotalCount: setForestsCount },
     { key: 'users', label: 'Users', Component: UserList, totalCount: usersCount, setTotalCount: setUsersCount },
   ];
 
@@ -22,7 +23,15 @@ const SearchResult = ({ className, query }) => {
     <div className={clsx('', className)}>
       <ul className="flex justify-start gap-md my-md">
         {tabs.map(({ key, label, totalCount }) => (
-          <li key={key}><Button variant={currentTab === key ? 'outlined' : 'primary'} onClick={() => setCurrentTab(key)}>{label} ({totalCount})</Button></li>
+          <li key={key}>
+            <Button variant={currentTab === key ? 'outlined' : 'primary'} onClick={() => {
+              setCurrentTab(key);
+              gtag.event({
+                action: `search-tab-${key}`,
+                category: 'search',
+              });
+            }}>{label} ({totalCount})</Button>
+          </li>
         ))}
       </ul>
 
