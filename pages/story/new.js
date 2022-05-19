@@ -20,7 +20,7 @@ const StoryNewPage = () => {
           Forests are containers and communities that group stories.
         </Text>
       </PageIntro>
-      <StoryNew forest={router.query.forest} />
+      <StoryNew forestId={router.query.forestId} />
     </Container>
   );
 };

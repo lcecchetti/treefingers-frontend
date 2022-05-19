@@ -19,7 +19,7 @@ const AuthorsPage = () => {
           Here is a list of popular authors.
         </Text>
       </PageIntro>
-      <UserList className="grid gap-md xl:grid-cols-3 md:grid-cols-2" filter={{ storiesCount: { gt: 0 } }}  sort={{ followersCount: 'DESC' }} />
+      <UserList className="grid gap-md xl:grid-cols-3 md:grid-cols-2" />
     </Container>
   );
 };
