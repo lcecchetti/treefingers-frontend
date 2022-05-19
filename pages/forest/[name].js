@@ -36,13 +36,13 @@ export async function getStaticProps({ params }) {
   apolloClient.writeQuery({
     query: QUERY_FOREST,
     data,
-    variables: { filter: { _id: { eq: data.forest._id } } },
+    variables: { filter: { id: { eq: data.forest.id } } },
   });
 
   // load forest stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { forest: { eq: data.forest._id } }, first: 10 },
+    variables: { filter: { forestId: { eq: data.forest.id } }, first: 10 },
   });
 
   return addApolloState(apolloClient, {

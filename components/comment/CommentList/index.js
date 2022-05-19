@@ -11,19 +11,19 @@ export const QUERY_COMMENTS = gql`
       edges {
         cursor
         node {
-          _id
+          id
           content
           createdAt
           likesCount
           currentUserLike {
-            _id
+            id
           }
           user {
-            _id
+            id
             username
           }
           entity {
-            _id
+            id
             commentsCount
           }
         }
@@ -36,8 +36,8 @@ export const QUERY_COMMENTS = gql`
   }
 `;
 
-const CommentList = ({ entity, sort = { _id: 'ASC' }, last = 10 }) => {
-  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename }, sort, last } });
+const CommentList = ({ entity, sort = { id: 'ASC' }, last = 10 }) => {
+  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: { entityId: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last } });
 
   return (
     <InfiniteScroll className="flex flex-col p-md" error={error} onLoadMore={(opt) => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor }, ...opt })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
@@ -50,7 +50,7 @@ const CommentList = ({ entity, sort = { _id: 'ASC' }, last = 10 }) => {
           {!!data?.comments.edges.length &&
             <ol className="flex flex-col gap-sm">
               {data.comments.edges.map(({ node }) => (
-                <li key={node._id}>
+                <li key={node.id}>
                   <div className="flex flex-col gap-xs">
                     <Avatar user={node.user} showName={true} />
                     <Text variant="span" className="whitespace-pre-wrap">{node.content}</Text>

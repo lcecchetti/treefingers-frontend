@@ -10,12 +10,12 @@ export const QUERY_USERS = gql`
       edges {
         cursor
         node {
-          _id
+          id
           excerpt
           username
           followersCount
-          currentUserFollowership {
-            _id
+          currentUserFollowershipAsFollower {
+            id
           }
         }
       }
@@ -46,7 +46,7 @@ const UserList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   return (!!data?.users.edges.length &&
     <InfiniteScroll className={className} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
       {data.users.edges.map(({ node }) => (
-        <UserCard key={node._id} user={node} />
+        <UserCard key={node.id} user={node} />
       ))}
     </InfiniteScroll>
   );

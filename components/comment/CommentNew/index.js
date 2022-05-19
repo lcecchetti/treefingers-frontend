@@ -12,19 +12,19 @@ const MUTATION_COMMENT = gql`
   mutation submitComment($input: CommentInput!) {
     submitComment(input: $input) {
       comment {
-        _id
+        id
         content
         createdAt
         likesCount
         currentUserLike {
-          _id
+          id
         }
         user {
-          _id
+          id
           username
         }
         entity {
-          _id
+          id
           commentsCount
         }
       } 
@@ -39,7 +39,7 @@ const CommentNew = ({ entity, sort, last }) => {
       // add new comment to the cache
       cache.updateQuery({
           query: QUERY_COMMENTS,
-          variables: { filter: { entity: { eq: entity._id }, entityType: entity.__typename }, sort, last },
+          variables: { filter: { entityId: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last },
         },
         ({ comments }) => ({
           comments: { 
@@ -69,18 +69,18 @@ const CommentNew = ({ entity, sort, last }) => {
           enableReinitialize
           initialValues={{
             content: '',
-            entity: entity._id,
+            entityId: entity.id,
             entityType: entity.__typename,
           }}
           validationSchema={Yup.object().shape({
             content: Yup.string().max(512, 'Too long!').required(true),
           })}
-          onSubmit={({ content, entity, entityType }, { resetForm }) => {
+          onSubmit={({ content, entityId, entityType }, { resetForm }) => {
             comment({
-              variables: { input: { data: { content, entity, entityType} } },
+              variables: { input: { data: { content, entityId, entityType} } },
               onCompleted: () => {
                 gtag.event({
-                  action: `submit-comment-${entity.__typename}`,
+                  action: `submit-comment-${entityType}`,
                   category: 'comment',
                   label: 'success'
                 });

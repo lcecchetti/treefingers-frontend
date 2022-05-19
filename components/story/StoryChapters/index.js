@@ -19,7 +19,7 @@ const StoryChapters = ({ className, parent, sort = { likesCount: 'DESC' }, first
 
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
     variables: {
-      filter: { parent: { eq: parent._id } },
+      filter: { parentId: { eq: parent.id } },
       first,
       sort,
     }
@@ -62,7 +62,7 @@ const StoryChapters = ({ className, parent, sort = { likesCount: 'DESC' }, first
       <div className="flex flex-col gap-md">
         {!!data?.stories.edges.length && !isWriting &&
           <Swiper 
-            key={parent?._id}
+            key={parent?.id}
             className="w-full"
             modules={[EffectCards, Navigation]}
             effect="cards"
@@ -70,7 +70,7 @@ const StoryChapters = ({ className, parent, sort = { likesCount: 'DESC' }, first
             onReachEnd={() => data?.stories.pageInfo.hasNextPage && fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })}
             >
             {data.stories.edges.map(({ node, index }) => (
-              <SwiperSlide key={node._id} virtualIndex={index}>
+              <SwiperSlide key={node.id} virtualIndex={index}>
                 <StoryCard story={node} />
               </SwiperSlide>
             ))}

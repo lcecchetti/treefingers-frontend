@@ -10,17 +10,17 @@ export const QUERY_STORIES = gql`
       edges {
         cursor
         node {
-          _id
+          id
           title
           excerpt
           createdAt
-          root {
-            _id
+          parent {
+            id
             likesCount
             descendantsCount
           }
           author {
-            _id
+            id
             username
           }
           tags
@@ -28,7 +28,7 @@ export const QUERY_STORIES = gql`
           commentsCount
           descendantsCount
           currentUserLike {
-            _id
+            id
           }  
         }
       }
@@ -62,7 +62,7 @@ const StoryList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   return (!!data?.stories.edges.length &&
     <InfiniteScroll className={className} onLoadMore={(opt) => fetchMore({ variables: { after: data?.stories.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.stories.pageInfo.hasNextPage}>
       {data.stories.edges.map(({ node }) => (
-        <StoryCard key={node._id} story={node} />
+        <StoryCard key={node.id} story={node} />
       ))}
     </InfiniteScroll>
   );

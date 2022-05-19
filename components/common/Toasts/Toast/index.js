@@ -15,7 +15,7 @@ const Toast = ({ toast }) => {
     }
 
     const timeoutDismissing = setTimeout(() => setDismissing(true), toast.duration - 150);
-    const timeoutDismissed = setTimeout(() => dismissToast(toast._id), toast.duration);
+    const timeoutDismissed = setTimeout(() => dismissToast(toast.id), toast.duration);
     
     return () => {
       clearTimeout(timeoutDismissing);
@@ -36,7 +36,7 @@ const Toast = ({ toast }) => {
       toast.type === 'success' && 'text-success',
     )}>
       <Text>{toast.label}</Text>
-      <FaTimes className="cursor-pointer text-lg" onClick={() => dismissToast(toast._id)} />
+      <FaTimes className="cursor-pointer text-lg" onClick={() => dismissToast(toast.id)} />
     </div>
   );
 };

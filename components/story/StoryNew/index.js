@@ -16,9 +16,9 @@ const MUTATION_STORY_CREATE = gql`
   mutation createStory($input: CreateStoryInput!) {
     createStory(input: $input) {
       story {
-        _id
+        id
         author {
-          _id
+          id
           storiesCount
         }
       } 
@@ -28,10 +28,10 @@ const MUTATION_STORY_CREATE = gql`
 
 const QUERY_CHOOSE_FOREST = gql`
   query forests($filter: FilterForestInput) {
-    forests(filter: $filter, sort: { storiesCount: DESC }, first: 10) {
+    forests(filter: $filter, first: 10) {
       edges {
         node {
-          _id
+          id
           name
           storiesCount
         }
@@ -60,14 +60,14 @@ const StoryNew = ({ parent, forest, className }) => {
 
   const { data: forestsData, loading: forestsLoading } = useQuery(QUERY_CHOOSE_FOREST, {
     variables: {
-      filter: forest ? { _id: { eq: forest } } : {},
+      filter: forest ? { id: { eq: forest } } : {},
     },
     skip: !hasForestSelection,
   });
 
   const prepareForestOptions = (data) => {
     const options = data.forests.edges.map(({ node }) =>({
-      value: node._id,
+      value: node.id,
       label: `${node.name} (${node.storiesCount} stories)`,
     }));
 
@@ -89,7 +89,7 @@ const StoryNew = ({ parent, forest, className }) => {
           initialValues={{
             title: '',
             content: '',
-            parent: parent?._id,
+            parent: parent?.id,
             addTag: '',
             tags: [],
             forest: forestsData ? prepareForestOptions(forestsData).shift()?.value : '',

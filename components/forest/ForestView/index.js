@@ -11,14 +11,14 @@ import { getStoryNewUrl } from 'lib/helper/story';
 export const QUERY_FOREST = gql`
   query forest($filter: FilterForestInput!) {
     forest(filter: $filter) {
-      _id
+      id
       name
       about
       storiesCount
       commentsCount
       membersCount
       currentUserMembership {
-        _id
+        id
       }
     }
   }
@@ -26,7 +26,7 @@ export const QUERY_FOREST = gql`
 
 const ForestView = ({ className, forest }) => {
   const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch } = useQuery(QUERY_FOREST, { variables: { filter: { _id: { eq: forest._id } } } });
+  const { data, loading, error, refetch } = useQuery(QUERY_FOREST, { variables: { filter: { id: { eq: forest.id } } } });
 
   // refresh data with customer specific infos
   useEffect(() => {
@@ -53,7 +53,7 @@ const ForestView = ({ className, forest }) => {
       {forest.storiesCount === 0 &&
         <Text>I see too much blank space on this page, let's plant some stories!</Text>
       }
-      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest._id } }} />
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest.id } }} />
     </div>
   );
 };

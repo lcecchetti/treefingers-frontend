@@ -5,7 +5,7 @@ import seedrandom from 'seedrandom';
 class TreeView {
 	constructor(canvas, story) {
 		// random seed based on id
-		this.seed = seedrandom(story._id);
+		this.seed = seedrandom(story.id);
 
 		// rendering canvas
 		this.canvas = canvas;
@@ -175,7 +175,7 @@ const StoryTree = ({ story, className }) => {
 
   useEffect(() => {
     new TreeView(canvasRef.current, story);
-  }, [story?._id])
+  }, [story?.id])
 
   return (story &&
     <div className={clsx('', className)}>

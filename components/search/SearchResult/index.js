@@ -12,7 +12,7 @@ const SearchResult = ({ className, query }) => {
   const [usersCount, setUsersCount] = useState();
 
   const tabs = [
-    { key: 'stories', label: 'Stories', Component: StoryList, filter: { root: null }, totalCount: storiesCount, setTotalCount: setStoriesCount },
+    { key: 'stories', label: 'Stories', Component: StoryList, filter: { parentId: { eq: null } }, totalCount: storiesCount, setTotalCount: setStoriesCount },
     { key: 'forests', label: 'Forests', Component: ForestList, totalCount: forestsCount, setTotalCount: setForestsCount },
     { key: 'users', label: 'Users', Component: UserList, totalCount: usersCount, setTotalCount: setUsersCount },
   ];

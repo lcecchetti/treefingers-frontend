@@ -29,7 +29,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_USERS,
-    variables: { filter: { storiesCount: { gt: 0 } }, first: 10, sort: { followersCount: 'DESC' } },
+    variables: { first: 10 },
   });
 
   return addApolloState(apolloClient, {

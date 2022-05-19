@@ -7,7 +7,7 @@ const Toasts = ({ maxToasts = 5 }) => {
   return (!!toasts.length &&
     <div className="fixed bottom-md z-50 flex flex-col items-center gap-xs p-sm w-full pointer-events-none">
       {toasts.slice(0, maxToasts).map((toast) => (
-        <Toast key={toast._id} toast={toast} />
+        <Toast key={toast.id} toast={toast} />
       ))}
     </div>
   );

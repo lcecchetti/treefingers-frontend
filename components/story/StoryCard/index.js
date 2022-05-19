@@ -8,7 +8,7 @@ import { TagList } from 'components/tag';
 import { Card, CardBody, CardFooter, CardHeader } from 'components/common';
 
 const StoryCard = ({ className, story }) => {
-  const isChapter = !!story.root;
+  const isChapter = !!story.parent;
   return (
     <Card className={clsx('bg-primary text-primary-contrast', className)}>
       <CardHeader>
