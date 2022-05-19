@@ -48,7 +48,7 @@ const ForestNew = ({ className, afterCreationCallback }) => {
             name: Yup.string().max(21, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(true),
             about: Yup.string().max(4096, 'Too long!').required(true),
           })}
-          onSubmit={({ name, about }, { resetForm }) => createForest({
+          onSubmit={({ name, about }, { resetForm, setSubmitting }) => createForest({
             variables: { input: { data: {
               name, about
             }}},
@@ -67,6 +67,9 @@ const ForestNew = ({ className, afterCreationCallback }) => {
 
               resetForm();
             },
+            onError: () => {
+              setSubmitting(false);
+            }
           })}>
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex flex-col gap-sm">

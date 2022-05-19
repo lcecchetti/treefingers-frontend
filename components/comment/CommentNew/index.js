@@ -75,7 +75,7 @@ const CommentNew = ({ entity, sort, last }) => {
           validationSchema={Yup.object().shape({
             content: Yup.string().max(512, 'Too long!').required(true),
           })}
-          onSubmit={({ content, entityId, entityType }, { resetForm }) => {
+          onSubmit={({ content, entityId, entityType }, { resetForm, setSubmitting }) => {
             comment({
               variables: { input: { data: { content, entityId, entityType} } },
               onCompleted: () => {
@@ -86,6 +86,9 @@ const CommentNew = ({ entity, sort, last }) => {
                 });
                 resetForm();
               },
+              onError: () => {
+                setSubmitting(false);
+              }
             });
           }}>
           {({ isSubmitting, errors, touched }) => (
