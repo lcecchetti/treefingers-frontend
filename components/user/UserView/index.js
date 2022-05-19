@@ -9,12 +9,12 @@ import UserFollowership from 'components/user/UserFollowership';
 export const QUERY_USER = gql`
   query user($filter: FilterUserInput!) {
     user(filter: $filter) {
-      _id
+      id
       bio
       username
       followersCount
-      currentUserFollowership {
-        _id
+      currentUserFollowershipAsFollower {
+        id
       }
     }
   }
@@ -22,7 +22,7 @@ export const QUERY_USER = gql`
 
 const UserView = ({ className, user }) => {
   const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: user._id } } } });
+  const { data, loading, error, refetch } = useQuery(QUERY_USER, { variables: { filter: { id: { eq: user.id } } } });
 
   // refresh data with customer specific infos
   useEffect(() => {
@@ -43,7 +43,7 @@ const UserView = ({ className, user }) => {
         </div>
         <Text variant="p" className="break-words w-full">{data.user.bio}</Text>
       </PageIntro>
-      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ author: { eq: data.user._id }, root: null }} />
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ author: { eq: data.user.id }, parent: { eq: null } }} />
     </div>
   );
 };

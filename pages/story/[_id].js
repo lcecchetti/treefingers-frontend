@@ -20,7 +20,7 @@ export async function getStaticProps({ params }) {
   // load story by id
   const { data } = await apolloClient.query({
     query: QUERY_STORY,
-    variables: { filter: { _id: { eq: params._id } } },
+    variables: { filter: { id: { eq: params.id } } },
   });
 
   // check if story exists
@@ -33,7 +33,7 @@ export async function getStaticProps({ params }) {
   // load story chapters
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { parent: { eq: data.story._id } }, sort: { likesCount: 'DESC' }, first: 10 },
+    variables: { filter: { parentId: { eq: data.story.id } }, first: 10 },
   });
 
   return addApolloState(apolloClient, {

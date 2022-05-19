@@ -26,7 +26,7 @@ const ProfileMyForestsPage = () => {
       {forestsCount === 0 &&
         <Text>You haven't create any forest yet. What are you waiting for?</Text>
       }
-      <ForestList className="grid md:grid-cols-2 gap-md" filter={{ founder: { eq: currentUser._id } }} setTotalCount={setForestsCount}/>
+      <ForestList className="grid md:grid-cols-2 gap-md" filter={{ founder: { eq: currentUser.id } }} setTotalCount={setForestsCount}/>
     </>
   );
 };

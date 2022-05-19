@@ -19,7 +19,7 @@ const MUTATION_LOGIN = gql`
     login(input: $input) {
       token
       currentUser {
-        _id
+        id
         username
       }
     }

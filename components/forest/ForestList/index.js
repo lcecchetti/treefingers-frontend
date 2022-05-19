@@ -10,13 +10,13 @@ export const QUERY_FORESTS = gql`
       edges {
         cursor
         node {
-          _id
+          id
           name
           excerpt
           commentsCount
           membersCount
           currentUserMembership {
-            _id
+            id
           }
         }
       }
@@ -48,7 +48,7 @@ const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   return (!!data?.forests.edges.length &&
     <InfiniteScroll className={className} onLoadMore={(opt) => fetchMore({ variables: { after: data?.forests.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.forests.pageInfo.hasNextPage}>
       {data.forests.edges.map(({ node }) => (
-        <ForestCard key={node._id} forest={node} />
+        <ForestCard key={node.id} forest={node} />
       ))}
     </InfiniteScroll>
   );

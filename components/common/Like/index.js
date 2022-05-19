@@ -11,13 +11,13 @@ const MUTATION_LIKE = gql`
   mutation like($input: LikeInput!) {
     like(input: $input) {
       like {
-        _id
+        id
         entityType
         entity {
-          _id
+          id
           likesCount
           currentUserLike {
-            _id
+            id
           }
         }
       } 
@@ -29,13 +29,13 @@ const MUTATION_DISLIKE = gql`
   mutation dislike($input: DislikeInput!) {
     dislike(input: $input) {
       like {
-        _id
+        id
         entityType
         entity {
-          _id
+          id
           likesCount
           currentUserLike {
-            _id
+            id
           }
         }
       } 
@@ -48,7 +48,7 @@ const Like = ({ entity, viewOnly }) => {
   const [error, setError] = useState(false);
   const { showToast } = useUI();
 
-  const variables = { input: { entityType: entity.__typename, entity: entity._id } }
+  const variables = { input: { entityType: entity.__typename, entityId: entity.id } }
 
   // mutations
   const [createLike, { loading: createLoading }] = useMutation(MUTATION_LIKE, {

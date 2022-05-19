@@ -11,12 +11,12 @@ const MUTATION_JOIN = gql`
   mutation join($input: JoinInput!) {
     join(input: $input) {
       membership {
-        _id
+        id
         forest {
-          _id
+          id
           membersCount
           currentUserMembership {
-            _id
+            id
           }
         }
       } 
@@ -28,12 +28,12 @@ const MUTATION_LEAVE = gql`
   mutation leave($input: LeaveInput!) {
     leave(input: $input) {
       membership {
-        _id
+        id
         forest {
-          _id
+          id
           membersCount
           currentUserMembership {
-            _id
+            id
           }
         }
       } 
@@ -46,7 +46,7 @@ const ForestMembership = ({ forest, viewOnly }) => {
   const [error, setError] = useState(false);
   const { showToast } = useUI();
   
-  const variables = { input: { forest: forest._id } }
+  const variables = { input: { forestId: forest.id } }
 
   // mutations
   const [join, { loading: joinLoading }] = useMutation(MUTATION_JOIN, {

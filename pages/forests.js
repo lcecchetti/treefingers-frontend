@@ -32,7 +32,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_FORESTS,
-    variables: { first: 10, sort: { membersCount: 'DESC' } },
+    variables: { first: 10 },
   });
 
   return addApolloState(apolloClient, {

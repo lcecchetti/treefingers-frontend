@@ -11,7 +11,7 @@ const MUTATION_EDIT_USER = gql`
   mutation editUser($input: EditUserInput!) {
     editUser(input: $input) {
       user {
-        _id
+        id
         bio
       }
     }
@@ -36,7 +36,7 @@ const UserEditForm = () => {
       });
     }
   });
-  const { data, loading, error } = useQuery(QUERY_USER, { variables: { filter: { _id: { eq: currentUser._id } } } });
+  const { data, loading, error } = useQuery(QUERY_USER, { variables: { filter: { id: { eq: currentUser.id } } } });
 
   return (
     <div className="flex flex-col gap-md">

@@ -17,32 +17,32 @@ import { getForestUrl } from 'lib/helper/forest';
 export const QUERY_STORY = gql`
   query story($filter: FilterStoryInput!) {
     story(filter: $filter) {
-      _id
+      id
       title
       content
       createdAt
       author {
-        _id
+        id
         username
       }
       tags
       parent {
-        _id
+        id
       }
       root {
-        _id
+        id
         likesCount
         descendantsCount
       }
       forest {
-        _id
+        id
         name
       }
       likesCount
       commentsCount
       descendantsCount
       currentUserLike {
-        _id
+        id
       }
     }
   }
@@ -51,7 +51,7 @@ export const QUERY_STORY = gql`
 const StoryView = ({ className, story }) => {
   const { currentUser } = useCurrentUser();
 
-  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { filter: { _id: { eq: story._id } } } });
+  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { filter: { id: { eq: story.id } } } });
 
   // refresh data with customer specific infos
   useEffect(() => {

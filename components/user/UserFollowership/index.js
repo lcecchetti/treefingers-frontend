@@ -11,12 +11,12 @@ const MUTATION_FOLLOW = gql`
   mutation follow($input: FollowInput!) {
     follow(input: $input) {
       followership {
-        _id
+        id
         followed {
-          _id
+          id
           followersCount
-          currentUserFollowership {
-            _id
+          currentUserFollowershipAsFollower {
+            id
           }
         }
       } 
@@ -28,12 +28,12 @@ const MUTATION_UNFOLLOW = gql`
   mutation unfollow($input: UnfollowInput!) {
     unfollow(input: $input) {
       followership {
-        _id
+        id
         followed {
-          _id
+          id
           followersCount
-          currentUserFollowership {
-            _id
+          currentUserFollowershipAsFollower {
+            id
           }
         }
       } 
@@ -45,7 +45,7 @@ const UserFollowership = ({ user, viewOnly }) => {
   const { currentUser } = useCurrentUser();
   const [error, setError] = useState(false);
   const { showToast } = useUI();
-  const variables = { input: { followed: user._id } }
+  const variables = { input: { followed: user.id } }
 
   // mutations
   const [follow, { loading: followLoading }] = useMutation(MUTATION_FOLLOW, {
@@ -100,11 +100,11 @@ const UserFollowership = ({ user, viewOnly }) => {
       return;
     }
 
-    user.currentUserFollowership ? await unfollow() : await follow();
+    user.currentUserFollowershipAsFollower ? await unfollow() : await follow();
   }
 
   // pick icon accoridng to user followership
-  const Icon = user.currentUserFollowership ? FaUserCheck : FaUserPlus;
+  const Icon = user.currentUserFollowershipAsFollower ? FaUserCheck : FaUserPlus;
 
   return (
     <div className={clsx(

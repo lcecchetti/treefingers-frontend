@@ -14,7 +14,7 @@ const MUTATION_FOREST_CREATE = gql`
   mutation createForest($input: CreateForestInput!) {
     createForest(input: $input) {
       forest {
-        _id
+        id
         name
       } 
     }
