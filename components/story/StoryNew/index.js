@@ -106,7 +106,7 @@ const StoryNew = ({ parent, forestId, className }) => {
               then: Yup.string().required(true),
             })
           })}
-          onSubmit={({ title, content, parentId, tags, forestId }) => createStory({
+          onSubmit={({ title, content, parentId, tags, forestId }, { setSubmitting }) => createStory({
             variables: { input: { data: {
               title, content, parentId, forestId, tags
             }}},
@@ -118,6 +118,9 @@ const StoryNew = ({ parent, forestId, className }) => {
               });
               router.push(getStoryUrl(data.createStory.story));
             },
+            onError: () => {
+              setSubmitting(false);
+            }
           })}
         >
           {({ isSubmitting, values, setFieldValue, errors, touched }) => (
