@@ -70,7 +70,7 @@ const CommentNew = ({ entity, sort, last }) => {
           initialValues={{
             content: '',
             entityId: entity.id,
-            entityType: entity.__typename,
+            entityType: entity.__typename + 'Comment',
           }}
           validationSchema={Yup.object().shape({
             content: Yup.string().max(512, 'Too long!').required(true),

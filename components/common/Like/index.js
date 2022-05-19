@@ -48,7 +48,7 @@ const Like = ({ entity, viewOnly }) => {
   const [error, setError] = useState(false);
   const { showToast } = useUI();
 
-  const variables = { input: { entityType: entity.__typename, entityId: entity.id } }
+  const variables = { input: { entityType: entity.__typename + 'Like', entityId: entity.id } }
 
   // mutations
   const [createLike, { loading: createLoading }] = useMutation(MUTATION_LIKE, {
