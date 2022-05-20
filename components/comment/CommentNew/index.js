@@ -39,7 +39,7 @@ const CommentNew = ({ entity, sort, last }) => {
       // add new comment to the cache
       cache.updateQuery({
           query: QUERY_COMMENTS,
-          variables: { filter: { entityId: { eq: entity.id }, entityType: { eq: entity.__typename + 'Comment' } }, sort, last },
+          variables: { filter: { entityId: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last },
         },
         ({ comments }) => ({
           comments: { 
@@ -70,7 +70,7 @@ const CommentNew = ({ entity, sort, last }) => {
           initialValues={{
             content: '',
             entityId: entity.id,
-            entityType: entity.__typename + 'Comment',
+            entityType: entity.__typename,
           }}
           validationSchema={Yup.object().shape({
             content: Yup.string().max(512, 'Too long!').required(true),
