@@ -32,7 +32,7 @@ export const QUERY_STORY = gql`
       root {
         id
         likesCount
-        descendantsCount
+        descendentsCount
       }
       forest {
         id
@@ -40,7 +40,7 @@ export const QUERY_STORY = gql`
       }
       likesCount
       commentsCount
-      descendantsCount
+      descendentsCount
       currentUserLike {
         id
       }

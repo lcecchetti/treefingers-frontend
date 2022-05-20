@@ -17,7 +17,7 @@ export const QUERY_STORIES = gql`
           parent {
             id
             likesCount
-            descendantsCount
+            descendentsCount
           }
           author {
             id
@@ -26,7 +26,7 @@ export const QUERY_STORIES = gql`
           tags
           likesCount
           commentsCount
-          descendantsCount
+          descendentsCount
           currentUserLike {
             id
           }  
