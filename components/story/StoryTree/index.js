@@ -21,7 +21,7 @@ class TreeView {
 		// levels
 		this.minLevels = 3;
 		this.maxLevels = 8;
-		this.levels = Math.min(this.maxLevels, story.descendantsCount * (Math.ceil(this.maxLevels / 20)) + this.minLevels);
+		this.levels = Math.min(this.maxLevels, story.descendentsCount * (Math.ceil(this.maxLevels / 20)) + this.minLevels);
 
 		// line width
 		this.minBaseLineWidth = 10;
