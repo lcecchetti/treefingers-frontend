@@ -39,7 +39,7 @@ const CommentNew = ({ entity, sort, last }) => {
       // add new comment to the cache
       cache.updateQuery({
           query: QUERY_COMMENTS,
-          variables: { filter: { entityId: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last },
+          variables: { filter: { entityId: { eq: entity.id }, entityType: { eq: entity.__typename + 'Comment' } }, sort, last },
         },
         ({ comments }) => ({
           comments: { 
