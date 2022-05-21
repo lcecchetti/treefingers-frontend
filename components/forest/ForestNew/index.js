@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
 import { FormField, Button } from 'components/ui';
@@ -9,6 +9,7 @@ import { ApiError } from 'components/common';
 import * as gtag from 'lib/gtag';
 import { useState } from 'react';
 import { useUI } from 'lib/ui/context';
+import { QUERY_FORESTS } from '../ForestList';
 
 const MUTATION_FOREST_CREATE = gql`
   mutation createForest($input: CreateForestInput!) {
@@ -22,6 +23,7 @@ const MUTATION_FOREST_CREATE = gql`
 `;
 
 const ForestNew = ({ className, afterCreationCallback }) => {
+  const apolloClient = useApolloClient();
   const [error, setError] = useState(false);
   const [createForest] = useMutation(MUTATION_FOREST_CREATE, {
     onError: (e) => {
@@ -60,6 +62,7 @@ const ForestNew = ({ className, afterCreationCallback }) => {
               });
               showToast(`${data.createForest.forest.name} created!`);
               if (afterCreationCallback) {
+                apolloClient.cache.evict(QUERY_FORESTS);
                 afterCreationCallback();
               } else {
                 router.push(getForestUrl(data.createForest.forest));
