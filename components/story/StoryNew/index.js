@@ -215,9 +215,9 @@ const StoryNew = ({ parent, forestId, className }) => {
                       className={clsx(values.forestsLoading && 'animate-pulse')}
                       name="forestId"
                       type="select"
-                      error={errors.forest}
-                      disabled={!values.forest}
-                      touched={touched.forest}
+                      error={errors.forestId}
+                      disabled={!values.forestId}
+                      touched={touched.forestId}
                       options={values.forests}
                     />
                   </div>
