@@ -19,7 +19,7 @@ const StoryChapters = ({ className, parent, sort, first = 10 }) => {
 
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
     variables: {
-      filter: { parentId: { eq: parent.id } },
+      filter: { parent: { eq: parent.id } },
       first,
       sort,
     }

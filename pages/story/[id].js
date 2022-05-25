@@ -33,7 +33,7 @@ export async function getStaticProps({ params }) {
   // load story chapters
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { parentId: { eq: data.story.id } }, first: 10 },
+    variables: { filter: { parent: { eq: data.story.id } }, first: 10 },
   });
 
   return addApolloState(apolloClient, {

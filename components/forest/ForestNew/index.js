@@ -62,7 +62,8 @@ const ForestNew = ({ className, afterCreationCallback }) => {
               });
               showToast(`${data.createForest.forest.name} created!`);
               if (afterCreationCallback) {
-                apolloClient.cache.evict(QUERY_FORESTS);
+                //@todo select forest after quick creation
+                //apolloClient.cache.evict(QUERY_FORESTS);
                 afterCreationCallback();
               } else {
                 router.push(getForestUrl(data.createForest.forest));
