@@ -39,7 +39,7 @@ const CommentNew = ({ entity, sort, last }) => {
       // add new comment to the cache
       cache.updateQuery({
           query: QUERY_COMMENTS,
-          variables: { filter: { entityId: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last },
+          variables: { filter: { entity: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last },
         },
         ({ comments }) => ({
           comments: { 
@@ -69,15 +69,15 @@ const CommentNew = ({ entity, sort, last }) => {
           enableReinitialize
           initialValues={{
             content: '',
-            entityId: entity.id,
+            entity: entity.id,
             entityType: entity.__typename,
           }}
           validationSchema={Yup.object().shape({
             content: Yup.string().max(512, 'Too long!').required(true),
           })}
-          onSubmit={({ content, entityId, entityType }, { resetForm, setSubmitting }) => {
+          onSubmit={({ content, entity, entityType }, { resetForm, setSubmitting }) => {
             comment({
-              variables: { input: { data: { content, entityId, entityType} } },
+              variables: { input: { data: { content, entity, entityType} } },
               onCompleted: () => {
                 gtag.event({
                   action: `submit-comment-${entityType}`,

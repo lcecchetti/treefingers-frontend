@@ -40,7 +40,7 @@ const QUERY_CHOOSE_FOREST = gql`
   }
 `;
 
-const StoryNew = ({ parent, forestId, className }) => {
+const StoryNew = ({ parent, forest, className }) => {
   const router = useRouter();
   const apolloClient = useApolloClient();
   const { openFlyout } = useUI();
@@ -60,7 +60,7 @@ const StoryNew = ({ parent, forestId, className }) => {
 
   const { data: forestsData, loading: forestsLoading } = useQuery(QUERY_CHOOSE_FOREST, {
     variables: {
-      filter: forestId ? { id: { eq: forestId } } : {},
+      filter: forest ? { id: { eq: forest } } : {},
     },
     skip: !hasForestSelection,
   });
@@ -89,10 +89,10 @@ const StoryNew = ({ parent, forestId, className }) => {
           initialValues={{
             title: '',
             content: '',
-            parentId: parent?.id,
+            parent: parent?.id,
             addTag: '',
             tags: [],
-            forestId: forestsData ? prepareForestOptions(forestsData).shift()?.value : '',
+            forest: forestsData ? prepareForestOptions(forestsData).shift()?.value : '',
             forests: forestsData ? prepareForestOptions(forestsData) : [],
             forestsLoading: forestsLoading,
             hasForestSelection,
@@ -101,14 +101,14 @@ const StoryNew = ({ parent, forestId, className }) => {
             title: Yup.string().max(64, 'Too long!').required(true),
             content: Yup.string().max(4096, 'Too long!').required(true),
             addTag: Yup.string().max(16, 'Too long'),
-            forestId: Yup.string().when('hasForestSelection', {
+            forest: Yup.string().when('hasForestSelection', {
               is: () => hasForestSelection,
               then: Yup.string().required(true),
             })
           })}
-          onSubmit={({ title, content, parentId, tags, forestId }, { setSubmitting }) => createStory({
+          onSubmit={({ title, content, parent, tags, forest }, { setSubmitting }) => createStory({
             variables: { input: { data: {
-              title, content, parentId, forestId, tags
+              title, content, parent, forest, tags
             }}},
             onCompleted: (data) => {
               gtag.event({
@@ -192,7 +192,7 @@ const StoryNew = ({ parent, forestId, className }) => {
                       type="text" 
                       onChange={async (e) => {
                         setFieldValue('forestsLoading', true);
-                        setFieldValue('forestId', '');
+                        setFieldValue('forest', '');
                         const { data, error } = await apolloClient.query({
                           query: QUERY_CHOOSE_FOREST,
                           variables: { filter: { query: e.target.value } },
@@ -204,7 +204,7 @@ const StoryNew = ({ parent, forestId, className }) => {
 
                         if (data) {
                           setFieldValue('forests', prepareForestOptions(data));
-                          setFieldValue('forestId', prepareForestOptions(data).shift()?.value);
+                          setFieldValue('forest', prepareForestOptions(data).shift()?.value);
                         }
 
                         setFieldValue('forestsLoading', false);
@@ -213,11 +213,11 @@ const StoryNew = ({ parent, forestId, className }) => {
                     <Field 
                       as={FormField}
                       className={clsx(values.forestsLoading && 'animate-pulse')}
-                      name="forestId"
+                      name="forest"
                       type="select"
-                      error={errors.forestId}
-                      disabled={!values.forestId}
-                      touched={touched.forestId}
+                      error={errors.forest}
+                      disabled={!values.forest}
+                      touched={touched.forest}
                       options={values.forests}
                     />
                   </div>

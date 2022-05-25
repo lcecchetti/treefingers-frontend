@@ -46,7 +46,7 @@ const ForestMembership = ({ forest, viewOnly }) => {
   const [error, setError] = useState(false);
   const { showToast } = useUI();
   
-  const variables = { input: { forestId: forest.id } }
+  const variables = { input: { forest: forest.id } }
 
   // mutations
   const [join, { loading: joinLoading }] = useMutation(MUTATION_JOIN, {

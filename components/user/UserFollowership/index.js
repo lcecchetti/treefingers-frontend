@@ -45,7 +45,7 @@ const UserFollowership = ({ user, viewOnly }) => {
   const { currentUser } = useCurrentUser();
   const [error, setError] = useState(false);
   const { showToast } = useUI();
-  const variables = { input: { followedId: user.id } }
+  const variables = { input: { followed: user.id } }
 
   // mutations
   const [follow, { loading: followLoading }] = useMutation(MUTATION_FOLLOW, {

@@ -37,7 +37,7 @@ export const QUERY_COMMENTS = gql`
 `;
 
 const CommentList = ({ entity, sort = { id: 'ASC' }, last = 10 }) => {
-  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: { entityId: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last } });
+  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: { entity: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last } });
 
   return (
     <InfiniteScroll className="flex flex-col p-md" error={error} onLoadMore={(opt) => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor }, ...opt })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
