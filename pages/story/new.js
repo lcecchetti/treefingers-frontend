@@ -15,9 +15,7 @@ const StoryNewPage = () => {
       <PageIntro>
         <Text variant="pageTitle">New story</Text>
         <Text variant="p">
-          There is too much blank space on this page, let's fill it!<br/>
-          You'll need to pick a forest where to plant your story.<br/>
-          Forests are containers and communities that group stories.
+          There is too much blank space on this page, let's fill it!
         </Text>
       </PageIntro>
       <StoryNew forest={router.query.forest} />
