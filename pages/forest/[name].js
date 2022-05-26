@@ -22,7 +22,7 @@ export async function getStaticProps({ params }) {
   // load forest by name
   const { data } = await apolloClient.query({
     query: QUERY_FOREST,
-    variables: { filter: { name: { eq: params.name } } },
+    variables: { filter: { name: { eq: params.name } }, sort: { membersCount: 'DESC' } },
   });
 
   // check if forest exists
@@ -42,7 +42,7 @@ export async function getStaticProps({ params }) {
   // load forest stories
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { forest: { eq: data.forest.id } }, first: 10 },
+    variables: { filter: { forest: { eq: data.forest.id } }, first: 10, sort: { likesCount: 'DESC' } },
   });
 
   return addApolloState(apolloClient, {

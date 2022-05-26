@@ -22,7 +22,7 @@ const ForestsPage = () => {
           Forests are places where to group stories, have a look around or create your own.
         </Text>
       </PageIntro>
-      <ForestList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" />
+      <ForestList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" sort={{ membersCount: 'DESC' }} />
     </Container>
   );
 };
@@ -32,7 +32,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_FORESTS,
-    variables: { first: 10 },
+    variables: { first: 10, sort: { membersCount: 'DESC' } },
   });
 
   return addApolloState(apolloClient, {

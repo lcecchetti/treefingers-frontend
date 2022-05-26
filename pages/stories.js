@@ -22,7 +22,7 @@ const StoriesPage = () => {
           Here is a list of popular stories.
         </Text>
       </PageIntro>
-      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ parent: { eq: null } }} />
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }}/>
     </Container>
   );
 };
@@ -32,7 +32,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { parent: { eq: null } }, first: 10 },
+    variables: { filter: { parent: { eq: null } }, first: 10, sort: { likesCount: 'DESC' } },
   });
 
   return addApolloState(apolloClient, {

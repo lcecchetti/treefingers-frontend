@@ -19,7 +19,7 @@ const AuthorsPage = () => {
           Here is a list of popular authors.
         </Text>
       </PageIntro>
-      <UserList className="grid gap-md xl:grid-cols-3 md:grid-cols-2" />
+      <UserList className="grid gap-md xl:grid-cols-3 md:grid-cols-2" filter={{ storiesCount: { gt: 0 } }} sort={{ followersCount: 'DESC' }} />
     </Container>
   );
 };
@@ -29,7 +29,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_USERS,
-    variables: { first: 10 },
+    variables: { first: 10, filter: { storiesCount: { gt: 0 } }, sort: { followersCount: 'DESC' } },
   });
 
   return addApolloState(apolloClient, {
