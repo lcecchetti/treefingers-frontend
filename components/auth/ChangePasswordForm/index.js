@@ -14,7 +14,7 @@ import { useUI } from 'lib/ui/context';
 const MUTATION_CHANGE_PASSWORD = gql`
   mutation changePassword($input: ChangePasswordInput!) {
     changePassword(input: $input) {
-      passwordChanged
+      result
     }
   }
 `;

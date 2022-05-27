@@ -14,7 +14,7 @@ import { useUI } from 'lib/ui/context';
 const MUTATION_FORGOT_PASSWORD = gql`
   mutation forgotPassword($input: ForgotPasswordInput!) {
     forgotPassword(input: $input) {
-      emailSent
+      result
     }
   }
 `;

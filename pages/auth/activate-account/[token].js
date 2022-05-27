@@ -10,7 +10,7 @@ import { useUI } from 'lib/ui/context';
 const MUTATION_ACTIVATE_ACCOUNT = gql`
   mutation activateAccount($input: ActivateAccountInput!) {
     activateAccount(input: $input) {
-      accountActivated
+      result
     }
   }
 `;
