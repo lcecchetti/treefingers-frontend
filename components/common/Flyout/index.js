@@ -49,7 +49,7 @@ const Flyout = () => {
           <StoryTree className="h-full w-full" story={flyoutData.entity} />
         }
         {flyoutType === flyoutTypes.forestNew &&
-          <ForestNew className="p-md overflow-auto" afterCreationCallback={() => closeFlyout()} />
+          <ForestNew className="p-md overflow-auto" afterCreationCallback={flyoutData.afterCreationCallback} />
         }
       </div>
     </div>

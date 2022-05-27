@@ -28,7 +28,7 @@ const MUTATION_STORY_CREATE = gql`
 
 const QUERY_CHOOSE_FOREST = gql`
   query forests($filter: FilterForestInput) {
-    forests(filter: $filter, first: 10) {
+    forests(filter: $filter, first: 10, sort: { membersCount: DESC }) {
       edges {
         node {
           id
@@ -43,7 +43,7 @@ const QUERY_CHOOSE_FOREST = gql`
 const StoryNew = ({ parent, forest, className }) => {
   const router = useRouter();
   const apolloClient = useApolloClient();
-  const { openFlyout, showToast } = useUI();
+  const { openFlyout, closeFlyout, showToast } = useUI();
   const [error, setError] = useState(false);
   const [createStory] = useMutation(MUTATION_STORY_CREATE, {
     onError: (e) => {
@@ -185,7 +185,24 @@ const StoryNew = ({ parent, forest, className }) => {
                     </Text>
                     <Text variant="p" className="text-sm">
                       Forests are places where to group stories. Pick the one that suits your story the most, or create your own by clicking
-                      <Text className="cursor-pointer text-primary-light font-bold" onClick={() => openFlyout(flyoutTypes.forestNew, { title: 'Create forest' })}> here</Text> 
+                      <Text className="cursor-pointer text-primary-light font-bold" 
+                          onClick={() => { 
+                            openFlyout(flyoutTypes.forestNew, { 
+                              title: 'Create forest', 
+                              afterCreationCallback: (data) => { 
+                                if (!data) {
+                                  return;
+                                }
+
+                                setFieldValue('forests', [{ 
+                                  value: data.createForest.forest.id, 
+                                  label: data.createForest.forest.name}
+                                ]); 
+                                setFieldValue('forest', data.createForest.forest.id); 
+                                closeFlyout(); 
+                              } 
+                            })
+                          }}> here</Text> 
                     </Text>
                   </div>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-sm w-full"> 
