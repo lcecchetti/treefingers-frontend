@@ -11,13 +11,15 @@ const InfiniteScroll = ({ className, onLoadMore, error, loading, children, hasMo
   const reachEndRef = useRef(null);
 
   useEffect(() => {
-    if (backwards) {
+    if (backwards && !loading) {
       ref.current.scrollTo({
         top: ref.current.scrollHeight - scrollBottom,
         left: ref.current.scrollWidth - scrollRight,
       });
     }
+  }, [loading]);
 
+  useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && hasMore && !loading) {
         setScrollBottom(ref.current.scrollHeight - ref.current.scrollTop);
