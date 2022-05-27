@@ -15,7 +15,7 @@ import { useUI } from 'lib/ui/context';
 const MUTATION_REGISTER = gql`
   mutation register($input: RegisterInput!) {
     register(input: $input) {
-      registrationResult
+      result
     }
   }
 `;
