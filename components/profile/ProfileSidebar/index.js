@@ -1,6 +1,6 @@
 import { Link, Text } from 'components/ui';
 import clsx from 'clsx';
-import { getProfileMeUrl, getProfileMyStories, getProfileMyForests } from 'lib/helper/profile';
+import { getProfileMeUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters } from 'lib/helper/profile';
 
 const navData = [
   {
@@ -10,6 +10,10 @@ const navData = [
   {
     'label': 'My stories',
     'href': getProfileMyStories(),
+  },
+  {
+    'label': 'My chapters',
+    'href': getProfileMyChapters(),
   },
   {
     'label': 'My forests',
