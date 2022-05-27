@@ -14,6 +14,7 @@ export const QUERY_STORIES = gql`
           title
           excerpt
           createdAt
+          depth
           parent {
             id
             likesCount
