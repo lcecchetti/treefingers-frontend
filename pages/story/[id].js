@@ -18,10 +18,20 @@ export async function getStaticProps({ params }) {
   const apolloClient = initializeApollo();
 
   // load story by id
-  const { data } = await apolloClient.query({
-    query: QUERY_STORY,
-    variables: { filter: { id: { eq: params.id } } },
-  });
+  let result;
+  
+  try {
+    result = await apolloClient.query({
+      query: QUERY_STORY,
+      variables: { filter: { id: { eq: params.id } } },
+    });
+  } catch(e) {
+    return {
+      notFound: true,
+    }
+  }
+
+  const { data } = result;
 
   // check if story exists
   if (!data.story) {
