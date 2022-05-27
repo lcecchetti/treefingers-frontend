@@ -43,7 +43,7 @@ const QUERY_CHOOSE_FOREST = gql`
 const StoryNew = ({ parent, forest, className }) => {
   const router = useRouter();
   const apolloClient = useApolloClient();
-  const { openFlyout } = useUI();
+  const { openFlyout, showToast } = useUI();
   const [error, setError] = useState(false);
   const [createStory] = useMutation(MUTATION_STORY_CREATE, {
     onError: (e) => {
@@ -116,6 +116,11 @@ const StoryNew = ({ parent, forest, className }) => {
                 category: 'story',
                 label: 'success',
               });
+              if (parent) {
+                showToast('Chapter created!');
+              } else {
+                showToast('Story planted!');
+              }
               router.push(getStoryUrl(data.createStory.story));
             },
             onError: () => {
