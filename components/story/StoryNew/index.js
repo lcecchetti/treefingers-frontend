@@ -100,7 +100,7 @@ const StoryNew = ({ parent, forest, className }) => {
           validationSchema={Yup.object().shape({
             title: Yup.string().max(64, 'Too long!').required(true),
             content: Yup.string().max(4096, 'Too long!').required(true),
-            addTag: Yup.string().max(16, 'Too long'),
+            addTag: Yup.string().matches(/^[a-zA-Z0-9_]*$/g, 'Tag must not contain special chars or spaces!').max(16, 'Too long'),
             forest: Yup.string().when('hasForestSelection', {
               is: () => hasForestSelection,
               then: Yup.string().required(true),
@@ -158,18 +158,18 @@ const StoryNew = ({ parent, forest, className }) => {
                         touched={errors.addTag}
                         hint="Use meaningful keywords, it'll make it easier to search for it"
                       />
-                      <Button className="whitespace-nowrap" disabled={values.tags.length >= 5} type="button" size="md" onClick={() => { 
+                      <Button className="whitespace-nowrap" disabled={values.tags.length >= 5 || errors.addTag} type="button" size="md" onClick={() => { 
                         if(values.tags.includes(values.addTag) || !values.addTag) {
                           return;
                         } 
-                        arrayHelpers.push(values.addTag.replace(/\s/g,''));
+                        arrayHelpers.push(values.addTag);
                         setFieldValue('addTag', '');
                       }}>Add Tag</Button>
                     </div>
                     {!!values.tags.length && (
                       <ul className="flex flex-wrap gap-xs">
                         {values.tags.map((tag, index) => (
-                          <Button size="sm" key={index}>{tag} <FaTimes onClick={() => arrayHelpers.remove(index)}/></Button>
+                          <Button type="button" size="sm" key={index}>{tag} <FaTimes onClick={() => arrayHelpers.remove(index)}/></Button>
                         ))}
                       </ul>
                     )}
