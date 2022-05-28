@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from 'lib/apollo/client';
-import { Header, Footer, Flyout, CookieConsent, Toasts } from 'components/common';
+import { Flyout, CookieConsent, Toasts } from 'components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from 'lib/ui/context';
 import { CookiesProvider } from 'react-cookie';
@@ -16,8 +16,8 @@ import 'styles/globals.css'
 const Noop = ({ children }) => children;
 
 const App = ({ Component, pageProps }) => {
+  const router = useRouter();
 
-  const router = useRouter()
   useEffect(() => {
     const handleRouteChange = (url) => {
       gtag.pageview(url);
@@ -66,11 +66,9 @@ const App = ({ Component, pageProps }) => {
         <ApolloProvider client={apolloClient}>
           <ThemeProvider attribute="class">
             <UIProvider>
-              <Header/>
               <Layout>
                 <Component {...pageProps}/>
               </Layout>
-              <Footer/>
               <Flyout/>
               <Toasts/>
               <CookieConsent/>
