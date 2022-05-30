@@ -5,8 +5,8 @@ import ForestCard from 'components/forest/ForestCard';
 import { InfiniteScroll } from 'components/common';
 
 export const QUERY_FORESTS = gql`
-  query forests($filter: FilterForestInput, $sort: SortForestInput, $first: Int, $after: String) {
-    forests(filter: $filter, sort: $sort, first: $first, after: $after) {
+  query forests($filter: FilterForestInput, $sort: SortForestInput, $query: String, $first: Int, $after: String) {
+    forests(filter: $filter, sort: $sort, query: $query, first: $first, after: $after) {
       edges {
         cursor
         node {
@@ -29,9 +29,9 @@ export const QUERY_FORESTS = gql`
   }
 `;
 
-const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
+const ForestList = ({ className, filter, sort, first = 10, query, setTotalCount }) => {
   const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_FORESTS, { variables: { filter, first, sort } });
+  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_FORESTS, { variables: { filter, first, sort, query } });
 
   // refresh data with customer specific infos
   useEffect(() => {
