@@ -67,7 +67,7 @@ const Like = ({ entity, viewOnly }) => {
     variables,
     onCompleted: () => {
       gtag.event({
-        action: `like-${entity.__typename}`,
+        action: `like-${entity.__typename.toLowerCase()}`,
         category: 'like',
         label: 'success',
       });
@@ -75,7 +75,7 @@ const Like = ({ entity, viewOnly }) => {
     },
     onError: () => {
       gtag.event({
-        action: `like-${entity.__typename}`,
+        action: `like-${entity.__typename.toLowerCase()}`,
         category: 'like',
         label: 'error'
       });
@@ -86,7 +86,7 @@ const Like = ({ entity, viewOnly }) => {
     variables,
     onCompleted: () => {
       gtag.event({
-        action: `dislike-${entity.__typename}`,
+        action: `dislike-${entity.__typename.toLowerCase()}`,
         category: 'like',
         label: 'success',
       });
@@ -94,7 +94,7 @@ const Like = ({ entity, viewOnly }) => {
     },
     onError: () => {
       gtag.event({
-        action: `dislike-${entity.__typename}`,
+        action: `dislike-${entity.__typename.toLowerCase()}`,
         category: 'like',
         label: 'error',
       });

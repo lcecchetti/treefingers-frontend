@@ -23,7 +23,11 @@ const MUTATION_COMMENT = gql`
           id
           username
         }
-        entity {
+        story {
+          id
+          commentsCount
+        }
+        forest {
           id
           commentsCount
         }
@@ -39,7 +43,7 @@ const CommentNew = ({ entity, sort, last }) => {
       // add new comment to the cache
       cache.updateQuery({
           query: QUERY_COMMENTS,
-          variables: { filter: { entity: { eq: entity.id }, entityType: { eq: entity.__typename } }, sort, last },
+          variables: { filter: { [entity.__typename.toLowerCase()]: { eq: entity.id } }, sort, last },
         },
         ({ comments }) => ({
           comments: { 
@@ -54,7 +58,7 @@ const CommentNew = ({ entity, sort, last }) => {
     }, 
     onError(e) {
       gtag.event({
-        action: `submit-comment-${entity.__typename}`,
+        action: `submit-comment-${entity.__typename.toLowerCase()}`,
         category: 'comment',
         label: 'error',
       });
@@ -69,18 +73,17 @@ const CommentNew = ({ entity, sort, last }) => {
           enableReinitialize
           initialValues={{
             content: '',
-            entity: entity.id,
-            entityType: entity.__typename,
+            [entity.__typename.toLowerCase()]: entity.id,
           }}
           validationSchema={Yup.object().shape({
             content: Yup.string().max(512, 'Too long!').required(true),
           })}
-          onSubmit={({ content, entity, entityType }, { resetForm, setSubmitting }) => {
+          onSubmit={({ content, story, forest }, { resetForm, setSubmitting }) => {
             comment({
-              variables: { input: { data: { content, entity, entityType} } },
+              variables: { input: { data: { content, story, forest } } },
               onCompleted: () => {
                 gtag.event({
-                  action: `submit-comment-${entityType}`,
+                  action: `submit-comment-${entity.__typename.toLowerCase()}`,
                   category: 'comment',
                   label: 'success'
                 });
