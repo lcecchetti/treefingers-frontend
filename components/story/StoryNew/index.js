@@ -217,7 +217,7 @@ const StoryNew = ({ parent, forest, className }) => {
                         setFieldValue('forest', '');
                         const { data, error } = await apolloClient.query({
                           query: QUERY_CHOOSE_FOREST,
-                          variables: { filter: { query: e.target.value } },
+                          variables: { query: e.target.value },
                         });
 
                         if(error) {
