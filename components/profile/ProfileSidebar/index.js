@@ -1,6 +1,9 @@
-import { Link, Text } from 'components/ui';
+import { Button, Link, Text } from 'components/ui';
 import clsx from 'clsx';
 import { getProfileMeUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories, getProfileFollowedUsers, getProfileJoinedForests } from 'lib/helper/profile';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { FaBars } from 'react-icons/fa';
 
 const navData = [
   {
@@ -34,13 +37,22 @@ const navData = [
 ]; 
 
 const ProfileSidebar = ({ className }) => {  
+  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <nav className={clsx('flex flex-col gap-sm my-sm lg:my-md', className)}>
-      <ul className="flex-col gap-px bg-primary-contrast text-primary-contrast rounded-xl overflow-hidden">
+    <nav className={clsx('flex flex-col gap-sm mt-sm lg:mt-md', className)}>
+      <Button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)} icon={FaBars}>Profile Menu</Button>
+      <ul className={clsx('flex-col gap-px overflow-hidden',
+        !menuOpen && 'max-h-0 lg:max-h-full',
+      )}>
         {navData.map((item, index) => (
-          <li key={index} className="border-b border-primary-contrast bg-primary relative">
-            <Link href={item.href} className="py-sm px-md flex items-center gap-sm">
-              <Text variant="span" className="uppercase my-xs font-bold text-sm">{item.label}</Text>
+          <li key={index} className={clsx('border-2 relative rounded-md',
+            router.route !== item.href && 'border-primary-contrast bg-primary text-primary-contrast',
+            router.route === item.href && 'border-primary bg-primary-contrast text-primary',
+          )}>
+            <Link href={item.href} className="flex items-center">
+              <Text variant="span" className="uppercase my-xs font-bold text-sm block py-sm px-md w-full" onClick={() => setMenuOpen(false)}>{item.label}</Text>
               {item.Icon &&
                 <item.Icon className="text-xl" />
               }
