@@ -65,6 +65,7 @@ const ForestNew = ({ className, afterCreationCallback }) => {
                 router.push(getForestUrl(data.createForest.forest));
               }
 
+              setError(false);
               resetForm();
             },
             onError: () => {

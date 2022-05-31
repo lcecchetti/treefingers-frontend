@@ -121,6 +121,7 @@ const StoryNew = ({ parent, forest, className }) => {
               } else {
                 showToast('Story planted!');
               }
+              setError(false);
               router.push(getStoryUrl(data.createStory.story));
             },
             onError: () => {
@@ -152,13 +153,16 @@ const StoryNew = ({ parent, forest, className }) => {
                 render={arrayHelpers => (
                   <div className="flex flex-col gap-sm">
                     <div className="flex gap-sm justify-items-stretch items-center">
-                      <Field className="grow" name="addTag" as={FormField} type="text" 
+                      <Field className="grow" 
+                        name="addTag" 
+                        as={FormField} 
+                        type="text" 
                         label="Tag your story" 
                         error={errors.addTag}
                         touched={errors.addTag}
                         hint="Use meaningful keywords, it'll make it easier to search for it"
                       />
-                      <Button className="whitespace-nowrap" disabled={values.tags.length >= 5 || errors.addTag} type="button" size="md" onClick={() => { 
+                      <Button className="whitespace-nowrap" disabled={values.tags.length >= 5 || errors.addTag || values.addTag.length < 2} type="button" size="md" onClick={() => { 
                         if(values.tags.includes(values.addTag) || !values.addTag) {
                           return;
                         } 

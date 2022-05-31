@@ -87,6 +87,7 @@ const CommentNew = ({ entity, sort, last }) => {
                   category: 'comment',
                   label: 'success'
                 });
+                setError(false);
                 resetForm();
               },
               onError: () => {
