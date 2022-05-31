@@ -8,7 +8,7 @@ const ProfileLayout = ({ children }) => {
     <>
       <Header/>
       <Container className="pt-header min-h-screen">
-        <div className="flex flex-col lg:flex-row gap-md">
+        <div className="flex flex-col lg:flex-row gap-sm lg:gap-md">
           <ProfileSidebar className="lg:w-1/4" />
           <div className="lg:w-3/4">
             {children}
