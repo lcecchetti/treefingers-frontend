@@ -12,8 +12,7 @@ import Script from 'next/script'
 
 // global style dependencies
 import 'styles/globals.css'
-
-const Noop = ({ children }) => children;
+import { DefaultLayout } from 'components/layout';
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -31,7 +30,7 @@ const App = ({ Component, pageProps }) => {
   }, [router.events]);
 
   // delegate layout responsibility to the page to preserve top level component status
-  const Layout = Component.Layout || Noop;
+  const Layout = Component.Layout || DefaultLayout;
 
   // prepare apollo client
   const apolloClient = useApollo(pageProps);
