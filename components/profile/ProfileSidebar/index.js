@@ -1,6 +1,6 @@
 import { Link, Text } from 'components/ui';
 import clsx from 'clsx';
-import { getProfileMeUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories } from 'lib/helper/profile';
+import { getProfileMeUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories, getProfileFollowedUsers, getProfileJoinedForests } from 'lib/helper/profile';
 
 const navData = [
   {
@@ -22,6 +22,14 @@ const navData = [
   {
     'label': 'Liked stories',
     'href': getProfileLikedStories(),
+  },
+  {
+    'label': 'Followed users',
+    'href': getProfileFollowedUsers(),
+  },  
+  {
+    'label': 'Joined forests',
+    'href': getProfileJoinedForests(),
   },
 ]; 
 

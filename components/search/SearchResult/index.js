@@ -41,7 +41,7 @@ const SearchResult = ({ className, query }) => {
             {totalCount === 0 &&
               <Text>No results.</Text>
             }
-            <Component className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={filter} query={query} setTotalCount={setTotalCount} />   
+            <Component className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ query, ...filter }} setTotalCount={setTotalCount} />   
           </div>  
         ))}
       </div>

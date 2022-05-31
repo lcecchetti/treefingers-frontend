@@ -5,7 +5,7 @@ import { StoryList } from 'components/story';
 import Head from 'next/head';
 import { useState } from 'react';
 
-const LikedStories = () => {
+const LikedStoriesPage = () => {
   const [storiesCount, setStoriesCount] = useState();
 
   return (
@@ -24,11 +24,11 @@ const LikedStories = () => {
       {storiesCount === 0 &&
         <Text>You haven't planted any story yet. What are you waiting for?</Text>
       }
-      <StoryList className="grid md:grid-cols-2 gap-md" liked setTotalCount={setStoriesCount}/>
+      <StoryList className="grid md:grid-cols-2 gap-md" filter={{ liked: true }} setTotalCount={setStoriesCount}/>
     </>
   );
 };
 
-LikedStories.Layout = ProfileLayout;
+LikedStoriesPage.Layout = ProfileLayout;
 
-export default LikedStories;
+export default LikedStoriesPage;
