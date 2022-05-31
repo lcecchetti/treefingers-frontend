@@ -5,8 +5,8 @@ import { InfiniteScroll } from 'components/common';
 import StoryCard from 'components/story/StoryCard';
 
 export const QUERY_STORIES = gql`
-  query stories($filter: FilterStoryInput, $sort: SortStoryInput, $query: String, $liked: Boolean, $first: Int, $after: String) {
-    stories(filter: $filter, sort: $sort, query: $query, liked: $liked, first: $first, after: $after) {
+  query stories($filter: FilterStoryInput, $sort: SortStoryInput, $first: Int, $after: String) {
+    stories(filter: $filter, sort: $sort, first: $first, after: $after) {
       edges {
         cursor
         node {
@@ -42,11 +42,11 @@ export const QUERY_STORIES = gql`
   }
 `;
 
-const StoryList = ({ className, filter, sort, first = 10, query, liked, setTotalCount }) => {
+const StoryList = ({ className, filter, sort, first = 10, setTotalCount }) => {
   const { currentUser } = useCurrentUser();
 
   const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
-    variables: { filter, first, sort, query, liked },
+    variables: { filter, first, sort },
   });
 
   // refresh data with customer specific infos
