@@ -50,7 +50,10 @@ const UserEditForm = () => {
           bio: data.user.bio,
         }}
         validateOnBlur
-        onSubmit={({ confirmPassword, ...data }) => {
+        onSubmit={({ confirmPassword, password, ...data }) => {
+          if (password) {
+            data.password = password;
+          }
           return editUser({ variables: { input: { data } } });
         }}
         validationSchema={Yup.object().shape({
