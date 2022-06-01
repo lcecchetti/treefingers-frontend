@@ -45,8 +45,8 @@ const UserEditForm = () => {
       {data?.user && 
         <Formik
         initialValues={{
-          password: '',
-          confirmPassword: '',
+          password: null,
+          confirmPassword: null,
           bio: data.user.bio,
         }}
         validateOnBlur
@@ -54,8 +54,8 @@ const UserEditForm = () => {
           return editUser({ variables: { input: { data } } });
         }}
         validationSchema={Yup.object().shape({
-          password: Yup.string().min(10, 'Too short!'),
-          confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+          password: Yup.string().min(10, 'Too short!').nullable(),
+          confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').nullable(),
           bio: Yup.string().max(255, 'Too long!'),
         })}>
           {({ isSubmitting, errors, touched }) => (
