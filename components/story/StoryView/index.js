@@ -31,6 +31,7 @@ export const QUERY_STORY = gql`
       }
       root {
         id
+        title
         likesCount
         descendentsCount
       }
