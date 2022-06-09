@@ -100,7 +100,7 @@ const StoryNew = ({ parent, forest, className }) => {
           validationSchema={Yup.object().shape({
             title: Yup.string().max(64, 'Too long!').required(true),
             content: Yup.string().max(4096, 'Too long!').required(true),
-            addTag: Yup.string().matches(/^[a-zA-Z0-9_]*$/g, 'Tag must not contain special chars or spaces!').max(16, 'Too long'),
+            addTag: Yup.string().matches(/^[a-zA-Z0-9_]*$/, 'Tag must not contain special chars or spaces!').max(16, 'Too long'),
             forest: Yup.string().when('hasForestSelection', {
               is: () => hasForestSelection,
               then: Yup.string().required(true),
