@@ -13,7 +13,7 @@ import { QUERY_STORIES } from 'components/story/StoryList';
 import StoryCard from 'components/story/StoryCard';
 import * as gtag from 'lib/gtag';
 
-const StoryChapters = ({ className, parent, sort, first = 10 }) => {
+const StoryChapters = ({ className, parent, first = 10 }) => {
   const { currentUser } = useCurrentUser();
   const [isWriting, setIsWriting] = useState(false);
 
@@ -21,7 +21,7 @@ const StoryChapters = ({ className, parent, sort, first = 10 }) => {
     variables: {
       filter: { parent: { eq: parent.id } },
       first,
-      sort,
+      sort: { likesCount: 'DESC' },
     }
   });
 
