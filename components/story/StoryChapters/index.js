@@ -1,12 +1,11 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Text, Spinner, Button } from 'components/ui';
 import { useQuery } from '@apollo/client';
 import clsx from 'clsx';
 import StoryNew from 'components/story/StoryNew';
 import { FaAngleDown } from 'react-icons/fa';
 import { ApiError } from 'components/common';
-import { useCurrentUser } from 'lib/auth/currentUser';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards, Navigation } from 'swiper';
 import { QUERY_STORIES } from 'components/story/StoryList';
@@ -14,23 +13,17 @@ import StoryCard from 'components/story/StoryCard';
 import * as gtag from 'lib/gtag';
 
 const StoryChapters = ({ className, parent, first = 10 }) => {
-  const { currentUser } = useCurrentUser();
   const [isWriting, setIsWriting] = useState(false);
 
-  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_STORIES, {
+  const { data, loading, error, fetchMore } = useQuery(QUERY_STORIES, {
     variables: {
       filter: { parent: { eq: parent.id } },
       first,
       sort: { likesCount: 'DESC' },
-    }
+    },
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
   });
-
-  // refresh data with customer specific infos
-  useEffect(() => {
-    if (currentUser) {
-      refetch();
-    }
-  }, [!currentUser]);
   
   const toggleWriting = (show) => {
     gtag.event({

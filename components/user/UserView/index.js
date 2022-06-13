@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { Spinner, Text } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
 import { ApiError, PageIntro } from 'components/common';
-import { useCurrentUser } from 'lib/auth/currentUser';
 import UserFollowership from 'components/user/UserFollowership';
 
 export const QUERY_USER = gql`
@@ -21,15 +19,11 @@ export const QUERY_USER = gql`
 `;
 
 const UserView = ({ className, user }) => {
-  const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch } = useQuery(QUERY_USER, { variables: { filter: { id: { eq: user.id } } } });
-
-  // refresh data with customer specific infos
-  useEffect(() => {
-    if (currentUser) {
-      refetch();
-    }
-  }, [!currentUser]);
+  const { data, loading, error } = useQuery(QUERY_USER, { 
+    variables: { filter: { id: { eq: user.id } } },
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
+  });
 
   return (
     <div className={className}>

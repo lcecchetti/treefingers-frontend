@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { Spinner, Text, Button, Link } from 'components/ui';
 import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
 import { ApiError, PageIntro } from 'components/common';
-import { useCurrentUser } from 'lib/auth/currentUser';
 import { FaSeedling } from 'react-icons/fa';
 import ForestActions from 'components/forest/ForestActions';
 import { getStoryNewUrl } from 'lib/helper/story';
@@ -25,15 +23,11 @@ export const QUERY_FOREST = gql`
 `;
 
 const ForestView = ({ className, forest }) => {
-  const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch } = useQuery(QUERY_FOREST, { variables: { filter: { id: { eq: forest.id } } } });
-
-  // refresh data with customer specific infos
-  useEffect(() => {
-    if (currentUser) {
-      refetch();
-    }
-  }, [!currentUser]);
+  const { data, loading, error } = useQuery(QUERY_FOREST, { variables: { 
+    filter: { id: { eq: forest.id } },
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
+  } });
 
   return (
     <div className={className}>

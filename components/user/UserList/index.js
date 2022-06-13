@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { InfiniteScroll } from 'components/common';
-import { useCurrentUser } from 'lib/auth/currentUser';
 import UserCard from '../UserCard';
 
 export const QUERY_USERS = gql`
@@ -29,15 +28,11 @@ export const QUERY_USERS = gql`
 `;
 
 const UserList = ({ className, filter, sort, first = 10, setTotalCount }) => {
-  const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_USERS, { variables: { filter, first, sort } });
-
-  // refresh data with customer specific infos
-  useEffect(() => {
-    if (currentUser) {
-      refetch();
-    }
-  }, [!currentUser]);
+  const { data, loading, error, fetchMore } = useQuery(QUERY_USERS, { 
+    variables: { filter, first, sort },
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
+  });
 
   useEffect(() => {
     setTotalCount && !loading && setTotalCount(data?.users.pageInfo.totalCount);

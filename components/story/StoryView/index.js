@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Spinner, Text, Link, Container, Button } from 'components/ui';
 import { DATE_LONG, formatDate } from 'lib/helper/date';
 import { getStoryUrl, isStoryRoot } from 'lib/helper/story';
@@ -7,7 +6,6 @@ import { FaAngleUp, FaAngleDoubleUp } from 'react-icons/fa';
 import { Avatar } from 'components/user';
 import StoryChapters from 'components/story/StoryChapters';
 import StoryActions from 'components/story/StoryActions';
-import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
 import { TagList } from 'components/tag';
 import StoryTree from '../StoryTree';
@@ -50,16 +48,11 @@ export const QUERY_STORY = gql`
 `;
 
 const StoryView = ({ className, story }) => {
-  const { currentUser } = useCurrentUser();
-
-  const { data, loading, error, refetch } = useQuery(QUERY_STORY, { variables: { filter: { id: { eq: story.id } } } });
-
-  // refresh data with customer specific infos
-  useEffect(() => {
-    if (currentUser) {
-      refetch();
-    }
-  }, [!currentUser]);
+  const { data, loading, error } = useQuery(QUERY_STORY, { variables: { 
+    filter: { id: { eq: story.id } },
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
+   }});
 
   return (
     <div className={clsx('flex flex-col gap-md', className)}>

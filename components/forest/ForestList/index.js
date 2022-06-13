@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { useCurrentUser } from 'lib/auth/currentUser';
 import ForestCard from 'components/forest/ForestCard';
 import { InfiniteScroll } from 'components/common';
 
@@ -30,17 +29,12 @@ export const QUERY_FORESTS = gql`
 `;
 
 const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
-  const { currentUser } = useCurrentUser();
-  const { data, loading, error, refetch, fetchMore } = useQuery(QUERY_FORESTS, { variables: { filter, first, sort } });
-
-  // refresh data with customer specific infos
-  useEffect(() => {
-    if (currentUser) {
-      refetch();
-    }
-  }, [!currentUser]);
-
-
+  const { data, loading, error, fetchMore } = useQuery(QUERY_FORESTS, { 
+    variables: { filter, first, sort }, 
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
+  });
+  
   useEffect(() => {
     setTotalCount && !loading && setTotalCount(data?.forests.pageInfo.totalCount);
   }, [data?.forests.pageInfo.totalCount]);
