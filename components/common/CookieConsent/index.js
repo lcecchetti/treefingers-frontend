@@ -25,7 +25,7 @@ const CookieConsent = ({ className }) => {
   };
 
   return (visible &&
-    <div className={clsx('fixed bottom-0 left-0 w-full p-md border-t-2 bg-base', className)}>
+    <div className={clsx('fixed bottom-0 left-0 w-full p-md border-t-2 bg-base z-50', className)}>
       <Container className="flex flex-row gap-md justify-center items-center">
         <Text>
           This site uses cookies to improve your experience.
