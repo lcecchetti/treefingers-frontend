@@ -5,6 +5,7 @@ import { ApiError, PageIntro } from 'components/common';
 import { FaSeedling } from 'react-icons/fa';
 import ForestActions from 'components/forest/ForestActions';
 import { getStoryNewUrl } from 'lib/helper/story';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 export const QUERY_FOREST = gql`
   query forest($filter: FilterForestInput!) {
@@ -23,9 +24,11 @@ export const QUERY_FOREST = gql`
 `;
 
 const ForestView = ({ className, forest }) => {
+  const { currentUser } = useCurrentUser();
+  
   const { data, loading, error } = useQuery(QUERY_FOREST, { variables: { 
     filter: { id: { eq: forest.id } },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     nextFetchPolicy: 'cache-first',
   } });
 

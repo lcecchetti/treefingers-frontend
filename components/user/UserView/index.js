@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { StoryList } from 'components/story';
 import { ApiError, PageIntro } from 'components/common';
 import UserFollowership from 'components/user/UserFollowership';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 export const QUERY_USER = gql`
   query user($filter: FilterUserInput!) {
@@ -19,9 +20,11 @@ export const QUERY_USER = gql`
 `;
 
 const UserView = ({ className, user }) => {
+  const { currentUser } = useCurrentUser();
+
   const { data, loading, error } = useQuery(QUERY_USER, { 
     variables: { filter: { id: { eq: user.id } } },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     nextFetchPolicy: 'cache-first',
   });
 

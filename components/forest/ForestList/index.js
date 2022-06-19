@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import ForestCard from 'components/forest/ForestCard';
 import { InfiniteScroll } from 'components/common';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 export const QUERY_FORESTS = gql`
   query forests($filter: FilterForestInput, $sort: SortForestInput, $first: Int, $after: String) {
@@ -29,9 +30,11 @@ export const QUERY_FORESTS = gql`
 `;
 
 const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
+  const { currentUser } = useCurrentUser();
+
   const { data, loading, error, fetchMore } = useQuery(QUERY_FORESTS, { 
     variables: { filter, first, sort }, 
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     nextFetchPolicy: 'cache-first',
   });
   

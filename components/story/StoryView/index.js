@@ -11,6 +11,7 @@ import { TagList } from 'components/tag';
 import StoryTree from '../StoryTree';
 import clsx from 'clsx';
 import { getForestUrl } from 'lib/helper/forest';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 export const QUERY_STORY = gql`
   query story($filter: FilterStoryInput!) {
@@ -48,9 +49,11 @@ export const QUERY_STORY = gql`
 `;
 
 const StoryView = ({ className, story }) => {
+  const { currentUser } = useCurrentUser();
+
   const { data, loading, error } = useQuery(QUERY_STORY, { variables: { 
     filter: { id: { eq: story.id } },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     nextFetchPolicy: 'cache-first',
    }});
 

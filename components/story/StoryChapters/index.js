@@ -11,9 +11,11 @@ import { EffectCards, Navigation } from 'swiper';
 import { QUERY_STORIES } from 'components/story/StoryList';
 import StoryCard from 'components/story/StoryCard';
 import * as gtag from 'lib/gtag';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 const StoryChapters = ({ className, parent, first = 10 }) => {
   const [isWriting, setIsWriting] = useState(false);
+  const { currentUser } = useCurrentUser();
 
   const { data, loading, error, fetchMore } = useQuery(QUERY_STORIES, {
     variables: {
@@ -21,7 +23,7 @@ const StoryChapters = ({ className, parent, first = 10 }) => {
       first,
       sort: { likesCount: 'DESC' },
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     nextFetchPolicy: 'cache-first',
   });
   

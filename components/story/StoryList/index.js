@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { InfiniteScroll } from 'components/common';
 import StoryCard from 'components/story/StoryCard';
+import { useCurrentUser } from 'lib/auth/currentUser';
 
 export const QUERY_STORIES = gql`
   query stories($filter: FilterStoryInput, $sort: SortStoryInput, $first: Int, $after: String) {
@@ -42,9 +43,11 @@ export const QUERY_STORIES = gql`
 `;
 
 const StoryList = ({ className, filter, sort, first = 10, setTotalCount }) => {
+  const { currentUser } = useCurrentUser();
+
   const { data, loading, error, fetchMore } = useQuery(QUERY_STORIES, {
     variables: { filter, first, sort },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     nextFetchPolicy: 'cache-first',
   });
 
