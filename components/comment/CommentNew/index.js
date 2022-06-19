@@ -55,15 +55,7 @@ const CommentNew = ({ entity, sort, last }) => {
           }
         })
       );
-    }, 
-    onError(e) {
-      gtag.event({
-        action: `submit-comment-${entity.__typename.toLowerCase()}`,
-        category: 'comment',
-        label: 'error',
-      });
-      setError(e);
-    }
+    },
   });
 
   return (
@@ -82,15 +74,21 @@ const CommentNew = ({ entity, sort, last }) => {
             comment({
               variables: { input: { data: { content, story, forest } } },
               onCompleted: () => {
+                resetForm();
                 gtag.event({
                   action: `submit-comment-${entity.__typename.toLowerCase()}`,
                   category: 'comment',
                   label: 'success'
                 });
                 setError(false);
-                resetForm();
               },
               onError: () => {
+                gtag.event({
+                  action: `submit-comment-${entity.__typename.toLowerCase()}`,
+                  category: 'comment',
+                  label: 'error',
+                });
+                setError(e);
                 setSubmitting(false);
               }
             });

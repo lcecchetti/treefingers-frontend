@@ -45,16 +45,7 @@ const StoryNew = ({ parent, forest, className }) => {
   const apolloClient = useApolloClient();
   const { openFlyout, closeFlyout, showToast } = useUI();
   const [error, setError] = useState(false);
-  const [createStory] = useMutation(MUTATION_STORY_CREATE, {
-    onError: (e) => {
-      gtag.event({
-        action: 'create-story',
-        category: 'story',
-        label: 'error',
-      });
-      setError(e);
-    },
-  });
+  const [createStory] = useMutation(MUTATION_STORY_CREATE);
 
   const hasForestSelection = !parent;
 
@@ -106,11 +97,12 @@ const StoryNew = ({ parent, forest, className }) => {
               then: Yup.string().required(true),
             })
           })}
-          onSubmit={({ title, content, parent, tags, forest }, { setSubmitting }) => createStory({
+          onSubmit={({ title, content, parent, tags, forest }, { setSubmitting, resetForm }) => createStory({
             variables: { input: { data: {
               title, content, parent, forest, tags
             }}},
             onCompleted: (data) => {
+              resetForm();
               gtag.event({
                 action: 'create-story',
                 category: 'story',
@@ -125,6 +117,12 @@ const StoryNew = ({ parent, forest, className }) => {
               router.push(getStoryUrl(data.createStory.story));
             },
             onError: () => {
+              gtag.event({
+                action: 'create-story',
+                category: 'story',
+                label: 'error',
+              });
+              setError(e);
               setSubmitting(false);
             }
           })}

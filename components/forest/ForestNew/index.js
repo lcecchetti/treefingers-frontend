@@ -23,16 +23,7 @@ const MUTATION_FOREST_CREATE = gql`
 
 const ForestNew = ({ className, afterCreationCallback }) => {
   const [error, setError] = useState(false);
-  const [createForest] = useMutation(MUTATION_FOREST_CREATE, {
-    onError: (e) => {
-      gtag.event({
-        action: 'create-forest',
-        category: 'forest',
-        label: 'error',
-      });
-      setError(e);
-    },
-  });
+  const [createForest] = useMutation(MUTATION_FOREST_CREATE);
   const router = useRouter();
   const { showToast } = useUI();
 
@@ -53,6 +44,7 @@ const ForestNew = ({ className, afterCreationCallback }) => {
               name, about
             }}},
             onCompleted: (data) => {
+              resetForm();
               gtag.event({
                 action: 'create-forest',
                 category: 'forest',
@@ -66,9 +58,14 @@ const ForestNew = ({ className, afterCreationCallback }) => {
               }
 
               setError(false);
-              resetForm();
             },
             onError: () => {
+              gtag.event({
+                action: 'create-forest',
+                category: 'forest',
+                label: 'error',
+              });
+              setError(e);
               setSubmitting(false);
             }
           })}>

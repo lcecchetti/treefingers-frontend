@@ -27,15 +27,6 @@ const RegisterForm = () => {
   const { showToast } = useUI();
 
   const [register] = useMutation(MUTATION_REGISTER, {
-    onCompleted: async () => {
-      gtag.event({
-        action: 'register',
-        category: 'auth',
-        label: 'success',
-      });
-      showToast('Check your emails to activate your account', { duration: 0 });
-      router.push(getLoginUrl());
-    },
     onError: (e) => {
       gtag.event({
         action: 'login',
@@ -62,7 +53,18 @@ const RegisterForm = () => {
           username: '',
           bio: '',
         }}
-        onSubmit={(data) => register({ variables: { input: { data } } })}
+        onSubmit={(data, { resetForm }) => register({ variables: { input: { data } }, 
+          onCompleted: async () => {
+            resetForm();
+            gtag.event({
+              action: 'register',
+              category: 'auth',
+              label: 'success',
+            });
+            showToast('Check your emails to activate your account', { duration: 0 });
+            router.push(getLoginUrl());
+          }, 
+        })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required(true),
           password: Yup.string().min(10, 'Too short!').required(true),
