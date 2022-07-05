@@ -59,7 +59,7 @@ const ForestNew = ({ className, afterCreationCallback }) => {
 
               setError(false);
             },
-            onError: () => {
+            onError: (e) => {
               gtag.event({
                 action: 'create-forest',
                 category: 'forest',

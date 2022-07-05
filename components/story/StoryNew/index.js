@@ -116,7 +116,7 @@ const StoryNew = ({ parent, forest, className }) => {
               setError(false);
               router.push(getStoryUrl(data.createStory.story));
             },
-            onError: () => {
+            onError: (e) => {
               gtag.event({
                 action: 'create-story',
                 category: 'story',

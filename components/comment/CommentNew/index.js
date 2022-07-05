@@ -82,7 +82,7 @@ const CommentNew = ({ entity, sort, last }) => {
                 });
                 setError(false);
               },
-              onError: () => {
+              onError: (e) => {
                 gtag.event({
                   action: `submit-comment-${entity.__typename.toLowerCase()}`,
                   category: 'comment',
