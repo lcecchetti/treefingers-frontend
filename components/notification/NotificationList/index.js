@@ -48,7 +48,7 @@ const NotificationList = ({ sort = { id: 'DESC' }, first = 10 }) => {
         return;
       }
       refetch();
-      showToast(`All ${r.readAllNotifications.count} notifications have been cleared!`);
+      showToast(`All ${r.readAllNotifications.count} notifications have been marked as read!`);
     },
     onError() {
       gtag.event({
@@ -70,7 +70,7 @@ const NotificationList = ({ sort = { id: 'DESC' }, first = 10 }) => {
 
           {!!data?.notifications.edges.length &&
             <div className="flex flex-col gap-md items-center">
-              <Button size="sm" onClick={() => readAllNotifications()} variant="outlined">Clear all</Button>
+              <Button size="sm" onClick={() => readAllNotifications()} variant="outlined">Read all</Button>
               <ol className="flex flex-col gap-sm w-full">
                 {data.notifications.edges.map(({ node }) => (
                   <li key={node.id}>
