@@ -38,14 +38,17 @@ const NotificationList = ({ sort = { id: 'DESC' }, first = 10 }) => {
   const { showToast } = useUI();
   const { data, loading, error, fetchMore, refetch } = useQuery(QUERY_NOTIFICATIONS, { variables: { sort, first }, fetchPolicy: 'cache-and-network'});
   const [readAllNotifications] = useMutation(MUTATION_READ_ALL_NOTIFICATIONS, {
-    onCompleted() {
-      refetch();
+    onCompleted(r) {
       gtag.event({
         action: 'read-all',
         category: 'notifications',
         label: 'success',
       });
-      showToast('All the notifications have been cleared!');
+      if (!r.readAllNotifications.count) {
+        return;
+      }
+      refetch();
+      showToast(`All ${r.readAllNotifications.count} notifications have been cleared!`);
     },
     onError() {
       gtag.event({
@@ -67,7 +70,7 @@ const NotificationList = ({ sort = { id: 'DESC' }, first = 10 }) => {
 
           {!!data?.notifications.edges.length &&
             <div className="flex flex-col gap-md items-center">
-              <Button onClick={() => readAllNotifications()} variant="outlined">Clear all</Button>
+              <Button size="sm" onClick={() => readAllNotifications()} variant="outlined">Clear all</Button>
               <ol className="flex flex-col gap-sm w-full">
                 {data.notifications.edges.map(({ node }) => (
                   <li key={node.id}>
