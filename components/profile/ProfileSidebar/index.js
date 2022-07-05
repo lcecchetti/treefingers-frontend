@@ -1,14 +1,18 @@
 import { Button, Link, Text } from 'components/ui';
 import clsx from 'clsx';
-import { getProfileMeUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories, getProfileFollowedUsers, getProfileJoinedForests } from 'lib/helper/profile';
+import { getProfileMeUrl, getProfileDetailsUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories, getProfileFollowedUsers, getProfileJoinedForests } from 'lib/helper/profile';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 
 const navData = [
   {
-    'label': 'Profile',
+    'label': 'What\'s new',
     'href': getProfileMeUrl(),
+  },
+  {
+    'label': 'My details',
+    'href': getProfileDetailsUrl(),
   },
   {
     'label': 'My stories',

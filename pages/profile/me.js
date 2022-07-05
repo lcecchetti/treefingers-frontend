@@ -3,8 +3,8 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 import { Text } from 'components/ui';
 import { PageIntro } from 'components/common';
 import { Logout } from 'components/profile';
-import { UserEditForm } from 'components/user';
 import Head from 'next/head';
+import { NotificationList } from 'components/notification';
 
 const ProfileMePage = () => {
   const { currentUser } = useCurrentUser();
@@ -19,9 +19,10 @@ const ProfileMePage = () => {
           <Text variant="pageTitle">{`Welcome ${currentUser.username}!`}</Text>
           <Logout/>
         </div>
-        <Text variant="p">Here you can edit your profile details.</Text>
+        <Text variant="p">Here you'll find updates on how your stories and forests are growing.</Text>
       </PageIntro>
-      <UserEditForm/>
+
+      <NotificationList/>
     </>
   );
 };
