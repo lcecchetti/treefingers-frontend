@@ -12,10 +12,19 @@ export const QUERY_NOTIFICATIONS = gql`
         cursor
         node {
           id
-          content
-          createdAt
-          link
+          what
+          referenceId
+          referenceType
           read
+          createdAt
+          who {
+            id 
+            username
+          }
+          details {
+            referenceLabel
+            sourceLabel
+          }
         }
       }
       pageInfo {
@@ -61,7 +70,7 @@ const NotificationList = ({ sort = { id: 'DESC' }, first = 10 }) => {
   });
   
   return (
-    <InfiniteScroll className="flex flex-col" error={error} onLoadMore={(opt) => fetchMore({ variables: { before: data?.notifications.pageInfo.endCursor }, ...opt })} loading={loading} hasMore={data?.notifications.pageInfo.hasNextPage}>
+    <InfiniteScroll className="flex flex-col" error={error} onLoadMore={(opt) => fetchMore({ variables: { after: data?.notifications.pageInfo.endCursor }, ...opt })} loading={loading} hasMore={data?.notifications.pageInfo.hasNextPage}>
       {data &&
         <div className="flex flex-col gap-md">
           {!data?.notifications.edges.length &&
