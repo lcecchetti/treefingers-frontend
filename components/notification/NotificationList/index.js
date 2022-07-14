@@ -12,19 +12,17 @@ export const QUERY_NOTIFICATIONS = gql`
         cursor
         node {
           id
-          what
-          referenceId
-          referenceType
+          type
+          sourceId
+          sourceType
           read
           createdAt
-          who {
+          actor {
             id 
             username
           }
-          details {
-            referenceLabel
-            sourceLabel
-          }
+          content
+          link
         }
       }
       pageInfo {
