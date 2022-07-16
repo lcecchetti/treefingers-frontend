@@ -38,11 +38,13 @@ const LoginForm = () => {
   const router = useRouter();
   const client = useApolloClient();
   const [error, setError] = useState(false);
+  const [resendActivateAccountTo, setResendActivateAccountTo] = useState(false);
   const { currentUser } = useCurrentUser();
   const { showToast } = useUI();
 
   const [login] = useMutation(MUTATION_LOGIN, {
-    onCompleted: async ({ login }) => {    
+    onCompleted: async ({ login }) => {   
+      setResendActivateAccountTo(false);
       setAuthToken(login.token);
       await client.resetStore();
       gtag.event({
@@ -54,25 +56,18 @@ const LoginForm = () => {
       showToast(`Hey ${login.currentUser.username}, welcome!`);
       router.push(redirect);
     },
-    onError: (e) => {
-      gtag.event({
-        action: 'login',
-        category: 'auth',
-        label: 'error',
-      });
-      setError(e);
-    }
   });
 
   const [resendActivateAccount] = useMutation(MUTATION_RESEND_ACTIVATE_ACCOUNT, {
     onCompleted: async () => {    
-      setError(false);
       gtag.event({
         action: 'resendActivateAccount',
         category: 'auth',
         label: 'success',
       });
       showToast(`We got you, check your emails`);
+      setResendActivateAccountTo(false);
+      setError(false);
     },
     onError: (e) => {
       gtag.event({
@@ -98,7 +93,20 @@ const LoginForm = () => {
           email: '',
           password: '',
         }}
-        onSubmit={({ email, password }) => login({ variables: { input: { email, password } } })}
+        onSubmit={({ email, password }) => login({ 
+          variables: { input: { email, password } }, 
+          onError: (e) => {
+            gtag.event({
+              action: 'login',
+              category: 'auth',
+              label: 'error',
+            });
+            setError(e);
+            if (e.graphQLErrors && e.graphQLErrors.length && e.graphQLErrors[0].extensions.code === 'UNAUTHENTICATED') {
+              setResendActivateAccountTo(email);
+            }
+          },
+        })}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required(true),
           password: Yup.string().required(true),
@@ -128,10 +136,10 @@ const LoginForm = () => {
               touched={touched.password}
             />
             <ApiError error={error} />
-            {error && error.graphQLErrors && error.graphQLErrors.length && error.graphQLErrors[0].extensions.code === 'UNAUTHENTICATED' &&
-              <div className="flex my-sm">
-                <Text>Lost your activation email? Click here to resend</Text>
-                <Button size="md" onClick={() => values.email && resendActivateAccount({ variables: { input: { email: values.email } } })}>Send</Button>
+            {!!error && resendActivateAccountTo &&
+              <div className="flex mb-sm items-center">
+                <Text className="text-sm">Lost your activation email? No problem we'll resend it</Text>
+                <Button type="button" onClick={() => { resendActivateAccount({ variables: { input: { email: resendActivateAccountTo } } })}}>Send</Button>
               </div>
             }
             <Button
