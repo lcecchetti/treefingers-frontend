@@ -28,7 +28,9 @@ export const QUERY_NOTIFICATIONS = gql`
       pageInfo {
         endCursor
         hasNextPage
+        totalCount
       }
+      unreadCount
     }
   }
 `;
@@ -41,9 +43,15 @@ const MUTATION_READ_ALL_NOTIFICATIONS = gql`
   }
 `;
 
-const NotificationList = ({ sort = { id: 'DESC' }, first = 10 }) => {
+export const notificationsVariables = { sort: { id: 'DESC' }, first: 10 };
+
+const NotificationList = () => {
   const { showToast } = useUI();
-  const { data, loading, error, fetchMore, refetch } = useQuery(QUERY_NOTIFICATIONS, { variables: { sort, first }, fetchPolicy: 'cache-and-network'});
+  const { data, loading, error, fetchMore, refetch } = useQuery(QUERY_NOTIFICATIONS, { 
+    variables: notificationsVariables, 
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 60000,
+  });
   const [readAllNotifications] = useMutation(MUTATION_READ_ALL_NOTIFICATIONS, {
     onCompleted(r) {
       gtag.event({
@@ -77,7 +85,12 @@ const NotificationList = ({ sort = { id: 'DESC' }, first = 10 }) => {
 
           {!!data?.notifications.edges.length &&
             <div className="flex flex-col gap-md items-center">
-              <Button size="sm" onClick={() => readAllNotifications()} variant="outlined">Read all</Button>
+              {!!data.notifications.unreadCount &&
+                <div className="flex gap-md justify-around items-center">
+                  <Text>You have {data.notifications.unreadCount} unread notifications</Text>
+                  <Button size="sm" onClick={() => readAllNotifications()} variant="outlined">Read all</Button>
+                </div>
+              }
               <ol className="flex flex-col gap-sm w-full">
                 {data.notifications.edges.map(({ node }) => (
                   <li key={node.id}>

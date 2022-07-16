@@ -42,7 +42,7 @@ const Notification = ({ notification }) => {
     <div className={clsx('border-2 rounded-lg p-md relative flex flex-col gap-xs',
         notification.read && 'opacity-50'
       )}
-      onClick={() => readNotification()}
+      onClick={() => { !notification.read && readNotification()}}
     >
       <div className="flex gap-md justify-between">
         <Text className="text-xs">

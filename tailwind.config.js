@@ -14,6 +14,7 @@ module.exports = {
       },
       colors: {
         gray: '#9CA3AF',
+        red: 'var(--color-red)',
         // custom colors
         primary: {
           DEFAULT: 'var(--color-primary)',

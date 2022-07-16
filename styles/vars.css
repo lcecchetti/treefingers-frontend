@@ -2,9 +2,11 @@
   /* Colors */
   --color-black: #212121;
   --color-white: #FEFEFE;
+  --color-red: #f44336;
+  --color-green: #198754;
 
-  --color-error: #f44336;
-  --color-success: #198754;
+  --color-error: var(--color-red);
+  --color-success: var(--color-green);
 
   --color-primary: var(--color-black);
   --color-primary-contrast: var(--color-white);

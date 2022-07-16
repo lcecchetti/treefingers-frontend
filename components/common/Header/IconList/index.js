@@ -8,6 +8,7 @@ import { getProfileMeUrl } from 'lib/helper/profile';
 import { ThemeIcon } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import * as gtag from 'lib/gtag';
+import { CurrentUser } from 'components/user';
 
 const IconList = () => {
   const { theme, setTheme } = useTheme();
@@ -17,14 +18,14 @@ const IconList = () => {
   const iconListItems = [
     {
       href: '#',
-      Icon: FaSearch,
+      Component: FaSearch,
       onClick: openSearch,
       showOnMobile: true,
       showOnDesktop: true,
     },
     {
       href: '#',
-      Icon: ThemeIcon,
+      Component: ThemeIcon,
       onClick: () => {
         const toggledTheme = getToggledTheme(theme);
         gtag.event({
@@ -39,14 +40,14 @@ const IconList = () => {
     },
     {
       href: currentUser ? getProfileMeUrl() : getLoginUrl(),
-      Icon: FaUserCircle,
+      Component: CurrentUser,
       onClick: false,
       showOnMobile: true,
       showOnDesktop: true,
     },
     {
       href: '#',
-      Icon: FaBars,
+      Component: FaBars,
       onClick: toggleDrawer,
       showOnMobile: true,
       showOnDesktop: false,
@@ -61,7 +62,7 @@ const IconList = () => {
           ['lg:hidden']: !item.showOnDesktop,
         })}>
           <Link href={item.href} onClick={item.onClick ? item.onClick : undefined}>
-            <item.Icon className="text-2xl" />
+            <item.Component className="text-2xl" />
           </Link>
         </li>
       ))}
