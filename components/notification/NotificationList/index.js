@@ -14,9 +14,7 @@ export const QUERY_NOTIFICATIONS = gql`
           id
           type
           sourceId
-          sourceType
           targetId
-          targetType
           read
           createdAt
           actor {
