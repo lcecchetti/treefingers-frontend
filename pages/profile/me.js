@@ -19,7 +19,7 @@ const ProfileMePage = () => {
           <Text variant="pageTitle">{`Welcome ${currentUser.username}!`}</Text>
           <Logout/>
         </div>
-        <Text variant="p">Here you'll find updates on how your stories and forests are growing.</Text>
+        <Text variant="p">Here you'll find updates regarding your stories, forests and anything relevant to you.</Text>
       </PageIntro>
 
       <NotificationList/>
