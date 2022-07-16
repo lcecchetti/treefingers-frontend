@@ -5,7 +5,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 import { setAuthToken } from 'lib/auth/token';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Link, FormField, Button } from 'components/ui';
+import { Link, FormField, Button, Text } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getForgotPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
@@ -26,6 +26,14 @@ const MUTATION_LOGIN = gql`
   }
 `;
 
+const MUTATION_RESEND_ACTIVATE_ACCOUNT = gql`
+  mutation resendActivateAccount($input: ResendActivateAccountInput!) {
+    resendActivateAccount(input: $input) {
+      result
+    }
+  }
+`;
+
 const LoginForm = () => {
   const router = useRouter();
   const client = useApolloClient();
@@ -34,7 +42,7 @@ const LoginForm = () => {
   const { showToast } = useUI();
 
   const [login] = useMutation(MUTATION_LOGIN, {
-    onCompleted: async ({ login }) => {      
+    onCompleted: async ({ login }) => {    
       setAuthToken(login.token);
       await client.resetStore();
       gtag.event({
@@ -52,7 +60,26 @@ const LoginForm = () => {
         category: 'auth',
         label: 'error',
       });
+      setError(e);
+    }
+  });
 
+  const [resendActivateAccount] = useMutation(MUTATION_RESEND_ACTIVATE_ACCOUNT, {
+    onCompleted: async () => {    
+      setError(false);
+      gtag.event({
+        action: 'resendActivateAccount',
+        category: 'auth',
+        label: 'success',
+      });
+      showToast(`We got you, check your emails`);
+    },
+    onError: (e) => {
+      gtag.event({
+        action: 'resendActivateAccount',
+        category: 'auth',
+        label: 'error',
+      });
       setError(e);
     }
   });
@@ -79,7 +106,7 @@ const LoginForm = () => {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        {({ isSubmitting, errors, touched }) => (
+        {({ isSubmitting, errors, touched, values }) => (
           <Form className="flex flex-col gap-sm">
             <Field
               as={FormField}
@@ -101,6 +128,12 @@ const LoginForm = () => {
               touched={touched.password}
             />
             <ApiError error={error} />
+            {error && error.graphQLErrors && error.graphQLErrors.length && error.graphQLErrors[0].extensions.code === 'UNAUTHENTICATED' &&
+              <div className="flex my-sm">
+                <Text>Lost your activation email? Click here to resend</Text>
+                <Button size="md" onClick={() => values.email && resendActivateAccount({ variables: { input: { email: values.email } } })}>Send</Button>
+              </div>
+            }
             <Button
               type="submit"
               disabled={isSubmitting}
