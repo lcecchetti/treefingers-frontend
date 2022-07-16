@@ -5,8 +5,8 @@ import UserCard from '../UserCard';
 import { useCurrentUser } from 'lib/auth/currentUser';
 
 export const QUERY_USERS = gql`
-  query users($filter: FilterUserInput, $first: Int, $after: String) {
-    users (filter: $filter, first: $first, after: $after) {
+  query users($filter: FilterUserInput, $sort: SortUserInput, $first: Int, $after: String) {
+    users (filter: $filter, sort: $sort, first: $first, after: $after) {
       edges {
         cursor
         node {
