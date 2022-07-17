@@ -61,7 +61,7 @@ const LoginForm = () => {
   const [resendActivateAccount] = useMutation(MUTATION_RESEND_ACTIVATE_ACCOUNT, {
     onCompleted: async () => {    
       gtag.event({
-        action: 'resendActivateAccount',
+        action: 'resend-activate-account',
         category: 'auth',
         label: 'success',
       });
@@ -71,7 +71,7 @@ const LoginForm = () => {
     },
     onError: (e) => {
       gtag.event({
-        action: 'resendActivateAccount',
+        action: 'resend-activate-account',
         category: 'auth',
         label: 'error',
       });
@@ -102,7 +102,7 @@ const LoginForm = () => {
               label: 'error',
             });
             setError(e);
-            if (e.graphQLErrors && e.graphQLErrors.length && e.graphQLErrors[0].extensions.code === 'UNAUTHENTICATED') {
+            if (e.graphQLErrors && e.graphQLErrors.length && e.graphQLErrors[0].message === 'Your account is not active yet, check your emails.') {
               setResendActivateAccountTo(email);
             }
           },
@@ -114,7 +114,7 @@ const LoginForm = () => {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        {({ isSubmitting, errors, touched, values }) => (
+        {({ isSubmitting, errors, touched }) => (
           <Form className="flex flex-col gap-sm">
             <Field
               as={FormField}
@@ -139,7 +139,11 @@ const LoginForm = () => {
             {!!error && resendActivateAccountTo &&
               <div className="flex mb-sm items-center">
                 <Text className="text-sm">Lost your activation email? No problem we'll resend it</Text>
-                <Button type="button" onClick={() => { resendActivateAccount({ variables: { input: { email: resendActivateAccountTo } } })}}>Send</Button>
+                <Button type="button" onClick={() => {
+                  resendActivateAccountTo && 
+                  resendActivateAccount({ variables: { input: { email: resendActivateAccountTo } } })}}>
+                  Send
+                </Button>
               </div>
             }
             <Button
