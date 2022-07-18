@@ -174,7 +174,7 @@ const StoryTree = ({ story, className }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    new TreeView(canvasRef.current, story);
+    new TreeView(canvasRef.current, story.root || story);
   }, [story?.id])
 
   return (story &&

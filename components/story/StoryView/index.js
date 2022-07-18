@@ -98,7 +98,7 @@ const StoryView = ({ className, story }) => {
             </div>            
           </Container>
 
-          <StoryTree story={data.story.root || data.story} className="h-screen hidden lg:block lg:h-full w-full lg:absolute bottom-0 left-0 lg:-left-1/4" />
+          <StoryTree story={data.story} className="h-screen hidden lg:block lg:h-full w-full lg:absolute bottom-0 left-0 lg:-left-1/4" />
         </div>
     </div>
   );
