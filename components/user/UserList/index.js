@@ -20,7 +20,7 @@ export const QUERY_USERS = gql`
         }
       }
       pageInfo {
-        startCursor
+        endCursor
         hasNextPage
         totalCount
       }
@@ -28,7 +28,7 @@ export const QUERY_USERS = gql`
   }
 `;
 
-const UserList = ({ className, filter, sort, first = 10, setTotalCount }) => {
+const UserList = ({ className, filter, sort, first = 2, setTotalCount }) => {
   const { currentUser } = useCurrentUser();
 
   const { data, loading, error, fetchMore } = useQuery(QUERY_USERS, { 
