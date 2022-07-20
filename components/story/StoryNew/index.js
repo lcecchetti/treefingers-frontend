@@ -215,7 +215,6 @@ const StoryNew = ({ parent, forest, className }) => {
                       placeholder="Search..."
                       type="text" 
                       onChange={async (e) => {
-                        console.log(e.target.value);
                         setFieldValue('forestsLoading', true);
                         setFieldValue('forest', '');
                         const { data, error } = await apolloClient.query({
@@ -226,8 +225,6 @@ const StoryNew = ({ parent, forest, className }) => {
                         if(error) {
                           setError(error);
                         }
-
-                        console.log(data.forests.edges);
 
                         if (data) {
                           setFieldValue('forests', prepareForestOptions(data));
