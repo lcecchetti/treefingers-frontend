@@ -6,10 +6,10 @@ import { getForestsUrl } from 'lib/helper/forest';
 import { getStoryNewUrl } from 'lib/helper/story';
 
 const heroTexts = [
-  'Jumping out of the bed and swallowing her in just one bite.',
-  'She prontly drew her katana and cut his head off in one single swipe.',
-  'After few months he died by too much cholesterol and an unbalanced diet.',
-  'A ninja hidden in the closet killed the wolf with his ninja star.',
+  'In just one bite, he jumped out of the bed and swallowed her whole.',
+  'In one swift action, she drew her katana and cut off his head.',
+  'His unbalanced diet and too much cholesterol led to his death within a few months.',
+  'The wolf was killed by a ninja hidden in the closet with his ninja star.',
 ];
 
 const Hero = () => {
