@@ -24,7 +24,7 @@ const JoinedForestsPage = () => {
       {forestsCount === 0 &&
         <Text>You haven't joined any forest yet. What are you waiting for?</Text>
       }
-      <ForestList className="grid md:grid-cols-2 gap-md" filter={{ joined: true }} setTotalCount={setForestsCount}/>
+      <ForestList className="grid md:grid-cols-2 grid-cols-1 gap-md" filter={{ joined: true }} setTotalCount={setForestsCount}/>
     </>
   );
 };

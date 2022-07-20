@@ -26,7 +26,7 @@ const ProfileMyStoriesPage = () => {
       {storiesCount === 0 &&
         <Text>You haven't planted any story yet. What are you waiting for?</Text>
       }
-      <StoryList className="grid md:grid-cols-2 gap-md" filter={{ author: { eq: currentUser.id }, parent: { eq: null } }} setTotalCount={setStoriesCount}/>
+      <StoryList className="grid md:grid-cols-2 grid-cols-1 gap-md" filter={{ author: { eq: currentUser.id }, parent: { eq: null } }} setTotalCount={setStoriesCount}/>
     </>
   );
 };

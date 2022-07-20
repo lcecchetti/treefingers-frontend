@@ -22,7 +22,7 @@ const StoriesPage = () => {
           Here is a list of popular stories.
         </Text>
       </PageIntro>
-      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }}/>
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }}/>
     </Container>
   );
 };

@@ -50,7 +50,7 @@ const ForestView = ({ className, forest }) => {
       {forest.storiesCount === 0 &&
         <Text>I see too much blank space on this page, let's plant some stories!</Text>
       }
-      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ forest: { eq: data.forest.id } }} sort={{ likesCount: 'DESC' }} />
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" filter={{ forest: { eq: data.forest.id } }} sort={{ likesCount: 'DESC' }} />
     </div>
   );
 };

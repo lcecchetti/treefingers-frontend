@@ -24,7 +24,7 @@ const FollowedUsersPage = () => {
       {usersCount === 0 &&
         <Text>You haven't followed any user yet. What are you waiting for?</Text>
       }
-      <UserList className="grid md:grid-cols-2 gap-md" filter={{ followed: true }} setTotalCount={setUsersCount}/>
+      <UserList className="grid md:grid-cols-2 grid-cols-1 gap-md" filter={{ followed: true }} setTotalCount={setUsersCount}/>
     </>
   );
 };

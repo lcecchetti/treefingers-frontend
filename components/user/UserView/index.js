@@ -40,7 +40,7 @@ const UserView = ({ className, user }) => {
         </div>
         <Text variant="p" className="break-words w-full">{data.user.bio}</Text>
       </PageIntro>
-      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 gap-md" filter={{ author: { eq: data.user.id }, parent: { eq: null } }} sort={{ likesCount:'DESC' }} />
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" filter={{ author: { eq: data.user.id }, parent: { eq: null } }} sort={{ likesCount:'DESC' }} />
     </div>
   );
 };
