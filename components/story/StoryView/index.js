@@ -51,11 +51,13 @@ export const QUERY_STORY = gql`
 const StoryView = ({ className, story }) => {
   const { currentUser } = useCurrentUser();
 
-  const { data, loading, error } = useQuery(QUERY_STORY, { variables: { 
-    filter: { id: { eq: story.id } },
+  const { data, loading, error } = useQuery(QUERY_STORY, { 
+    variables: { 
+      filter: { id: { eq: story.id } },
+    },
     fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     nextFetchPolicy: 'cache-first',
-   }});
+  });
 
   return (
     <div className={clsx('flex flex-col gap-md', className)}>

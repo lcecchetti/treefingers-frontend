@@ -26,11 +26,13 @@ export const QUERY_FOREST = gql`
 const ForestView = ({ className, forest }) => {
   const { currentUser } = useCurrentUser();
   
-  const { data, loading, error } = useQuery(QUERY_FOREST, { variables: { 
-    filter: { id: { eq: forest.id } },
+  const { data, loading, error } = useQuery(QUERY_FOREST, { 
+    variables: { 
+      filter: { id: { eq: forest.id } },
+    },
     fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     nextFetchPolicy: 'cache-first',
-  } });
+  });
 
   return (
     <div className={className}>
