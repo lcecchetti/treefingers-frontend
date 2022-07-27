@@ -302,13 +302,16 @@ const StoryNew = ({ story, parent, forest, callback, className }) => {
               }
 
               <ApiError error={error} />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                loading={isSubmitting}
-                className="w-full mt-sm">
-                {isEditing ? 'Edit' : 'Create'}
-              </Button>
+              <div className="flex flex-col items-center gap-sm">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  loading={isSubmitting}
+                  className="w-full mt-sm">
+                  {isEditing ? 'Edit' : 'Create'}
+                </Button>
+                <Text className="text-xs text-center">You'll be able to edit the story until it has not been continued by other authors.</Text>
+              </div>
             </Form>
           )}
         </Formik>
