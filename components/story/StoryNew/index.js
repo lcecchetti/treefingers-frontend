@@ -131,7 +131,7 @@ const StoryNew = ({ story, parent, forest, callback, className }) => {
                   
                   resetForm();
                   setError(false);
-                  showToast('Your story has been updated!');
+                  showToast(`Your ${story.parent ? 'chapter' : 'story'} has been updated!`);
                   if (callback) {
                     callback();
                   }
