@@ -26,6 +26,19 @@ const MUTATION_STORY_CREATE = gql`
   }
 `;
 
+const MUTATION_STORY_EDIT = gql`
+  mutation editStory($input: EditStoryInput!) {
+    editStory(input: $input) {
+      story {
+        id
+        title
+        content
+        tags
+      } 
+    }
+  }
+`;
+
 const QUERY_CHOOSE_FOREST = gql`
   query forests($filter: FilterForestInput) {
     forests(filter: $filter, first: 10, sort: { membersCount: DESC }) {
@@ -40,14 +53,16 @@ const QUERY_CHOOSE_FOREST = gql`
   }
 `;
 
-const StoryNew = ({ parent, forest, className }) => {
+const StoryNew = ({ story, parent, forest, callback, className }) => {
   const router = useRouter();
   const apolloClient = useApolloClient();
   const { openFlyout, closeFlyout, showToast } = useUI();
   const [error, setError] = useState(false);
   const [createStory] = useMutation(MUTATION_STORY_CREATE);
+  const [editStory] = useMutation(MUTATION_STORY_EDIT);
 
-  const hasForestSelection = !parent;
+  const isEditing = !!story;
+  const hasForestSelection = !parent && !isEditing;
 
   const { data: forestsData, loading: forestsLoading } = useQuery(QUERY_CHOOSE_FOREST, {
     variables: {
@@ -78,11 +93,12 @@ const StoryNew = ({ parent, forest, className }) => {
         <Formik
           enableReinitialize
           initialValues={{
-            title: '',
-            content: '',
+            story: story,
+            title: story?.title || '',
+            content: story?.content || '',
             parent: parent?.id,
             addTag: '',
-            tags: [],
+            tags: story?.tags || [],
             forest: forestsData ? prepareForestOptions(forestsData).shift()?.value : '',
             forests: forestsData ? prepareForestOptions(forestsData) : [],
             forestsLoading: forestsLoading,
@@ -97,35 +113,72 @@ const StoryNew = ({ parent, forest, className }) => {
               then: Yup.string().required(true),
             })
           })}
-          onSubmit={({ title, content, parent, tags, forest }, { setSubmitting, resetForm }) => createStory({
-            variables: { input: { data: {
-              title, content, parent, forest, tags
-            }}},
-            onCompleted: (data) => {
-              resetForm();
-              gtag.event({
-                action: 'create-story',
-                category: 'story',
-                label: 'success',
-              });
-              if (parent) {
-                showToast('Chapter created!');
-              } else {
-                showToast('Story planted!');
-              }
-              setError(false);
-              router.push(getStoryUrl(data.createStory.story));
-            },
-            onError: (e) => {
-              gtag.event({
-                action: 'create-story',
-                category: 'story',
-                label: 'error',
-              });
-              setError(e);
-              setSubmitting(false);
+          onSubmit={({ title, content, parent, tags, forest, story }, { setSubmitting, resetForm }) => {
+            if (isEditing) {
+              editStory({
+                variables: { input: { 
+                  id: story.id,
+                  data: {
+                    title, content, tags
+                  },
+                }},
+                onCompleted: () => {
+                  gtag.event({
+                    action: 'edit-story',
+                    category: 'story',
+                    label: 'success',
+                  });
+                  
+                  resetForm();
+                  setError(false);
+                  showToast('Your story has been updated!');
+                  if (callback) {
+                    callback();
+                  }
+                },
+                onError: (e) => {
+                  gtag.event({
+                    action: 'edit-story',
+                    category: 'story',
+                    label: 'error',
+                  });
+                  setError(e);
+                  setSubmitting(false);
+                }
+              })
+            } else {
+              createStory({
+                variables: { input: { data: {
+                  title, content, parent, forest, tags
+                }}},
+                onCompleted: (data) => {
+                  gtag.event({
+                    action: 'create-story',
+                    category: 'story',
+                    label: 'success',
+                  });
+
+                  resetForm();
+                  if (parent) {
+                    showToast('Chapter created!');
+                  } else {
+                    showToast('Story planted!');
+                  }
+                  setError(false);
+                  router.push(getStoryUrl(data.createStory.story));
+                },
+                onError: (e) => {
+                  gtag.event({
+                    action: 'create-story',
+                    category: 'story',
+                    label: 'error',
+                  });
+                  setError(e);
+                  setSubmitting(false);
+                }
+              })
             }
-          })}
+          }}
         >
           {({ isSubmitting, values, setFieldValue, errors, touched }) => (
             <Form className="flex flex-col gap-sm">
@@ -254,8 +307,8 @@ const StoryNew = ({ parent, forest, className }) => {
                 disabled={isSubmitting}
                 loading={isSubmitting}
                 className="w-full mt-sm">
-                Create
-                </Button>
+                {isEditing ? 'Edit' : 'Create'}
+              </Button>
             </Form>
           )}
         </Formik>

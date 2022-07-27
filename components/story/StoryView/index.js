@@ -1,6 +1,6 @@
 import { Spinner, Text, Link, Container, Button } from 'components/ui';
 import { DATE_LONG, formatDate } from 'lib/helper/date';
-import { getStoryEditUrl, getStoryUrl, isStoryRoot } from 'lib/helper/story';
+import { getStoryUrl, isStoryRoot } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import { FaAngleUp, FaAngleDoubleUp, FaTimes } from 'react-icons/fa';
 import { Avatar } from 'components/user';
@@ -14,7 +14,7 @@ import { getForestUrl } from 'lib/helper/forest';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { FaEdit } from 'react-icons/fa';
 import { useState } from 'react';
-import { StoryEdit } from '..';
+import StoryNew from 'components/story/StoryNew';
 
 export const QUERY_STORY = gql`
   query story($filter: FilterStoryInput!) {
@@ -76,7 +76,7 @@ const StoryView = ({ className, story }) => {
               {isEditing &&
                 <div className="flex flex-col gap-md items-end w-full">
                   <FaTimes className="text-xl cursor-pointer" onClick={() => setIsEditing(false)} />
-                  <StoryEdit className="w-full" story={data.story} callback={() => setIsEditing(false)} />
+                  <StoryNew className="w-full" story={data.story} callback={() => setIsEditing(false)} />
                 </div>
               }
 
