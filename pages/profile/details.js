@@ -6,8 +6,6 @@ import { UserEditForm } from 'components/user';
 import Head from 'next/head';
 
 const ProfileDetailsPage = () => {
-  const { currentUser } = useCurrentUser();
-
   return (
     <>
       <PageIntro>

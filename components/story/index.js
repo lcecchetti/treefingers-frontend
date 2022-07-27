@@ -5,3 +5,4 @@ export { default as StoryChapters } from './StoryChapters';
 export { default as StoryNew } from './StoryNew';
 export { default as StoryActions } from './StoryActions';
 export { default as StoryTree } from './StoryTree';
+export { default as StoryEdit } from './StoryEdit';
