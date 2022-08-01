@@ -50,10 +50,11 @@ const RegisterForm = () => {
         initialValues={{
           email: '',
           password: '',
+          confirmPassword: '',
           username: '',
           bio: '',
         }}
-        onSubmit={(data, { resetForm }) => register({ variables: { input: { data } }, 
+        onSubmit={({ confirmPassword, ...data }, { resetForm }) => register({ variables: { input: { data } }, 
           onCompleted: async () => {
             resetForm();
             gtag.event({
@@ -68,6 +69,7 @@ const RegisterForm = () => {
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Invalid email').required(true),
           password: Yup.string().min(10, 'Too short!').required(true),
+          confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
           username: Yup.string().min(3, 'Too short!').max(20, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(true),
           bio: Yup.string().max(4096, 'Too long!'),
         })}
@@ -88,10 +90,17 @@ const RegisterForm = () => {
               name="password"
               label="Password"
               type="password"
-              autoComplete="current-password"
               error={errors.password}
               touched={touched.password}
             />
+            <Field
+                as={FormField}
+                name="confirmPassword"
+                label="Confirm password"
+                type="password"
+                error={errors.confirmPassword}
+                touched={touched.confirmPassword}
+              />
             <Field
               as={FormField}
               label="Username"
