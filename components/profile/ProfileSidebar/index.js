@@ -1,6 +1,6 @@
 import { Button, Link, Text } from 'components/ui';
 import clsx from 'clsx';
-import { getProfileMeUrl, getProfileDetailsUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories, getProfileFollowedUsers, getProfileJoinedForests } from 'lib/helper/profile';
+import { getProfileMeUrl, getProfileDetailsUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories, getProfileLikedChapters, getProfileFollowedUsers, getProfileJoinedForests } from 'lib/helper/profile';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
@@ -29,6 +29,10 @@ const navData = [
   {
     'label': 'Liked stories',
     'href': getProfileLikedStories(),
+  },
+  {
+    'label': 'Liked chapters',
+    'href': getProfileLikedChapters(),
   },
   {
     'label': 'Followed users',
