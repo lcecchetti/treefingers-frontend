@@ -29,7 +29,7 @@ export const QUERY_FORESTS = gql`
   }
 `;
 
-const ForestList = ({ className, filter, sort, first = 10, setTotalCount }) => {
+const ForestList = ({ className, filter, sort, first = 12, setTotalCount }) => {
   const { currentUser } = useCurrentUser();
 
   const { data, loading, error, fetchMore } = useQuery(QUERY_FORESTS, { 

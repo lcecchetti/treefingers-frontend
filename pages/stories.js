@@ -33,7 +33,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: QUERY_STORIES,
-    variables: { filter: { parent: { eq: null } }, first: 10, sort: { likesCount: 'DESC' } },
+    variables: { filter: { parent: { eq: null } }, first: 12, sort: { likesCount: 'DESC' } },
   });
 
   return addApolloState(apolloClient, {
