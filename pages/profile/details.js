@@ -1,5 +1,4 @@
 import { ProfileLayout } from 'components/layout';
-import { useCurrentUser } from 'lib/auth/currentUser';
 import { Text } from 'components/ui';
 import { PageIntro } from 'components/common';
 import { UserEditForm } from 'components/user';

@@ -1,6 +1,6 @@
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Text, Link, FormField, Button } from 'components/ui';
+import { Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getLoginUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { useRouter } from 'next/router';

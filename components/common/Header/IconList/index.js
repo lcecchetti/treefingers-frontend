@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { FaSearch, FaUserCircle, FaBars } from 'react-icons/fa';
+import { FaSearch, FaBars } from 'react-icons/fa';
 import { Link } from 'components/ui';
 import { useTheme } from 'next-themes';
 import { useUI } from 'lib/ui/context';

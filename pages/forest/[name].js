@@ -1,5 +1,5 @@
 import { DefaultLayout } from 'components/layout';
-import { Container, Text } from 'components/ui';
+import { Container } from 'components/ui';
 import { initializeApollo, addApolloState } from 'lib/apollo/client';
 import { ForestView, QUERY_FOREST } from 'components/forest';
 import { QUERY_STORIES } from 'components/story';
