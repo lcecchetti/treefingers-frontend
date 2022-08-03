@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <>
-      <div id="header" className="fixed lg:absolute w-full h-header bg-base flex items-center z-20 py-sm">
+      <div id="header" className="fixed lg:absolute w-full h-header bg-base lg:bg-none flex items-center z-20 py-sm">
         <Container>
           <div className="flex items-center justify-between">
             <Logo main className="font-bold" />
