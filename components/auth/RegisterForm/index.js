@@ -5,7 +5,7 @@ import { useMutation, gql } from '@apollo/client';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Link, FormField } from 'components/ui';
-import { getLoginUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
+import { getLoginUrl, getProfileMeUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
