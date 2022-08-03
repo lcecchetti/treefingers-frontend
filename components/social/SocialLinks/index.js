@@ -1,6 +1,5 @@
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import { Link } from 'components/ui';
-import * as gtag from 'lib/gtag';
 
 const socials = [
   {
