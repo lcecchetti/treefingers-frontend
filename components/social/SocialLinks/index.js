@@ -1,43 +1,31 @@
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import { Link } from 'components/ui';
 import * as gtag from 'lib/gtag';
-import { useUI } from 'lib/ui/context';
 
 const socials = [
   {
     label: 'facebook',
     Icon: FaFacebook,
-    href: '#',
+    href: 'https://www.facebook.com/treefingers.co/',
   },
   {
     label: 'twitter',
     Icon: FaTwitter,
-    href: '#',
+    href: 'https://twitter.com/TreefingersCo',
   },
   {
     label: 'instagram',
     Icon: FaInstagram,
-    href: '#',
+    href: 'https://www.instagram.com/treefingers.co/',
   },
 ];
 
 const SocialLinks = () => {
-  const { showToast } = useUI();
-
   return (
     <ul className="flex justify-between gap-md">
-      {socials.map(({ href, label, Icon }, index) => (
+      {socials.map(({ href, Icon }, index) => (
         <li key={index}>
-          <Link href={href} onClick={(e) => {
-            e.preventDefault();
-            gtag.event({
-              action: 'social-icon-click',
-              category: 'social',
-              label,
-            });
-            showToast(`We're not on ${label} yet, but we'll be soon!`);
-            //location.href = href;
-          }}>
+          <Link href={href} target="_blank">
             <Icon className="text-2xl" />
           </Link>
         </li>
