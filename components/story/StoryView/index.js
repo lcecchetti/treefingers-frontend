@@ -75,8 +75,11 @@ const StoryView = ({ className, story }) => {
           <Container className="flex justify-end">
             <div className="w-full lg:w-1/2 z-10 mb-xl">
               {isEditing &&
-                <div className="flex flex-col gap-md items-end w-full">
-                  <FaTimes className="text-xl cursor-pointer" onClick={() => setIsEditing(false)} />
+                <div className="flex flex-col gap-md w-full">
+                  <div className="flex gap-md justify-between items-center">
+                    <Text variant="h2">Edit your story</Text>
+                    <FaTimes className="text-xl cursor-pointer" onClick={() => setIsEditing(false)} />
+                  </div>
                   <StoryNew className="w-full" story={data.story} callback={() => setIsEditing(false)} />
                 </div>
               }
