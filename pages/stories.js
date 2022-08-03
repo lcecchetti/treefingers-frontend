@@ -12,6 +12,7 @@ const StoriesPage = () => {
     <Container>
       <Head>
         <title>Stories | Treefingers</title>
+        <meta name="description" content="A list of the most popular stories on Treefingers"/>
       </Head>
       <PageIntro>
         <div className="flex gap-sm justify-between items-center text-center">

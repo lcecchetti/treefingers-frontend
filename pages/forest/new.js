@@ -9,6 +9,7 @@ const ForestNewPage = () => {
     <Container>
       <Head>
         <title>New forest | Treefingers</title>
+        <meta name="description" content="Create a new forest on Treefingers - A forest is a place where to group stories." />
       </Head>
       <PageIntro>
         <Text variant="pageTitle">New forest</Text>

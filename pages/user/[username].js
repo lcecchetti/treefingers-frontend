@@ -10,6 +10,7 @@ const UserPage = ({ user }) => {
     <Container>
       <Head>
         <title>{user.username} | User | Treefingers</title>
+        <meta name="description" content={`${user.username} - ${user.bio}`}/>
       </Head>
       <UserView user={user} />
     </Container>

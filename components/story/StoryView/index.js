@@ -22,6 +22,7 @@ export const QUERY_STORY = gql`
       id
       title
       content
+      excerpt
       createdAt
       author {
         id

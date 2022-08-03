@@ -11,6 +11,7 @@ const StoryNewPage = () => {
     <Container>
       <Head>
         <title>New story | Treefingers</title>
+        <meta name="description" content="Plant a new story on Treefingers" />
       </Head>
       <PageIntro>
         <Text variant="pageTitle">New story</Text>

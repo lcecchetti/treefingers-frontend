@@ -13,6 +13,7 @@ export const QUERY_FOREST = gql`
       id
       name
       about
+      excerpt
       storiesCount
       commentsCount
       membersCount

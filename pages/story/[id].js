@@ -8,6 +8,7 @@ const StoryPage = ({ story }) => {
     <>
       <Head>
         <title>{story.title} | Story | Treefingers</title>
+        <meta name="description" content={`${story.title} - ${story.excerpt}`} />
       </Head>
       <StoryView story={story} className="mt-sm" />
     </>

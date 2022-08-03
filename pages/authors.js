@@ -10,6 +10,7 @@ const AuthorsPage = () => {
     <Container>
       <Head>
         <title>Authors | Treefingers</title>
+        <meta name="description" content="A list of the most popular authors on Treefingers"/>
       </Head>
       <PageIntro>
         <div className="flex gap-sm justify-between items-center">

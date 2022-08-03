@@ -7,13 +7,14 @@ const AboutPage = () => {
     <Container className="flex flex-col gap-lg">
       <Head>
         <title>About | Treefingers</title>
+        <meta name="description" content="Treefingers is a collaborative writing app that tries to gamify choose your own adventure stories."/>
       </Head>
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-md lg:items-stretch">
         <div className="lg:col-span-2 flex flex-col gap-lg min-h-screen-no-header justify-center">
           <Text variant="pageTitle" className="text-center">About Treefingers</Text>
           <div className="flex flex-col gap-sm">
             <Text variant="subtitle" as="h2">Collaborative writing</Text>
-            <Text>Collaborative writing is the process of producing a text by sharing multiple individuals creativity. Treefingers tries to gamify this experience in a way similar to the old "choose your adventure" books that were popular in the 80s. That kind of books had the problem of proposing a unidirectional communication, where the reader could not take any action a part from the ones available at the end of each chapter. And all of those actions would take to some dead end eventually. Treefingers tries to remove this limitation by giving each reader the title of author, and each author the title of reader. "Author" is in this case just the person planting the seed, but the tree, the forest, and the growing process will be on community hands.</Text>
+            <Text>Collaborative writing is the process of producing a text by sharing multiple individuals creativity. Treefingers tries to gamify this experience in a way similar to the "choose your own adventure" books that were popular in the 80s. That kind of books had the problem of proposing a unidirectional communication, where the reader could not take any action a part from the ones available at the end of each chapter. And all of those actions would take to some dead end eventually. Treefingers tries to remove this limitation by giving each reader the title of author, and each author the title of reader. "Author" is in this case just the person planting the seed, but the tree, the forest, and the growing process will be on community hands.</Text>
           </div>
           <div className="flex flex-col gap-sm">
             <Text variant="subtitle">Feedback</Text>

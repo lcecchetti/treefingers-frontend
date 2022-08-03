@@ -10,6 +10,7 @@ const ForestPage = ({ forest }) => {
     <Container>
       <Head>
         <title>{forest.name} | Forest | Treefingers</title>
+        <meta name="description" content={`${forest.name} - ${forest.excerpt}`} />
       </Head>
       <ForestView forest={forest} />
     </Container>
