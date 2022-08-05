@@ -15,6 +15,7 @@ import { useCurrentUser } from 'lib/auth/currentUser';
 
 const StoryChapters = ({ className, parent, first = 10 }) => {
   const [isWriting, setIsWriting] = useState(false);
+  const [suggestSwipe, setSuggestSwipe] = useState(true);
   const { currentUser } = useCurrentUser();
 
   const { data, loading, error, fetchMore } = useQuery(QUERY_STORIES, {
@@ -61,16 +62,20 @@ const StoryChapters = ({ className, parent, first = 10 }) => {
             className="w-full"
             modules={[EffectCards, Navigation]}
             effect="cards"
+            onSlideChange={() => suggestSwipe && setSuggestSwipe(false)}
+            cardsEffect={{
+              slideShadows: false,
+            }}
             navigation={{ nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev', }}
             onReachEnd={() => data?.stories.pageInfo.hasNextPage && fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })}
             >
             {data.stories.edges.map(({ node }, index) => (
               <SwiperSlide key={node.id} virtualIndex={index}>
-                <StoryCard story={node} />
-                <div className="swiper-button-prev"></div>
-                <div className={clsx('swiper-button-next', index === 0 && 'animate-pulse')}></div>
+                <StoryCard story={node} className="border-2"/>
               </SwiperSlide>
             ))}
+            <div className="swiper-button-prev"></div>
+            <div className={clsx('swiper-button-next', suggestSwipe && 'animate-pulse')}></div>
           </Swiper>
         }
 
