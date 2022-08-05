@@ -39,7 +39,7 @@ const Hero = () => {
         <div className="w-full flex flex-col gap-sm">
           <Text variant="h2">What is Treefingers?</Text>
           <Text variant="p">
-            Treefingers is a place where to tell endless stories.<br />
+            Treefingers is a place where to tell never ending stories.<br />
             Where writings do not belong to the writer, but to the reader.<br />
             It's about choosing and creating your own choice.
           </Text>
