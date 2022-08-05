@@ -93,7 +93,7 @@ const StoryNew = ({ story, parent, forest, callback, className }) => {
         <Formik
           enableReinitialize
           initialValues={{
-            story: story,
+            story,
             title: story?.title || '',
             content: story?.content || '',
             parent: parent?.id,
@@ -244,7 +244,7 @@ const StoryNew = ({ story, parent, forest, callback, className }) => {
                           onClick={() => { 
                             openFlyout(flyoutTypes.forestNew, { 
                               title: 'Create forest', 
-                              afterCreationCallback: (data) => { 
+                              callback: (data) => { 
                                 if (!data) {
                                   return;
                                 }
