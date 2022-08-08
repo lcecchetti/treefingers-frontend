@@ -75,7 +75,7 @@ const StoryChapters = ({ className, parent, first = 10 }) => {
               </SwiperSlide>
             ))}
             <div className="swiper-button-prev"></div>
-            <div className={clsx('swiper-button-next', suggestSwipe && 'animate-pulse')}></div>
+            <div className="swiper-button-next"></div>
           </Swiper>
         }
 
