@@ -29,6 +29,7 @@ export async function getStaticProps({ params }) {
   } catch(e) {
     return {
       notFound: true,
+      revalidate: 1,
     }
   }
 
@@ -38,6 +39,7 @@ export async function getStaticProps({ params }) {
   if (!data.story) {
     return {
       notFound: true,
+      revalidate: 1,
     }
   }
 

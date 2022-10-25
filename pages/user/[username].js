@@ -30,6 +30,7 @@ export async function getStaticProps({ params }) {
   if (!data?.user) {
     return {
       notFound: true,
+      revalidate: 1,
     }
   }
 
