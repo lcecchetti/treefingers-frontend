@@ -1,5 +1,5 @@
 import { Spinner, Text, Link, Container, Button } from 'components/ui';
-import { DATE_LONG, formatDate } from 'lib/helper/date';
+import { useFormattedDate, DATE_LONG } from 'lib/helper/date';
 import { getStoryUrl, isStoryRoot } from 'lib/helper/story';
 import { gql, useQuery } from '@apollo/client';
 import { FaAngleUp, FaAngleDoubleUp, FaTimes } from 'react-icons/fa';
@@ -66,6 +66,8 @@ const StoryView = ({ className, story }) => {
     nextFetchPolicy: 'cache-first',
   });
 
+  const createdAt = useFormattedDate(data?.story.createdAt, DATE_LONG);
+
   return (
     <div className={clsx('flex flex-col gap-md', className)}>
         <Spinner loading={loading}/>
@@ -102,7 +104,7 @@ const StoryView = ({ className, story }) => {
 
                   <div className="flex flex-col gap-md">
                     <div className="flex justify-between items-center">
-                      <Text variant="span">{formatDate(data.story.createdAt, DATE_LONG)}</Text>
+                      <Text variant="span">{createdAt}</Text>
                       <Avatar user={data.story.author} showName={true} />
                     </div>
 
