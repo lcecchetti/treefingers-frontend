@@ -4,10 +4,11 @@ import { QUERY_STORIES, QUERY_STORY, StoryView } from 'components/story';
 import Head from 'next/head';
 
 const StoryPage = ({ story }) => {
+  const title = `${story.title} | Story | Treefingers`;
   return (
     <>
       <Head>
-        <title>{story.title} | Story | Treefingers</title>
+        <title>{title}</title>
         <meta name="description" content={`${story.title} - ${story.excerpt}`} />
       </Head>
       <StoryView story={story} className="mt-sm" />

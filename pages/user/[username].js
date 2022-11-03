@@ -6,10 +6,11 @@ import { QUERY_STORIES } from 'components/story';
 import Head from 'next/head';
 
 const UserPage = ({ user }) => {
+  const title = `${user.username} | User | Treefingers`;
   return (
     <Container>
       <Head>
-        <title>{user.username} | User | Treefingers</title>
+        <title>{title}</title>
         <meta name="description" content={`${user.username} - ${user.bio}`}/>
       </Head>
       <UserView user={user} />

@@ -6,10 +6,11 @@ import { QUERY_STORIES } from 'components/story';
 import Head from 'next/head';
 
 const ForestPage = ({ forest }) => {
+  const title = `${forest.name} | Forest | Treefingers`;
   return (
     <Container>
       <Head>
-        <title>{forest.name} | Forest | Treefingers</title>
+        <title>{title}</title>
         <meta name="description" content={`${forest.name} - ${forest.excerpt}`} />
       </Head>
       <ForestView forest={forest} />

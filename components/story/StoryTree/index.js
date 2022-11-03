@@ -109,7 +109,7 @@ class TreeView {
 		parent.children.push(branch);
 
 		if (branch.level < this.levels) {
-			for (const i = 0; i < this.childrenCount; i++) {
+			for (let i = 0; i < this.childrenCount; i++) {
 				this.generateBranch(branch);
 			}
 		}
@@ -133,7 +133,7 @@ class TreeView {
 		this.context.stroke();
 		this.context.closePath();
 
-		for (const i = 0; i < branch.children.length; i++) {
+		for (let i = 0; i < branch.children.length; i++) {
 			this.renderTree(branch.children[i]);
 		}
 	}
