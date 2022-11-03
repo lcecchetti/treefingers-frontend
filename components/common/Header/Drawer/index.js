@@ -67,7 +67,6 @@ const Drawer = () => {
     },
     {
       label: 'THEME',
-      href: '#',
       Icon: ThemeIcon,
       onClick: () => {
         const toggledTheme = getToggledTheme(theme);

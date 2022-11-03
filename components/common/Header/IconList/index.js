@@ -17,14 +17,12 @@ const IconList = () => {
 
   const iconListItems = [
     {
-      href: '#',
       Component: FaSearch,
       onClick: openSearch,
       showOnMobile: true,
       showOnDesktop: true,
     },
     {
-      href: '#',
       Component: ThemeIcon,
       onClick: () => {
         const toggledTheme = getToggledTheme(theme);
@@ -46,7 +44,6 @@ const IconList = () => {
       showOnDesktop: true,
     },
     {
-      href: '#',
       Component: FaBars,
       onClick: toggleDrawer,
       showOnMobile: true,
@@ -61,7 +58,7 @@ const IconList = () => {
           ['hidden lg:inline-block']: !item.showOnMobile,
           ['lg:hidden']: !item.showOnDesktop,
         })}>
-          <Link href={item.href} onClick={item.onClick ? item.onClick : undefined}>
+          <Link href={item.href} onClick={!!item.onClick ? (e) => { e.preventDefault(); item.onClick(); } : undefined}>
             <item.Component className="text-2xl" />
           </Link>
         </li>
