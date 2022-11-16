@@ -1,6 +1,6 @@
 import { useTheme } from 'next-themes';
 import { FaSun, FaMoon } from 'react-icons/fa';
-import { themes } from 'lib/ui/context';
+import { themes, useUI } from 'lib/ui/context';
 import { useState, useEffect } from 'react';
 
 const iconComponents = {
@@ -11,9 +11,10 @@ const iconComponents = {
 const ThemeIcon = ({ className }) => {
   const { theme } = useTheme();
   const [icon, setIcon] = useState(themes.light);
+  const { getToggledTheme } = useUI();
 
   useEffect(() => {
-    setIcon(theme);
+    setIcon(getToggledTheme(theme));
   }, [theme]);
   
   const Icon = iconComponents[icon];
