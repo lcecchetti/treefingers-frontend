@@ -14,7 +14,7 @@ import * as gtag from 'lib/gtag';
 const Drawer = () => {
   const router = useRouter();
   const { isDrawerOpen, closeDrawer, getToggledTheme } = useUI();
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
     // handle body scroll lock
@@ -69,7 +69,7 @@ const Drawer = () => {
       label: 'THEME',
       Icon: ThemeIcon,
       onClick: () => {
-        const toggledTheme = getToggledTheme(theme);
+        const toggledTheme = getToggledTheme(resolvedTheme);
         gtag.event({
           action: 'change-theme',
           category: 'theme',

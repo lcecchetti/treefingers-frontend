@@ -11,7 +11,7 @@ import * as gtag from 'lib/gtag';
 import { CurrentUser } from 'components/user';
 
 const IconList = () => {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const { toggleDrawer, getToggledTheme, openSearch } = useUI();
   const { currentUser } = useCurrentUser();
 
@@ -25,7 +25,7 @@ const IconList = () => {
     {
       Component: ThemeIcon,
       onClick: () => {
-        const toggledTheme = getToggledTheme(theme);
+        const toggledTheme = getToggledTheme(resolvedTheme);
         gtag.event({
           action: 'change-theme',
           category: 'theme',

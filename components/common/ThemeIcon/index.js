@@ -1,23 +1,24 @@
 import { useTheme } from 'next-themes';
 import { FaSun, FaMoon } from 'react-icons/fa';
-import { themes, useUI } from 'lib/ui/context';
+import { themes } from 'lib/ui/context';
 import { useState, useEffect } from 'react';
 
 const iconComponents = {
-  [themes.dark]: FaMoon,
   [themes.light]: FaSun,
+  [themes.dark]: FaMoon,
  }
 
 const ThemeIcon = ({ className }) => {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [icon, setIcon] = useState(themes.light);
-  const { getToggledTheme } = useUI();
 
   useEffect(() => {
-    setIcon(getToggledTheme(theme));
-  }, [theme]);
+    if (resolvedTheme) {
+      setIcon(resolvedTheme);
+    }
+  }, [resolvedTheme]);
   
-  const Icon = iconComponents[icon];
+  const Icon = iconComponents[icon] || FaSun;
 
   return <Icon className={className} />;
 }
