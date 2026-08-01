@@ -1,7 +1,7 @@
-import { DefaultLayout } from 'components/layout';
-import { Container, Text, Link } from 'components/ui';
+import { DefaultLayout } from '@/components/layout';
+import { Container, Text, Link } from '@/components/ui';
 import Head from 'next/head';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const AboutPage: NextPageWithLayout = () => {
   return (

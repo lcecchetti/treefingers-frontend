@@ -1,7 +1,7 @@
-import { DefaultLayout } from 'components/layout';
-import { RegisterForm } from 'components/auth';
+import { DefaultLayout } from '@/components/layout';
+import { RegisterForm } from '@/components/auth';
 import Head from 'next/head';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const RegisterPage: NextPageWithLayout = () => {
   return (

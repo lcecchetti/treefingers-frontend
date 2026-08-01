@@ -1,5 +1,5 @@
 import React, { useMemo, type ReactElement, type ReactNode } from 'react';
-import * as gtag from 'lib/gtag';
+import * as gtag from '@/lib/gtag';
 
 export const themes = {
   dark: 'dark',

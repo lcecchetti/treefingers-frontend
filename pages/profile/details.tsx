@@ -1,9 +1,9 @@
-import { ProfileLayout } from 'components/layout';
-import { Text } from 'components/ui';
-import { PageIntro } from 'components/common';
-import { UserEditForm } from 'components/user';
+import { ProfileLayout } from '@/components/layout';
+import { Text } from '@/components/ui';
+import { PageIntro } from '@/components/common';
+import { UserEditForm } from '@/components/user';
 import Head from 'next/head';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const ProfileDetailsPage: NextPageWithLayout = () => {
   return (

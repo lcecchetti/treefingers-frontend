@@ -1,7 +1,7 @@
-export { default as Avatar } from './Avatar';
-export { default as UserView, QUERY_USER } from './UserView';
-export { default as UserList, QUERY_USERS } from './UserList';
-export { default as UserFollowership } from './UserFollowership';
-export { default as UserEditForm } from './UserEditForm';
-export { default as UserCard } from './UserCard';
-export { default as CurrentUser } from './CurrentUser';
+export { Avatar } from './avatar';
+export { UserView, QUERY_USER } from './user-view';
+export { UserList, QUERY_USERS } from './user-list';
+export { UserFollowership } from './user-followership';
+export { UserEditForm } from './user-edit-form';
+export { UserCard } from './user-card';
+export { CurrentUser } from './current-user';

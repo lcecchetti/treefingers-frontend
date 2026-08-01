@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { DefaultLayout } from 'components/layout';
+import { DefaultLayout } from '@/components/layout';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
-import { logoutSession } from 'lib/auth/logout';
-import { Spinner, Container } from 'components/ui';
+import { logoutSession } from '@/lib/auth/logout';
+import { Spinner, Container } from '@/components/ui';
 import Head from 'next/head';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const LogoutPage: NextPageWithLayout = () => {
   const router = useRouter()

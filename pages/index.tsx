@@ -1,7 +1,7 @@
-import { DefaultLayout } from 'components/layout';
-import { Hero } from 'components/common';
+import { DefaultLayout } from '@/components/layout';
+import { Hero } from '@/components/common';
 import Head from 'next/head';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const HomePage: NextPageWithLayout = () => {
   return (

@@ -1,8 +1,8 @@
-import { Logo } from 'components/common';
-import { EmptyLayout } from 'components/layout';
-import { Text } from 'components/ui';
+import { Logo } from '@/components/common';
+import { EmptyLayout } from '@/components/layout';
+import { Text } from '@/components/ui';
 import type { GetServerSideProps } from 'next';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const Maintenance: NextPageWithLayout = () => {
   return (

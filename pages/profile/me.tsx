@@ -1,11 +1,11 @@
-import { ProfileLayout } from 'components/layout';
-import { useCurrentUser } from 'lib/auth/currentUser';
-import { Text } from 'components/ui';
-import { PageIntro } from 'components/common';
-import { Logout } from 'components/profile';
+import { ProfileLayout } from '@/components/layout';
+import { useCurrentUser } from '@/lib/auth/current-user';
+import { Text } from '@/components/ui';
+import { PageIntro } from '@/components/common';
+import { Logout } from '@/components/profile';
 import Head from 'next/head';
-import { NotificationList } from 'components/notification';
-import type { NextPageWithLayout } from 'lib/types/next';
+import { NotificationList } from '@/components/notification';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const ProfileMePage: NextPageWithLayout = () => {
   const { currentUser } = useCurrentUser();

@@ -1,2 +1,2 @@
-export { default as Notification } from './Notification';
-export { default as NotificationList, QUERY_NOTIFICATIONS, notificationsVariables } from './NotificationList';
+export { Notification } from './notification';
+export { NotificationList, QUERY_NOTIFICATIONS, notificationsVariables } from './notification-list';

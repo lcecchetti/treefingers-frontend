@@ -1,8 +1,8 @@
-import { DefaultLayout } from 'components/layout';
-import { ChangePasswordForm } from 'components/auth';
+import { DefaultLayout } from '@/components/layout';
+import { ChangePasswordForm } from '@/components/auth';
 import Head from 'next/head';
 import type { GetServerSideProps } from 'next';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 interface ChangePasswordPageProps {
   token: string;

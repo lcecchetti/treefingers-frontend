@@ -1,3 +1,3 @@
-export { default as DefaultLayout } from './DefaultLayout';
-export { default as ProfileLayout } from './ProfileLayout';
-export { default as EmptyLayout } from './EmptyLayout';
+export { DefaultLayout } from './default-layout';
+export { ProfileLayout } from './profile-layout';
+export { EmptyLayout } from './empty-layout';

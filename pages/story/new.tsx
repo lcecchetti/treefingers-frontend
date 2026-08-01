@@ -1,10 +1,10 @@
-import { DefaultLayout } from 'components/layout';
-import { Text, Container } from 'components/ui';
-import { PageIntro } from 'components/common';
-import { StoryNew } from 'components/story';
+import { DefaultLayout } from '@/components/layout';
+import { Text, Container } from '@/components/ui';
+import { PageIntro } from '@/components/common';
+import { StoryNew } from '@/components/story';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const StoryNewPage: NextPageWithLayout = () => {
   const router = useRouter();

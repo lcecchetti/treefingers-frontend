@@ -1,10 +1,10 @@
-import { ProfileLayout } from 'components/layout';
-import { Text } from 'components/ui';
-import { PageIntro } from 'components/common';
+import { ProfileLayout } from '@/components/layout';
+import { Text } from '@/components/ui';
+import { PageIntro } from '@/components/common';
 import Head from 'next/head';
 import { useState } from 'react';
-import { UserList } from 'components/user';
-import type { NextPageWithLayout } from 'lib/types/next';
+import { UserList } from '@/components/user';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const FollowedUsersPage: NextPageWithLayout = () => {
   const [usersCount, setUsersCount] = useState<number>();

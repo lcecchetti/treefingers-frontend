@@ -1,11 +1,11 @@
-import { ProfileLayout } from 'components/layout';
-import { Text } from 'components/ui';
-import { PageIntro } from 'components/common';
-import { ForestList } from 'components/forest';
-import { useCurrentUser } from 'lib/auth/currentUser';
+import { ProfileLayout } from '@/components/layout';
+import { Text } from '@/components/ui';
+import { PageIntro } from '@/components/common';
+import { ForestList } from '@/components/forest';
+import { useCurrentUser } from '@/lib/auth/current-user';
 import Head from 'next/head';
 import { useState } from 'react';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const ProfileMyForestsPage: NextPageWithLayout = () => {
   const { currentUser } = useCurrentUser();

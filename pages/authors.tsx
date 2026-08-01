@@ -1,11 +1,11 @@
-import { DefaultLayout } from 'components/layout';
-import { Container, Text } from 'components/ui';
-import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { PageIntro } from 'components/common';
-import { UserList, QUERY_USERS } from 'components/user';
+import { DefaultLayout } from '@/components/layout';
+import { Container, Text } from '@/components/ui';
+import { initializeApollo, addApolloState } from '@/lib/apollo/client';
+import { PageIntro } from '@/components/common';
+import { UserList, QUERY_USERS } from '@/components/user';
 import Head from 'next/head';
 import type { GetStaticProps } from 'next';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const AuthorsPage: NextPageWithLayout = () => {
   return (

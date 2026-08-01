@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { ApolloClient, HttpLink, ApolloLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import merge from 'deepmerge';
-import { logoutSession } from 'lib/auth/logout';
+import { logoutSession } from '@/lib/auth/logout';
 import isEqual from 'lodash/isEqual';
 import { relayStylePagination } from '@apollo/client/utilities';
-import { getLoginUrl } from 'lib/helper/auth';
+import { getLoginUrl } from '@/lib/helper/auth';
 
 // these mutations validate a one-off link token of their own (password reset,
 // account activation), independent of the session token, so an UNAUTHENTICATED

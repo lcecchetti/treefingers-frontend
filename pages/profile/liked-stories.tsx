@@ -1,10 +1,10 @@
-import { ProfileLayout } from 'components/layout';
-import { Text } from 'components/ui';
-import { PageIntro } from 'components/common';
-import { StoryList } from 'components/story';
+import { ProfileLayout } from '@/components/layout';
+import { Text } from '@/components/ui';
+import { PageIntro } from '@/components/common';
+import { StoryList } from '@/components/story';
 import Head from 'next/head';
 import { useState } from 'react';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const LikedStoriesPage: NextPageWithLayout = () => {
   const [storiesCount, setStoriesCount] = useState<number>();

@@ -1,14 +1,14 @@
-import { DefaultLayout } from 'components/layout';
+import { DefaultLayout } from '@/components/layout';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { graphql } from 'lib/graphql/generated';
-import { getLoginUrl } from 'lib/helper/auth';
-import { Spinner } from 'components/ui';
-import { ApiError } from 'components/common';
-import { useUI } from 'lib/ui/context';
+import { graphql } from '@/lib/graphql/generated';
+import { getLoginUrl } from '@/lib/helper/auth';
+import { Spinner } from '@/components/ui';
+import { ApiError } from '@/components/common';
+import { useUI } from '@/lib/ui/context';
 import type { GetServerSideProps } from 'next';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const MUTATION_ACTIVATE_ACCOUNT = graphql(`
   mutation activateAccount($input: ActivateAccountInput!) {

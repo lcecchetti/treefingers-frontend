@@ -1,2 +1,2 @@
-export { default as Logout } from './Logout';
-export { default as ProfileSidebar } from './ProfileSidebar';
+export { Logout } from './logout';
+export { ProfileSidebar } from './profile-sidebar';

@@ -1,4 +1,4 @@
-export { default as CommentCount } from './CommentCount';
-export { default as CommentList, QUERY_COMMENTS } from './CommentList';
-export type { CommentableEntity } from './CommentList';
-export { default as CommentNew } from './CommentNew';
+export { CommentCount } from './comment-count';
+export { CommentList, QUERY_COMMENTS } from './comment-list';
+export type { CommentableEntity } from './comment-list';
+export { CommentNew } from './comment-new';

@@ -1,0 +1,56 @@
+import { Spinner, Text } from '@/components/ui';
+import { useQuery } from '@apollo/client';
+import { graphql } from '@/lib/graphql/generated';
+import { StoryList } from '@/components/story';
+import { ApiError, PageIntro } from '@/components/common';
+import { UserFollowership } from '@/components/user/user-followership';
+import { useCurrentUser } from '@/lib/auth/current-user';
+
+export const QUERY_USER = graphql(`
+  query user($filter: FilterUserInput!) {
+    user(filter: $filter) {
+      id
+      bio
+      username
+      followersCount
+      currentUserFollowershipAsFollower {
+        id
+      }
+    }
+  }
+`);
+
+interface UserViewProps {
+  className?: string;
+  user: { id: string };
+}
+
+export const UserView = ({ className, user }: UserViewProps) => {
+  const { currentUser } = useCurrentUser();
+
+  const { data, loading, error } = useQuery(QUERY_USER, {
+    variables: { filter: { id: { eq: user.id } } },
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
+    nextFetchPolicy: 'cache-first',
+  });
+
+  return (
+    <div className={className}>
+      <Spinner loading={loading}/>
+      <ApiError error={error ?? false}/>
+
+      {data?.user &&
+        <>
+          <PageIntro>
+            <div className="flex justify-between items-center">
+              <Text variant="pageTitle" className="whitespace-pre-wrap w-full break-words">{data.user.username}</Text>
+              <UserFollowership user={data.user} />
+            </div>
+            <Text variant="p" className="break-words w-full">{data.user.bio}</Text>
+          </PageIntro>
+          <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" filter={{ author: { eq: data.user.id }, parent: { eq: null } }} sort={{ likesCount:'DESC' }} setTotalCount={undefined} />
+        </>
+      }
+    </div>
+  );
+};

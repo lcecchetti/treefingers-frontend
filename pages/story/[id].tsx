@@ -1,10 +1,10 @@
-import { DefaultLayout } from 'components/layout';
-import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { QUERY_STORIES, QUERY_STORY, StoryView } from 'components/story';
+import { DefaultLayout } from '@/components/layout';
+import { initializeApollo, addApolloState } from '@/lib/apollo/client';
+import { QUERY_STORIES, QUERY_STORY, StoryView } from '@/components/story';
 import Head from 'next/head';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { NextPageWithLayout } from 'lib/types/next';
-import type { StoryQuery } from 'lib/graphql/generated/graphql';
+import type { NextPageWithLayout } from '@/lib/types/next';
+import type { StoryQuery } from '@/lib/graphql/generated/graphql';
 
 interface StoryPageProps {
   story: NonNullable<StoryQuery['story']>;

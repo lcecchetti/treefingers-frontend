@@ -1,10 +1,10 @@
-import { ProfileLayout } from 'components/layout';
-import { Text } from 'components/ui';
-import { PageIntro } from 'components/common';
+import { ProfileLayout } from '@/components/layout';
+import { Text } from '@/components/ui';
+import { PageIntro } from '@/components/common';
 import Head from 'next/head';
 import { useState } from 'react';
-import { ForestList } from 'components/forest';
-import type { NextPageWithLayout } from 'lib/types/next';
+import { ForestList } from '@/components/forest';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const JoinedForestsPage: NextPageWithLayout = () => {
   const [forestsCount, setForestsCount] = useState<number>();

@@ -1,20 +1,20 @@
 import Head from 'next/head';
 import { ApolloProvider } from '@apollo/client';
-import { useApollo } from 'lib/apollo/client';
-import { Flyout, CookieConsent, Toasts } from 'components/common';
+import { useApollo } from '@/lib/apollo/client';
+import { Flyout, CookieConsent, Toasts } from '@/components/common';
 import { ThemeProvider } from 'next-themes';
-import { UIProvider } from 'lib/ui/context';
+import { UIProvider } from '@/lib/ui/context';
 import { CookiesProvider, useCookies } from 'react-cookie';
-import { COOKIE_CONSENT_NAME, COOKIE_CONSENT_ACCEPTED } from 'lib/helper/cookieConsent';
-import * as gtag from 'lib/gtag';
+import { COOKIE_CONSENT_NAME, COOKIE_CONSENT_ACCEPTED } from '@/lib/helper/cookie-consent';
+import * as gtag from '@/lib/gtag';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Script from 'next/script'
-import type { AppPropsWithLayout } from 'lib/types/next';
+import type { AppPropsWithLayout } from '@/lib/types/next';
 
 // global style dependencies
-import 'styles/globals.css'
-import { DefaultLayout } from 'components/layout';
+import '@/styles/globals.css'
+import { DefaultLayout } from '@/components/layout';
 
 // must be rendered inside CookiesProvider to share its Cookies instance
 // with CookieConsent, otherwise consent changes aren't picked up here

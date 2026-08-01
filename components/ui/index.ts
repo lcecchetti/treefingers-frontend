@@ -1,6 +1,6 @@
-export { default as Button } from './Button';
-export { default as Spinner } from './Spinner';
-export { default as Container } from './Container';
-export { default as Text } from './Text';
-export { default as FormField } from './FormField';
-export { default as Link } from './Link';
+export { Button } from './button';
+export { Spinner } from './spinner';
+export { Container } from './container';
+export { Text } from './text';
+export { FormField } from './form-field';
+export { Link } from './link';

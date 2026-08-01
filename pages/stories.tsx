@@ -1,13 +1,13 @@
-import { DefaultLayout } from 'components/layout';
-import { Container, Text, Button, Link } from 'components/ui';
-import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { PageIntro } from 'components/common';
-import { StoryList, QUERY_STORIES } from 'components/story';
-import { getStoryNewUrl } from 'lib/helper/story';
+import { DefaultLayout } from '@/components/layout';
+import { Container, Text, Button, Link } from '@/components/ui';
+import { initializeApollo, addApolloState } from '@/lib/apollo/client';
+import { PageIntro } from '@/components/common';
+import { StoryList, QUERY_STORIES } from '@/components/story';
+import { getStoryNewUrl } from '@/lib/helper/story';
 import { FaTree } from 'react-icons/fa';
 import Head from 'next/head';
 import type { GetStaticProps } from 'next';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const StoriesPage: NextPageWithLayout = () => {
   return (

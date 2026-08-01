@@ -1,12 +1,12 @@
-import { DefaultLayout } from 'components/layout';
-import { Container } from 'components/ui';
-import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { QUERY_USER, UserView } from 'components/user';
-import { QUERY_STORIES } from 'components/story';
+import { DefaultLayout } from '@/components/layout';
+import { Container } from '@/components/ui';
+import { initializeApollo, addApolloState } from '@/lib/apollo/client';
+import { QUERY_USER, UserView } from '@/components/user';
+import { QUERY_STORIES } from '@/components/story';
 import Head from 'next/head';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { NextPageWithLayout } from 'lib/types/next';
-import type { UserQuery } from 'lib/graphql/generated/graphql';
+import type { NextPageWithLayout } from '@/lib/types/next';
+import type { UserQuery } from '@/lib/graphql/generated/graphql';
 
 interface UserPageProps {
   user: NonNullable<UserQuery['user']>;

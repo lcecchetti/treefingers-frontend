@@ -1,13 +1,13 @@
-import { DefaultLayout } from 'components/layout';
-import { Container, Text, Link, Button } from 'components/ui';
-import { QUERY_FORESTS, ForestList } from 'components/forest';
-import { initializeApollo, addApolloState } from 'lib/apollo/client';
-import { PageIntro } from 'components/common';
+import { DefaultLayout } from '@/components/layout';
+import { Container, Text, Link, Button } from '@/components/ui';
+import { QUERY_FORESTS, ForestList } from '@/components/forest';
+import { initializeApollo, addApolloState } from '@/lib/apollo/client';
+import { PageIntro } from '@/components/common';
 import { FaTree } from 'react-icons/fa';
-import { getForestNewUrl } from 'lib/helper/forest';
+import { getForestNewUrl } from '@/lib/helper/forest';
 import Head from 'next/head';
 import type { GetStaticProps } from 'next';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 const ForestsPage: NextPageWithLayout = () => {
   return (

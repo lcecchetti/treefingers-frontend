@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { DefaultLayout } from 'components/layout';
-import { Button, Container, FormField, Text, Link } from 'components/ui';
+import { DefaultLayout } from '@/components/layout';
+import { Button, Container, FormField, Text, Link } from '@/components/ui';
 import type { ReactNode } from 'react';
-import type { NextPageWithLayout } from 'lib/types/next';
+import type { NextPageWithLayout } from '@/lib/types/next';
 
 interface UiSectionProps {
   children: ReactNode;
