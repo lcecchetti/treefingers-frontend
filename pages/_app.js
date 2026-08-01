@@ -4,7 +4,8 @@ import { useApollo } from 'lib/apollo/client';
 import { Flyout, CookieConsent, Toasts } from 'components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from 'lib/ui/context';
-import { CookiesProvider } from 'react-cookie';
+import { CookiesProvider, useCookies } from 'react-cookie';
+import { COOKIE_CONSENT_NAME, COOKIE_CONSENT_ACCEPTED } from 'lib/helper/cookieConsent';
 import * as gtag from 'lib/gtag';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -13,6 +14,38 @@ import Script from 'next/script'
 // global style dependencies
 import 'styles/globals.css'
 import { DefaultLayout } from 'components/layout';
+
+// must be rendered inside CookiesProvider to share its Cookies instance
+// with CookieConsent, otherwise consent changes aren't picked up here
+const AnalyticsScripts = () => {
+  const [cookies] = useCookies([COOKIE_CONSENT_NAME]);
+  const hasAnalyticsConsent = cookies[COOKIE_CONSENT_NAME] === COOKIE_CONSENT_ACCEPTED;
+
+  if (!hasAnalyticsConsent) return null;
+
+  return (
+    <>
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+      />
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gtag.GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
+    </>
+  );
+};
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -37,31 +70,14 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <>
-      {/* Global Site Tag (gtag.js) - Google Analytics */}
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-      />
-      <Script
-        id="gtag-init"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gtag.GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
-        }}
-      />
       <Head>
         <title>Treefingers | Collaborative writing</title>
         <meta name="theme-color" content="#000" />
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
       <CookiesProvider>
+        {/* Global Site Tag (gtag.js) - Google Analytics, only loaded once cookie consent is granted */}
+        <AnalyticsScripts/>
         <ApolloProvider client={apolloClient}>
           <ThemeProvider attribute="class">
             <UIProvider>
