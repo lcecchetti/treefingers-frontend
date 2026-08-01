@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { DefaultLayout } from 'components/layout';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
-import { getAuthToken, removeAuthToken } from 'lib/auth/token';
+import { logoutSession } from 'lib/auth/logout';
 import { Spinner, Container } from 'components/ui';
 import Head from 'next/head';
 
@@ -11,14 +11,14 @@ const LogoutPage = () => {
   const client = useApolloClient();
 
   const logout = async () => {
-    removeAuthToken();
+    await logoutSession();
     await client.resetStore();
     router.push('/');
   };
 
   useEffect(() => {
     logout();
-  }, [getAuthToken]);
+  }, []);
 
   return (
     <Container className="flex gap-sm items-center justify-center">

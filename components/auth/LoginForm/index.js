@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { gql, useMutation, useApolloClient } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import { setAuthToken } from 'lib/auth/token';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Link, FormField, Button, Text } from 'components/ui';
@@ -17,7 +16,6 @@ import { useUI } from 'lib/ui/context';
 const MUTATION_LOGIN = gql`
   mutation login($input: LoginInput!) {
     login(input: $input) {
-      token
       currentUser {
         id
         username
@@ -43,9 +41,9 @@ const LoginForm = () => {
   const { showToast } = useUI();
 
   const [login] = useMutation(MUTATION_LOGIN, {
-    onCompleted: async ({ login }) => {   
+    onCompleted: async ({ login }) => {
       setResendActivateAccountTo(false);
-      setAuthToken(login.token);
+      // the backend already set the auth cookie via Set-Cookie on this response
       await client.resetStore();
       gtag.event({
         action: 'login',
