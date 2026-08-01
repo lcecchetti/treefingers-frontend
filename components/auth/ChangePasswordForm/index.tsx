@@ -1,5 +1,4 @@
-import { Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
+import { Controller, useForm } from 'react-hook-form';
 import { FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getLoginUrl } from 'lib/helper/auth';
@@ -54,52 +53,64 @@ const ChangePasswordForm = ({ token }: ChangePasswordFormProps) => {
     }
   });
 
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, errors, touchedFields },
+  } = useForm<ChangePasswordFormValues>({
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  const onSubmit = ({ password }: ChangePasswordFormValues) =>
+    changePassword({ variables: { input: { password, token } } });
+
   return (
     <AuthFormContainer title="Change password" icon={MdLockOutline}>
-      <Formik<ChangePasswordFormValues>
-        initialValues={{
-          password: '',
-          confirmPassword: '',
-        }}
-        onSubmit={({ password }) => changePassword({ variables: { input: { password, token } } })}
-        validationSchema={Yup.object().shape({
-          password: Yup.string().min(10, 'Too short!'),
-          confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
-        })}
-        validateOnChange={false}
-        validateOnBlur={false}
-      >
-        {({ isSubmitting, errors, touched }) => (
-          <Form className="flex flex-col gap-sm">
-            <Field
-              as={FormField}
-              name="password"
+      <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="password"
+          control={control}
+          rules={{ minLength: { value: 10, message: 'Too short!' } }}
+          render={({ field: { ref, ...field } }) => (
+            <FormField
+              {...field}
               label="Password"
               type="password"
               placeholder="********"
-              error={errors.password}
-              touched={touched.password}
+              error={errors.password?.message}
+              touched={touchedFields.password}
             />
-            <Field
-              as={FormField}
-              name="confirmPassword"
+          )}
+        />
+        <Controller
+          name="confirmPassword"
+          control={control}
+          rules={{
+            validate: (value, { password }) => value === password || 'Passwords must match',
+          }}
+          render={({ field: { ref, ...field } }) => (
+            <FormField
+              {...field}
               label="Confirm password"
               type="password"
               placeholder="********"
-              error={errors.confirmPassword}
-              touched={touched.confirmPassword}
+              error={errors.confirmPassword?.message}
+              touched={touchedFields.confirmPassword}
             />
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              loading={isSubmitting}
-              className="w-full">
-              Update password
-            </Button>
-            <ApiError error={error} />
-          </Form>
-        )}
-      </Formik>
+          )}
+        />
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          loading={isSubmitting}
+          className="w-full">
+          Update password
+        </Button>
+        <ApiError error={error} />
+      </form>
     </AuthFormContainer>
   );
 };

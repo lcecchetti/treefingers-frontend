@@ -1,5 +1,4 @@
-import { Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
+import { Controller, useForm } from 'react-hook-form';
 import { Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getLoginUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
@@ -49,47 +48,55 @@ const ForgotPasswordForm = () => {
     },
   });
 
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, errors, touchedFields },
+  } = useForm<ForgotPasswordFormValues>({
+    defaultValues: {
+      email: '',
+    },
+  });
+
+  const onSubmit = ({ email }: ForgotPasswordFormValues) =>
+    forgotPassword({ variables: { input: { email } } });
+
   return (
     <AuthFormContainer title="Forgot password" icon={MdLockOutline}>
-      <Formik<ForgotPasswordFormValues>
-        initialValues={{
-          email: '',
-        }}
-        onSubmit={({ email }) => forgotPassword({ variables: { input: { email } } })}
-        validationSchema={Yup.object().shape({
-          email: Yup.string().email('Invalid email').required(),
-        })}
-        validateOnChange={false}
-        validateOnBlur={false}
-      >
-        {({ isSubmitting, errors, touched }) => (
-          <Form className="flex flex-col gap-sm">
-            <Field
-              as={FormField}
-              name="email"
+      <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="email"
+          control={control}
+          rules={{
+            required: 'Required',
+            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email' },
+          }}
+          render={({ field: { ref, ...field } }) => (
+            <FormField
+              {...field}
               type="email"
               label="Email"
               autoComplete="email"
               autoFocus
-              error={errors.email}
-              touched={touched.email}
+              error={errors.email?.message}
+              touched={touchedFields.email}
             />
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              loading={isSubmitting}
-              className="w-full">
-              Send email
-            </Button>
+          )}
+        />
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          loading={isSubmitting}
+          className="w-full">
+          Send email
+        </Button>
 
-            <ApiError error={error} />
-            <div className="flex flex-col gap-xs text-xs">
-              <Link href={getLoginUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Already have an account? Login</Link>
-              <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Don't have an account? Register</Link>
-            </div>
-          </Form>
-        )}
-      </Formik>
+        <ApiError error={error} />
+        <div className="flex flex-col gap-xs text-xs">
+          <Link href={getLoginUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Already have an account? Login</Link>
+          <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Don't have an account? Register</Link>
+        </div>
+      </form>
     </AuthFormContainer>
   );
 };

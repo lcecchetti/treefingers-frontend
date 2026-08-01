@@ -1,15 +1,14 @@
 import { useApolloClient, useMutation, useQuery, type ApolloError } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
-import { Formik, Form, Field, FieldArray } from 'formik';
+import { Controller, useForm } from 'react-hook-form';
 import { FormField, Button, Text } from 'components/ui';
 import type { FormFieldOption } from 'components/ui/FormField';
-import * as Yup from 'yup';
 import { getStoryUrl } from 'lib/helper/story';
 import { AuthRequired } from 'components/auth';
 import { ApiError } from 'components/common';
 import { FaTimes } from 'react-icons/fa';
 import * as gtag from 'lib/gtag';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
 import { flyoutTypes, useUI } from 'lib/ui/context';
@@ -75,17 +74,11 @@ interface StoryNewProps {
 }
 
 interface StoryNewFormValues {
-  story?: StoryNewStory;
   title: string;
   content: string;
-  parent?: string;
   addTag: string;
   tags: string[];
   forest: string;
-  forests: FormFieldOption[];
-  forestsLoading: boolean;
-  hasForestSelection: boolean;
-  searchForest?: string;
 }
 
 const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps) => {
@@ -99,12 +92,16 @@ const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps)
   const isEditing = !!story;
   const hasForestSelection = !parent && !isEditing;
 
-  const { data: forestsData, loading: forestsLoading } = useQuery(QUERY_CHOOSE_FOREST, {
+  const { data: forestsData, loading: forestsLoadingQuery } = useQuery(QUERY_CHOOSE_FOREST, {
     variables: {
       filter: forest ? { id: { eq: forest } } : {},
     },
     skip: !hasForestSelection,
   });
+
+  const [forests, setForests] = useState<FormFieldOption[]>([]);
+  const [forestsLoading, setForestsLoading] = useState(forestsLoadingQuery);
+  const [searchForest, setSearchForest] = useState('');
 
   const prepareForestOptions = (data: ChooseForestQuery): FormFieldOption[] => {
     const options = data.forests.edges!.map(({ node }) =>({
@@ -122,234 +119,257 @@ const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps)
     return options;
   };
 
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { isSubmitting, errors, touchedFields },
+  } = useForm<StoryNewFormValues>({
+    defaultValues: {
+      title: story?.title || '',
+      content: story?.content || '',
+      addTag: '',
+      tags: story?.tags || [],
+      forest: '',
+    },
+  });
+
+  useEffect(() => {
+    if (forestsData) {
+      const options = prepareForestOptions(forestsData);
+      setForests(options);
+      setValue('forest', options[0]?.value as string ?? '');
+    }
+  }, [forestsData]);
+
+  const tags = watch('tags');
+  const addTag = watch('addTag');
+  const currentForest = watch('forest');
+
+  const onSubmit = ({ title, content, tags, forest }: StoryNewFormValues) => {
+    if (isEditing) {
+      return editStory({
+        variables: { input: {
+          id: story!.id,
+          data: {
+            title, content, tags
+          },
+        }},
+        onCompleted: () => {
+          gtag.event({
+            action: 'edit-story',
+            category: 'story',
+            label: 'success',
+          });
+
+          reset();
+          setError(false);
+          showToast(`Your ${story!.parent ? 'chapter' : 'story'} has been updated!`);
+          if (callback) {
+            callback();
+          }
+        },
+        onError: (e) => {
+          gtag.event({
+            action: 'edit-story',
+            category: 'story',
+            label: 'error',
+          });
+          setError(e);
+        }
+      });
+    } else {
+      return createStory({
+        variables: { input: { data: {
+          title, content, parent: parent?.id, forest, tags
+        }}},
+        onCompleted: (data) => {
+          gtag.event({
+            action: 'create-story',
+            category: 'story',
+            label: 'success',
+          });
+
+          reset();
+          if (parent) {
+            showToast('Chapter created!');
+          } else {
+            showToast('Story planted!');
+          }
+          setError(false);
+          router.push(getStoryUrl(data.createStory.story));
+        },
+        onError: (e) => {
+          gtag.event({
+            action: 'create-story',
+            category: 'story',
+            label: 'error',
+          });
+          setError(e);
+        }
+      });
+    }
+  };
+
   return (
     <div className={className}>
       <AuthRequired>
-        <Formik<StoryNewFormValues>
-          enableReinitialize
-          initialValues={{
-            story,
-            title: story?.title || '',
-            content: story?.content || '',
-            parent: parent?.id,
-            addTag: '',
-            tags: story?.tags || [],
-            forest: forestsData ? (prepareForestOptions(forestsData).shift()?.value ?? '') as string : '',
-            forests: forestsData ? prepareForestOptions(forestsData) : [],
-            forestsLoading: forestsLoading,
-            hasForestSelection,
-          }}
-          validationSchema={Yup.object().shape({
-            title: Yup.string().max(64, 'Too long!').required(),
-            content: Yup.string().max(4096, 'Too long!').required(),
-            addTag: Yup.string().matches(/^[a-zA-Z0-9_]*$/, 'Tag must not contain special chars or spaces!').max(16, 'Too long'),
-            forest: Yup.string().when('hasForestSelection', {
-              is: () => hasForestSelection,
-              then: Yup.string().required(),
-            })
-          })}
-          onSubmit={({ title, content, parent, tags, forest, story }, { setSubmitting, resetForm }) => {
-            if (isEditing) {
-              editStory({
-                variables: { input: {
-                  id: story!.id,
-                  data: {
-                    title, content, tags
-                  },
-                }},
-                onCompleted: () => {
-                  gtag.event({
-                    action: 'edit-story',
-                    category: 'story',
-                    label: 'success',
-                  });
-
-                  resetForm();
-                  setError(false);
-                  showToast(`Your ${story!.parent ? 'chapter' : 'story'} has been updated!`);
-                  if (callback) {
-                    callback();
-                  }
-                },
-                onError: (e) => {
-                  gtag.event({
-                    action: 'edit-story',
-                    category: 'story',
-                    label: 'error',
-                  });
-                  setError(e);
-                  setSubmitting(false);
-                }
-              })
-            } else {
-              createStory({
-                variables: { input: { data: {
-                  title, content, parent, forest, tags
-                }}},
-                onCompleted: (data) => {
-                  gtag.event({
-                    action: 'create-story',
-                    category: 'story',
-                    label: 'success',
-                  });
-
-                  resetForm();
-                  if (parent) {
-                    showToast('Chapter created!');
-                  } else {
-                    showToast('Story planted!');
-                  }
-                  setError(false);
-                  router.push(getStoryUrl(data.createStory.story));
-                },
-                onError: (e) => {
-                  gtag.event({
-                    action: 'create-story',
-                    category: 'story',
-                    label: 'error',
-                  });
-                  setError(e);
-                  setSubmitting(false);
-                }
-              })
-            }
-          }}
-        >
-          {({ isSubmitting, values, setFieldValue, errors, touched }) => (
-            <Form className="flex flex-col gap-sm">
-              <Field
-                as={FormField}
-                name="title"
+        <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="title"
+            control={control}
+            rules={{ required: 'Required', maxLength: { value: 64, message: 'Too long!' } }}
+            render={({ field: { ref, ...field } }) => (
+              <FormField
+                {...field}
                 type="text"
                 label={!parent ? 'Title' : 'Action'}
-                error={errors.title}
-                touched={touched.title}
+                error={errors.title?.message}
+                touched={touchedFields.title}
                 hint={parent ? 'This will appear as the action to choose from on the parent chapter' : ''}
               />
-              <Field
-                as={FormField}
-                name="content"
+            )}
+          />
+          <Controller
+            name="content"
+            control={control}
+            rules={{ required: 'Required', maxLength: { value: 4096, message: 'Too long!' } }}
+            render={({ field: { ref, ...field } }) => (
+              <FormField
+                {...field}
                 type="textarea"
                 label="Content"
-                rows="10"
-                error={errors.content}
-                touched={touched.content}
+                rows={10}
+                error={errors.content?.message}
+                touched={touchedFields.content}
               />
-              <FieldArray
-                name="tags"
-                render={arrayHelpers => (
-                  <div className="flex flex-col gap-sm">
-                    <div className="flex gap-sm justify-items-stretch items-end">
-                      <Field className="grow"
-                        name="addTag"
-                        as={FormField}
-                        type="text"
-                        label="Tag your story"
-                        error={errors.addTag}
-                        touched={!!errors.addTag}
-                      />
-                      <Button className="whitespace-nowrap" disabled={values.tags.length >= 5 || !!errors.addTag || values.addTag.length < 2} type="button" size="md" onClick={() => {
-                        if(values.tags.includes(values.addTag) || !values.addTag) {
-                          return;
-                        }
-                        arrayHelpers.push(values.addTag);
-                        setFieldValue('addTag', '');
-                      }}>Add Tag</Button>
-                    </div>
-                    {!!values.tags.length && (
-                      <ul className="flex flex-wrap gap-xs">
-                        {values.tags.map((tag, index) => (
-                          <Button type="button" size="sm" key={index}>{tag} <FaTimes onClick={() => arrayHelpers.remove(index)}/></Button>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+            )}
+          />
+          <div className="flex flex-col gap-sm">
+            <div className="flex gap-sm justify-items-stretch items-end">
+              <Controller
+                name="addTag"
+                control={control}
+                rules={{ maxLength: { value: 16, message: 'Too long' }, pattern: { value: /^[a-zA-Z0-9_]*$/, message: 'Tag must not contain special chars or spaces!' } }}
+                render={({ field: { ref, ...field } }) => (
+                  <FormField
+                    {...field}
+                    className="grow"
+                    type="text"
+                    label="Tag your story"
+                    error={errors.addTag?.message}
+                    touched={!!errors.addTag}
+                  />
                 )}
               />
+              <Button className="whitespace-nowrap" disabled={tags.length >= 5 || !!errors.addTag || addTag.length < 2} type="button" size="md" onClick={() => {
+                if (tags.includes(addTag) || !addTag) {
+                  return;
+                }
+                setValue('tags', [...tags, addTag]);
+                setValue('addTag', '');
+              }}>Add Tag</Button>
+            </div>
+            {!!tags.length && (
+              <ul className="flex flex-wrap gap-xs">
+                {tags.map((tag, index) => (
+                  <Button type="button" size="sm" key={index}>{tag} <FaTimes onClick={() => setValue('tags', tags.filter((_, i) => i !== index))}/></Button>
+                ))}
+              </ul>
+            )}
+          </div>
 
-              {values.hasForestSelection &&
-                <div className="flex flex-col gap-sm">
-                  <div>
-                    <Text variant="p">
-                      Select a forest
-                    </Text>
-                    <Text variant="p" className="text-sm">
-                      Forests are places where to group stories. Pick the one that suits your story the most, or create your own by clicking
-                      <Text className="cursor-pointer text-primary-light font-bold"
-                          onClick={() => {
-                            openFlyout(flyoutTypes.forestNew, {
-                              title: 'Create forest',
-                              callback: (data: CreateForestMutation | undefined) => {
-                                if (!data) {
-                                  return;
-                                }
+          {hasForestSelection &&
+            <div className="flex flex-col gap-sm">
+              <div>
+                <Text variant="p">
+                  Select a forest
+                </Text>
+                <Text variant="p" className="text-sm">
+                  Forests are places where to group stories. Pick the one that suits your story the most, or create your own by clicking
+                  <Text className="cursor-pointer text-primary-light font-bold"
+                      onClick={() => {
+                        openFlyout(flyoutTypes.forestNew, {
+                          title: 'Create forest',
+                          callback: (data: CreateForestMutation | undefined) => {
+                            if (!data) {
+                              return;
+                            }
 
-                                setFieldValue('forests', [{
-                                  value: data.createForest.forest.id,
-                                  label: data.createForest.forest.name}
-                                ]);
-                                setFieldValue('forest', data.createForest.forest.id);
-                                closeFlyout();
-                              }
-                            })
-                          }}> here</Text>
-                    </Text>
-                  </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-sm w-full">
-                    <Field
-                      as={FormField}
-                      name="searchForest"
-                      className="grow"
-                      placeholder="Search..."
-                      type="text"
-                      onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
-                        setFieldValue('forestsLoading', true);
-                        setFieldValue('forest', '');
-                        const { data, error } = await apolloClient.query({
-                          query: QUERY_CHOOSE_FOREST,
-                          variables: { filter: { name: { ilike: `%${e.target.value}%` } } },
-                        });
-
-                        if(error) {
-                          setError(error);
-                        }
-
-                        if (data) {
-                          setFieldValue('forests', prepareForestOptions(data));
-                          setFieldValue('forest', prepareForestOptions(data).shift()?.value);
-                        }
-
-                        setFieldValue('forestsLoading', false);
-                      }}
-                    />
-                    <Field
-                      as={FormField}
-                      className={clsx(values.forestsLoading && 'animate-pulse')}
-                      name="forest"
-                      type="select"
-                      error={errors.forest}
-                      disabled={!values.forest}
-                      touched={touched.forest}
-                      options={values.forests}
-                    />
-                  </div>
-                </div>
-              }
-
-              <ApiError error={error} />
-              <div className="flex flex-col items-center gap-sm">
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  loading={isSubmitting}
-                  className="w-full mt-sm">
-                  {isEditing ? 'Edit' : 'Create'}
-                </Button>
-                <Text className="text-xs text-center">You'll be able to edit the story until other authors continue it.</Text>
+                            setForests([{
+                              value: data.createForest.forest.id,
+                              label: data.createForest.forest.name}
+                            ]);
+                            setValue('forest', data.createForest.forest.id);
+                            closeFlyout();
+                          }
+                        })
+                      }}> here</Text>
+                </Text>
               </div>
-            </Form>
-          )}
-        </Formik>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-sm w-full">
+                <FormField
+                  name="searchForest"
+                  className="grow"
+                  placeholder="Search..."
+                  type="text"
+                  value={searchForest}
+                  onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                    setSearchForest(e.target.value);
+                    setForestsLoading(true);
+                    setValue('forest', '');
+                    const { data, error } = await apolloClient.query({
+                      query: QUERY_CHOOSE_FOREST,
+                      variables: { filter: { name: { ilike: `%${e.target.value}%` } } },
+                    });
+
+                    if(error) {
+                      setError(error);
+                    }
+
+                    if (data) {
+                      const options = prepareForestOptions(data);
+                      setForests(options);
+                      setValue('forest', (options[0]?.value as string) ?? '');
+                    }
+
+                    setForestsLoading(false);
+                  }}
+                />
+                <Controller
+                  name="forest"
+                  control={control}
+                  rules={{ validate: (value) => !hasForestSelection || !!value || 'Required' }}
+                  render={({ field: { ref, ...field } }) => (
+                    <FormField
+                      {...field}
+                      className={clsx(forestsLoading && 'animate-pulse')}
+                      type="select"
+                      error={errors.forest?.message}
+                      disabled={!currentForest}
+                      touched={touchedFields.forest}
+                      options={forests}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+          }
+
+          <ApiError error={error} />
+          <div className="flex flex-col items-center gap-sm">
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              loading={isSubmitting}
+              className="w-full mt-sm">
+              {isEditing ? 'Edit' : 'Create'}
+            </Button>
+            <Text className="text-xs text-center">You'll be able to edit the story until other authors continue it.</Text>
+          </div>
+        </form>
       </AuthRequired>
     </div>
   );

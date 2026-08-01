@@ -1,7 +1,7 @@
+import { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
-import { Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
+import { Controller, useForm } from 'react-hook-form';
 import { Text, Button, FormField, Spinner } from 'components/ui';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
@@ -45,69 +45,93 @@ const UserEditForm = () => {
   });
   const { data, loading, error } = useQuery(QUERY_USER, { variables: { filter: { id: { eq: currentUser?.id } } }, skip: !currentUser });
 
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors, touchedFields },
+  } = useForm<UserEditFormValues>({
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+      bio: data?.user?.bio ?? '',
+    },
+  });
+
+  useEffect(() => {
+    if (data?.user) {
+      reset({ password: '', confirmPassword: '', bio: data.user.bio ?? '' });
+    }
+  }, [data?.user?.bio]);
+
+  const onSubmit = ({ confirmPassword, password, ...values }: UserEditFormValues) =>
+    editUser({ variables: { input: { data: password ? { ...values, password } : values } } });
+
   return (
     <div className="flex flex-col gap-md">
       <ApiError error={error ?? false}/>
       <Spinner loading={loading}/>
       {data?.user &&
-        <Formik<UserEditFormValues>
-        initialValues={{
-          password: '',
-          confirmPassword: '',
-          bio: data.user.bio ?? '',
-        }}
-        validateOnBlur
-        onSubmit={({ confirmPassword, password, ...data }) => {
-          return editUser({ variables: { input: { data: password ? { ...data, password } : data } } });
-        }}
-        validationSchema={Yup.object().shape({
-          password: Yup.string().min(10, 'Too short!'),
-          confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
-          bio: Yup.string().max(255, 'Too long!'),
-        })}>
-          {({ isSubmitting, errors, touched }) => (
-            <Form className="flex flex-col gap-sm">
-              <Field
-                as={FormField}
-                name="password"
+        <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="password"
+            control={control}
+            rules={{ minLength: { value: 10, message: 'Too short!' } }}
+            render={({ field: { ref, ...field } }) => (
+              <FormField
+                {...field}
                 label="Password"
                 type="password"
                 placeholder="********"
-                error={errors.password}
-                touched={touched.password}
+                error={errors.password?.message}
+                touched={touchedFields.password}
               />
-              <Field
-                as={FormField}
-                name="confirmPassword"
+            )}
+          />
+          <Controller
+            name="confirmPassword"
+            control={control}
+            rules={{
+              validate: (value, { password }) => value === password || 'Passwords must match',
+            }}
+            render={({ field: { ref, ...field } }) => (
+              <FormField
+                {...field}
                 label="Confirm password"
                 type="password"
                 placeholder="********"
-                error={errors.confirmPassword}
-                touched={touched.confirmPassword}
+                error={errors.confirmPassword?.message}
+                touched={touchedFields.confirmPassword}
               />
-              <Field
-                as={FormField}
+            )}
+          />
+          <Controller
+            name="bio"
+            control={control}
+            rules={{ maxLength: { value: 255, message: 'Too long!' } }}
+            render={({ field: { ref, ...field } }) => (
+              <FormField
+                {...field}
                 label="Bio"
                 type="textarea"
-                name="bio"
-                rows="5"
-                error={errors.bio}
-                touched={touched.bio}
+                rows={5}
+                error={errors.bio?.message}
+                touched={touchedFields.bio}
               />
-              <ApiError error={editError ?? false}/>
-              {!!editData?.editUser.user &&
-                <Text className="text-success">Successfully updated!</Text>
-              }
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                loading={isSubmitting}
-                className="my-sm w-full">
-                Edit profile
-              </Button>
-            </Form>
-          )}
-        </Formik>
+            )}
+          />
+          <ApiError error={editError ?? false}/>
+          {!!editData?.editUser.user &&
+            <Text className="text-success">Successfully updated!</Text>
+          }
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            className="my-sm w-full">
+            Edit profile
+          </Button>
+        </form>
       }
     </div>
   );

@@ -1,9 +1,8 @@
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
 import { useRouter } from 'next/router';
-import { Formik, Form, Field } from 'formik';
+import { Controller, useForm } from 'react-hook-form';
 import { FormField, Button } from 'components/ui';
-import * as Yup from 'yup';
 import { getForestUrl } from 'lib/helper/forest';
 import { AuthRequired } from 'components/auth';
 import { ApiError } from 'components/common';
@@ -34,7 +33,6 @@ const MUTATION_FOREST_EDIT = graphql(`
 `);
 
 interface ForestNewFormValues {
-  forest?: { id: string; about?: string } | null;
   name: string;
   about: string;
 }
@@ -53,119 +51,131 @@ const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
   const { showToast } = useUI();
   const isEditing = !!forest;
 
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors, touchedFields },
+  } = useForm<ForestNewFormValues>({
+    defaultValues: {
+      name: '',
+      about: forest?.about || '',
+    },
+  });
+
+  const onSubmit = ({ name, about }: ForestNewFormValues) => {
+    if (isEditing) {
+      return editForest({
+        variables: { input: {
+          id: forest!.id,
+          data: { about }}
+        },
+        onCompleted: (data) => {
+          reset();
+          gtag.event({
+            action: 'edit-forest',
+            category: 'forest',
+            label: 'success',
+          });
+          showToast(`Your forest has been updated!`);
+          if (callback) {
+            callback(data);
+          }
+
+          setError(false);
+        },
+        onError: (e) => {
+          gtag.event({
+            action: 'edit-forest',
+            category: 'forest',
+            label: 'error',
+          });
+          setError(e);
+        }
+      });
+    } else {
+      return createForest({
+        variables: { input: { data: {
+          name, about
+        }}},
+        onCompleted: (data) => {
+          reset();
+          gtag.event({
+            action: 'create-forest',
+            category: 'forest',
+            label: 'success',
+          });
+          showToast(`${data.createForest.forest.name} created!`);
+          if (callback) {
+            callback(data);
+          } else {
+            router.push(getForestUrl(data.createForest.forest));
+          }
+
+          setError(false);
+        },
+        onError: (e) => {
+          gtag.event({
+            action: 'create-forest',
+            category: 'forest',
+            label: 'error',
+          });
+          setError(e);
+        }
+      });
+    }
+  };
+
   return (
     <div className={className}>
       <AuthRequired>
-        <Formik<ForestNewFormValues>
-          enableReinitialize
-          initialValues={{
-            forest,
-            name: '',
-            about: forest?.about || '',
-          }}
-          validationSchema={Yup.object().shape({
-            name: Yup.string().when('forest', {
-              is: () => !forest,
-              then: Yup.string().max(21, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and underscores').required(),
-            }),
-            about: Yup.string().max(4096, 'Too long!').required(),
-          })}
-          onSubmit={({ name, about, forest }, { resetForm, setSubmitting }) => {
-            if (isEditing) {
-              editForest({
-                variables: { input: {
-                  id: forest!.id,
-                  data: { about }}
-                },
-                onCompleted: (data) => {
-                  resetForm();
-                  gtag.event({
-                    action: 'edit-forest',
-                    category: 'forest',
-                    label: 'success',
-                  });
-                  showToast(`Your forest has been updated!`);
-                  if (callback) {
-                    callback(data);
-                  }
-
-                  setError(false);
-                },
-                onError: (e) => {
-                  gtag.event({
-                    action: 'edit-forest',
-                    category: 'forest',
-                    label: 'error',
-                  });
-                  setError(e);
-                  setSubmitting(false);
-                }
-              });
-            } else {
-              createForest({
-                variables: { input: { data: {
-                  name, about
-                }}},
-                onCompleted: (data) => {
-                  resetForm();
-                  gtag.event({
-                    action: 'create-forest',
-                    category: 'forest',
-                    label: 'success',
-                  });
-                  showToast(`${data.createForest.forest.name} created!`);
-                  if (callback) {
-                    callback(data);
-                  } else {
-                    router.push(getForestUrl(data.createForest.forest));
-                  }
-
-                  setError(false);
-                },
-                onError: (e) => {
-                  gtag.event({
-                    action: 'create-forest',
-                    category: 'forest',
-                    label: 'error',
-                  });
-                  setError(e);
-                  setSubmitting(false);
-                }
-              });
-            }
-          }}>
-          {({ isSubmitting, errors, touched }) => (
-            <Form className="flex flex-col gap-sm">
-              {!isEditing &&
-                <Field
-                  as={FormField}
-                  name="name"
+        <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
+          {!isEditing &&
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: 'Required',
+                maxLength: { value: 21, message: 'Too long!' },
+                pattern: { value: /^[a-zA-Z0-9-_.]+$/, message: 'Only letters, numbers, dots, hyphens and underscores' },
+              }}
+              render={({ field: { ref, ...field } }) => (
+                <FormField
+                  {...field}
                   type="text"
                   label="Name"
                   hint="Only letters, numbers, dots, hyphens and underscores (It cannot be edited)"
-                  error={errors.name}
-                  touched={touched.name} />
-              }
-              <Field
-                as={FormField}
-                name="about"
+                  error={errors.name?.message}
+                  touched={touchedFields.name}
+                />
+              )}
+            />
+          }
+          <Controller
+            name="about"
+            control={control}
+            rules={{ required: 'Required', maxLength: { value: 4096, message: 'Too long!' } }}
+            render={({ field: { ref, ...field } }) => (
+              <FormField
+                {...field}
                 type="textarea"
                 label="About"
                 hint="Introduce your forest to new joiners"
-                rows="10"
-                error={errors.about}
-                touched={touched.about} />
-              <ApiError error={error} />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                loading={isSubmitting}
-                className="w-full mt-sm">
-                {isEditing ? 'Edit' : 'Create'}
-                </Button>
-            </Form>
-          )}
-        </Formik>
+                rows={10}
+                error={errors.about?.message}
+                touched={touchedFields.about}
+              />
+            )}
+          />
+          <ApiError error={error} />
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            className="w-full mt-sm">
+            {isEditing ? 'Edit' : 'Create'}
+            </Button>
+        </form>
       </AuthRequired>
     </div>
   );

@@ -1,8 +1,7 @@
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
-import { Formik, Form, Field } from 'formik';
+import { Controller, useForm } from 'react-hook-form';
 import { FormField, Button } from 'components/ui';
-import * as Yup from 'yup';
 import { AuthRequired } from 'components/auth';
 import { QUERY_COMMENTS, getCommentsFilter, type CommentableEntity } from 'components/comment/CommentList';
 import { ApiError } from 'components/common';
@@ -73,62 +72,67 @@ const CommentNew = ({ entity, sort, last }: CommentNewProps) => {
     },
   });
 
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors, touchedFields },
+  } = useForm<CommentFormValues>({
+    defaultValues: {
+      content: '',
+    },
+  });
+
+  const onSubmit = ({ content }: CommentFormValues) =>
+    comment({
+      variables: { input: { data: { content, ...(entity.__typename === 'Story' ? { story: entity.id } : { forest: entity.id }) } } },
+      onCompleted: () => {
+        reset();
+        gtag.event({
+          action: `submit-comment-${entity.__typename.toLowerCase()}`,
+          category: 'comment',
+          label: 'success'
+        });
+        setError(false);
+      },
+      onError: (e) => {
+        gtag.event({
+          action: `submit-comment-${entity.__typename.toLowerCase()}`,
+          category: 'comment',
+          label: 'error',
+        });
+        setError(e);
+      }
+    });
+
   return (
     <div>
       <AuthRequired>
-        <Formik<CommentFormValues>
-          enableReinitialize
-          initialValues={{
-            content: '',
-          }}
-          validationSchema={Yup.object().shape({
-            content: Yup.string().max(512, 'Too long!').required(),
-          })}
-          onSubmit={({ content }, { resetForm, setSubmitting }) => {
-            comment({
-              variables: { input: { data: { content, ...(entity.__typename === 'Story' ? { story: entity.id } : { forest: entity.id }) } } },
-              onCompleted: () => {
-                resetForm();
-                gtag.event({
-                  action: `submit-comment-${entity.__typename.toLowerCase()}`,
-                  category: 'comment',
-                  label: 'success'
-                });
-                setError(false);
-              },
-              onError: (e) => {
-                gtag.event({
-                  action: `submit-comment-${entity.__typename.toLowerCase()}`,
-                  category: 'comment',
-                  label: 'error',
-                });
-                setError(e);
-                setSubmitting(false);
-              }
-            });
-          }}>
-          {({ isSubmitting, errors, touched }) => (
-            <Form className="flex flex-col gap-sm">
-              <Field
-                as={FormField}
-                name="content"
+        <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="content"
+            control={control}
+            rules={{ required: 'Required', maxLength: { value: 512, message: 'Too long!' } }}
+            render={({ field: { ref, ...field } }) => (
+              <FormField
+                {...field}
                 type="textarea"
-                rows="2"
+                rows={2}
                 placeholder="Your comment..."
-                error={errors.content}
-                touched={touched.content}
+                error={errors.content?.message}
+                touched={touchedFields.content}
               />
-              <ApiError error={error} />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                loading={isSubmitting}
-                className="w-full">
-                Comment
-                </Button>
-            </Form>
-          )}
-        </Formik>
+            )}
+          />
+          <ApiError error={error} />
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            className="w-full">
+            Comment
+            </Button>
+        </form>
       </AuthRequired>
     </div>
   );

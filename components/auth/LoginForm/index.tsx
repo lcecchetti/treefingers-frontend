@@ -3,8 +3,7 @@ import { useMutation, useApolloClient, type ApolloError } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
 import { useRouter } from 'next/router';
 import { useCurrentUser } from 'lib/auth/currentUser';
-import { Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
+import { Controller, useForm } from 'react-hook-form';
 import { Link, FormField, Button, Text } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getForgotPasswordUrl, getRegisterUrl, getSafeRedirect, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
@@ -90,80 +89,93 @@ const LoginForm = () => {
     }
   }, [!currentUser]);
 
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, errors, touchedFields },
+  } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = ({ email, password }: LoginFormValues) =>
+    login({
+      variables: { input: { email, password } },
+      onError: (e) => {
+        gtag.event({
+          action: 'login',
+          category: 'auth',
+          label: 'error',
+        });
+        setError(e);
+        if (e.graphQLErrors && e.graphQLErrors.length && e.graphQLErrors[0].message === 'Your account is not active yet, check your emails.') {
+          setResendActivateAccountTo(email);
+        }
+      },
+    });
+
   return (
     <AuthFormContainer title="Login" icon={MdLockOutline}>
-      <Formik<LoginFormValues>
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        onSubmit={({ email, password }) => login({
-          variables: { input: { email, password } },
-          onError: (e) => {
-            gtag.event({
-              action: 'login',
-              category: 'auth',
-              label: 'error',
-            });
-            setError(e);
-            if (e.graphQLErrors && e.graphQLErrors.length && e.graphQLErrors[0].message === 'Your account is not active yet, check your emails.') {
-              setResendActivateAccountTo(email);
-            }
-          },
-        })}
-        validationSchema={Yup.object().shape({
-          email: Yup.string().email('Invalid email').required(),
-          password: Yup.string().required(),
-        })}
-        validateOnChange={false}
-        validateOnBlur={false}
-      >
-        {({ isSubmitting, errors, touched }) => (
-          <Form className="flex flex-col gap-sm">
-            <Field
-              as={FormField}
-              name="email"
+      <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="email"
+          control={control}
+          rules={{
+            required: 'Required',
+            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email' },
+          }}
+          render={({ field: { ref, ...field } }) => (
+            <FormField
+              {...field}
               type="email"
               label="Email"
               autoComplete="email"
               autoFocus
-              error={errors.email}
-              touched={touched.email}
+              error={errors.email?.message}
+              touched={touchedFields.email}
             />
-            <Field
-              as={FormField}
-              name="password"
+          )}
+        />
+        <Controller
+          name="password"
+          control={control}
+          rules={{ required: 'Required' }}
+          render={({ field: { ref, ...field } }) => (
+            <FormField
+              {...field}
               type="password"
               label="Password"
               autoComplete="current-password"
-              error={errors.password}
-              touched={touched.password}
+              error={errors.password?.message}
+              touched={touchedFields.password}
             />
-            <ApiError error={error} />
-            {!!error && resendActivateAccountTo &&
-              <div className="flex mb-sm items-center">
-                <Text className="text-sm">Lost your activation email? No problem, we'll resend it.</Text>
-                <Button type="button" onClick={() => {
-                  resendActivateAccountTo &&
-                  resendActivateAccount({ variables: { input: { email: resendActivateAccountTo } } })}}>
-                  Send
-                </Button>
-              </div>
-            }
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              loading={isSubmitting}
-              className="w-full">
-              Login
+          )}
+        />
+        <ApiError error={error} />
+        {!!error && resendActivateAccountTo &&
+          <div className="flex mb-sm items-center">
+            <Text className="text-sm">Lost your activation email? No problem, we'll resend it.</Text>
+            <Button type="button" onClick={() => {
+              resendActivateAccountTo &&
+              resendActivateAccount({ variables: { input: { email: resendActivateAccountTo } } })}}>
+              Send
             </Button>
-            <div className="flex flex-col gap-xs text-xs">
-              <Link href={getForgotPasswordUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Forgot password?</Link>
-              <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Don't have an account? Register</Link>
-            </div>
-          </Form>
-        )}
-      </Formik>
+          </div>
+        }
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          loading={isSubmitting}
+          className="w-full">
+          Login
+        </Button>
+        <div className="flex flex-col gap-xs text-xs">
+          <Link href={getForgotPasswordUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Forgot password?</Link>
+          <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Don't have an account? Register</Link>
+        </div>
+      </form>
     </AuthFormContainer>
   );
 };
