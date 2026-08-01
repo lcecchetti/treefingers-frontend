@@ -10,13 +10,13 @@ const ForestNewPage: NextPageWithLayout = () => {
     <Container>
       <Head>
         <title>New forest | Treefingers</title>
-        <meta name="description" content="Create a new forest on Treefingers - A forest is a place where to group stories." />
+        <meta name="description" content="Create a new forest on Treefingers - A forest is a place to group stories." />
       </Head>
       <PageIntro>
         <Text variant="pageTitle">New forest</Text>
         <Text variant="p">
-          A forest is a place where to group stories.<br/>
-          You can name it by interest, or it can a be a completely original name.<br/>
+          A forest is a place to group stories.<br/>
+          You can name it by interest, or it can be a completely original name.<br/>
           One rule, keep it unique.
         </Text>
       </PageIntro>

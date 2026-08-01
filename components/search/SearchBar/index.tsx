@@ -32,7 +32,7 @@ const SearchBar = () => {
               router.push(getSearchUrl(q));
             }}
             validationSchema={Yup.object().shape({
-              q: Yup.string().required('').min(3, 'Cmon, be more precise!'),
+              q: Yup.string().required('').min(3, "C'mon, be more precise!"),
             })}
           >
           {({ errors, touched }) => (

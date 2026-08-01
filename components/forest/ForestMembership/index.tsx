@@ -116,7 +116,7 @@ const ForestMembership = ({ forest, viewOnly }: ForestMembershipProps) => {
     forest.currentUserMembership ? await leave() : await join();
   }
 
-  // pick icon accoridng to user like presence
+  // pick icon according to user like presence
   const Icon = forest.currentUserMembership ? FaUserCheck : FaUsers;
 
   return (

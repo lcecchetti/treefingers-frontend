@@ -142,7 +142,7 @@ const LoginForm = () => {
             <ApiError error={error} />
             {!!error && resendActivateAccountTo &&
               <div className="flex mb-sm items-center">
-                <Text className="text-sm">Lost your activation email? No problem we'll resend it</Text>
+                <Text className="text-sm">Lost your activation email? No problem, we'll resend it.</Text>
                 <Button type="button" onClick={() => {
                   resendActivateAccountTo &&
                   resendActivateAccount({ variables: { input: { email: resendActivateAccountTo } } })}}>

@@ -8,7 +8,7 @@ const HomePage: NextPageWithLayout = () => {
     <>
       <Head>
         <title>Treefingers | Collaborative writing</title>
-        <meta name="description" content="Treefingers is a collaborative writing app where to tell never ending stories."/>
+        <meta name="description" content="Treefingers is a collaborative writing app to tell never-ending stories."/>
       </Head>
       <Hero />
     </>

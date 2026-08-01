@@ -22,7 +22,7 @@ const ForestsPage: NextPageWithLayout = () => {
           <Button as={Link} href={getForestNewUrl()} icon={FaTree}>Create</Button>
         </div>
         <Text variant="p">
-          Forests are places where to group stories, have a look around or create your own.
+          Forests are places to group stories — have a look around or create your own.
         </Text>
       </PageIntro>
       <ForestList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" sort={{ membersCount: 'DESC' }} />

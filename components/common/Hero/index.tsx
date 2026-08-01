@@ -37,15 +37,15 @@ const Hero = () => {
         <div className="w-full flex flex-col gap-sm">
           <Text variant="h2">What is Treefingers?</Text>
           <Text variant="p">
-            Treefingers is a place where to tell never ending stories.<br />
+            Treefingers is a place to tell never-ending stories.<br />
             Where writings do not belong to the writer, but to the reader.<br />
-            It's about choosing and creating your own choice.
+            It's about choosing and creating your own path.
           </Text>
         </div>
         <div className="w-full flex flex-col gap-sm">
           <Text variant="h2">How does it work?</Text>
           <Text variant="p">
-            Each story is composed by multiple chapters.
+            Each story is composed of multiple chapters.
             At the end of each chapter, you'll have the choice to pick how the story continues.
             Cannot find an adequate continuation? Write your own and let other people follow your path.
             It's as simple as that.

@@ -345,7 +345,7 @@ const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps)
                   className="w-full mt-sm">
                   {isEditing ? 'Edit' : 'Create'}
                 </Button>
-                <Text className="text-xs text-center">You'll be able to edit the story until it has not been continued by other authors.</Text>
+                <Text className="text-xs text-center">You'll be able to edit the story until other authors continue it.</Text>
               </div>
             </Form>
           )}

@@ -25,7 +25,7 @@ const ProfileMyForestsPage: NextPageWithLayout = () => {
         </Text>
       </PageIntro>
       {forestsCount === 0 &&
-        <Text>You haven't create any forest yet. What are you waiting for?</Text>
+        <Text>You haven't created any forest yet. What are you waiting for?</Text>
       }
       <ForestList className="grid md:grid-cols-2 grid-cols-1 gap-md" filter={{ founder: { eq: currentUser!.id } }} setTotalCount={setForestsCount}/>
     </>

@@ -80,7 +80,7 @@ const RegisterForm = () => {
           email: Yup.string().email('Invalid email').required(),
           password: Yup.string().min(10, 'Too short!').required(),
           confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
-          username: Yup.string().min(3, 'Too short!').max(20, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(),
+          username: Yup.string().min(3, 'Too short!').max(20, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and underscores').required(),
           bio: Yup.string().max(4096, 'Too long!'),
         })}
       >
@@ -116,7 +116,7 @@ const RegisterForm = () => {
               label="Username"
               type="text"
               name="username"
-              hint="Only letters, numbers, dots, hyphens and dashes"
+              hint="Only letters, numbers, dots, hyphens and underscores"
               error={errors.username}
               touched={touched.username}
             />

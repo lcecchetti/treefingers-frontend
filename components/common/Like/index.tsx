@@ -131,7 +131,7 @@ const Like = ({ entity, viewOnly }: LikeProps) => {
     entity.currentUserLike ? await deleteLike() : await createLike();
   }
 
-  // pick icon accoridng to user like presence
+  // pick icon according to user like presence
   const Icon = entity.currentUserLike ? FaHeart : FaRegHeart;
 
   return (

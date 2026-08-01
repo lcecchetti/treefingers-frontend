@@ -66,7 +66,7 @@ const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
           validationSchema={Yup.object().shape({
             name: Yup.string().when('forest', {
               is: () => !forest,
-              then: Yup.string().max(21, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and dashes').required(),
+              then: Yup.string().max(21, 'Too long!').matches(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and underscores').required(),
             }),
             about: Yup.string().max(4096, 'Too long!').required(),
           })}
@@ -142,7 +142,7 @@ const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
                   name="name"
                   type="text"
                   label="Name"
-                  hint="Only letters, numbers, dots, hyphens and dashes (It cannot be edited)"
+                  hint="Only letters, numbers, dots, hyphens and underscores (It cannot be edited)"
                   error={errors.name}
                   touched={touched.name} />
               }
