@@ -7,7 +7,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Link, FormField, Button, Text } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
-import { getForgotPasswordUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
+import { getForgotPasswordUrl, getRegisterUrl, getSafeRedirect, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
 import { ApiError } from 'components/common';
 import AuthFormContainer from '../AuthFormContainer';
@@ -52,7 +52,7 @@ const LoginForm = () => {
         category: 'auth',
         label: 'success',
       });
-      const redirect = router.query[PARAM_AUTH_REDIRECT_TO] ?? '/';
+      const redirect = getSafeRedirect(router.query[PARAM_AUTH_REDIRECT_TO]) ?? '/';
       showToast(`Hey ${login.currentUser.username}, welcome!`);
       router.push(redirect);
     },
