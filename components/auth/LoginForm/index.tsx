@@ -4,6 +4,8 @@ import { graphql } from 'lib/graphql/generated';
 import { useRouter } from 'next/router';
 import { useCurrentUser } from 'lib/auth/currentUser';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Link, FormField, Button, Text } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getForgotPasswordUrl, getRegisterUrl, getSafeRedirect, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
@@ -32,10 +34,12 @@ const MUTATION_RESEND_ACTIVATE_ACCOUNT = graphql(`
   }
 `);
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
+const loginSchema = z.object({
+  email: z.string().min(1, 'Required').regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email'),
+  password: z.string().min(1, 'Required'),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const router = useRouter();
@@ -94,6 +98,7 @@ const LoginForm = () => {
     handleSubmit,
     formState: { isSubmitting, errors, touchedFields },
   } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -122,10 +127,6 @@ const LoginForm = () => {
         <Controller
           name="email"
           control={control}
-          rules={{
-            required: 'Required',
-            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email' },
-          }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}
@@ -141,7 +142,6 @@ const LoginForm = () => {
         <Controller
           name="password"
           control={control}
-          rules={{ required: 'Required' }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}

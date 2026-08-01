@@ -1,6 +1,8 @@
 import { useApolloClient, useMutation, useQuery, type ApolloError } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { FormField, Button, Text } from 'components/ui';
 import type { FormFieldOption } from 'components/ui/FormField';
 import { getStoryUrl } from 'lib/helper/story';
@@ -73,13 +75,16 @@ interface StoryNewProps {
   className?: string;
 }
 
-interface StoryNewFormValues {
-  title: string;
-  content: string;
-  addTag: string;
-  tags: string[];
-  forest: string;
-}
+// the forest field is only required when the user has to pick one (no parent chapter, not editing)
+const getStoryNewSchema = (hasForestSelection: boolean) => z.object({
+  title: z.string().min(1, 'Required').max(64, 'Too long!'),
+  content: z.string().min(1, 'Required').max(4096, 'Too long!'),
+  addTag: z.string().max(16, 'Too long').regex(/^[a-zA-Z0-9_]*$/, 'Tag must not contain special chars or spaces!'),
+  tags: z.array(z.string()),
+  forest: hasForestSelection ? z.string().min(1, 'Required') : z.string(),
+});
+
+type StoryNewFormValues = z.infer<ReturnType<typeof getStoryNewSchema>>;
 
 const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps) => {
   const router = useRouter();
@@ -127,6 +132,7 @@ const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps)
     watch,
     formState: { isSubmitting, errors, touchedFields },
   } = useForm<StoryNewFormValues>({
+    resolver: zodResolver(getStoryNewSchema(hasForestSelection)),
     defaultValues: {
       title: story?.title || '',
       content: story?.content || '',
@@ -220,7 +226,6 @@ const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps)
           <Controller
             name="title"
             control={control}
-            rules={{ required: 'Required', maxLength: { value: 64, message: 'Too long!' } }}
             render={({ field: { ref, ...field } }) => (
               <FormField
                 {...field}
@@ -235,7 +240,6 @@ const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps)
           <Controller
             name="content"
             control={control}
-            rules={{ required: 'Required', maxLength: { value: 4096, message: 'Too long!' } }}
             render={({ field: { ref, ...field } }) => (
               <FormField
                 {...field}
@@ -252,7 +256,6 @@ const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps)
               <Controller
                 name="addTag"
                 control={control}
-                rules={{ maxLength: { value: 16, message: 'Too long' }, pattern: { value: /^[a-zA-Z0-9_]*$/, message: 'Tag must not contain special chars or spaces!' } }}
                 render={({ field: { ref, ...field } }) => (
                   <FormField
                     {...field}
@@ -341,7 +344,6 @@ const StoryNew = ({ story, parent, forest, callback, className }: StoryNewProps)
                 <Controller
                   name="forest"
                   control={control}
-                  rules={{ validate: (value) => !hasForestSelection || !!value || 'Required' }}
                   render={({ field: { ref, ...field } }) => (
                     <FormField
                       {...field}

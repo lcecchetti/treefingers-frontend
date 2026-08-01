@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Text, Button, FormField, Spinner } from 'components/ui';
 import { ApiError } from 'components/common';
 import { useCurrentUser } from 'lib/auth/currentUser';
@@ -19,11 +21,16 @@ const MUTATION_EDIT_USER = graphql(`
   }
 `);
 
-interface UserEditFormValues {
-  password: string;
-  confirmPassword: string;
-  bio: string;
-}
+const userEditSchema = z.object({
+  password: z.union([z.literal(''), z.string().min(10, 'Too short!')]),
+  confirmPassword: z.string(),
+  bio: z.string().max(255, 'Too long!'),
+}).refine((data) => data.confirmPassword === data.password, {
+  message: 'Passwords must match',
+  path: ['confirmPassword'],
+});
+
+type UserEditFormValues = z.infer<typeof userEditSchema>;
 
 const UserEditForm = () => {
   const { currentUser } = useCurrentUser();
@@ -51,6 +58,7 @@ const UserEditForm = () => {
     reset,
     formState: { isSubmitting, errors, touchedFields },
   } = useForm<UserEditFormValues>({
+    resolver: zodResolver(userEditSchema),
     defaultValues: {
       password: '',
       confirmPassword: '',
@@ -76,7 +84,6 @@ const UserEditForm = () => {
           <Controller
             name="password"
             control={control}
-            rules={{ minLength: { value: 10, message: 'Too short!' } }}
             render={({ field: { ref, ...field } }) => (
               <FormField
                 {...field}
@@ -91,9 +98,6 @@ const UserEditForm = () => {
           <Controller
             name="confirmPassword"
             control={control}
-            rules={{
-              validate: (value, { password }) => value === password || 'Passwords must match',
-            }}
             render={({ field: { ref, ...field } }) => (
               <FormField
                 {...field}
@@ -108,7 +112,6 @@ const UserEditForm = () => {
           <Controller
             name="bio"
             control={control}
-            rules={{ maxLength: { value: 255, message: 'Too long!' } }}
             render={({ field: { ref, ...field } }) => (
               <FormField
                 {...field}

@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Button, Link, FormField } from 'components/ui';
 import { getLoginUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
 import { getProfileMeUrl } from 'lib/helper/profile';
@@ -21,13 +23,23 @@ const MUTATION_REGISTER = graphql(`
   }
 `);
 
-interface RegisterFormValues {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  username: string;
-  bio: string;
-}
+const registerSchema = z.object({
+  email: z.string().min(1, 'Required').regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email'),
+  password: z.string().min(1, 'Required').min(10, 'Too short!'),
+  confirmPassword: z.string(),
+  username: z
+    .string()
+    .min(1, 'Required')
+    .min(3, 'Too short!')
+    .max(20, 'Too long!')
+    .regex(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and underscores'),
+  bio: z.string().max(4096, 'Too long!'),
+}).refine((data) => data.confirmPassword === data.password, {
+  message: 'Passwords must match',
+  path: ['confirmPassword'],
+});
+
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -59,6 +71,7 @@ const RegisterForm = () => {
     reset,
     formState: { isSubmitting, errors, touchedFields },
   } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -89,10 +102,6 @@ const RegisterForm = () => {
         <Controller
           name="email"
           control={control}
-          rules={{
-            required: 'Required',
-            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email' },
-          }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}
@@ -107,7 +116,6 @@ const RegisterForm = () => {
         <Controller
           name="password"
           control={control}
-          rules={{ required: 'Required', minLength: { value: 10, message: 'Too short!' } }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}
@@ -121,9 +129,6 @@ const RegisterForm = () => {
         <Controller
           name="confirmPassword"
           control={control}
-          rules={{
-            validate: (value, { password }) => value === password || 'Passwords must match',
-          }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}
@@ -137,12 +142,6 @@ const RegisterForm = () => {
         <Controller
           name="username"
           control={control}
-          rules={{
-            required: 'Required',
-            minLength: { value: 3, message: 'Too short!' },
-            maxLength: { value: 20, message: 'Too long!' },
-            pattern: { value: /^[a-zA-Z0-9-_.]+$/, message: 'Only letters, numbers, dots, hyphens and underscores' },
-          }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}
@@ -157,7 +156,6 @@ const RegisterForm = () => {
         <Controller
           name="bio"
           control={control}
-          rules={{ maxLength: { value: 4096, message: 'Too long!' } }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}

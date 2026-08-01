@@ -1,4 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Link, FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getLoginUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from 'lib/helper/auth';
@@ -19,9 +21,11 @@ const MUTATION_FORGOT_PASSWORD = graphql(`
   }
 `);
 
-interface ForgotPasswordFormValues {
-  email: string;
-}
+const forgotPasswordSchema = z.object({
+  email: z.string().min(1, 'Required').regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email'),
+});
+
+type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordForm = () => {
   const router = useRouter();
@@ -53,6 +57,7 @@ const ForgotPasswordForm = () => {
     handleSubmit,
     formState: { isSubmitting, errors, touchedFields },
   } = useForm<ForgotPasswordFormValues>({
+    resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: '',
     },
@@ -67,10 +72,6 @@ const ForgotPasswordForm = () => {
         <Controller
           name="email"
           control={control}
-          rules={{
-            required: 'Required',
-            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email' },
-          }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}

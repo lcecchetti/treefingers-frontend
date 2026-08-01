@@ -1,6 +1,8 @@
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { FormField, Button } from 'components/ui';
 import { AuthRequired } from 'components/auth';
 import { QUERY_COMMENTS, getCommentsFilter, type CommentableEntity } from 'components/comment/CommentList';
@@ -44,9 +46,11 @@ interface CommentNewProps {
   last: number;
 }
 
-interface CommentFormValues {
-  content: string;
-}
+const commentSchema = z.object({
+  content: z.string().min(1, 'Required').max(512, 'Too long!'),
+});
+
+type CommentFormValues = z.infer<typeof commentSchema>;
 
 const CommentNew = ({ entity, sort, last }: CommentNewProps) => {
   const [error, setError] = useState<ApolloError | false>(false);
@@ -78,6 +82,7 @@ const CommentNew = ({ entity, sort, last }: CommentNewProps) => {
     reset,
     formState: { isSubmitting, errors, touchedFields },
   } = useForm<CommentFormValues>({
+    resolver: zodResolver(commentSchema),
     defaultValues: {
       content: '',
     },
@@ -112,7 +117,6 @@ const CommentNew = ({ entity, sort, last }: CommentNewProps) => {
           <Controller
             name="content"
             control={control}
-            rules={{ required: 'Required', maxLength: { value: 512, message: 'Too long!' } }}
             render={({ field: { ref, ...field } }) => (
               <FormField
                 {...field}

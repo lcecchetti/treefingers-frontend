@@ -4,11 +4,15 @@ import { FaSearch, FaTimes } from 'react-icons/fa';
 import { FormField, Container } from 'components/ui';
 import { getSearchUrl } from 'lib/helper/search';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useRouter } from 'next/router';
 
-interface SearchFormValues {
-  q: string;
-}
+const searchSchema = z.object({
+  q: z.string().min(3, "C'mon, be more precise!"),
+});
+
+type SearchFormValues = z.infer<typeof searchSchema>;
 
 const SearchBar = () => {
   const { isSearchOpen, closeSearch } = useUI();
@@ -20,6 +24,7 @@ const SearchBar = () => {
     reset,
     formState: { errors, touchedFields },
   } = useForm<SearchFormValues>({
+    resolver: zodResolver(searchSchema),
     defaultValues: {
       q: (router.query.q as string | undefined) ?? '',
     },
@@ -41,7 +46,6 @@ const SearchBar = () => {
             <Controller
               name="q"
               control={control}
-              rules={{ required: '', minLength: { value: 3, message: "C'mon, be more precise!" } }}
               render={({ field: { ref, ...field } }) => (
                 <FormField
                   {...field}

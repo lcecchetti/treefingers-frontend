@@ -1,4 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { FormField, Button } from 'components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getLoginUrl } from 'lib/helper/auth';
@@ -19,10 +21,15 @@ const MUTATION_CHANGE_PASSWORD = graphql(`
   }
 `);
 
-interface ChangePasswordFormValues {
-  password: string;
-  confirmPassword: string;
-}
+const changePasswordSchema = z.object({
+  password: z.union([z.literal(''), z.string().min(10, 'Too short!')]),
+  confirmPassword: z.string(),
+}).refine((data) => data.confirmPassword === data.password, {
+  message: 'Passwords must match',
+  path: ['confirmPassword'],
+});
+
+type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;
 
 interface ChangePasswordFormProps {
   token: string;
@@ -58,6 +65,7 @@ const ChangePasswordForm = ({ token }: ChangePasswordFormProps) => {
     handleSubmit,
     formState: { isSubmitting, errors, touchedFields },
   } = useForm<ChangePasswordFormValues>({
+    resolver: zodResolver(changePasswordSchema),
     defaultValues: {
       password: '',
       confirmPassword: '',
@@ -73,7 +81,6 @@ const ChangePasswordForm = ({ token }: ChangePasswordFormProps) => {
         <Controller
           name="password"
           control={control}
-          rules={{ minLength: { value: 10, message: 'Too short!' } }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}
@@ -88,9 +95,6 @@ const ChangePasswordForm = ({ token }: ChangePasswordFormProps) => {
         <Controller
           name="confirmPassword"
           control={control}
-          rules={{
-            validate: (value, { password }) => value === password || 'Passwords must match',
-          }}
           render={({ field: { ref, ...field } }) => (
             <FormField
               {...field}

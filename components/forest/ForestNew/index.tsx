@@ -2,6 +2,8 @@ import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from 'lib/graphql/generated';
 import { useRouter } from 'next/router';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { FormField, Button } from 'components/ui';
 import { getForestUrl } from 'lib/helper/forest';
 import { AuthRequired } from 'components/auth';
@@ -32,10 +34,19 @@ const MUTATION_FOREST_EDIT = graphql(`
   }
 `);
 
-interface ForestNewFormValues {
-  name: string;
-  about: string;
-}
+const forestNameSchema = z
+  .string()
+  .min(1, 'Required')
+  .max(21, 'Too long!')
+  .regex(/^[a-zA-Z0-9-_.]+$/, 'Only letters, numbers, dots, hyphens and underscores');
+
+// the name field is only rendered (and required) when creating a forest, since it can't be edited afterwards
+const getForestNewSchema = (isEditing: boolean) => z.object({
+  name: isEditing ? z.string() : forestNameSchema,
+  about: z.string().min(1, 'Required').max(4096, 'Too long!'),
+});
+
+type ForestNewFormValues = z.infer<ReturnType<typeof getForestNewSchema>>;
 
 interface ForestNewProps {
   className?: string;
@@ -57,6 +68,7 @@ const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
     reset,
     formState: { isSubmitting, errors, touchedFields },
   } = useForm<ForestNewFormValues>({
+    resolver: zodResolver(getForestNewSchema(isEditing)),
     defaultValues: {
       name: '',
       about: forest?.about || '',
@@ -134,11 +146,6 @@ const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
             <Controller
               name="name"
               control={control}
-              rules={{
-                required: 'Required',
-                maxLength: { value: 21, message: 'Too long!' },
-                pattern: { value: /^[a-zA-Z0-9-_.]+$/, message: 'Only letters, numbers, dots, hyphens and underscores' },
-              }}
               render={({ field: { ref, ...field } }) => (
                 <FormField
                   {...field}
@@ -154,7 +161,6 @@ const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
           <Controller
             name="about"
             control={control}
-            rules={{ required: 'Required', maxLength: { value: 4096, message: 'Too long!' } }}
             render={({ field: { ref, ...field } }) => (
               <FormField
                 {...field}
