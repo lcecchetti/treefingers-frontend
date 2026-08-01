@@ -1,0 +1,73 @@
+import { DefaultLayout } from 'components/layout';
+import { Container } from 'components/ui';
+import { initializeApollo, addApolloState } from 'lib/apollo/client';
+import { QUERY_USER, UserView } from 'components/user';
+import { QUERY_STORIES } from 'components/story';
+import Head from 'next/head';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { NextPageWithLayout } from 'lib/types/next';
+import type { UserQuery } from 'lib/graphql/generated/graphql';
+
+interface UserPageProps {
+  user: NonNullable<UserQuery['user']>;
+}
+
+const UserPage: NextPageWithLayout<UserPageProps> = ({ user }) => {
+  const title = `${user.username} | User | Treefingers`;
+  return (
+    <Container>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={`${user.username} - ${user.bio}`}/>
+      </Head>
+      <UserView user={user} />
+    </Container>
+  );
+};
+
+export const getStaticProps: GetStaticProps<UserPageProps, { username: string }> = async ({ params }) => {
+  const apolloClient = initializeApollo();
+
+  // load user by username
+  const { data } = await apolloClient.query({
+    query: QUERY_USER,
+    variables: { filter: { username: { eq: params!.username } } },
+  });
+
+  // check if user exists
+  if (!data?.user) {
+    return {
+      notFound: true,
+      revalidate: 1,
+    }
+  }
+
+  // add author by id query to the cache
+  apolloClient.writeQuery({
+    query: QUERY_USER,
+    data: { user: data.user },
+    variables: { filter: { id: { eq: data.user.id } }, first: 12 },
+  });
+
+  // load author stories
+  await apolloClient.query({
+    query: QUERY_STORIES,
+    variables: { filter: { author: { eq: data.user.id }, parent: { eq: null } }, first: 12, sort: { likesCount: 'DESC' } },
+  });
+
+  return addApolloState(apolloClient, {
+    props: { user: data.user },
+    revalidate: 1,
+  });
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+
+UserPage.Layout = DefaultLayout;
+
+export default UserPage;

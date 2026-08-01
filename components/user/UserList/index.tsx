@@ -1,0 +1,63 @@
+import { useEffect } from 'react';
+import { useQuery } from '@apollo/client';
+import { graphql } from 'lib/graphql/generated';
+import { InfiniteScroll } from 'components/common';
+import UserCard from '../UserCard';
+import { useCurrentUser } from 'lib/auth/currentUser';
+import type { UsersQueryVariables } from 'lib/graphql/generated/graphql';
+
+export const QUERY_USERS = graphql(`
+  query users($filter: FilterUserInput, $sort: SortUserInput, $first: Int, $after: String) {
+    users (filter: $filter, sort: $sort, first: $first, after: $after) {
+      edges {
+        cursor
+        node {
+          id
+          excerpt
+          username
+          followersCount
+          currentUserFollowershipAsFollower {
+            id
+          }
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+        totalCount
+      }
+    }
+  }
+`);
+
+interface UserListProps {
+  className?: string;
+  filter?: UsersQueryVariables['filter'];
+  sort?: UsersQueryVariables['sort'];
+  first?: number;
+  setTotalCount?: (totalCount: number | undefined) => void;
+}
+
+const UserList = ({ className, filter, sort, first = 12, setTotalCount }: UserListProps) => {
+  const { currentUser } = useCurrentUser();
+
+  const { data, loading, error, fetchMore } = useQuery(QUERY_USERS, {
+    variables: { filter, first, sort },
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
+    nextFetchPolicy: 'cache-first',
+  });
+
+  useEffect(() => {
+    setTotalCount && !loading && setTotalCount(data?.users.pageInfo.totalCount);
+  }, [data?.users.pageInfo.totalCount]);
+
+  return (!!data?.users.edges?.length &&
+    <InfiniteScroll className={className} onLoadMore={(opt) => fetchMore({ variables: { after: data?.users.pageInfo.endCursor }, ...opt })} loading={loading} error={error} hasMore={data?.users.pageInfo.hasNextPage}>
+      {data.users.edges.map(({ node }) => (
+        <UserCard key={node.id} user={node} />
+      ))}
+    </InfiniteScroll>
+  );
+};
+
+export default UserList;

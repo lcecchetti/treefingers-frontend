@@ -30,5 +30,14 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# typescript
+*.tsbuildinfo
+
 # vercel
 .vercel
+
+# local git worktrees
+.worktrees
+
+# subagent-driven-development scratch workspace (ledger, briefs, review packages)
+.superpowers
