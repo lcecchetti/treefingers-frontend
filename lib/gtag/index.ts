@@ -1,10 +1,12 @@
+import { env } from '@/lib/env';
+
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
   }
 }
 
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
+export const GA_TRACKING_ID = env.NEXT_PUBLIC_GA_TRACKING_ID;
 
 // gtag is only defined once the GA script has loaded, which now only happens
 // after cookie consent is granted, so callers can't assume it's present

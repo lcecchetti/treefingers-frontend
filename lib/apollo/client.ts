@@ -6,6 +6,7 @@ import { logoutSession } from '@/lib/auth/logout';
 import isEqual from 'lodash/isEqual';
 import { relayStylePagination } from '@apollo/client/utilities';
 import { getLoginUrl } from '@/lib/helper/auth';
+import { env } from '@/lib/env';
 
 // these mutations validate a one-off link token of their own (password reset,
 // account activation), independent of the session token, so an UNAUTHENTICATED
@@ -17,7 +18,7 @@ export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const httpLink = new HttpLink({
-  uri: `${process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT}`,
+  uri: env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
   // the auth token lives in an httpOnly cookie set by the backend, sent
   // automatically; the frontend never reads or attaches it itself
   credentials: 'include',

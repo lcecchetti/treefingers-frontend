@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { env } from '@/lib/env';
 
 const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -10,7 +11,7 @@ const securityHeaders = [
 const config: NextConfig = {
   redirects() {
     return [
-      process.env.MAINTENANCE_MODE
+      env.MAINTENANCE_MODE
         ? { source: "/((?!maintenance).*)", destination: "/maintenance", permanent: false }
         : { source: "/maintenance", destination: "/", permanent: false },
     ].filter(Boolean);

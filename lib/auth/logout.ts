@@ -1,3 +1,5 @@
+import { env } from '@/lib/env';
+
 const MUTATION_LOGOUT = `
   mutation logout {
     logout {
@@ -11,7 +13,7 @@ const MUTATION_LOGOUT = `
 // and all it needs to do is ask the backend to clear the auth cookie
 export const logoutSession = async (): Promise<void> => {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT}`, {
+    await fetch(env.NEXT_PUBLIC_GRAPHQL_ENDPOINT, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
