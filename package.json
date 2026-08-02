@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "codegen": "graphql-codegen -c codegen.ts"
+    "codegen": "graphql-codegen -c codegen.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@apollo/client": "^3.6.8",
@@ -39,13 +42,25 @@
     "@graphql-codegen/cli": "^7.2.0",
     "@graphql-codegen/client-preset": "^6.1.0",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "@playwright/test": "^1.62.1",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/graphql-iso-date": "^3.4.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash": "^4.17.25",
     "@types/node": "^26.1.2",
+    "@types/pg": "^8.20.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@types/seedrandom": "^3.0.8",
-    "typescript": "6"
+    "@vitejs/plugin-react": "^6.0.5",
+    "dotenv": "^17.4.2",
+    "jsdom": "^30.0.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.22.0",
+    "typescript": "6",
+    "vitest": "^4.1.10"
   },
   "packageManager": "pnpm@10.32.1",
   "pnpm": {

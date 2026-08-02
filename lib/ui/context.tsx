@@ -78,7 +78,7 @@ type UIAction =
   | { type: typeof UIActions.showToast; toastData: Partial<ToastData> & { label: ReactNode } }
   | { type: typeof UIActions.dismissToast; id: number };
 
-function uiReducer(state: UIState, action: UIAction): UIState {
+export function uiReducer(state: UIState, action: UIAction): UIState {
   switch (action.type) {
     case UIActions.openDrawer: {
       return {

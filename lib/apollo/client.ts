@@ -28,7 +28,7 @@ const httpLink = new HttpLink({
 // backend rejects the session token itself (not a permission/ownership
 // error - those are FORBIDDEN, see backend), clear it and send the user
 // to log in again instead of leaving them stuck on broken queries
-const authErrorLink = onError(({ graphQLErrors, operation }) => {
+export const handleAuthError: Parameters<typeof onError>[0] = ({ graphQLErrors, operation }) => {
   if (typeof window === 'undefined' || !graphQLErrors) return;
   if (AUTH_MUTATIONS_WITH_OWN_TOKEN.includes(operation.operationName)) return;
 
@@ -42,7 +42,9 @@ const authErrorLink = onError(({ graphQLErrors, operation }) => {
   logoutSession().then(() => {
     window.location.assign(getLoginUrl(window.location.pathname));
   });
-});
+};
+
+const authErrorLink = onError(handleAuthError);
 
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({

@@ -63,6 +63,7 @@ export const FormField = ({ className, fieldClassName, labelClassName, type, nam
           ['focus:border-primary']: !error,
         }
       )}
+        id={name}
         name={name}
         type={type}
         {...rest}>
