@@ -77,16 +77,8 @@ test('a new user can register, activate their account, log in, and log out', asy
   await page.getByLabel('Password').fill(user.password);
   await page.getByRole('button', { name: 'Login' }).click();
 
-  // login-form.tsx's onCompleted races its own router.push(redirect) to '/' against a
-  // "logged in users get bounced off /auth/login" effect in the same component that
-  // fires router.push('/profile/me') once the post-login currentUser cache update
-  // lands - whichever router.push resolves last wins client-side navigation. That
-  // makes the exact landing URL non-deterministic; waiting for the welcome toast
-  // (proof the login mutation itself succeeded) and asserting we've left the login
-  // page - rather than asserting a specific destination - avoids depending on that
-  // pre-existing app-level race (see e2e/forest-lifecycle.spec.ts's loginAs helper).
   await expect(page.getByText(`Hey ${user.username}, welcome!`)).toBeVisible();
-  await expect(page).not.toHaveURL(/\/auth\/login/);
+  await expect(page).toHaveURL('/');
 
   // pages/auth/logout.tsx fires logoutSession() + client.resetStore() immediately on
   // mount (no click needed) and redirects to '/' when done

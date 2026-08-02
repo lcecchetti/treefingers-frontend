@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation, useApolloClient, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { useRouter } from 'next/router';
@@ -48,9 +48,11 @@ export const LoginForm = () => {
   const [resendActivateAccountTo, setResendActivateAccountTo] = useState<string | false>(false);
   const { currentUser } = useCurrentUser();
   const { showToast } = useUI();
+  const justLoggedInRef = useRef(false);
 
   const [login] = useMutation(MUTATION_LOGIN, {
     onCompleted: async ({ login }) => {
+      justLoggedInRef.current = true;
       setResendActivateAccountTo(false);
       // the backend already set the auth cookie via Set-Cookie on this response
       await client.resetStore();
@@ -86,9 +88,12 @@ export const LoginForm = () => {
     }
   });
 
-  // logged in users should not visit login/register page
+  // logged in users should not visit login/register page - skipped if we just
+  // logged in via this form, since onCompleted above already redirects (and
+  // respects ?redirect=); without this guard both pushes race and the landing
+  // page becomes nondeterministic
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && !justLoggedInRef.current) {
       router.push(getProfileMeUrl());
     }
   }, [!currentUser]);
