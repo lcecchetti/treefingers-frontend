@@ -1,34 +1,12 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { graphql } from '@/lib/graphql/generated';
 import { InfiniteScroll } from '@/components/common';
 import { UserCard } from './user-card';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import type { UsersQueryVariables } from '@/lib/graphql/generated/graphql';
-
-export const QUERY_USERS = graphql(`
-  query users($filter: FilterUserInput, $sort: SortUserInput, $first: Int, $after: String) {
-    users (filter: $filter, sort: $sort, first: $first, after: $after) {
-      edges {
-        cursor
-        node {
-          id
-          excerpt
-          username
-          followersCount
-          currentUserFollowershipAsFollower {
-            id
-          }
-        }
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
-        totalCount
-      }
-    }
-  }
-`);
+import { QUERY_USERS } from './user-list.query';
 
 interface UserListProps {
   className?: string;

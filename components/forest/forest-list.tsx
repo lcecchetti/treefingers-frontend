@@ -1,35 +1,12 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { graphql } from '@/lib/graphql/generated';
 import { ForestCard } from '@/components/forest/forest-card';
 import { InfiniteScroll } from '@/components/common';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import type { ForestsQueryVariables } from '@/lib/graphql/generated/graphql';
-
-export const QUERY_FORESTS = graphql(`
-  query forests($filter: FilterForestInput, $sort: SortForestInput, $first: Int, $after: String) {
-    forests(filter: $filter, sort: $sort, first: $first, after: $after) {
-      edges {
-        cursor
-        node {
-          id
-          name
-          excerpt
-          commentsCount
-          membersCount
-          currentUserMembership {
-            id
-          }
-        }
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
-        totalCount
-      }
-    }
-  }
-`);
+import { QUERY_FORESTS } from './forest-list.query';
 
 interface ForestListProps {
   className?: string;

@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';

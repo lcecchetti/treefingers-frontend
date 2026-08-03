@@ -3,8 +3,9 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '@/test/test-utils';
 import { CommentList, QUERY_COMMENTS, getCommentsFilter } from './comment-list';
 
-vi.mock('next/router', () => ({
-  useRouter: () => ({ query: {}, asPath: '/', pathname: '/' }),
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 beforeEach(() => {

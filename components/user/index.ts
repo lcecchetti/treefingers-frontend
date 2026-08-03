@@ -1,6 +1,8 @@
 export { Avatar } from './avatar';
-export { UserView, QUERY_USER } from './user-view';
-export { UserList, QUERY_USERS } from './user-list';
+export { UserView } from './user-view';
+export { QUERY_USER } from './user-view.query';
+export { UserList } from './user-list';
+export { QUERY_USERS } from './user-list.query';
 export { UserFollowership } from './user-followership';
 export { UserEditForm } from './user-edit-form';
 export { UserCard } from './user-card';

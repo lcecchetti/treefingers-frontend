@@ -1,3 +1,5 @@
+'use client';
+
 import { CommentCount } from '@/components/comment';
 import { useUI, flyoutTypes } from '@/lib/ui/context';
 import { ForestMembership, type ForestMembershipForest } from '@/components/forest/forest-membership';

@@ -1,6 +1,8 @@
+'use client';
+
 import clsx from 'clsx';
 import { Link } from '@/components/ui';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 export interface LogoProps {
   className?: string;
@@ -8,9 +10,9 @@ export interface LogoProps {
 }
 
 export const Logo = ({ className, main }: LogoProps) => {
-  const router = useRouter();
+  const pathname = usePathname();
 
-  const isHomePage = router.pathname == '/';
+  const isHomePage = pathname === '/';
 
   const Component = isHomePage && main ? 'h1' : 'span';
 

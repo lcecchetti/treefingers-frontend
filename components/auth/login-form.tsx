@@ -1,7 +1,9 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { useMutation, useApolloClient, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -43,6 +45,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const client = useApolloClient();
   const [error, setError] = useState<ApolloError | false>(false);
   const [resendActivateAccountTo, setResendActivateAccountTo] = useState<string | false>(false);
@@ -61,7 +64,7 @@ export const LoginForm = () => {
         category: 'auth',
         label: 'success',
       });
-      const redirect = getSafeRedirect(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined) ?? '/';
+      const redirect = getSafeRedirect(searchParams.get(PARAM_AUTH_REDIRECT_TO) ?? undefined) ?? '/';
       showToast(`Hey ${login.currentUser.username}, welcome!`);
       router.push(redirect);
     },
@@ -177,8 +180,8 @@ export const LoginForm = () => {
           Login
         </Button>
         <div className="flex flex-col gap-xs text-xs">
-          <Link href={getForgotPasswordUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Forgot password?</Link>
-          <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Don't have an account? Register</Link>
+          <Link href={getForgotPasswordUrl(searchParams.get(PARAM_AUTH_REDIRECT_TO) ?? undefined)}>Forgot password?</Link>
+          <Link href={getRegisterUrl(searchParams.get(PARAM_AUTH_REDIRECT_TO) ?? undefined)}>Don't have an account? Register</Link>
         </div>
       </form>
     </AuthFormContainer>

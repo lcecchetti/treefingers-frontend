@@ -1,3 +1,5 @@
+'use client';
+
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';

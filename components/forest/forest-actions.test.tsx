@@ -7,8 +7,9 @@ import { renderWithProviders } from '@/test/test-utils';
 import { Flyout } from '@/components/common';
 import { ForestActions } from './forest-actions';
 
-vi.mock('next/router', () => ({
-  useRouter: () => ({ query: {}, asPath: '/', pathname: '/', events: { on: vi.fn(), off: vi.fn() } }),
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 // The generated `graphql()` matches queries by exact source string against the

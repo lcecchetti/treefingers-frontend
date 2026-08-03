@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import seedrandom from 'seedrandom';

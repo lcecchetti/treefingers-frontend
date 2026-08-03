@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import { Button, Text, Container } from '@/components/ui';
 import { useCookies } from 'react-cookie';

@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import { Link, Text } from '@/components/ui';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';

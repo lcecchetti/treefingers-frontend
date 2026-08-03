@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { useUI } from '@/lib/ui/context';
 import { useTheme } from 'next-themes';
@@ -19,7 +21,7 @@ interface DrawerItem {
 }
 
 export const Drawer = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const { isDrawerOpen, closeDrawer, getToggledTheme } = useUI();
   const { resolvedTheme, setTheme } = useTheme();
 
@@ -31,15 +33,15 @@ export const Drawer = () => {
       document.body.classList.remove('drawer-open');
     }
 
-    // close drawer on route change
-    router.events.on('routeChangeStart', closeDrawer);
-
-    // clean up
     return () => {
       document.body.classList.remove('drawer-open');
-      router.events.off('routeChangeStart', closeDrawer);
     };
   }, [isDrawerOpen]);
+
+  // close the drawer whenever the route changes
+  useEffect(() => {
+    closeDrawer();
+  }, [pathname]);
 
   const drawerItems: DrawerItem[] = [
     {

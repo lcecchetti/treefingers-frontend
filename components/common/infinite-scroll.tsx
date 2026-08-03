@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import type { ApolloError } from '@apollo/client';

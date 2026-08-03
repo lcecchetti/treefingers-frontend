@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import { useUI } from '@/lib/ui/context';
 import { FaSearch, FaTimes } from 'react-icons/fa';
@@ -6,7 +8,7 @@ import { getSearchUrl } from '@/lib/helper/search';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const searchSchema = z.object({
   q: z.string().min(3, "C'mon, be more precise!"),
@@ -17,6 +19,7 @@ type SearchFormValues = z.infer<typeof searchSchema>;
 export const SearchBar = () => {
   const { isSearchOpen, closeSearch } = useUI();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const {
     control,
@@ -26,7 +29,7 @@ export const SearchBar = () => {
   } = useForm<SearchFormValues>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
-      q: (router.query.q as string | undefined) ?? '',
+      q: searchParams.get('q') ?? '',
     },
   });
 

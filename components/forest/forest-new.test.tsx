@@ -7,8 +7,10 @@ import { renderWithProviders } from '@/test/test-utils';
 import { ForestNew } from './forest-new';
 
 const pushMock = vi.fn();
-vi.mock('next/router', () => ({
-  useRouter: () => ({ push: pushMock, query: {}, asPath: '/', pathname: '/' }),
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: pushMock }),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 const MUTATION_FOREST_CREATE = graphql(`

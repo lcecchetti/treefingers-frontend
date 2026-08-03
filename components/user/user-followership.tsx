@@ -1,3 +1,5 @@
+'use client';
+
 import { FaUserPlus, FaUserCheck } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';

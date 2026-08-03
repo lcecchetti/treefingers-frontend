@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import { ForestList } from '@/components/forest';
 import { StoryList } from '@/components/story';

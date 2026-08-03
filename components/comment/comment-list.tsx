@@ -1,3 +1,5 @@
+'use client';
+
 import { Text } from '@/components/ui';
 import { formatDate } from '@/lib/helper/date';
 import { InfiniteScroll, Like } from '@/components/common';

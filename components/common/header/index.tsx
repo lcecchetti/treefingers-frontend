@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Container } from '@/components/ui';
 import { Logo } from '@/components/common';
 import { Drawer } from './drawer';
@@ -18,7 +19,9 @@ export const Header = () => {
             <IconList />
           </div>
         </Container>
-        <SearchBar />
+        <Suspense fallback={null}>
+          <SearchBar />
+        </Suspense>
       </div>
       <Drawer />
     </>

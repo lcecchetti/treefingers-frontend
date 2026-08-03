@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { ApolloClient, HttpLink, ApolloLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import merge from 'deepmerge';
@@ -12,8 +11,6 @@ import { env } from '@/lib/env';
 // account activation), independent of the session token, so an UNAUTHENTICATED
 // error from them doesn't mean the current session is invalid
 const AUTH_MUTATIONS_WITH_OWN_TOKEN = ['changePassword', 'activateAccount'];
-
-export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -98,16 +95,12 @@ export function initializeApollo(initialState: NormalizedCacheObject | null = nu
   return _apolloClient;
 }
 
-export function addApolloState<P extends { props?: Record<string, unknown> }>(client: ApolloClient<NormalizedCacheObject>, pageProps: P): P {
-  if (pageProps?.props) {
-    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
-  }
-
-  return pageProps;
-}
-
-export function useApollo(pageProps: Record<string, unknown>): ApolloClient<NormalizedCacheObject> {
-  const state = pageProps[APOLLO_STATE_PROP_NAME];
-  const store = useMemo(() => initializeApollo(state as NormalizedCacheObject | null), [state]);
-  return store;
+// Server Components hand the extracted cache to a Client Component
+// (ApolloHydration) as a prop, and React's RSC serialization is stricter
+// than "is this JSON-safe" - it rejects any value in the tree that isn't a
+// plain object/array/primitive, which `cache.extract()`'s internal store
+// representation doesn't reliably satisfy. Round-tripping through JSON
+// produces an equivalent plain-object tree that's safe to pass across.
+export function extractSerializableCacheState(client: ApolloClient<NormalizedCacheObject>): NormalizedCacheObject {
+  return JSON.parse(JSON.stringify(client.cache.extract()));
 }

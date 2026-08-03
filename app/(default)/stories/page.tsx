@@ -1,0 +1,40 @@
+import { Container, Text, Button, Link } from '@/components/ui';
+import { initializeApollo, extractSerializableCacheState } from '@/lib/apollo/client';
+import { PageIntro } from '@/components/common';
+import { StoryList, QUERY_STORIES } from '@/components/story';
+import { ApolloHydration } from '@/components/apollo/apollo-hydration';
+import { getStoryNewUrl } from '@/lib/helper/story';
+import { FaTree } from 'react-icons/fa';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Stories | Treefingers',
+  description: 'A list of the most popular stories on Treefingers',
+};
+
+export const revalidate = 1;
+
+export default async function StoriesPage() {
+  const apolloClient = initializeApollo();
+
+  await apolloClient.query({
+    query: QUERY_STORIES,
+    variables: { filter: { parent: { eq: null } }, first: 12, sort: { likesCount: 'DESC' } },
+  });
+
+  return (
+    <Container>
+      <ApolloHydration state={extractSerializableCacheState(apolloClient)} />
+      <PageIntro>
+        <div className="flex gap-sm justify-between items-center text-center">
+          <Text variant="pageTitle">Stories</Text>
+          <Button as={Link} href={getStoryNewUrl()} icon={FaTree}>Plant</Button>
+        </div>
+        <Text variant="p">
+          Here is a list of popular stories.
+        </Text>
+      </PageIntro>
+      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }}/>
+    </Container>
+  );
+}

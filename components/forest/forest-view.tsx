@@ -1,6 +1,7 @@
+'use client';
+
 import { Spinner, Text, Button, Link } from '@/components/ui';
 import { useQuery } from '@apollo/client';
-import { graphql } from '@/lib/graphql/generated';
 import { StoryList } from '@/components/story';
 import { ApiError, PageIntro } from '@/components/common';
 import { FaEdit, FaSeedling, FaTimes } from 'react-icons/fa';
@@ -9,24 +10,7 @@ import { getStoryNewUrl } from '@/lib/helper/story';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
 import { ForestNew } from './forest-new';
-
-export const QUERY_FOREST = graphql(`
-  query forest($filter: FilterForestInput!) {
-    forest(filter: $filter) {
-      id
-      name
-      about
-      excerpt
-      storiesCount
-      commentsCount
-      membersCount
-      isEditable
-      currentUserMembership {
-        id
-      }
-    }
-  }
-`);
+import { QUERY_FOREST } from './forest-view.query';
 
 interface ForestViewProps {
   className?: string;

@@ -8,8 +8,9 @@ import { Toasts } from '@/components/common';
 import { RegisterForm } from './register-form';
 
 const pushMock = vi.fn();
-vi.mock('next/router', () => ({
-  useRouter: () => ({ push: pushMock, query: {}, asPath: '/', pathname: '/' }),
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: pushMock }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 const MUTATION_REGISTER = graphql(`

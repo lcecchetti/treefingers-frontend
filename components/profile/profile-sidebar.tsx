@@ -1,7 +1,9 @@
+'use client';
+
 import { Button, Link, Text } from '@/components/ui';
 import clsx from 'clsx';
 import { getProfileMeUrl, getProfileDetailsUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories, getProfileLikedChapters, getProfileFollowedUsers, getProfileJoinedForests } from '@/lib/helper/profile';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 
@@ -55,7 +57,7 @@ interface ProfileSidebarProps {
 }
 
 export const ProfileSidebar = ({ className }: ProfileSidebarProps) => {
-  const router = useRouter();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -66,8 +68,8 @@ export const ProfileSidebar = ({ className }: ProfileSidebarProps) => {
       )}>
         {navData.map((item, index) => (
           <li key={index} className={clsx('border-2 relative rounded-md',
-            router.route !== item.href && 'border-primary-contrast bg-primary text-primary-contrast',
-            router.route === item.href && 'border-primary bg-primary-contrast text-primary',
+            pathname !== item.href && 'border-primary-contrast bg-primary text-primary-contrast',
+            pathname === item.href && 'border-primary bg-primary-contrast text-primary',
           )}>
             <Link href={item.href} className="flex items-center">
               <Text variant="span" className="uppercase my-xs font-bold text-sm block py-sm px-md w-full" onClick={() => setMenuOpen(false)}>{item.label}</Text>

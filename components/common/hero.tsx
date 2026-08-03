@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef } from 'react';
 import { Link, Button, Text } from '@/components/ui';
 import { useTypewriter, type TypewriterSegment } from '@/lib/hooks/use-typewriter';

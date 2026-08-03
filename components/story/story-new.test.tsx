@@ -6,8 +6,10 @@ import { QUERY_CURRENT_USER } from '@/lib/auth/current-user';
 import { renderWithProviders } from '@/test/test-utils';
 import { StoryNew } from './story-new';
 
-vi.mock('next/router', () => ({
-  useRouter: () => ({ push: vi.fn(), query: {}, asPath: '/', pathname: '/' }),
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn() }),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 const QUERY_CHOOSE_FOREST = graphql(`

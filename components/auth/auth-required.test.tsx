@@ -4,8 +4,9 @@ import { QUERY_CURRENT_USER } from '@/lib/auth/current-user';
 import { renderWithProviders } from '@/test/test-utils';
 import { AuthRequired } from './auth-required';
 
-vi.mock('next/router', () => ({
-  useRouter: () => ({ asPath: '/story/new' }),
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/story/new',
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 describe('AuthRequired', () => {

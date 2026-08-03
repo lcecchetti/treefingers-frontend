@@ -1,3 +1,5 @@
+'use client';
+
 import { useUI } from '@/lib/ui/context';
 import { Toast } from './toast';
 

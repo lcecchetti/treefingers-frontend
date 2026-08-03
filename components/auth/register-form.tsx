@@ -1,6 +1,8 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
@@ -43,6 +45,7 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export const RegisterForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { currentUser } = useCurrentUser();
   const [error, setError] = useState<ApolloError | false>(false);
   const { showToast } = useUI();
@@ -175,7 +178,7 @@ export const RegisterForm = () => {
           Register
         </Button>
         <div className="text-xs">
-          <Link href={getLoginUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>
+          <Link href={getLoginUrl(searchParams.get(PARAM_AUTH_REDIRECT_TO) ?? undefined)}>
             Already have an account? Login
           </Link>
         </div>

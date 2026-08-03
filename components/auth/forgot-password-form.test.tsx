@@ -6,8 +6,8 @@ import { renderWithProviders } from '@/test/test-utils';
 import { Toasts } from '@/components/common';
 import { ForgotPasswordForm } from './forgot-password-form';
 
-vi.mock('next/router', () => ({
-  useRouter: () => ({ query: {}, asPath: '/', pathname: '/' }),
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 const MUTATION_FORGOT_PASSWORD = graphql(`

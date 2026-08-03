@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { useUI, flyoutTypes } from '@/lib/ui/context';
 import { Text } from '@/components/ui';
@@ -15,7 +17,7 @@ interface FlyoutData {
 }
 
 export const Flyout = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const { isFlyoutOpen, flyoutData, flyoutType, closeFlyout } = useUI();
   const data = flyoutData as FlyoutData | null;
 
@@ -27,15 +29,15 @@ export const Flyout = () => {
       document.body.classList.remove('flyout-open');
     }
 
-    // close drawer on route change
-    router.events.on('routeChangeStart', closeFlyout);
-
-    // clean up
     return () => {
       document.body.classList.remove('flyout-open');
-      router.events.off('routeChangeStart', closeFlyout);
     };
   }, [isFlyoutOpen, flyoutData, flyoutType]);
+
+  // close the flyout whenever the route changes
+  useEffect(() => {
+    closeFlyout();
+  }, [pathname]);
 
   return (
     <div className={clsx(

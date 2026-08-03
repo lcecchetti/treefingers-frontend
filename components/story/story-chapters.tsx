@@ -1,3 +1,4 @@
+'use client';
 
 import { useState } from 'react';
 import { Text, Spinner, Button } from '@/components/ui';
@@ -8,7 +9,7 @@ import { FaAngleDown } from 'react-icons/fa';
 import { ApiError } from '@/components/common';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards, Navigation } from 'swiper';
-import { QUERY_STORIES } from '@/components/story/story-list';
+import { QUERY_STORIES } from '@/components/story/story-list.query';
 import { StoryCard } from '@/components/story/story-card';
 import * as gtag from '@/lib/gtag';
 import { useCurrentUser } from '@/lib/auth/current-user';

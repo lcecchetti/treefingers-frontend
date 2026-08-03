@@ -1,8 +1,9 @@
+'use client';
+
 import { Spinner, Text, Link, Container, Button } from '@/components/ui';
 import { useFormattedDate, DATE_LONG } from '@/lib/helper/date';
 import { getStoryUrl, isStoryRoot } from '@/lib/helper/story';
 import { useQuery } from '@apollo/client';
-import { graphql } from '@/lib/graphql/generated';
 import { FaAngleUp, FaAngleDoubleUp, FaTimes } from 'react-icons/fa';
 import { Avatar } from '@/components/user';
 import { StoryChapters } from '@/components/story/story-chapters';
@@ -16,45 +17,7 @@ import { useCurrentUser } from '@/lib/auth/current-user';
 import { FaEdit } from 'react-icons/fa';
 import { useState } from 'react';
 import { StoryNew } from '@/components/story/story-new';
-
-export const QUERY_STORY = graphql(`
-  query story($filter: FilterStoryInput!) {
-    story(filter: $filter) {
-      __typename
-      id
-      title
-      content
-      excerpt
-      createdAt
-      author {
-        id
-        username
-      }
-      tags
-      parent {
-        id
-      }
-      root {
-        id
-        title
-        likesCount
-        descendentsCount
-      }
-      forest {
-        id
-        name
-      }
-      likesCount
-      commentsCount
-      descendentsCount
-      childrenCount
-      currentUserLike {
-        id
-      }
-      isEditable
-    }
-  }
-`);
+import { QUERY_STORY } from './story-view.query';
 
 interface StoryViewProps {
   className?: string;

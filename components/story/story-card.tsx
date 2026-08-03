@@ -1,3 +1,5 @@
+'use client';
+
 import { Link, Text, Button } from '@/components/ui';
 import { useFormattedDate, DATE_SHORT } from '@/lib/helper/date';
 import { getStoryUrl } from '@/lib/helper/story';

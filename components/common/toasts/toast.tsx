@@ -1,3 +1,5 @@
+'use client';
+
 import { useUI, ToastData } from '@/lib/ui/context';
 import { Text } from '@/components/ui';
 import { FaTimes } from 'react-icons/fa';

@@ -1,49 +1,12 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { graphql } from '@/lib/graphql/generated';
 import { InfiniteScroll } from '@/components/common';
 import { StoryCard } from '@/components/story/story-card';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import type { StoriesQueryVariables } from '@/lib/graphql/generated/graphql';
-
-export const QUERY_STORIES = graphql(`
-  query stories($filter: FilterStoryInput, $sort: SortStoryInput, $first: Int, $after: String) {
-    stories(filter: $filter, sort: $sort, first: $first, after: $after) {
-      edges {
-        cursor
-        node {
-          __typename
-          id
-          title
-          excerpt
-          createdAt
-          depth
-          parent {
-            id
-            likesCount
-            descendentsCount
-          }
-          author {
-            id
-            username
-          }
-          tags
-          likesCount
-          commentsCount
-          descendentsCount
-          currentUserLike {
-            id
-          }
-        }
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
-        totalCount
-      }
-    }
-  }
-`);
+import { QUERY_STORIES } from './story-list.query';
 
 interface StoryListProps {
   className?: string;

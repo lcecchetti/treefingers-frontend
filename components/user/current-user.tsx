@@ -1,3 +1,5 @@
+'use client';
+
 import { FaUserCircle } from 'react-icons/fa';
 import clsx from 'clsx';
 import { useCurrentUser } from '@/lib/auth/current-user';

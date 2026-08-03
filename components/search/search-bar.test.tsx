@@ -6,8 +6,9 @@ import { UIProvider, useUI } from '@/lib/ui/context';
 import { SearchBar } from './search-bar';
 
 const pushMock = vi.fn();
-vi.mock('next/router', () => ({
-  useRouter: () => ({ push: pushMock, query: {} }),
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: pushMock }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 function OpenSearchOnMount() {

@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import { FaSearch, FaBars } from 'react-icons/fa';
 import { Link } from '@/components/ui';

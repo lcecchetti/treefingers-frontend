@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import { CommentCount } from '@/components/comment';
 import { Like } from '@/components/common';

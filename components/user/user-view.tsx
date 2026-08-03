@@ -1,24 +1,12 @@
+'use client';
+
 import { Spinner, Text } from '@/components/ui';
 import { useQuery } from '@apollo/client';
-import { graphql } from '@/lib/graphql/generated';
 import { StoryList } from '@/components/story';
 import { ApiError, PageIntro } from '@/components/common';
 import { UserFollowership } from '@/components/user/user-followership';
 import { useCurrentUser } from '@/lib/auth/current-user';
-
-export const QUERY_USER = graphql(`
-  query user($filter: FilterUserInput!) {
-    user(filter: $filter) {
-      id
-      bio
-      username
-      followersCount
-      currentUserFollowershipAsFollower {
-        id
-      }
-    }
-  }
-`);
+import { QUERY_USER } from './user-view.query';
 
 interface UserViewProps {
   className?: string;

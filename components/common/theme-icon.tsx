@@ -1,3 +1,5 @@
+'use client';
+
 import { useTheme } from 'next-themes';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { themes } from '@/lib/ui/context';

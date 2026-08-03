@@ -1,10 +1,12 @@
+'use client';
+
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, FormField, Button } from '@/components/ui';
 import { MdLockOutline } from 'react-icons/md';
 import { getLoginUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from '@/lib/helper/auth';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { AuthFormContainer } from './auth-form-container';
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
@@ -28,7 +30,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export const ForgotPasswordForm = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = useState<ApolloError | false>(false);
   const { showToast } = useUI();
 
@@ -94,8 +96,8 @@ export const ForgotPasswordForm = () => {
 
         <ApiError error={error} />
         <div className="flex flex-col gap-xs text-xs">
-          <Link href={getLoginUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Already have an account? Login</Link>
-          <Link href={getRegisterUrl(router.query[PARAM_AUTH_REDIRECT_TO] as string | undefined)}>Don't have an account? Register</Link>
+          <Link href={getLoginUrl(searchParams.get(PARAM_AUTH_REDIRECT_TO) ?? undefined)}>Already have an account? Login</Link>
+          <Link href={getRegisterUrl(searchParams.get(PARAM_AUTH_REDIRECT_TO) ?? undefined)}>Don't have an account? Register</Link>
         </div>
       </form>
     </AuthFormContainer>

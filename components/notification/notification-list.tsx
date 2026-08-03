@@ -1,3 +1,5 @@
+'use client';
+
 import { Text, Button } from '@/components/ui';
 import { InfiniteScroll } from '@/components/common';
 import { useQuery, useMutation } from '@apollo/client';

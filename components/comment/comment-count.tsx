@@ -1,3 +1,5 @@
+'use client';
+
 import { FaRegComment } from 'react-icons/fa';
 import { Text } from '@/components/ui';
 import clsx from 'clsx';

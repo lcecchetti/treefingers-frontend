@@ -1,3 +1,5 @@
+'use client';
+
 import { useApolloClient, useMutation, useQuery, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
@@ -11,7 +13,7 @@ import { ApiError } from '@/components/common';
 import { FaTimes } from 'react-icons/fa';
 import * as gtag from '@/lib/gtag';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { flyoutTypes, useUI } from '@/lib/ui/context';
 import type { ChooseForestQuery, CreateForestMutation } from '@/lib/graphql/generated/graphql';
