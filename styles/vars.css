@@ -16,6 +16,25 @@
 
   --swiper-theme-color: var(--color-primary-contrast);
 
+  /* shadcn-style tokens, derived from the palette above so they auto-adapt to .dark */
+  --color-gray: #9CA3AF;
+  --color-card: var(--color-primary-contrast);
+  --color-card-foreground: var(--color-primary);
+  --color-popover: var(--color-primary-contrast);
+  --color-popover-foreground: var(--color-primary);
+  --color-secondary: color-mix(in srgb, var(--color-primary) 6%, var(--color-primary-contrast));
+  --color-secondary-foreground: var(--color-primary);
+  --color-muted: color-mix(in srgb, var(--color-primary) 6%, var(--color-primary-contrast));
+  --color-muted-foreground: var(--color-gray);
+  --color-accent: color-mix(in srgb, var(--color-primary) 10%, var(--color-primary-contrast));
+  --color-accent-foreground: var(--color-primary);
+  --color-destructive: var(--color-error);
+  --color-destructive-foreground: var(--color-primary-contrast);
+  --color-border: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  --color-input: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  --color-ring: var(--color-primary);
+  --radius: 0.75rem;
+
   /* Sizes */
   --header-height: 54px;
 }

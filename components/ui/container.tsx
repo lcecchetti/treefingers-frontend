@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
 export interface ContainerProps {
   className?: string;
@@ -7,13 +7,8 @@ export interface ContainerProps {
 }
 
 export const Container = ({ className, children, fluid }: ContainerProps) => {
-
   return (
-    <div className={clsx(
-      { ['lg:container']: !fluid },
-      'mx-auto px-md w-full',
-      className
-    )}>
+    <div className={cn(!fluid && 'lg:container', 'mx-auto px-md w-full', className)}>
       {children}
     </div>
   );

@@ -1,5 +1,5 @@
-import clsx from 'clsx';
-import { CgSpinner } from 'react-icons/cg';
+import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Text } from '@/components/ui/text';
 
 export interface SpinnerProps {
@@ -9,17 +9,16 @@ export interface SpinnerProps {
 }
 
 export const Spinner = ({ className, label, loading = true }: SpinnerProps) => {
-
   if (!loading) {
-    return '';
+    return null;
   }
 
   return (
-    <div className={clsx('flex items-center justify-around gap-sm', className)}>
+    <div className={cn('flex items-center justify-around gap-sm', className)}>
       {!!label &&
         <Text variant="span">{label}</Text>
       }
-      <CgSpinner className="animate-spin text-2xl" />
+      <Loader2 className="animate-spin text-2xl" />
     </div>
   );
 };
