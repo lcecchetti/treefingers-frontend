@@ -95,6 +95,7 @@ export const Drawer = () => {
         forceMount
         showClose={false}
         showOverlay={false}
+        onInteractOutside={(e) => e.preventDefault()}
         className="fixed lg:hidden top-header left-full bg-primary w-full h-screen-no-header transition-transform transform-gpu z-40 data-[state=open]:-translate-x-full focus:outline-none"
       >
         <SheetTitle className="sr-only">Navigation</SheetTitle>

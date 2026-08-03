@@ -1,8 +1,6 @@
 import { Container, Text, Button, Link } from '@/components/ui';
-import { initializeApollo, extractSerializableCacheState } from '@/lib/apollo/client';
 import { PageIntro } from '@/components/common';
-import { StoryList, QUERY_STORIES } from '@/components/story';
-import { ApolloHydration } from '@/components/apollo/apollo-hydration';
+import { StoryList } from '@/components/story';
 import { getStoryNewUrl } from '@/lib/helper/story';
 import { TreePine } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -14,17 +12,9 @@ export const metadata: Metadata = {
 
 export const revalidate = 1;
 
-export default async function StoriesPage() {
-  const apolloClient = initializeApollo();
-
-  await apolloClient.query({
-    query: QUERY_STORIES,
-    variables: { filter: { parent: { eq: null } }, first: 12, sort: { likesCount: 'DESC' } },
-  });
-
+export default function StoriesPage() {
   return (
     <Container>
-      <ApolloHydration state={extractSerializableCacheState(apolloClient)} />
       <PageIntro>
         <div className="flex gap-sm justify-between items-center text-center">
           <Text variant="pageTitle">Stories</Text>

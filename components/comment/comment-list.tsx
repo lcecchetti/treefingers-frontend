@@ -1,10 +1,11 @@
 'use client';
 
-import { Text } from '@/components/ui';
+import { Suspense, useTransition } from 'react';
+import { Text, Spinner } from '@/components/ui';
 import { formatDate } from '@/lib/helper/date';
 import { InfiniteScroll, Like } from '@/components/common';
 import { Avatar } from '@/components/user';
-import { useQuery } from '@apollo/client';
+import { useSuspenseQuery } from '@apollo/client/react';
 import { graphql } from '@/lib/graphql/generated';
 import { CommentNew } from '@/components/comment/comment-new';
 import type { CommentsQueryVariables } from '@/lib/graphql/generated/graphql';
@@ -59,11 +60,12 @@ interface CommentListProps {
   last?: number;
 }
 
-export const CommentList = ({ entity, sort = { id: 'ASC' as const }, last = 10 }: CommentListProps) => {
-  const { data, loading, error, fetchMore } = useQuery(QUERY_COMMENTS, { variables: { filter: getCommentsFilter(entity), sort, last } });
+const CommentListContent = ({ entity, sort = { id: 'ASC' as const }, last = 10 }: CommentListProps) => {
+  const [isPending, startTransition] = useTransition();
+  const { data, error, fetchMore } = useSuspenseQuery(QUERY_COMMENTS, { variables: { filter: getCommentsFilter(entity), sort, last }, errorPolicy: 'all' });
 
   return (
-    <InfiniteScroll className="flex flex-col p-md" error={error ?? false} onLoadMore={(opt) => fetchMore({ variables: { before: data?.comments.pageInfo.startCursor }, ...opt })} loading={loading} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
+    <InfiniteScroll className="flex flex-col p-md" error={error ?? false} onLoadMore={(opt) => startTransition(() => { fetchMore({ variables: { before: data?.comments.pageInfo.startCursor }, ...opt }); })} loading={isPending} hasMore={data?.comments.pageInfo.hasPreviousPage} backwards={true}>
       {data &&
         <div className="flex flex-col gap-md">
           {!data?.comments.edges?.length &&
@@ -93,3 +95,9 @@ export const CommentList = ({ entity, sort = { id: 'ASC' as const }, last = 10 }
     </InfiniteScroll>
   );
 }
+
+export const CommentList = (props: CommentListProps) => (
+  <Suspense fallback={<Spinner className="my-lg" />}>
+    <CommentListContent {...props} />
+  </Suspense>
+);

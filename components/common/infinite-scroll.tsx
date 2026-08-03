@@ -2,14 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import type { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { ApiError } from '@/components/common';
 import { Spinner } from '@/components/ui';
 
 interface InfiniteScrollProps {
   className?: string;
   onLoadMore: (opt?: { notifyOnNetworkStatusChange?: boolean; variables?: Record<string, unknown> }) => void;
-  error?: ApolloError | false;
+  error?: ErrorLike | false;
   loading: boolean;
   children?: React.ReactNode;
   hasMore?: boolean;

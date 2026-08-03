@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
 import { Toasts } from '@/components/common';
 import { graphql } from '@/lib/graphql/generated';
-import { renderWithProviders } from '@/test/test-utils';
+import { renderWithProvidersAsync } from '@/test/test-utils';
 import { NotificationList, QUERY_NOTIFICATIONS, notificationsVariables } from './notification-list';
 
 const MUTATION_READ_ALL_NOTIFICATIONS = graphql(`
@@ -47,7 +47,7 @@ describe('NotificationList', () => {
       result: { data: { notifications: { edges: [], pageInfo: { endCursor: null, hasNextPage: false, totalCount: 0 }, unreadCount: 0 } } },
     }];
 
-    renderWithProviders(<NotificationList />, { mocks });
+    await renderWithProvidersAsync(<NotificationList />, { mocks });
 
     expect(await screen.findByText(/nothing new has happened/i)).toBeInTheDocument();
   });
@@ -79,7 +79,7 @@ describe('NotificationList', () => {
       },
     ];
 
-    renderWithProviders(
+    await renderWithProvidersAsync(
       <>
         <NotificationList />
         <Toasts />

@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useMutation, useApolloClient, type ApolloError } from '@apollo/client';
+import { useMutation, useApolloClient } from '@apollo/client/react';
+import type { ErrorLike } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { graphql } from '@/lib/graphql/generated';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCurrentUser } from '@/lib/auth/current-user';
@@ -47,7 +49,7 @@ export const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const client = useApolloClient();
-  const [error, setError] = useState<ApolloError | false>(false);
+  const [error, setError] = useState<ErrorLike | false>(false);
   const [resendActivateAccountTo, setResendActivateAccountTo] = useState<string | false>(false);
   const { currentUser } = useCurrentUser();
   const { showToast } = useUI();
@@ -123,11 +125,13 @@ export const LoginForm = () => {
           label: 'error',
         });
         setError(e);
-        if (e.graphQLErrors && e.graphQLErrors.length && e.graphQLErrors[0].message === 'Your account is not active yet, check your emails.') {
+        if (CombinedGraphQLErrors.is(e) && e.errors.length && e.errors[0].message === 'Your account is not active yet, check your emails.') {
           setResendActivateAccountTo(email);
         }
       },
-    });
+      // Apollo v4's execute promise rejects on error even when onError handles
+      // it; swallow so the rejection doesn't bubble up as unhandled.
+    }).catch(() => {});
 
   return (
     <AuthFormContainer title="Login" icon={Lock}>

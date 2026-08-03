@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import userEvent from '@testing-library/user-event';
-import { screen } from '@testing-library/react';
+import { screen, fireEvent, act } from '@testing-library/react';
 import { graphql } from '@/lib/graphql/generated';
 import { QUERY_CURRENT_USER } from '@/lib/auth/current-user';
 import { renderWithProviders } from '@/test/test-utils';
@@ -75,11 +74,17 @@ describe('ForestActions', () => {
   });
 
   it('opens the comments flyout for this forest when the comment icon is clicked', async () => {
-    const user = userEvent.setup();
     renderWithProviders(<><ForestActions forest={forest} /><Flyout /></>, { mocks: [loggedOut, emptyComments] });
 
     const commentIcon = (await screen.findByText('2')).parentElement!.querySelector('svg')!;
-    await user.click(commentIcon);
+    // The click mounts CommentList, which suspends on useSuspenseQuery. As with
+    // renderWithProvidersAsync, the suspending mount and the MockLink resolution
+    // must happen inside one awaited act for the post-resolution retry to commit;
+    // otherwise the boundary stays stuck on its Spinner fallback.
+    await act(async () => {
+      fireEvent.click(commentIcon);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    });
 
     // Real assertion (rather than "nothing threw"): the click drives openFlyout
     // through UIProvider state into a mounted Flyout, whose title and CommentList

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen } from '@testing-library/react';
-import { renderWithProviders } from '@/test/test-utils';
+import { renderWithProvidersAsync } from '@/test/test-utils';
 import { CommentList, QUERY_COMMENTS, getCommentsFilter } from './comment-list';
 
 vi.mock('next/navigation', () => ({
@@ -35,7 +35,7 @@ describe('CommentList', () => {
       result: { data: { comments: { edges: [], pageInfo: { startCursor: null, hasPreviousPage: false } } } },
     }];
 
-    renderWithProviders(<CommentList entity={story} />, { mocks });
+    await renderWithProvidersAsync(<CommentList entity={story} />, { mocks });
 
     expect(await screen.findByText(/has no comments yet/)).toBeInTheDocument();
   });
@@ -66,7 +66,7 @@ describe('CommentList', () => {
       },
     }];
 
-    renderWithProviders(<CommentList entity={story} />, { mocks });
+    await renderWithProvidersAsync(<CommentList entity={story} />, { mocks });
 
     expect(await screen.findByText('Great story!')).toBeInTheDocument();
     expect(screen.getByText('bob')).toBeInTheDocument();

@@ -1,7 +1,7 @@
 'use client';
 
-import { Spinner, Text } from '@/components/ui';
-import { useQuery } from '@apollo/client';
+import { Text } from '@/components/ui';
+import { useSuspenseQuery } from '@apollo/client/react';
 import { StoryList } from '@/components/story';
 import { ApiError, PageIntro } from '@/components/common';
 import { UserFollowership } from '@/components/user/user-followership';
@@ -16,15 +16,14 @@ interface UserViewProps {
 export const UserView = ({ className, user }: UserViewProps) => {
   const { currentUser } = useCurrentUser();
 
-  const { data, loading, error } = useQuery(QUERY_USER, {
+  const { data, error } = useSuspenseQuery(QUERY_USER, {
     variables: { filter: { id: { eq: user.id } } },
     fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
-    nextFetchPolicy: 'cache-first',
+    errorPolicy: 'all',
   });
 
   return (
     <div className={className}>
-      <Spinner loading={loading}/>
       <ApiError error={error ?? false}/>
 
       {data?.user &&

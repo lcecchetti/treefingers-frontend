@@ -1,6 +1,7 @@
 'use client';
 
-import { useApolloClient, useMutation, useQuery, type ApolloError } from '@apollo/client';
+import { useApolloClient, useMutation, useQuery } from '@apollo/client/react';
+import { type ErrorLike } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -92,7 +93,7 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
   const router = useRouter();
   const apolloClient = useApolloClient();
   const { openFlyout, closeFlyout, showToast } = useUI();
-  const [error, setError] = useState<ApolloError | false>(false);
+  const [error, setError] = useState<ErrorLike | false>(false);
   const [createStory] = useMutation(MUTATION_STORY_CREATE);
   const [editStory] = useMutation(MUTATION_STORY_EDIT);
 
@@ -187,7 +188,9 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
           });
           setError(e);
         }
-      });
+        // Apollo v4's execute promise rejects on error even when onError handles
+        // it; swallow so the rejection doesn't bubble up as unhandled.
+      }).catch(() => {});
     } else {
       return createStory({
         variables: { input: { data: {
@@ -217,7 +220,9 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
           });
           setError(e);
         }
-      });
+        // Apollo v4's execute promise rejects on error even when onError handles
+        // it; swallow so the rejection doesn't bubble up as unhandled.
+      }).catch(() => {});
     }
   };
 

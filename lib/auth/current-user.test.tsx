@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { MockedProvider, type MockedResponse } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing/react';
+import type { MockedResponse } from '@apollo/client/testing';
 import { useCurrentUser, QUERY_CURRENT_USER } from './current-user';
 
 function wrapper(mocks: MockedResponse[]) {

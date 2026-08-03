@@ -1,7 +1,7 @@
 'use client';
 
 import { Users, UserCheck } from 'lucide-react';
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import { graphql } from '@/lib/graphql/generated';
 import { Text } from '@/components/ui';
 import { cn } from '@/lib/utils';

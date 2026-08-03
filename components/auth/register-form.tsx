@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { CircleUserRound } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useMutation, type ApolloError } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
+import type { ErrorLike } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -47,7 +48,7 @@ export const RegisterForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { currentUser } = useCurrentUser();
-  const [error, setError] = useState<ApolloError | false>(false);
+  const [error, setError] = useState<ErrorLike | false>(false);
   const { showToast } = useUI();
 
   const [register] = useMutation(MUTATION_REGISTER, {
@@ -97,7 +98,9 @@ export const RegisterForm = () => {
         showToast('Check your emails to activate your account', { duration: 0 });
         router.push(getLoginUrl());
       },
-    });
+      // Apollo v4's execute promise rejects on error even when onError handles
+      // it; swallow so the rejection doesn't bubble up as unhandled.
+    }).catch(() => {});
 
   return (
     <AuthFormContainer title="Register" icon={CircleUserRound}>

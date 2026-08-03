@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { graphql } from '@/lib/graphql/generated';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -75,7 +75,9 @@ export const UserEditForm = () => {
   }, [data?.user?.bio]);
 
   const onSubmit = ({ confirmPassword, password, ...values }: UserEditFormValues) =>
-    editUser({ variables: { input: { data: password ? { ...values, password } : values } } });
+    // Apollo v4's execute promise rejects on error even when onError handles
+    // it; swallow so the rejection doesn't bubble up as unhandled.
+    editUser({ variables: { input: { data: password ? { ...values, password } : values } } }).catch(() => {});
 
   return (
     <div className="flex flex-col gap-md">

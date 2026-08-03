@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { Text } from '@/components/ui';
 import { QUERY_NOTIFICATIONS, notificationsVariables } from '@/components/notification';
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 
 interface CurrentUserProps {
   className?: string;

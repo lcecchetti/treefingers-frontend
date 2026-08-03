@@ -1,9 +1,10 @@
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { cn } from '@/lib/utils';
 import { Text } from '@/components/ui';
 
 export interface ApiErrorProps {
-  error: ApolloError | false;
+  error: ErrorLike | false;
   className?: string;
 }
 
@@ -12,21 +13,9 @@ export const ApiError = ({ className, error }: ApiErrorProps) => {
     return '';
   }
 
-  const apiErrors = [];
-
-  // graphql errors
-  if (error.message) {
-    apiErrors.push(error.message);
-  } else if (error.graphQLErrors) {
-    error.graphQLErrors.map((graphQLError) => {
-      apiErrors.push(graphQLError.message);
-    });
-  } else if (error.networkError) {
-    // network error
-    apiErrors.push(error.networkError.message);
-  } else {
-    apiErrors.push('An error has occurred');
-  }
+  const apiErrors = CombinedGraphQLErrors.is(error)
+    ? error.errors.map((graphQLError) => graphQLError.message)
+    : [error.message];
 
   return (
     <ul className={cn('flex flex-col gap-sm', className)}>

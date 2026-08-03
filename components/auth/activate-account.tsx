@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import { graphql } from '@/lib/graphql/generated';
 import { getLoginUrl } from '@/lib/helper/auth';
 import { Spinner } from '@/components/ui';

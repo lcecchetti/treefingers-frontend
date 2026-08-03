@@ -68,9 +68,10 @@ describe('ForestMembership', () => {
   });
 
   it('sends the join mutation when not yet a member', async () => {
+    let authLoaded = false;
     let called = false;
     const mocks = [
-      loggedIn,
+      { request: { query: QUERY_CURRENT_USER }, result: () => { authLoaded = true; return { data: { currentUser: { id: '1', email: 'a@b.com', username: 'alice' } } }; } },
       {
         request: { query: MUTATION_JOIN, variables: { input: { forest: 'f1' } } },
         result: () => { called = true; return { data: { join: { membership: { id: 'm1', forest: joined } } } }; },
@@ -79,15 +80,19 @@ describe('ForestMembership', () => {
 
     renderWithProviders(<ForestMembership forest={notJoined} />, { mocks });
 
+    // The click only fires the mutation once useCurrentUser has resolved a
+    // logged-in user; wait for the auth query to be delivered before clicking.
+    await vi.waitFor(() => expect(authLoaded).toBe(true));
     await clickMembershipIcon(10);
 
     await vi.waitFor(() => expect(called).toBe(true));
   });
 
   it('sends the leave mutation when already a member', async () => {
+    let authLoaded = false;
     let called = false;
     const mocks = [
-      loggedIn,
+      { request: { query: QUERY_CURRENT_USER }, result: () => { authLoaded = true; return { data: { currentUser: { id: '1', email: 'a@b.com', username: 'alice' } } }; } },
       {
         request: { query: MUTATION_LEAVE, variables: { input: { forest: 'f1' } } },
         result: () => { called = true; return { data: { leave: { membership: { id: 'm1', forest: notJoined } } } }; },
@@ -96,6 +101,7 @@ describe('ForestMembership', () => {
 
     renderWithProviders(<ForestMembership forest={joined} />, { mocks });
 
+    await vi.waitFor(() => expect(authLoaded).toBe(true));
     await clickMembershipIcon(11);
 
     await vi.waitFor(() => expect(called).toBe(true));

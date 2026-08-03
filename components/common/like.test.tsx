@@ -84,9 +84,10 @@ describe('Like', () => {
   });
 
   it('sends the like mutation when not yet liked', async () => {
+    let authLoaded = false;
     let called = false;
     const mocks = [
-      loggedIn,
+      { request: { query: QUERY_CURRENT_USER }, result: () => { authLoaded = true; return { data: { currentUser: { id: '1', email: 'a@b.com', username: 'alice' } } }; } },
       {
         request: { query: MUTATION_LIKE, variables: { input: { story: 's1' } } },
         result: () => { called = true; return { data: { like: { like: { id: 'l1', story: liked, comment: null } } } }; },
@@ -95,15 +96,19 @@ describe('Like', () => {
 
     renderWithProviders(<Like entity={notLiked} />, { mocks });
 
+    // The click only fires the mutation once useCurrentUser has resolved a
+    // logged-in user; wait for the auth query to be delivered before clicking.
+    await vi.waitFor(() => expect(authLoaded).toBe(true));
     await clickHeartIcon(4);
 
     await vi.waitFor(() => expect(called).toBe(true));
   });
 
   it('sends the dislike mutation when already liked', async () => {
+    let authLoaded = false;
     let called = false;
     const mocks = [
-      loggedIn,
+      { request: { query: QUERY_CURRENT_USER }, result: () => { authLoaded = true; return { data: { currentUser: { id: '1', email: 'a@b.com', username: 'alice' } } }; } },
       {
         request: { query: MUTATION_DISLIKE, variables: { input: { story: 's1' } } },
         result: () => { called = true; return { data: { dislike: { like: { id: 'l1', story: notLiked, comment: null } } } }; },
@@ -112,6 +117,7 @@ describe('Like', () => {
 
     renderWithProviders(<Like entity={liked} />, { mocks });
 
+    await vi.waitFor(() => expect(authLoaded).toBe(true));
     await clickHeartIcon(5);
 
     await vi.waitFor(() => expect(called).toBe(true));

@@ -1,8 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
-import { ApolloProvider } from '@apollo/client';
-import { initializeApollo } from '@/lib/apollo/client';
+import { ApolloWrapper } from '@/app/apollo-wrapper';
 import { Flyout, Toasts } from '@/components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from '@/lib/ui/context';
@@ -13,10 +11,8 @@ interface ProvidersProps {
 }
 
 export const Providers = ({ children }: ProvidersProps) => {
-  const apolloClient = useMemo(() => initializeApollo(), []);
-
   return (
-    <ApolloProvider client={apolloClient}>
+    <ApolloWrapper>
       <ThemeProvider attribute="class">
         <UIProvider>
           {children}
@@ -24,6 +20,6 @@ export const Providers = ({ children }: ProvidersProps) => {
           <Toasts />
         </UIProvider>
       </ThemeProvider>
-    </ApolloProvider>
+    </ApolloWrapper>
   );
 };

@@ -8,7 +8,8 @@ import { Lock } from 'lucide-react';
 import { getLoginUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from '@/lib/helper/auth';
 import { useSearchParams } from 'next/navigation';
 import { AuthFormContainer } from './auth-form-container';
-import { useMutation, type ApolloError } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
+import type { ErrorLike } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { ApiError } from '@/components/common';
 import * as analytics from '@/lib/analytics';
@@ -31,7 +32,7 @@ type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export const ForgotPasswordForm = () => {
   const searchParams = useSearchParams();
-  const [error, setError] = useState<ApolloError | false>(false);
+  const [error, setError] = useState<ErrorLike | false>(false);
   const { showToast } = useUI();
 
   const [forgotPassword] = useMutation(MUTATION_FORGOT_PASSWORD, {
@@ -66,7 +67,9 @@ export const ForgotPasswordForm = () => {
   });
 
   const onSubmit = ({ email }: ForgotPasswordFormValues) =>
-    forgotPassword({ variables: { input: { email } } });
+    // Apollo v4's execute promise rejects on error even when onError handles
+    // it; swallow so the rejection doesn't bubble up as unhandled.
+    forgotPassword({ variables: { input: { email } } }).catch(() => {});
 
   return (
     <AuthFormContainer title="Forgot password" icon={Lock}>

@@ -1,6 +1,7 @@
 'use client';
 
-import { useMutation, type ApolloError } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
+import type { ErrorLike } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
@@ -57,7 +58,7 @@ interface ForestNewProps {
 }
 
 export const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
-  const [error, setError] = useState<ApolloError | false>(false);
+  const [error, setError] = useState<ErrorLike | false>(false);
   const [createForest] = useMutation(MUTATION_FOREST_CREATE);
   const [editForest] = useMutation(MUTATION_FOREST_EDIT);
   const router = useRouter();
@@ -106,7 +107,9 @@ export const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
           });
           setError(e);
         }
-      });
+        // Apollo v4's execute promise rejects on error even when onError handles
+        // it; swallow so the rejection doesn't bubble up as unhandled.
+      }).catch(() => {});
     } else {
       return createForest({
         variables: { input: { data: {
@@ -136,7 +139,9 @@ export const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
           });
           setError(e);
         }
-      });
+        // Apollo v4's execute promise rejects on error even when onError handles
+        // it; swallow so the rejection doesn't bubble up as unhandled.
+      }).catch(() => {});
     }
   };
 

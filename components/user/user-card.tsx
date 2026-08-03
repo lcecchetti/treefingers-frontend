@@ -18,7 +18,7 @@ export const UserCard = ({ className, user }: UserCardProps) => {
   return (
     <Card className={cn('bg-primary text-primary-contrast', className)}>
       <CardHeader>
-        <Avatar className="justify-end" user={user} showName={true} />
+        <Avatar className="justify-end" size="sm" user={user} showName={true} />
         <UserFollowership user={user} />
       </CardHeader>
 

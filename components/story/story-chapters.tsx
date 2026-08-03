@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState, useTransition } from 'react';
 import { Text, Spinner, Button } from '@/components/ui';
-import { useQuery } from '@apollo/client';
+import { useSuspenseQuery } from '@apollo/client/react';
 import { cn } from '@/lib/utils';
 import { StoryNew } from '@/components/story/story-new';
 import { ChevronDown } from 'lucide-react';
@@ -20,19 +20,20 @@ interface StoryChaptersProps {
   first?: number;
 }
 
-export const StoryChapters = ({ className, parent, first = 10 }: StoryChaptersProps) => {
+const StoryChaptersContent = ({ className, parent, first = 10 }: StoryChaptersProps) => {
   const [isWriting, setIsWriting] = useState(false);
   const [suggestSwipe, setSuggestSwipe] = useState(true);
+  const [, startTransition] = useTransition();
   const { currentUser } = useCurrentUser();
 
-  const { data, loading, error, fetchMore } = useQuery(QUERY_STORIES, {
+  const { data, error, fetchMore } = useSuspenseQuery(QUERY_STORIES, {
     variables: {
       filter: { parent: { eq: parent.id } },
       first,
       sort: { likesCount: 'DESC' },
     },
     fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
-    nextFetchPolicy: 'cache-first',
+    errorPolicy: 'all',
   });
 
   const toggleWriting = (show: boolean) => {
@@ -47,7 +48,6 @@ export const StoryChapters = ({ className, parent, first = 10 }: StoryChaptersPr
   return (
     <div className={cn('flex flex-col gap-md', className)}>
       <ApiError error={error ?? false}/>
-      <Spinner loading={loading}/>
 
       <div className="flex flex-col items-center justify-center gap-xs">
         <Text variant="span" className="font-bold uppercase">What's next?</Text>
@@ -74,7 +74,7 @@ export const StoryChapters = ({ className, parent, first = 10 }: StoryChaptersPr
               slideShadows: false,
             }}
             navigation={{ nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev', }}
-            onReachEnd={() => data?.stories.pageInfo.hasNextPage && fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } })}
+            onReachEnd={() => data?.stories.pageInfo.hasNextPage && startTransition(() => { fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } }); })}
             >
             {data.stories.edges.map(({ node }, index) => (
               <SwiperSlide key={node.id} virtualIndex={index}>
@@ -86,16 +86,22 @@ export const StoryChapters = ({ className, parent, first = 10 }: StoryChaptersPr
           </Swiper>
         }
 
-        {!data!.stories.edges!.length &&
+        {!data?.stories.edges?.length &&
           <div className="text-center flex flex-col gap-xs">
             <Text variant="title" as="span" className="">The end...?</Text>
           </div>
         }
 
-        {(isWriting || (!loading && !data?.stories.edges?.length)) &&
+        {(isWriting || !data?.stories.edges?.length) &&
           <StoryNew parent={parent} />
         }
       </div>
     </div>
   );
 };
+
+export const StoryChapters = (props: StoryChaptersProps) => (
+  <Suspense fallback={<Spinner className="my-lg" />}>
+    <StoryChaptersContent {...props} />
+  </Suspense>
+);

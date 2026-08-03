@@ -1,8 +1,9 @@
 'use client';
 
-import { Text, Button } from '@/components/ui';
+import { Suspense, useEffect, useTransition } from 'react';
+import { Text, Button, Spinner } from '@/components/ui';
 import { InfiniteScroll } from '@/components/common';
-import { useQuery, useMutation } from '@apollo/client';
+import { useSuspenseQuery, useMutation } from '@apollo/client/react';
 import { graphql } from '@/lib/graphql/generated';
 import { Notification } from './notification';
 import * as analytics from '@/lib/analytics';
@@ -48,13 +49,22 @@ const MUTATION_READ_ALL_NOTIFICATIONS = graphql(`
 
 export const notificationsVariables = { sort: { id: 'DESC' as const }, first: 10 };
 
-export const NotificationList = () => {
+const NotificationListContent = () => {
   const { showToast } = useUI();
-  const { data, loading, error, fetchMore, refetch } = useQuery(QUERY_NOTIFICATIONS, {
+  const [isPending, startTransition] = useTransition();
+  const { data, error, fetchMore, refetch } = useSuspenseQuery(QUERY_NOTIFICATIONS, {
     variables: notificationsVariables,
     fetchPolicy: 'cache-and-network',
-    pollInterval: 60000,
+    errorPolicy: 'all',
   });
+
+  // useSuspenseQuery has no pollInterval; poll manually inside a transition so a
+  // background refresh updates the list without re-suspending the whole panel.
+  useEffect(() => {
+    const id = setInterval(() => startTransition(() => { refetch(); }), 60000);
+    return () => clearInterval(id);
+  }, [refetch]);
+
   const [readAllNotifications] = useMutation(MUTATION_READ_ALL_NOTIFICATIONS, {
     onCompleted(r) {
       analytics.event({
@@ -65,7 +75,7 @@ export const NotificationList = () => {
       if (!r.readAllNotifications?.count) {
         return;
       }
-      refetch();
+      startTransition(() => { refetch(); });
       showToast(`All ${r.readAllNotifications.count} notifications have been marked as read!`);
     },
     onError() {
@@ -79,7 +89,7 @@ export const NotificationList = () => {
   });
 
   return (
-    <InfiniteScroll className="flex flex-col" error={error ?? false} onLoadMore={(opt) => fetchMore({ variables: { after: data?.notifications.pageInfo.endCursor }, ...opt })} loading={loading} hasMore={data?.notifications.pageInfo.hasNextPage}>
+    <InfiniteScroll className="flex flex-col" error={error ?? false} onLoadMore={(opt) => startTransition(() => { fetchMore({ variables: { after: data?.notifications.pageInfo.endCursor }, ...opt }); })} loading={isPending} hasMore={data?.notifications.pageInfo.hasNextPage}>
       {data &&
         <div className="flex flex-col gap-md">
           {!data?.notifications.edges?.length &&
@@ -108,3 +118,9 @@ export const NotificationList = () => {
     </InfiniteScroll>
   );
 }
+
+export const NotificationList = () => (
+  <Suspense fallback={<Spinner className="my-lg" />}>
+    <NotificationListContent />
+  </Suspense>
+);

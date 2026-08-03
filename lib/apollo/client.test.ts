@@ -1,15 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 
 vi.mock('@/lib/auth/logout', () => ({
   logoutSession: vi.fn().mockResolvedValue(undefined),
 }));
 
-import { handleAuthError } from './client';
+import { handleAuthError } from './config';
 import { logoutSession } from '@/lib/auth/logout';
 
 function unauthenticatedError(operationName: string) {
   return {
-    graphQLErrors: [{ extensions: { code: 'UNAUTHENTICATED' } }],
+    error: new CombinedGraphQLErrors({ errors: [{ message: 'Unauthenticated', extensions: { code: 'UNAUTHENTICATED' } }] }),
     operation: { operationName },
   } as unknown as Parameters<typeof handleAuthError>[0];
 }
@@ -69,7 +70,7 @@ describe('handleAuthError', () => {
 
   it('does nothing for a non-UNAUTHENTICATED error code', async () => {
     handleAuthError({
-      graphQLErrors: [{ extensions: { code: 'FORBIDDEN' } }],
+      error: new CombinedGraphQLErrors({ errors: [{ message: 'Forbidden', extensions: { code: 'FORBIDDEN' } }] }),
       operation: { operationName: 'someQuery' },
     } as unknown as Parameters<typeof handleAuthError>[0]);
     await new Promise((r) => setTimeout(r, 0));

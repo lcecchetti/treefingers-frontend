@@ -3,7 +3,7 @@
 import { Link, Text } from '@/components/ui';
 import { EyeOff, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import { graphql } from '@/lib/graphql/generated';
 import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
 import { logoutSession } from '@/lib/auth/logout';
 import { Spinner, Container } from '@/components/ui';
 

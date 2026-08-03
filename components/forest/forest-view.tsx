@@ -1,7 +1,7 @@
 'use client';
 
-import { Spinner, Text, Button, Link } from '@/components/ui';
-import { useQuery } from '@apollo/client';
+import { Text, Button, Link } from '@/components/ui';
+import { useSuspenseQuery } from '@apollo/client/react';
 import { StoryList } from '@/components/story';
 import { ApiError, PageIntro } from '@/components/common';
 import { Pencil, Sprout, X } from 'lucide-react';
@@ -21,17 +21,16 @@ export const ForestView = ({ className, forest }: ForestViewProps) => {
   const { currentUser } = useCurrentUser();
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data, loading, error } = useQuery(QUERY_FOREST, {
+  const { data, error } = useSuspenseQuery(QUERY_FOREST, {
     variables: {
       filter: { id: { eq: forest.id } },
     },
     fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
-    nextFetchPolicy: 'cache-first',
+    errorPolicy: 'all',
   });
 
   return (
     <div className={className}>
-      <Spinner loading={loading}/>
       <ApiError error={error ?? false}/>
 
       {data?.forest &&

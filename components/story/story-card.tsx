@@ -30,7 +30,7 @@ export const StoryCard = ({ className, story }: StoryCardProps) => {
     <Card className={cn('bg-primary text-primary-contrast', className)}>
       <CardHeader>
         <Text variant="span" className="text-sm">{createdAt}</Text>
-        <Avatar className="justify-end" user={story.author} showName={true} />
+        <Avatar className="justify-end" size="sm" user={story.author} showName={true} />
       </CardHeader>
 
       <CardContent className={cn({

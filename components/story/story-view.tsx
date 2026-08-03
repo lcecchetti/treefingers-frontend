@@ -1,9 +1,9 @@
 'use client';
 
-import { Spinner, Text, Link, Container, Button } from '@/components/ui';
+import { Text, Link, Container, Button } from '@/components/ui';
 import { useFormattedDate, DATE_LONG } from '@/lib/helper/date';
 import { getStoryUrl, isStoryRoot } from '@/lib/helper/story';
-import { useQuery } from '@apollo/client';
+import { useSuspenseQuery } from '@apollo/client/react';
 import { ChevronUp, ChevronsUp, X, Pencil } from 'lucide-react';
 import { Avatar } from '@/components/user';
 import { StoryChapters } from '@/components/story/story-chapters';
@@ -27,19 +27,21 @@ export const StoryView = ({ className, story }: StoryViewProps) => {
   const { currentUser } = useCurrentUser();
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data, loading, error } = useQuery(QUERY_STORY, {
+  const { data, error } = useSuspenseQuery(QUERY_STORY, {
     variables: {
       filter: { id: { eq: story.id } },
     },
     fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
-    nextFetchPolicy: 'cache-first',
+    errorPolicy: 'all',
   });
 
-  const createdAt = useFormattedDate(data!.story!.createdAt, DATE_LONG);
+  // useFormattedDate must run every render regardless of data presence (rules of hooks);
+  // feed it a valid placeholder date rather than '' (which date-fns throws on) — the
+  // formatted result is only ever rendered inside the `data!.story &&` guard below.
+  const createdAt = useFormattedDate(data?.story?.createdAt ?? new Date(0).toISOString(), DATE_LONG);
 
   return (
     <div className={cn('flex flex-col gap-md', className)}>
-        <Spinner loading={loading}/>
         <ApiError error={error ?? false}/>
 
         <div className="relative flex flex-col gap-md lg:min-h-screen overflow-hidden">
@@ -58,41 +60,43 @@ export const StoryView = ({ className, story }: StoryViewProps) => {
               {!isEditing &&
                 <div className="flex flex-col gap-md">
                   {data!.story &&
-                    <div className="text-center flex justify-around items-center">
-                      {!isStoryRoot(data!.story!) &&
-                        <>
-                          <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.parent!)} icon={ChevronUp}>Prev chapter</Button>
-                          <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.root!)} icon={ChevronsUp}>Back to root</Button>
-                        </>
-                      }
-                      {data!.story!.forest &&
-                        <Button as={Link} variant="outlined" size="sm" href={getForestUrl(data!.story!.forest)} icon={ChevronsUp}>Back to forest</Button>
-                      }
-                    </div>
+                    <>
+                      <div className="text-center flex justify-around items-center">
+                        {!isStoryRoot(data!.story!) &&
+                          <>
+                            <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.parent!)} icon={ChevronUp}>Prev chapter</Button>
+                            <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.root!)} icon={ChevronsUp}>Back to root</Button>
+                          </>
+                        }
+                        {data!.story!.forest &&
+                          <Button as={Link} variant="outlined" size="sm" href={getForestUrl(data!.story!.forest)} icon={ChevronsUp}>Back to forest</Button>
+                        }
+                      </div>
+
+                      <div className="flex flex-col gap-md">
+                        <div className="flex justify-between items-center">
+                          <Text variant="span">{createdAt}</Text>
+                          <Avatar user={data!.story!.author} showName={true} />
+                        </div>
+
+                        <div className="flex gap-md justify-start items-center">
+                          <Text variant="storyTitle" className="break-words">{data!.story!.title}</Text>
+                          {data!.story!.isEditable &&
+                            <Pencil className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(true)} />
+                          }
+                        </div>
+                        <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data!.story!.content}</Text>
+
+                        <div className="flex justify-between items-center">
+                          <TagList tags={data!.story!.tags} />
+                          <StoryActions className="lg:hidden" story={data!.story!} />
+                          <StoryActions className="hidden lg:flex" story={data!.story!} disabledActions={{ tree: true }} />
+                        </div>
+                      </div>
+
+                      <StoryChapters parent={data!.story!} />
+                    </>
                   }
-
-                  <div className="flex flex-col gap-md">
-                    <div className="flex justify-between items-center">
-                      <Text variant="span">{createdAt}</Text>
-                      <Avatar user={data!.story!.author} showName={true} />
-                    </div>
-
-                    <div className="flex gap-md justify-start items-center">
-                      <Text variant="storyTitle" className="break-words">{data!.story!.title}</Text>
-                      {data!.story!.isEditable &&
-                        <Pencil className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(true)} />
-                      }
-                    </div>
-                    <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data!.story!.content}</Text>
-
-                    <div className="flex justify-between items-center">
-                      <TagList tags={data!.story!.tags} />
-                      <StoryActions className="lg:hidden" story={data!.story!} />
-                      <StoryActions className="hidden lg:flex" story={data!.story!} disabledActions={{ tree: true }} />
-                    </div>
-                  </div>
-
-                  <StoryChapters parent={data!.story!} />
                 </div>
               }
             </div>

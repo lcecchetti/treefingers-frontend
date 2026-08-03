@@ -1,8 +1,6 @@
 import { Container, Text, Link, Button } from '@/components/ui';
-import { QUERY_FORESTS, ForestList } from '@/components/forest';
-import { initializeApollo, extractSerializableCacheState } from '@/lib/apollo/client';
+import { ForestList } from '@/components/forest';
 import { PageIntro } from '@/components/common';
-import { ApolloHydration } from '@/components/apollo/apollo-hydration';
 import { TreePine } from 'lucide-react';
 import { getForestNewUrl } from '@/lib/helper/forest';
 import type { Metadata } from 'next';
@@ -14,17 +12,9 @@ export const metadata: Metadata = {
 
 export const revalidate = 1;
 
-export default async function ForestsPage() {
-  const apolloClient = initializeApollo();
-
-  await apolloClient.query({
-    query: QUERY_FORESTS,
-    variables: { first: 12, sort: { membersCount: 'DESC' } },
-  });
-
+export default function ForestsPage() {
   return (
     <Container>
-      <ApolloHydration state={extractSerializableCacheState(apolloClient)} />
       <PageIntro>
         <div className="flex gap-sm justify-between items-center">
           <Text variant="pageTitle">Forests</Text>

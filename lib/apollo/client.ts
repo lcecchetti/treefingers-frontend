@@ -1,106 +1,21 @@
-import { ApolloClient, HttpLink, ApolloLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
-import merge from 'deepmerge';
-import { logoutSession } from '@/lib/auth/logout';
-import isEqual from 'lodash/isEqual';
-import { relayStylePagination } from '@apollo/client/utilities';
-import { getLoginUrl } from '@/lib/helper/auth';
-import { env } from '@/lib/env';
+import { ApolloLink } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  registerApolloClient,
+} from '@apollo/client-integration-nextjs';
+import { authErrorLink, makeHttpLink, typePolicies } from '@/lib/apollo/config';
 
-// these mutations validate a one-off link token of their own (password reset,
-// account activation), independent of the session token, so an UNAUTHENTICATED
-// error from them doesn't mean the current session is invalid
-const AUTH_MUTATIONS_WITH_OWN_TOKEN = ['changePassword', 'activateAccount'];
-
-let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
-
-const httpLink = new HttpLink({
-  uri: env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
-  // the auth token lives in an httpOnly cookie set by the backend, sent
-  // automatically; the frontend never reads or attaches it itself
-  credentials: 'include',
-});
-
-// centralizes what individual components used to handle ad hoc: if the
-// backend rejects the session token itself (not a permission/ownership
-// error - those are FORBIDDEN, see backend), clear it and send the user
-// to log in again instead of leaving them stuck on broken queries
-export const handleAuthError: Parameters<typeof onError>[0] = ({ graphQLErrors, operation }) => {
-  if (typeof window === 'undefined' || !graphQLErrors) return;
-  if (AUTH_MUTATIONS_WITH_OWN_TOKEN.includes(operation.operationName)) return;
-
-  const sessionRejected = graphQLErrors.some(
-    (error) => error.extensions?.code === 'UNAUTHENTICATED'
-  );
-
-  if (!sessionRejected) return;
-  if (window.location.pathname.startsWith('/auth')) return;
-
-  logoutSession().then(() => {
-    window.location.assign(getLoginUrl(window.location.pathname));
-  });
-};
-
-const authErrorLink = onError(handleAuthError);
-
-function createApolloClient(): ApolloClient<NormalizedCacheObject> {
+// RSC-only client: used exclusively by generateMetadata()/other Server
+// Component code that needs data before any Client Component exists to read
+// it. `registerApolloClient` only exists in the integration package's
+// react-server build, so this module must never be pulled into a Client
+// Component bundle - the SSR/browser factory lives in app/apollo-wrapper.tsx.
+// Never share this client's data with the ApolloNextAppProvider client -
+// they're deliberately separate instances per Apollo's own Next.js guidance.
+export const { getClient, query } = registerApolloClient(() => {
   return new ApolloClient({
-    ssrMode: typeof window === 'undefined',
-    link: ApolloLink.from([authErrorLink, httpLink]),
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            comments: relayStylePagination(['filter', 'sort']),
-            stories: relayStylePagination(['filter', 'sort']),
-            forests: relayStylePagination(['filter', 'sort']),
-            users: relayStylePagination(['filter', 'sort']),
-            notifications: relayStylePagination(['filter', 'sort']),
-          }
-        },
-      },
-    }),
+    cache: new InMemoryCache({ typePolicies }),
+    link: ApolloLink.from([authErrorLink, makeHttpLink()]),
   });
-}
-
-export function initializeApollo(initialState: NormalizedCacheObject | null = null): ApolloClient<NormalizedCacheObject> {
-  // recycle apollo client for same session
-  const _apolloClient = apolloClient ?? createApolloClient();
-
-  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
-  // gets hydrated here
-  if (initialState) {
-    // Get existing cache, loaded during client side data fetching
-    const existingCache = _apolloClient.extract();
-
-    // Merge the existing cache into data passed from getStaticProps/getServerSideProps
-    const data = merge(initialState, existingCache, {
-      // combine arrays using object equality (like in sets)
-      arrayMerge: (destinationArray: unknown[], sourceArray: unknown[]) => [
-        ...sourceArray,
-        ...destinationArray.filter((d) =>
-          sourceArray.every((s) => !isEqual(d, s))
-        ),
-      ],
-    });
-
-    // Restore the cache with the merged data
-    _apolloClient.cache.restore(data);
-  }
-  // For SSG and SSR always create a new Apollo Client
-  if (typeof window === 'undefined') return _apolloClient;
-  // Create the Apollo Client once in the client
-  if (!apolloClient) apolloClient = _apolloClient;
-
-  return _apolloClient;
-}
-
-// Server Components hand the extracted cache to a Client Component
-// (ApolloHydration) as a prop, and React's RSC serialization is stricter
-// than "is this JSON-safe" - it rejects any value in the tree that isn't a
-// plain object/array/primitive, which `cache.extract()`'s internal store
-// representation doesn't reliably satisfy. Round-tripping through JSON
-// produces an equivalent plain-object tree that's safe to pass across.
-export function extractSerializableCacheState(client: ApolloClient<NormalizedCacheObject>): NormalizedCacheObject {
-  return JSON.parse(JSON.stringify(client.cache.extract()));
-}
+});
