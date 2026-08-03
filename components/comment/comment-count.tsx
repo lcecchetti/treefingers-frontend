@@ -1,8 +1,8 @@
 'use client';
 
-import { FaRegComment } from 'react-icons/fa';
+import { MessageSquare } from 'lucide-react';
 import { Text } from '@/components/ui';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
 interface CommentCountProps {
   count: number;
@@ -16,8 +16,8 @@ export const CommentCount = ({ count, action }: CommentCountProps) => {
       {!!count &&
         <Text variant="span">{count}</Text>
       }
-      <FaRegComment className={clsx(
-        'text-2xl',
+      <MessageSquare className={cn(
+        'w-6 h-6',
         !!action && 'cursor-pointer'
       )} onClick={action} />
     </div>

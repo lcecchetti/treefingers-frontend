@@ -2,7 +2,7 @@ import { getForestUrl, type ForestRef } from '@/lib/helper/forest';
 import { Text, Link, Button } from '@/components/ui';
 import { ForestActions, type ForestActionsForest } from '@/components/forest/forest-actions';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
 interface ForestCardForest extends ForestActionsForest, ForestRef {
   excerpt: string;
@@ -15,7 +15,7 @@ interface ForestCardProps {
 
 export const ForestCard = ({ className, forest }: ForestCardProps) => {
   return (
-    <Card className={clsx('border-2 bg-base', className)}>
+    <Card className={cn('border-2 bg-base', className)}>
       <CardContent>
         <Link href={getForestUrl(forest)} className="w-full">
           <Text variant="title" className="break-words text-center">{forest.name}</Text>

@@ -27,10 +27,10 @@ export const buttonVariants = cva(
 );
 
 const iconSizeClass: Record<'xs' | 'sm' | 'md' | 'lg', string> = {
-  xs: '',
-  sm: '',
-  md: '',
-  lg: 'text-2xl',
+  xs: 'w-3 h-3',
+  sm: 'w-3.5 h-3.5',
+  md: 'w-4 h-4',
+  lg: 'w-6 h-6',
 };
 
 export type ButtonProps<C extends React.ElementType = 'button'> = {

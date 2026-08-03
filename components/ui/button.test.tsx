@@ -38,4 +38,10 @@ describe('Button', () => {
     const button = screen.getByRole('button', { name: 'Click me' });
     expect(button).toHaveClass('mt-lg', 'bg-primary');
   });
+
+  it('sizes a passed icon explicitly per button size (not via inherited font-size)', () => {
+    const TestIcon = ({ className }: { className?: string }) => <svg data-testid="test-icon" className={className} />;
+    render(<Button icon={TestIcon} size="lg">Go</Button>);
+    expect(screen.getByTestId('test-icon')).toHaveClass('w-6', 'h-6');
+  });
 });

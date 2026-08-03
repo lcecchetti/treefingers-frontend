@@ -1,6 +1,6 @@
 import { Link, Button, Text } from '@/components/ui';
 import { Avatar } from '@/components/user';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { getUserUrl, type UserRef } from '@/lib/helper/user';
 import { UserFollowership, type UserFollowershipUser } from './user-followership';
@@ -16,7 +16,7 @@ interface UserCardProps {
 
 export const UserCard = ({ className, user }: UserCardProps) => {
   return (
-    <Card className={clsx('bg-primary text-primary-contrast', className)}>
+    <Card className={cn('bg-primary text-primary-contrast', className)}>
       <CardHeader>
         <Avatar className="justify-end" user={user} showName={true} />
         <UserFollowership user={user} />

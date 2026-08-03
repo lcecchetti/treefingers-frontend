@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import seedrandom from 'seedrandom';
 
 export interface StoryTreeStory {
@@ -197,7 +197,7 @@ export const StoryTree = ({ story, className }: StoryTreeProps) => {
   }, [story?.id])
 
   return (story ?
-    <div className={clsx('', className)}>
+    <div className={cn('', className)}>
       <canvas ref={canvasRef} className="w-full h-full" />
     </div>
     : null

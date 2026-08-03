@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import type { ApolloError } from '@apollo/client';
 import { ApiError } from '@/components/common';
 import { Spinner } from '@/components/ui';
@@ -53,7 +53,7 @@ export const InfiniteScroll = ({ className, onLoadMore, error, loading, children
   }, [children]);
 
   return (
-    <div ref={ref} className={clsx(
+    <div ref={ref} className={cn(
       'overflow-auto flex',
       direction === 'vertical' && 'flex-col',
       direction === 'horizontal' && 'flex-row',

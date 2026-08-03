@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
 interface TagListProps {
   className?: string;
@@ -9,7 +9,7 @@ interface TagListProps {
 
 export const TagList = ({ className, tags = [], buttonVariant = 'primary' }: TagListProps) => {
   return (
-    <ul className={clsx('flex gap-sm uppercase flex-wrap', className)}>
+    <ul className={cn('flex gap-sm uppercase flex-wrap', className)}>
       {tags.map((tag, i) => (
         <li key={i}>
           <Button variant={buttonVariant} size="sm">{tag}</Button>

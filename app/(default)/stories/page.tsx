@@ -4,7 +4,7 @@ import { PageIntro } from '@/components/common';
 import { StoryList, QUERY_STORIES } from '@/components/story';
 import { ApolloHydration } from '@/components/apollo/apollo-hydration';
 import { getStoryNewUrl } from '@/lib/helper/story';
-import { FaTree } from 'react-icons/fa';
+import { TreePine } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default async function StoriesPage() {
       <PageIntro>
         <div className="flex gap-sm justify-between items-center text-center">
           <Text variant="pageTitle">Stories</Text>
-          <Button as={Link} href={getStoryNewUrl()} icon={FaTree}>Plant</Button>
+          <Button as={Link} href={getStoryNewUrl()} icon={TreePine}>Plant</Button>
         </div>
         <Text variant="p">
           Here is a list of popular stories.

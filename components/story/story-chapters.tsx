@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { Text, Spinner, Button } from '@/components/ui';
 import { useQuery } from '@apollo/client';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { StoryNew } from '@/components/story/story-new';
-import { FaAngleDown } from 'react-icons/fa';
+import { ChevronDown } from 'lucide-react';
 import { ApiError } from '@/components/common';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards, Navigation } from 'swiper';
@@ -45,13 +45,13 @@ export const StoryChapters = ({ className, parent, first = 10 }: StoryChaptersPr
   };
 
   return (
-    <div className={clsx('flex flex-col gap-md', className)}>
+    <div className={cn('flex flex-col gap-md', className)}>
       <ApiError error={error ?? false}/>
       <Spinner loading={loading}/>
 
       <div className="flex flex-col items-center justify-center gap-xs">
         <Text variant="span" className="font-bold uppercase">What's next?</Text>
-        <FaAngleDown className="text-3xl animate-bounce" />
+        <ChevronDown className="w-8 h-8 animate-bounce" />
       </div>
 
       {!!data?.stories.edges?.length && // chapter list

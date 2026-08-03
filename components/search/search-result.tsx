@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { ForestList } from '@/components/forest';
 import { StoryList } from '@/components/story';
 import { UserList } from '@/components/user';
@@ -27,7 +27,7 @@ export const SearchResult = ({ className, query }: SearchResultProps) => {
   const [currentTab, setCurrentTab] = useState(tabs[0].key);
 
   return (!!query && (
-    <div className={clsx('', className)}>
+    <div className={cn('', className)}>
       <ul className="flex justify-start gap-md my-md">
         {tabs.map(({ key, label, totalCount }) => (
           <li key={key}>
@@ -44,7 +44,7 @@ export const SearchResult = ({ className, query }: SearchResultProps) => {
 
       <div>
         {tabs.map(({ key, Component, filter = {}, totalCount, setTotalCount }) => (
-          <div key={key} className={clsx(currentTab === key && 'block', currentTab !== key && 'hidden')}>
+          <div key={key} className={cn(currentTab === key && 'block', currentTab !== key && 'hidden')}>
             {totalCount === 0 &&
               <Text>No results.</Text>
             }

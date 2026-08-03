@@ -3,7 +3,7 @@ import { QUERY_FORESTS, ForestList } from '@/components/forest';
 import { initializeApollo, extractSerializableCacheState } from '@/lib/apollo/client';
 import { PageIntro } from '@/components/common';
 import { ApolloHydration } from '@/components/apollo/apollo-hydration';
-import { FaTree } from 'react-icons/fa';
+import { TreePine } from 'lucide-react';
 import { getForestNewUrl } from '@/lib/helper/forest';
 import type { Metadata } from 'next';
 
@@ -28,7 +28,7 @@ export default async function ForestsPage() {
       <PageIntro>
         <div className="flex gap-sm justify-between items-center">
           <Text variant="pageTitle">Forests</Text>
-          <Button as={Link} href={getForestNewUrl()} icon={FaTree}>Create</Button>
+          <Button as={Link} href={getForestNewUrl()} icon={TreePine}>Create</Button>
         </div>
         <Text variant="p">
           Forests are places to group stories — have a look around or create your own.

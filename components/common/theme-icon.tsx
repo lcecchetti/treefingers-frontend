@@ -1,13 +1,13 @@
 'use client';
 
 import { useTheme } from 'next-themes';
-import { FaSun, FaMoon } from 'react-icons/fa';
+import { Sun, Moon } from 'lucide-react';
 import { themes } from '@/lib/ui/context';
 import { useState, useEffect } from 'react';
 
 const iconComponents = {
-  [themes.light]: FaSun,
-  [themes.dark]: FaMoon,
+  [themes.light]: Sun,
+  [themes.dark]: Moon,
  }
 
 export interface ThemeIconProps {
@@ -24,7 +24,7 @@ export const ThemeIcon = ({ className }: ThemeIconProps) => {
     }
   }, [resolvedTheme]);
 
-  const Icon = iconComponents[icon as keyof typeof iconComponents] || FaSun;
+  const Icon = iconComponents[icon as keyof typeof iconComponents] || Sun;
 
   return <Icon className={className} />;
 }

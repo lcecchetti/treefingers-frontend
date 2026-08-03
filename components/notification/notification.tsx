@@ -1,8 +1,8 @@
 'use client';
 
-import clsx from 'clsx';
 import { Link, Text } from '@/components/ui';
-import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import { EyeOff, Eye } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { useMutation } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import * as analytics from '@/lib/analytics';
@@ -49,7 +49,7 @@ export const Notification = ({ notification }: NotificationProps) => {
   });
 
   return (
-    <div className={clsx('border-2 rounded-lg p-md relative flex flex-col gap-xs',
+    <div className={cn('border-2 rounded-lg p-md relative flex flex-col gap-xs',
         notification.read && 'opacity-50'
       )}
       onClick={() => { !notification.read && readNotification()}}
@@ -58,7 +58,7 @@ export const Notification = ({ notification }: NotificationProps) => {
         <Text className="text-xs">
           {formatDate(notification.createdAt, DATE_LONG)}
         </Text>
-        {notification.read ? <FaEye className="text-lg"/> : <FaEyeSlash className="text-lg"/> }
+        {notification.read ? <Eye className="w-5 h-5"/> : <EyeOff className="w-5 h-5"/> }
       </div>
       <Text className="w-full">
         {notification.content}

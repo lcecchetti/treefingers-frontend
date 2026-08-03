@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { Link, Button, Text } from '@/components/ui';
 import { useTypewriter, type TypewriterSegment } from '@/lib/hooks/use-typewriter';
-import { FaAngleDoubleDown } from 'react-icons/fa';
+import { ChevronsDown } from 'lucide-react';
 import { getForestsUrl } from '@/lib/helper/forest';
 import { getStoryNewUrl } from '@/lib/helper/story';
 
@@ -33,7 +33,7 @@ export const Hero = () => {
           <span>{typed}<span className="animate-pulse">|</span></span>
         </div>
 
-        <FaAngleDoubleDown className="lg:hidden text-4xl animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
+        <ChevronsDown className="lg:hidden w-9 h-9 animate-bounce absolute bottom-md" onClick={scrollToDetails}/>
       </div>
       <div ref={detailsRef} className="text-primary-contrast bg-primary px-md py-xl lg:px-2xl flex flex-col justify-center gap-lg lg:justify-center items-start min-h-screen-no-header lg:min-h-0">
         <div className="w-full flex flex-col gap-sm">

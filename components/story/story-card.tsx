@@ -5,7 +5,7 @@ import { useFormattedDate, DATE_SHORT } from '@/lib/helper/date';
 import { getStoryUrl } from '@/lib/helper/story';
 import { Avatar } from '@/components/user';
 import { StoryActions, type StoryActionsStory } from '@/components/story/story-actions';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { TagList } from '@/components/tag';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 
@@ -27,13 +27,13 @@ export const StoryCard = ({ className, story }: StoryCardProps) => {
   const createdAt = useFormattedDate(story.createdAt, DATE_SHORT);
 
   return (
-    <Card className={clsx('bg-primary text-primary-contrast', className)}>
+    <Card className={cn('bg-primary text-primary-contrast', className)}>
       <CardHeader>
         <Text variant="span" className="text-sm">{createdAt}</Text>
         <Avatar className="justify-end" user={story.author} showName={true} />
       </CardHeader>
 
-      <CardContent className={clsx({
+      <CardContent className={cn({
           ['px-lg']: isChapter,
         })
       }>

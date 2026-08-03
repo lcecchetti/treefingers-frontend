@@ -1,10 +1,10 @@
 'use client';
 
-import { FaUserPlus, FaUserCheck } from 'react-icons/fa';
+import { UserPlus, UserCheck } from 'lucide-react';
 import { useMutation } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Text } from '@/components/ui';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
 import * as analytics from '@/lib/analytics';
@@ -118,18 +118,18 @@ export const UserFollowership = ({ user, viewOnly }: UserFollowershipProps) => {
   }
 
   // pick icon accoridng to user followership
-  const Icon = user.currentUserFollowershipAsFollower ? FaUserCheck : FaUserPlus;
+  const Icon = user.currentUserFollowershipAsFollower ? UserCheck : UserPlus;
 
   return (
-    <div className={clsx(
+    <div className={cn(
       'flex gap-sm items-center',
       error && 'text-error',
     )}>
       {!!user.followersCount &&
         <Text variant="span">{user.followersCount}</Text>
       }
-      <Icon className={clsx(
-        'text-2xl',
+      <Icon className={cn(
+        'w-6 h-6',
         !viewOnly && 'cursor-pointer',
       )}
       onClick={toogleFollowership} />

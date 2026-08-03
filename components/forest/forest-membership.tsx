@@ -1,10 +1,10 @@
 'use client';
 
-import { FaUsers, FaUserCheck } from 'react-icons/fa';
+import { Users, UserCheck } from 'lucide-react';
 import { useMutation } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Text } from '@/components/ui';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
 import * as analytics from '@/lib/analytics';
@@ -119,18 +119,18 @@ export const ForestMembership = ({ forest, viewOnly }: ForestMembershipProps) =>
   }
 
   // pick icon according to user like presence
-  const Icon = forest.currentUserMembership ? FaUserCheck : FaUsers;
+  const Icon = forest.currentUserMembership ? UserCheck : Users;
 
   return (
-    <div className={clsx(
+    <div className={cn(
       'flex gap-sm items-center',
       error && 'text-error',
     )}>
       {!!forest.membersCount &&
         <Text variant="span">{forest.membersCount}</Text>
       }
-      <Icon className={clsx(
-        'text-2xl',
+      <Icon className={cn(
+        'w-6 h-6',
         !viewOnly && 'cursor-pointer',
       )}
       onClick={toogleMembership} />

@@ -10,11 +10,11 @@ import type { FormFieldOption } from '@/components/ui/form-field';
 import { getStoryUrl } from '@/lib/helper/story';
 import { AuthRequired } from '@/components/auth';
 import { ApiError } from '@/components/common';
-import { FaTimes } from 'react-icons/fa';
+import { X } from 'lucide-react';
 import * as analytics from '@/lib/analytics';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { flyoutTypes, useUI } from '@/lib/ui/context';
 import type { ChooseForestQuery, CreateForestMutation } from '@/lib/graphql/generated/graphql';
 
@@ -280,7 +280,7 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
             {!!tags.length && (
               <ul className="flex flex-wrap gap-xs">
                 {tags.map((tag, index) => (
-                  <Button type="button" size="sm" key={index}>{tag} <FaTimes onClick={() => setValue('tags', tags.filter((_, i) => i !== index))}/></Button>
+                  <Button type="button" size="sm" key={index}>{tag} <X className="w-3.5 h-3.5 inline-block" onClick={() => setValue('tags', tags.filter((_, i) => i !== index))}/></Button>
                 ))}
               </ul>
             )}
@@ -349,7 +349,7 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
                   render={({ field: { ref, ...field } }) => (
                     <FormField
                       {...field}
-                      className={clsx(forestsLoading && 'animate-pulse')}
+                      className={cn(forestsLoading && 'animate-pulse')}
                       type="select"
                       error={errors.forest?.message}
                       disabled={!currentForest}

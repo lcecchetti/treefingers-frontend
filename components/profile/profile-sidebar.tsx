@@ -1,11 +1,11 @@
 'use client';
 
 import { Button, Link, Text } from '@/components/ui';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { getProfileMeUrl, getProfileDetailsUrl, getProfileMyStories, getProfileMyForests, getProfileMyChapters, getProfileLikedStories, getProfileLikedChapters, getProfileFollowedUsers, getProfileJoinedForests } from '@/lib/helper/profile';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { FaBars } from 'react-icons/fa';
+import { Menu } from 'lucide-react';
 
 interface NavItem {
   label: string;
@@ -61,13 +61,13 @@ export const ProfileSidebar = ({ className }: ProfileSidebarProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className={clsx('flex flex-col gap-sm mt-sm lg:mt-md', className)}>
-      <Button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)} icon={FaBars}>Profile Menu</Button>
-      <ul className={clsx('flex-col gap-px overflow-hidden',
+    <nav className={cn('flex flex-col gap-sm mt-sm lg:mt-md', className)}>
+      <Button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)} icon={Menu}>Profile Menu</Button>
+      <ul className={cn('flex-col gap-px overflow-hidden',
         !menuOpen && 'max-h-0 lg:max-h-full',
       )}>
         {navData.map((item, index) => (
-          <li key={index} className={clsx('border-2 relative rounded-md',
+          <li key={index} className={cn('border-2 relative rounded-md',
             pathname !== item.href && 'border-primary-contrast bg-primary text-primary-contrast',
             pathname === item.href && 'border-primary bg-primary-contrast text-primary',
           )}>

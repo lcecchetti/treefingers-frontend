@@ -1,7 +1,7 @@
 'use client';
 
-import clsx from 'clsx';
-import { FaSearch, FaBars } from 'react-icons/fa';
+import { cn } from '@/lib/utils';
+import { Search, Menu } from 'lucide-react';
 import { Link } from '@/components/ui';
 import { useTheme } from 'next-themes';
 import { useUI } from '@/lib/ui/context';
@@ -27,7 +27,7 @@ export const IconList = () => {
 
   const iconListItems: IconListItem[] = [
     {
-      Component: FaSearch,
+      Component: Search,
       onClick: openSearch,
       showOnMobile: true,
       showOnDesktop: true,
@@ -54,7 +54,7 @@ export const IconList = () => {
       showOnDesktop: true,
     },
     {
-      Component: FaBars,
+      Component: Menu,
       onClick: toggleDrawer,
       showOnMobile: true,
       showOnDesktop: false,
@@ -64,12 +64,12 @@ export const IconList = () => {
   return (
     <ul className="flex flex-row gap-sm md:gap-md">
       {iconListItems.map((item, index) => (
-        <li key={index} className={clsx({
+        <li key={index} className={cn({
           ['hidden lg:inline-block']: !item.showOnMobile,
           ['lg:hidden']: !item.showOnDesktop,
         })}>
           <Link href={item.href ?? '#'} onClick={!!item.onClick ? (e) => { e.preventDefault(); item.onClick && item.onClick(); } : undefined}>
-            <item.Component className="text-2xl" />
+            <item.Component className="w-6 h-6" />
           </Link>
         </li>
       ))}

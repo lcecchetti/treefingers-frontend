@@ -9,7 +9,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, FormField, Button, Text } from '@/components/ui';
-import { MdLockOutline } from 'react-icons/md';
+import { Lock } from 'lucide-react';
 import { getForgotPasswordUrl, getRegisterUrl, getSafeRedirect, PARAM_AUTH_REDIRECT_TO } from '@/lib/helper/auth';
 import { getProfileMeUrl } from '@/lib/helper/profile';
 import { ApiError } from '@/components/common';
@@ -130,7 +130,7 @@ export const LoginForm = () => {
     });
 
   return (
-    <AuthFormContainer title="Login" icon={MdLockOutline}>
+    <AuthFormContainer title="Login" icon={Lock}>
       <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="email"

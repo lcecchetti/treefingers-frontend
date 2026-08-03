@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { Link } from '@/components/ui';
 import { usePathname } from 'next/navigation';
 
@@ -17,7 +17,7 @@ export const Logo = ({ className, main }: LogoProps) => {
   const Component = isHomePage && main ? 'h1' : 'span';
 
   return (
-      <Component className={clsx('text-3xl lg:text-5xl font-serif', className)}>
+      <Component className={cn('text-3xl lg:text-5xl font-serif', className)}>
         <Link href="/">
           Treefingers
         </Link>

@@ -4,17 +4,16 @@ import { Spinner, Text, Link, Container, Button } from '@/components/ui';
 import { useFormattedDate, DATE_LONG } from '@/lib/helper/date';
 import { getStoryUrl, isStoryRoot } from '@/lib/helper/story';
 import { useQuery } from '@apollo/client';
-import { FaAngleUp, FaAngleDoubleUp, FaTimes } from 'react-icons/fa';
+import { ChevronUp, ChevronsUp, X, Pencil } from 'lucide-react';
 import { Avatar } from '@/components/user';
 import { StoryChapters } from '@/components/story/story-chapters';
 import { StoryActions } from '@/components/story/story-actions';
 import { ApiError } from '@/components/common';
 import { TagList } from '@/components/tag';
 import { StoryTree, type StoryTreeStory } from './story-tree';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { getForestUrl } from '@/lib/helper/forest';
 import { useCurrentUser } from '@/lib/auth/current-user';
-import { FaEdit } from 'react-icons/fa';
 import { useState } from 'react';
 import { StoryNew } from '@/components/story/story-new';
 import { QUERY_STORY } from './story-view.query';
@@ -39,7 +38,7 @@ export const StoryView = ({ className, story }: StoryViewProps) => {
   const createdAt = useFormattedDate(data!.story!.createdAt, DATE_LONG);
 
   return (
-    <div className={clsx('flex flex-col gap-md', className)}>
+    <div className={cn('flex flex-col gap-md', className)}>
         <Spinner loading={loading}/>
         <ApiError error={error ?? false}/>
 
@@ -50,7 +49,7 @@ export const StoryView = ({ className, story }: StoryViewProps) => {
                 <div className="flex flex-col gap-md w-full">
                   <div className="flex gap-md justify-between items-center">
                     <Text variant="h2">Edit your story</Text>
-                    <FaTimes className="text-xl cursor-pointer" onClick={() => setIsEditing(false)} />
+                    <X className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(false)} />
                   </div>
                   <StoryNew className="w-full" story={data!.story!} callback={() => setIsEditing(false)} />
                 </div>
@@ -62,12 +61,12 @@ export const StoryView = ({ className, story }: StoryViewProps) => {
                     <div className="text-center flex justify-around items-center">
                       {!isStoryRoot(data!.story!) &&
                         <>
-                          <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.parent!)} icon={FaAngleUp}>Prev chapter</Button>
-                          <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.root!)} icon={FaAngleDoubleUp}>Back to root</Button>
+                          <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.parent!)} icon={ChevronUp}>Prev chapter</Button>
+                          <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.root!)} icon={ChevronsUp}>Back to root</Button>
                         </>
                       }
                       {data!.story!.forest &&
-                        <Button as={Link} variant="outlined" size="sm" href={getForestUrl(data!.story!.forest)} icon={FaAngleDoubleUp}>Back to forest</Button>
+                        <Button as={Link} variant="outlined" size="sm" href={getForestUrl(data!.story!.forest)} icon={ChevronsUp}>Back to forest</Button>
                       }
                     </div>
                   }
@@ -81,7 +80,7 @@ export const StoryView = ({ className, story }: StoryViewProps) => {
                     <div className="flex gap-md justify-start items-center">
                       <Text variant="storyTitle" className="break-words">{data!.story!.title}</Text>
                       {data!.story!.isEditable &&
-                        <FaEdit className="text-lg cursor-pointer" onClick={() => setIsEditing(true)} />
+                        <Pencil className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(true)} />
                       }
                     </div>
                     <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data!.story!.content}</Text>

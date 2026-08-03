@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, FormField, Button } from '@/components/ui';
-import { MdLockOutline } from 'react-icons/md';
+import { Lock } from 'lucide-react';
 import { getLoginUrl, getRegisterUrl, PARAM_AUTH_REDIRECT_TO } from '@/lib/helper/auth';
 import { useSearchParams } from 'next/navigation';
 import { AuthFormContainer } from './auth-form-container';
@@ -69,7 +69,7 @@ export const ForgotPasswordForm = () => {
     forgotPassword({ variables: { input: { email } } });
 
   return (
-    <AuthFormContainer title="Forgot password" icon={MdLockOutline}>
+    <AuthFormContainer title="Forgot password" icon={Lock}>
       <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="email"

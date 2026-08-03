@@ -4,7 +4,7 @@ import { Spinner, Text, Button, Link } from '@/components/ui';
 import { useQuery } from '@apollo/client';
 import { StoryList } from '@/components/story';
 import { ApiError, PageIntro } from '@/components/common';
-import { FaEdit, FaSeedling, FaTimes } from 'react-icons/fa';
+import { Pencil, Sprout, X } from 'lucide-react';
 import { ForestActions } from '@/components/forest/forest-actions';
 import { getStoryNewUrl } from '@/lib/helper/story';
 import { useCurrentUser } from '@/lib/auth/current-user';
@@ -43,12 +43,12 @@ export const ForestView = ({ className, forest }: ForestViewProps) => {
                   <div className="flex gap-md justify-start items-center">
                     <Text variant="pageTitle" className="break-words">{data.forest.name}</Text>
                     {data.forest.isEditable &&
-                      <FaEdit className="text-lg cursor-pointer" onClick={() => setIsEditing(true)} />
+                      <Pencil className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(true)} />
                     }
                   </div>
 
                   <div className="flex gap-md justify-between">
-                    <Button as={Link} icon={FaSeedling} href={getStoryNewUrl(data.forest)}>Plant</Button>
+                    <Button as={Link} icon={Sprout} href={getStoryNewUrl(data.forest)}>Plant</Button>
                     <ForestActions forest={data.forest} />
                   </div>
                 </div>
@@ -65,7 +65,7 @@ export const ForestView = ({ className, forest }: ForestViewProps) => {
             <div className="flex flex-col gap-md w-full my-md">
               <div className="flex gap-md justify-between items-center">
                 <Text variant="h2">Edit your forest</Text>
-                <FaTimes className="text-xl cursor-pointer" onClick={() => setIsEditing(false)} />
+                <X className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(false)} />
               </div>
               <ForestNew className="w-full" forest={data.forest} callback={() => setIsEditing(false)} />
             </div>

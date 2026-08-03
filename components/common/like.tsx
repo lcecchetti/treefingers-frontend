@@ -1,10 +1,10 @@
 'use client';
 
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { Heart } from 'lucide-react';
 import { useMutation } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Text } from '@/components/ui';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
 import * as analytics from '@/lib/analytics';
@@ -133,22 +133,22 @@ export const Like = ({ entity, viewOnly }: LikeProps) => {
     entity.currentUserLike ? await deleteLike() : await createLike();
   }
 
-  // pick icon according to user like presence
-  const Icon = entity.currentUserLike ? FaHeart : FaRegHeart;
+  // pick icon fill according to user like presence
+  const isLiked = !!entity.currentUserLike;
 
   return (
-    <div className={clsx(
+    <div className={cn(
       'flex gap-sm items-center',
       error && 'text-error',
     )}>
       {!!entity.likesCount &&
         <Text variant="span">{entity.likesCount}</Text>
       }
-      <Icon className={clsx(
-        'text-2xl',
-        !viewOnly && 'cursor-pointer',
-      )}
-      onClick={toogleLike} />
+      <Heart
+        className={cn('w-6 h-6', !viewOnly && 'cursor-pointer')}
+        fill={isLiked ? 'currentColor' : 'none'}
+        onClick={toogleLike}
+      />
     </div>
   );
 }

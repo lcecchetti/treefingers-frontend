@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { Button, Container, FormField, Text, Link } from '@/components/ui';
 import { ToastDemo } from './toast-demo';
 import type { ReactNode } from 'react';
@@ -11,7 +11,7 @@ interface UiSectionProps {
 
 const UiSection = ({ children, className, title }: UiSectionProps) => {
   return (
-    <div className={clsx('mb-lg', className)}>
+    <div className={cn('mb-lg', className)}>
       <Text variant="h2">{title}</Text>
       {children}
     </div>

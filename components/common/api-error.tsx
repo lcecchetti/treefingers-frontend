@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { Text } from '@/components/ui';
 
 export interface ApiErrorProps {
@@ -29,7 +29,7 @@ export const ApiError = ({ className, error }: ApiErrorProps) => {
   }
 
   return (
-    <ul className={clsx('flex flex-col gap-sm', className)}>
+    <ul className={cn('flex flex-col gap-sm', className)}>
       {apiErrors.map((apiError, index) => (
         <li key={index}>
           <Text variant="error">{apiError}</Text>

@@ -1,8 +1,8 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { useUI } from '@/lib/ui/context';
-import { FaSearch, FaTimes } from 'react-icons/fa';
+import { Search, X } from 'lucide-react';
 import { FormField, Container } from '@/components/ui';
 import { getSearchUrl } from '@/lib/helper/search';
 import { Controller, useForm } from 'react-hook-form';
@@ -40,7 +40,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className={clsx('h-full w-full absolute bg-base -top-full left-0 transition-transform transform-gpu', {
+    <div className={cn('h-full w-full absolute bg-base -top-full left-0 transition-transform transform-gpu', {
       ['translate-y-full']: isSearchOpen,
     })}>
       <Container className="h-full">
@@ -62,9 +62,9 @@ export const SearchBar = () => {
               )}
             />
             <button type="submit" className="focus:outline-none">
-              <FaSearch className="text-2xl cursor-pointer" />
+              <Search className="w-6 h-6 cursor-pointer" />
             </button>
-            <FaTimes onClick={closeSearch} className="text-2xl cursor-pointer" />
+            <X onClick={closeSearch} className="w-6 h-6 cursor-pointer" />
           </form>
         }
       </Container>

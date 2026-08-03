@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MdAccountCircle } from 'react-icons/md';
+import { CircleUserRound } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
@@ -100,7 +100,7 @@ export const RegisterForm = () => {
     });
 
   return (
-    <AuthFormContainer title="Register" icon={MdAccountCircle}>
+    <AuthFormContainer title="Register" icon={CircleUserRound}>
       <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="email"
