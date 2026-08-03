@@ -1,7 +1,7 @@
 import { Link, Button, Text } from '@/components/ui';
 import { Avatar } from '@/components/user';
 import clsx from 'clsx';
-import { Card, CardBody, CardHeader } from '@/components/common';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { getUserUrl, type UserRef } from '@/lib/helper/user';
 import { UserFollowership, type UserFollowershipUser } from './user-followership';
 
@@ -22,10 +22,10 @@ export const UserCard = ({ className, user }: UserCardProps) => {
         <UserFollowership user={user} />
       </CardHeader>
 
-      <CardBody>
+      <CardContent>
         <Text className="break-words w-full text-center">{user.excerpt}</Text>
         <Button as={Link} href={getUserUrl(user)} variant="primary-contrast">View profile</Button>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

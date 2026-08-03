@@ -2,12 +2,12 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
 import { useUI } from '@/lib/ui/context';
 import { useTheme } from 'next-themes';
 import { getForestsUrl } from '@/lib/helper/forest';
 import { ThemeIcon } from '@/components/common';
 import { Link, Text } from '@/components/ui';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { getStoriesUrl } from '@/lib/helper/story';
 import { getAboutUrl } from '@/lib/helper/content';
 import { getAuthorsUrl } from '@/lib/helper/user';
@@ -90,24 +90,27 @@ export const Drawer = () => {
   ];
 
   return (
-    <div className={clsx(
-      'fixed lg:hidden top-header left-full bg-primary w-full h-screen-no-header transition-transform transform-gpu z-40',
-      {
-        ['-translate-x-full']: isDrawerOpen,
-      }
-    )}>
-      <div className="h-full flex flex-col justify-center">
-        <ul className="p-md flex flex-col overflow-y-auto">
-          {drawerItems.map((item, index) => (
-            <li key={index} className="text-primary-contrast text-xl py-sm text-center">
-              <Link href={item.href ?? '#'} className="inline-flex items-center justify-center relative" onClick={item.onClick ? item.onClick : undefined}>
-                <Text>{item.label}</Text>
-                {!!item.Icon && <item.Icon className="ml-sm" />}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <Sheet open={isDrawerOpen} onOpenChange={(open) => { if (!open) closeDrawer(); }}>
+      <SheetContent
+        forceMount
+        showClose={false}
+        showOverlay={false}
+        className="fixed lg:hidden top-header left-full bg-primary w-full h-screen-no-header transition-transform transform-gpu z-40 data-[state=open]:-translate-x-full focus:outline-none"
+      >
+        <SheetTitle className="sr-only">Navigation</SheetTitle>
+        <div className="h-full flex flex-col justify-center">
+          <ul className="p-md flex flex-col overflow-y-auto">
+            {drawerItems.map((item, index) => (
+              <li key={index} className="text-primary-contrast text-xl py-sm text-center">
+                <Link href={item.href ?? '#'} className="inline-flex items-center justify-center relative" onClick={item.onClick ? item.onClick : undefined}>
+                  <Text>{item.label}</Text>
+                  {!!item.Icon && <item.Icon className="ml-sm" />}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };

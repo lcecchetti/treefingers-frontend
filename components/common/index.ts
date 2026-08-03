@@ -9,5 +9,4 @@ export { Like } from './like';
 export { Flyout } from './flyout';
 export { ApiError } from './api-error';
 export { InfiniteScroll } from './infinite-scroll';
-export { Card, CardHeader, CardBody, CardFooter } from './card';
 export { Toasts } from './toasts';

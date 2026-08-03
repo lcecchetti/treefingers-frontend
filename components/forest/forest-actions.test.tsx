@@ -84,7 +84,10 @@ describe('ForestActions', () => {
     // Real assertion (rather than "nothing threw"): the click drives openFlyout
     // through UIProvider state into a mounted Flyout, whose title and CommentList
     // content only appear once flyoutType/flyoutData match this forest.
-    expect(await screen.findByText('Comments')).toBeInTheDocument();
+    // Queried by heading level (h3) rather than plain text, since SheetContent
+    // also renders a visually-hidden `<SheetTitle>` ("Comments" as an h2) for
+    // Radix a11y compliance alongside the real visible header.
+    expect(await screen.findByRole('heading', { level: 3, name: 'Comments' })).toBeInTheDocument();
     expect(await screen.findByText('This forest has no comments yet.')).toBeInTheDocument();
   });
 });

@@ -7,7 +7,7 @@ import { Avatar } from '@/components/user';
 import { StoryActions, type StoryActionsStory } from '@/components/story/story-actions';
 import clsx from 'clsx';
 import { TagList } from '@/components/tag';
-import { Card, CardBody, CardFooter, CardHeader } from '@/components/common';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 
 interface StoryCardStory extends StoryActionsStory {
   parent?: { id: string } | null;
@@ -33,7 +33,7 @@ export const StoryCard = ({ className, story }: StoryCardProps) => {
         <Avatar className="justify-end" user={story.author} showName={true} />
       </CardHeader>
 
-      <CardBody className={clsx({
+      <CardContent className={clsx({
           ['px-lg']: isChapter,
         })
       }>
@@ -44,7 +44,7 @@ export const StoryCard = ({ className, story }: StoryCardProps) => {
           <Text variant="p" className="break-words w-full text-center">{story.excerpt}</Text>
         }
         <Button as={Link} href={getStoryUrl(story)} variant="primary-contrast">{isChapter ? 'Select' : 'Read More'}</Button>
-      </CardBody>
+      </CardContent>
 
       <CardFooter>
         <TagList className="max-h-[36px] overflow-hidden" tags={story.tags} buttonVariant="primary-contrast" />

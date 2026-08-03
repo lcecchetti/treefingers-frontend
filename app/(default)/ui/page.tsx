@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { Button, Container, FormField, Text, Link } from '@/components/ui';
+import { ToastDemo } from './toast-demo';
 import type { ReactNode } from 'react';
 
 interface UiSectionProps {
@@ -59,6 +60,10 @@ export default function UiPage() {
           <FormField name="textarea" type="textarea" placeholder="Placeholder" label="label" />
           <FormField name="select" type="select" label="label" options={[{ value: 1, label: '' }, { value: 2, label: '' }, { value: 3, label: '' }]} />
         </div>
+      </UiSection>
+
+      <UiSection title="Toasts">
+        <ToastDemo />
       </UiSection>
     </Container>
   );
