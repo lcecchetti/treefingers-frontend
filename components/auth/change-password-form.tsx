@@ -12,7 +12,7 @@ import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { ApiError } from '@/components/common';
 import { useState } from 'react';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';
 
 const MUTATION_CHANGE_PASSWORD = graphql(`
@@ -44,7 +44,7 @@ export const ChangePasswordForm = ({ token }: ChangePasswordFormProps) => {
 
   const [changePassword] = useMutation(MUTATION_CHANGE_PASSWORD, {
     onCompleted() {
-      gtag.event({
+      analytics.event({
         action: 'change-password',
         category: 'auth',
         label: 'success',
@@ -53,7 +53,7 @@ export const ChangePasswordForm = ({ token }: ChangePasswordFormProps) => {
       router.push(getLoginUrl());
     },
     onError(e) {
-      gtag.event({
+      analytics.event({
         action: 'change-password',
         category: 'auth',
         label: 'error',

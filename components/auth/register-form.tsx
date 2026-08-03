@@ -14,7 +14,7 @@ import { getProfileMeUrl } from '@/lib/helper/profile';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { ApiError } from '@/components/common';
 import { AuthFormContainer } from './auth-form-container';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';
 
 const MUTATION_REGISTER = graphql(`
@@ -52,7 +52,7 @@ export const RegisterForm = () => {
 
   const [register] = useMutation(MUTATION_REGISTER, {
     onError: (e) => {
-      gtag.event({
+      analytics.event({
         action: 'login',
         category: 'auth',
         label: 'error',
@@ -89,7 +89,7 @@ export const RegisterForm = () => {
       variables: { input: { data: values } },
       onCompleted: async () => {
         reset();
-        gtag.event({
+        analytics.event({
           action: 'register',
           category: 'auth',
           label: 'success',

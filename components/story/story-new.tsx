@@ -11,7 +11,7 @@ import { getStoryUrl } from '@/lib/helper/story';
 import { AuthRequired } from '@/components/auth';
 import { ApiError } from '@/components/common';
 import { FaTimes } from 'react-icons/fa';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
@@ -166,7 +166,7 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
           },
         }},
         onCompleted: () => {
-          gtag.event({
+          analytics.event({
             action: 'edit-story',
             category: 'story',
             label: 'success',
@@ -180,7 +180,7 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
           }
         },
         onError: (e) => {
-          gtag.event({
+          analytics.event({
             action: 'edit-story',
             category: 'story',
             label: 'error',
@@ -194,7 +194,7 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
           title, content, parent: parent?.id, forest, tags
         }}},
         onCompleted: (data) => {
-          gtag.event({
+          analytics.event({
             action: 'create-story',
             category: 'story',
             label: 'success',
@@ -210,7 +210,7 @@ export const StoryNew = ({ story, parent, forest, callback, className }: StoryNe
           router.push(getStoryUrl(data.createStory.story));
         },
         onError: (e) => {
-          gtag.event({
+          analytics.event({
             action: 'create-story',
             category: 'story',
             label: 'error',

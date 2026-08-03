@@ -11,7 +11,7 @@ import { AuthFormContainer } from './auth-form-container';
 import { useMutation, type ApolloError } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { ApiError } from '@/components/common';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useState } from 'react';
 import { useUI } from '@/lib/ui/context';
 
@@ -36,7 +36,7 @@ export const ForgotPasswordForm = () => {
 
   const [forgotPassword] = useMutation(MUTATION_FORGOT_PASSWORD, {
     onCompleted: () => {
-      gtag.event({
+      analytics.event({
         action: 'forgot-password',
         category: 'auth',
         label: 'success',
@@ -45,7 +45,7 @@ export const ForgotPasswordForm = () => {
       setError(false);
     },
     onError: (e) => {
-      gtag.event({
+      analytics.event({
         action: 'forgot-password',
         category: 'auth',
         label: 'error',

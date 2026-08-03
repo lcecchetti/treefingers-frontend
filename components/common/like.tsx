@@ -7,7 +7,7 @@ import { Text } from '@/components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';
 
 const MUTATION_LIKE = graphql(`
@@ -81,7 +81,7 @@ export const Like = ({ entity, viewOnly }: LikeProps) => {
   const [createLike, { loading: createLoading }] = useMutation(MUTATION_LIKE, {
     variables,
     onCompleted: () => {
-      gtag.event({
+      analytics.event({
         action: `like-${entity.__typename.toLowerCase()}`,
         category: 'like',
         label: 'success',
@@ -89,7 +89,7 @@ export const Like = ({ entity, viewOnly }: LikeProps) => {
       setError(false);
     },
     onError: () => {
-      gtag.event({
+      analytics.event({
         action: `like-${entity.__typename.toLowerCase()}`,
         category: 'like',
         label: 'error'
@@ -100,7 +100,7 @@ export const Like = ({ entity, viewOnly }: LikeProps) => {
   const [deleteLike, { loading: deleteLoading }] = useMutation(MUTATION_DISLIKE, {
     variables,
     onCompleted: () => {
-      gtag.event({
+      analytics.event({
         action: `dislike-${entity.__typename.toLowerCase()}`,
         category: 'like',
         label: 'success',
@@ -108,7 +108,7 @@ export const Like = ({ entity, viewOnly }: LikeProps) => {
       setError(false);
     },
     onError: () => {
-      gtag.event({
+      analytics.event({
         action: `dislike-${entity.__typename.toLowerCase()}`,
         category: 'like',
         label: 'error',

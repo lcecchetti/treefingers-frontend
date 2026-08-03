@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getLoginUrl } from '@/lib/helper/auth';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { Spinner, Container } from '@/components/ui';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import type { ReactNode } from 'react';
 
 interface WithAuthenticationProps {
@@ -19,7 +19,7 @@ export const WithAuthentication = ({ children }: WithAuthenticationProps) => {
   useEffect(() => {
     if (!loading && !currentUser) {
       // redirect to login
-      gtag.event({
+      analytics.event({
         action: 'redirect-unauthenticated',
         category: 'auth',
       });

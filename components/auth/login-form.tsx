@@ -14,7 +14,7 @@ import { getForgotPasswordUrl, getRegisterUrl, getSafeRedirect, PARAM_AUTH_REDIR
 import { getProfileMeUrl } from '@/lib/helper/profile';
 import { ApiError } from '@/components/common';
 import { AuthFormContainer } from './auth-form-container';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';
 
 const MUTATION_LOGIN = graphql(`
@@ -59,7 +59,7 @@ export const LoginForm = () => {
       setResendActivateAccountTo(false);
       // the backend already set the auth cookie via Set-Cookie on this response
       await client.resetStore();
-      gtag.event({
+      analytics.event({
         action: 'login',
         category: 'auth',
         label: 'success',
@@ -72,7 +72,7 @@ export const LoginForm = () => {
 
   const [resendActivateAccount] = useMutation(MUTATION_RESEND_ACTIVATE_ACCOUNT, {
     onCompleted: async () => {
-      gtag.event({
+      analytics.event({
         action: 'resend-activate-account',
         category: 'auth',
         label: 'success',
@@ -82,7 +82,7 @@ export const LoginForm = () => {
       setError(false);
     },
     onError: (e) => {
-      gtag.event({
+      analytics.event({
         action: 'resend-activate-account',
         category: 'auth',
         label: 'error',
@@ -117,7 +117,7 @@ export const LoginForm = () => {
     login({
       variables: { input: { email, password } },
       onError: (e) => {
-        gtag.event({
+        analytics.event({
           action: 'login',
           category: 'auth',
           label: 'error',

@@ -9,7 +9,7 @@ import { getLoginUrl } from '@/lib/helper/auth';
 import { getProfileMeUrl } from '@/lib/helper/profile';
 import { ThemeIcon } from '@/components/common';
 import { useCurrentUser } from '@/lib/auth/current-user';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { CurrentUser } from '@/components/user';
 
 interface IconListItem {
@@ -36,7 +36,7 @@ export const IconList = () => {
       Component: ThemeIcon,
       onClick: () => {
         const toggledTheme = getToggledTheme(resolvedTheme ?? '');
-        gtag.event({
+        analytics.event({
           action: 'change-theme',
           category: 'theme',
           label: toggledTheme,

@@ -11,7 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards, Navigation } from 'swiper';
 import { QUERY_STORIES } from '@/components/story/story-list.query';
 import { StoryCard } from '@/components/story/story-card';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useCurrentUser } from '@/lib/auth/current-user';
 
 interface StoryChaptersProps {
@@ -36,7 +36,7 @@ export const StoryChapters = ({ className, parent, first = 10 }: StoryChaptersPr
   });
 
   const toggleWriting = (show: boolean) => {
-    gtag.event({
+    analytics.event({
       action: 'toggle-writing',
       category: 'chapters',
       label: show ? 'show' : 'hide',

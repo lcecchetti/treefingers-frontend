@@ -5,7 +5,7 @@ import { Link, Text } from '@/components/ui';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';
 import { formatDate, DATE_LONG } from '@/lib/helper/date';
 import type { NotificationsQuery } from '@/lib/graphql/generated/graphql';
@@ -32,14 +32,14 @@ export const Notification = ({ notification }: NotificationProps) => {
   const [readNotification] = useMutation(MUTATION_READ_NOTIFICATION, {
     variables: { input: { id: notification.id } },
     onCompleted() {
-      gtag.event({
+      analytics.event({
         action: 'read',
         category: 'notifications',
         label: 'success',
       });
     },
     onError() {
-      gtag.event({
+      analytics.event({
         action: 'read',
         category: 'notifications',
         label: 'error',

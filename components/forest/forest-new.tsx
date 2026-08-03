@@ -10,7 +10,7 @@ import { FormField, Button } from '@/components/ui';
 import { getForestUrl } from '@/lib/helper/forest';
 import { AuthRequired } from '@/components/auth';
 import { ApiError } from '@/components/common';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useState } from 'react';
 import { useUI } from '@/lib/ui/context';
 
@@ -86,7 +86,7 @@ export const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
         },
         onCompleted: (data) => {
           reset();
-          gtag.event({
+          analytics.event({
             action: 'edit-forest',
             category: 'forest',
             label: 'success',
@@ -99,7 +99,7 @@ export const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
           setError(false);
         },
         onError: (e) => {
-          gtag.event({
+          analytics.event({
             action: 'edit-forest',
             category: 'forest',
             label: 'error',
@@ -114,7 +114,7 @@ export const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
         }}},
         onCompleted: (data) => {
           reset();
-          gtag.event({
+          analytics.event({
             action: 'create-forest',
             category: 'forest',
             label: 'success',
@@ -129,7 +129,7 @@ export const ForestNew = ({ className, forest, callback }: ForestNewProps) => {
           setError(false);
         },
         onError: (e) => {
-          gtag.event({
+          analytics.event({
             action: 'create-forest',
             category: 'forest',
             label: 'error',

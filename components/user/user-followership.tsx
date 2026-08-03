@@ -7,7 +7,7 @@ import { Text } from '@/components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';
 
 const MUTATION_FOLLOW = graphql(`
@@ -65,7 +65,7 @@ export const UserFollowership = ({ user, viewOnly }: UserFollowershipProps) => {
   const [follow, { loading: followLoading }] = useMutation(MUTATION_FOLLOW, {
     variables,
     onCompleted: () => {
-      gtag.event({
+      analytics.event({
         action: 'follow',
         category: 'user',
         label: 'success',
@@ -73,7 +73,7 @@ export const UserFollowership = ({ user, viewOnly }: UserFollowershipProps) => {
       setError(false);
     },
     onError: () => {
-      gtag.event({
+      analytics.event({
         action: 'follow',
         category: 'user',
         label: 'error',
@@ -84,7 +84,7 @@ export const UserFollowership = ({ user, viewOnly }: UserFollowershipProps) => {
   const [unfollow, { loading: unfollowLoading }] = useMutation(MUTATION_UNFOLLOW, {
     variables,
     onCompleted: () => {
-      gtag.event({
+      analytics.event({
         action: 'unfollow',
         category: 'user',
         label: 'success',
@@ -92,7 +92,7 @@ export const UserFollowership = ({ user, viewOnly }: UserFollowershipProps) => {
       setError(false);
     },
     onError: () => {
-      gtag.event({
+      analytics.event({
         action: 'unfollow',
         category: 'user',
         label: 'error',

@@ -5,7 +5,7 @@ import { InfiniteScroll } from '@/components/common';
 import { useQuery, useMutation } from '@apollo/client';
 import { graphql } from '@/lib/graphql/generated';
 import { Notification } from './notification';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';
 
 export const QUERY_NOTIFICATIONS = graphql(`
@@ -57,7 +57,7 @@ export const NotificationList = () => {
   });
   const [readAllNotifications] = useMutation(MUTATION_READ_ALL_NOTIFICATIONS, {
     onCompleted(r) {
-      gtag.event({
+      analytics.event({
         action: 'read-all',
         category: 'notifications',
         label: 'success',
@@ -69,7 +69,7 @@ export const NotificationList = () => {
       showToast(`All ${r.readAllNotifications.count} notifications have been marked as read!`);
     },
     onError() {
-      gtag.event({
+      analytics.event({
         action: 'read-all',
         category: 'notifications',
         label: 'error',

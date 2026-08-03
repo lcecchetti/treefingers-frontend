@@ -11,7 +11,7 @@ import { Link, Text } from '@/components/ui';
 import { getStoriesUrl } from '@/lib/helper/story';
 import { getAboutUrl } from '@/lib/helper/content';
 import { getAuthorsUrl } from '@/lib/helper/user';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 
 interface DrawerItem {
   label: string;
@@ -79,7 +79,7 @@ export const Drawer = () => {
       Icon: ThemeIcon,
       onClick: () => {
         const toggledTheme = getToggledTheme(resolvedTheme ?? '');
-        gtag.event({
+        analytics.event({
           action: 'change-theme',
           category: 'theme',
           label: toggledTheme,

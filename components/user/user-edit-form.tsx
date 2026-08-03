@@ -10,7 +10,7 @@ import { Text, Button, FormField, Spinner } from '@/components/ui';
 import { ApiError } from '@/components/common';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { QUERY_USER } from '@/components/user';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 
 const MUTATION_EDIT_USER = graphql(`
   mutation editUser($input: EditUserInput!) {
@@ -38,14 +38,14 @@ export const UserEditForm = () => {
   const { currentUser } = useCurrentUser();
   const [editUser, { data: editData, error: editError }] = useMutation(MUTATION_EDIT_USER, {
     onCompleted: () => {
-      gtag.event({
+      analytics.event({
         action: 'edit-user',
         category: 'user',
         label: 'success',
       });
     },
     onError: () => {
-      gtag.event({
+      analytics.event({
         action: 'edit-user',
         category: 'user',
         label: 'error',

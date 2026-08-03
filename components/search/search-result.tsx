@@ -6,7 +6,7 @@ import { StoryList } from '@/components/story';
 import { UserList } from '@/components/user';
 import { Button, Text } from '@/components/ui';
 import { useState } from 'react';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 
 interface SearchResultProps {
   className?: string;
@@ -33,7 +33,7 @@ export const SearchResult = ({ className, query }: SearchResultProps) => {
           <li key={key}>
             <Button variant={currentTab === key ? 'outlined' : 'primary'} onClick={() => {
               setCurrentTab(key);
-              gtag.event({
+              analytics.event({
                 action: `search-tab-${key}`,
                 category: 'search',
               });

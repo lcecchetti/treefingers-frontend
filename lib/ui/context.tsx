@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, type ReactElement, type ReactNode } from 'react';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 
 export const themes = {
   dark: 'dark',
@@ -156,7 +156,7 @@ export const UIProvider = (props: { children: React.ReactNode }): ReactElement =
   const getToggledTheme = (currentTheme: string) => (currentTheme !== themes.dark ? themes.dark : themes.light);
 
   const openFlyout = (flyoutType: string, flyoutData?: unknown) => {
-    gtag.event({
+    analytics.event({
       action: 'open-flyout',
       category: 'flyout',
       label: flyoutType,

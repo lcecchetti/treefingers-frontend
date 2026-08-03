@@ -10,5 +10,4 @@ export { Flyout } from './flyout';
 export { ApiError } from './api-error';
 export { InfiniteScroll } from './infinite-scroll';
 export { Card, CardHeader, CardBody, CardFooter } from './card';
-export { CookieConsent } from './cookie-consent';
 export { Toasts } from './toasts';

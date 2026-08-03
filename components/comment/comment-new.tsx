@@ -9,7 +9,7 @@ import { FormField, Button } from '@/components/ui';
 import { AuthRequired } from '@/components/auth';
 import { QUERY_COMMENTS, getCommentsFilter, type CommentableEntity } from '@/components/comment/comment-list';
 import { ApiError } from '@/components/common';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useState } from 'react';
 import type { CommentsQueryVariables } from '@/lib/graphql/generated/graphql';
 
@@ -95,7 +95,7 @@ export const CommentNew = ({ entity, sort, last }: CommentNewProps) => {
       variables: { input: { data: { content, ...(entity.__typename === 'Story' ? { story: entity.id } : { forest: entity.id }) } } },
       onCompleted: () => {
         reset();
-        gtag.event({
+        analytics.event({
           action: `submit-comment-${entity.__typename.toLowerCase()}`,
           category: 'comment',
           label: 'success'
@@ -103,7 +103,7 @@ export const CommentNew = ({ entity, sort, last }: CommentNewProps) => {
         setError(false);
       },
       onError: (e) => {
-        gtag.event({
+        analytics.event({
           action: `submit-comment-${entity.__typename.toLowerCase()}`,
           category: 'comment',
           label: 'error',

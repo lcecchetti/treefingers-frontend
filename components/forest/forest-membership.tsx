@@ -7,7 +7,7 @@ import { Text } from '@/components/ui';
 import clsx from 'clsx';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
-import * as gtag from '@/lib/gtag';
+import * as analytics from '@/lib/analytics';
 import { useUI } from '@/lib/ui/context';
 
 const MUTATION_JOIN = graphql(`
@@ -66,7 +66,7 @@ export const ForestMembership = ({ forest, viewOnly }: ForestMembershipProps) =>
   const [join, { loading: joinLoading }] = useMutation(MUTATION_JOIN, {
     variables,
     onCompleted: () => {
-      gtag.event({
+      analytics.event({
         action: 'join',
         category: 'forest',
         label: 'success',
@@ -74,7 +74,7 @@ export const ForestMembership = ({ forest, viewOnly }: ForestMembershipProps) =>
       setError(false);
     },
     onError: () => {
-      gtag.event({
+      analytics.event({
         action: 'join',
         category: 'forest',
         label: 'error',
@@ -85,7 +85,7 @@ export const ForestMembership = ({ forest, viewOnly }: ForestMembershipProps) =>
   const [leave, { loading: leaveLoading }] = useMutation(MUTATION_LEAVE, {
     variables,
     onCompleted: () => {
-      gtag.event({
+      analytics.event({
         action: 'leave',
         category: 'forest',
         label: 'success',
@@ -93,7 +93,7 @@ export const ForestMembership = ({ forest, viewOnly }: ForestMembershipProps) =>
       setError(false);
     },
     onError: () => {
-      gtag.event({
+      analytics.event({
         action: 'leave',
         category: 'forest',
         label: 'error',
