@@ -37,7 +37,7 @@ export const StoryView = ({ className, story }: StoryViewProps) => {
 
   // useFormattedDate must run every render regardless of data presence (rules of hooks);
   // feed it a valid placeholder date rather than '' (which date-fns throws on) — the
-  // formatted result is only ever rendered inside the `data!.story &&` guard below.
+  // formatted result is only ever rendered inside the `data?.story &&` guard below.
   const createdAt = useFormattedDate(data?.story?.createdAt ?? new Date(0).toISOString(), DATE_LONG);
 
   return (
@@ -47,54 +47,54 @@ export const StoryView = ({ className, story }: StoryViewProps) => {
         <div className="relative flex flex-col gap-md lg:min-h-screen overflow-hidden">
           <Container className="flex justify-end">
             <div className="w-full lg:w-1/2 z-10 mb-xl">
-              {isEditing &&
+              {isEditing && data?.story &&
                 <div className="flex flex-col gap-md w-full">
                   <div className="flex gap-md justify-between items-center">
                     <Text variant="h2">Edit your story</Text>
                     <X className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(false)} />
                   </div>
-                  <StoryNew className="w-full" story={data!.story!} callback={() => setIsEditing(false)} />
+                  <StoryNew className="w-full" story={data.story} callback={() => setIsEditing(false)} />
                 </div>
               }
 
               {!isEditing &&
                 <div className="flex flex-col gap-md">
-                  {data!.story &&
+                  {data?.story &&
                     <>
                       <div className="text-center flex justify-around items-center">
-                        {!isStoryRoot(data!.story!) &&
+                        {!isStoryRoot(data.story) &&
                           <>
-                            <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.parent!)} icon={ChevronUp}>Prev chapter</Button>
-                            <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data!.story!.root!)} icon={ChevronsUp}>Back to root</Button>
+                            <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data.story.parent!)} icon={ChevronUp}>Prev chapter</Button>
+                            <Button as={Link} variant="outlined" size="sm" href={getStoryUrl(data.story.root!)} icon={ChevronsUp}>Back to root</Button>
                           </>
                         }
-                        {data!.story!.forest &&
-                          <Button as={Link} variant="outlined" size="sm" href={getForestUrl(data!.story!.forest)} icon={ChevronsUp}>Back to forest</Button>
+                        {data.story.forest &&
+                          <Button as={Link} variant="outlined" size="sm" href={getForestUrl(data.story.forest)} icon={ChevronsUp}>Back to forest</Button>
                         }
                       </div>
 
                       <div className="flex flex-col gap-md">
                         <div className="flex justify-between items-center">
                           <Text variant="span">{createdAt}</Text>
-                          <Avatar user={data!.story!.author} showName={true} />
+                          <Avatar user={data.story.author} showName={true} />
                         </div>
 
                         <div className="flex gap-md justify-start items-center">
-                          <Text variant="storyTitle" className="break-words">{data!.story!.title}</Text>
-                          {data!.story!.isEditable &&
+                          <Text variant="storyTitle" className="break-words">{data.story.title}</Text>
+                          {data.story.isEditable &&
                             <Pencil className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(true)} />
                           }
                         </div>
-                        <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data!.story!.content}</Text>
+                        <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data.story.content}</Text>
 
                         <div className="flex justify-between items-center">
-                          <TagList tags={data!.story!.tags} />
-                          <StoryActions className="lg:hidden" story={data!.story!} />
-                          <StoryActions className="hidden lg:flex" story={data!.story!} disabledActions={{ tree: true }} />
+                          <TagList tags={data.story.tags} />
+                          <StoryActions className="lg:hidden" story={data.story} />
+                          <StoryActions className="hidden lg:flex" story={data.story} disabledActions={{ tree: true }} />
                         </div>
                       </div>
 
-                      <StoryChapters parent={data!.story!} />
+                      <StoryChapters parent={data.story} />
                     </>
                   }
                 </div>

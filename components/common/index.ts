@@ -8,5 +8,6 @@ export { PageIntro } from './page-intro';
 export { Like } from './like';
 export { Flyout } from './flyout';
 export { ApiError } from './api-error';
+export { ClientOnly } from './client-only';
 export { InfiniteScroll } from './infinite-scroll';
 export { Toasts } from './toasts';

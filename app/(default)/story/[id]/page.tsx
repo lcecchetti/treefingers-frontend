@@ -1,6 +1,7 @@
 import { cache, Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { QUERY_STORY, StoryView } from '@/components/story';
+import { ClientOnly } from '@/components/common';
 import { Spinner } from '@/components/ui';
 import { publicQuery } from '@/lib/apollo/client';
 import type { Metadata } from 'next';
@@ -45,7 +46,9 @@ export default async function StoryPage({ params }: StoryPageProps) {
 
   return (
     <Suspense fallback={<Spinner className="mt-sm" />}>
-      <StoryView story={{ id }} className="mt-sm" />
+      <ClientOnly fallback={<Spinner className="mt-sm" />}>
+        <StoryView story={{ id }} className="mt-sm" />
+      </ClientOnly>
     </Suspense>
   );
 }

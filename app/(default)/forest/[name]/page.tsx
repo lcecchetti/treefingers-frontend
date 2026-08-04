@@ -1,6 +1,7 @@
 import { cache, Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Container, Spinner } from '@/components/ui';
+import { ClientOnly } from '@/components/common';
 import { publicQuery } from '@/lib/apollo/client';
 import { ForestView, QUERY_FOREST } from '@/components/forest';
 import type { Metadata } from 'next';
@@ -43,7 +44,9 @@ export default async function ForestPage({ params }: ForestPageProps) {
   return (
     <Container>
       <Suspense fallback={<Spinner className="my-lg" />}>
-        <ForestView forest={{ id: forest.id, storiesCount: forest.storiesCount }} />
+        <ClientOnly fallback={<Spinner className="my-lg" />}>
+          <ForestView forest={{ id: forest.id, storiesCount: forest.storiesCount }} />
+        </ClientOnly>
       </Suspense>
     </Container>
   );
