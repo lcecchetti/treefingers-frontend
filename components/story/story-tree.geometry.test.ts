@@ -47,12 +47,12 @@ describe('buildTreeGeometry', () => {
     expect(wide.branchFactor).toBe(3);
   });
 
-  it('grows taller with more depth, capped at 1.45x', () => {
+  it('grows taller with more depth, capped at 1.0x', () => {
     const shallow = buildTreeGeometry({ ...baseStory, depth: 0 });
-    const deep = buildTreeGeometry({ ...baseStory, depth: 20 });
+    const deep = buildTreeGeometry({ ...baseStory, depth: 8 });
     const deeper = buildTreeGeometry({ ...baseStory, depth: 1000 });
-    expect(shallow.heightScale).toBeCloseTo(0.55);
-    expect(deep.heightScale).toBeCloseTo(1.45);
+    expect(shallow.heightScale).toBeCloseTo(0.85);
+    expect(deep.heightScale).toBeCloseTo(1.0);
     expect(deeper.heightScale).toBe(deep.heightScale);
   });
 

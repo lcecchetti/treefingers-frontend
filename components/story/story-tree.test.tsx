@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render } from '@testing-library/react';
 import { StoryTree } from './story-tree';
+import { renderTree } from './story-tree.render';
+
+vi.mock('./story-tree.render', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./story-tree.render')>();
+  return { ...actual, renderTree: vi.fn(actual.renderTree) };
+});
 
 class MockResizeObserver {
   private callback: ResizeObserverCallback;
@@ -13,6 +19,18 @@ class MockResizeObserver {
       this as unknown as ResizeObserver
     );
   }
+  unobserve() {}
+  disconnect() {}
+}
+
+class MockIntersectionObserver {
+  static instances: MockIntersectionObserver[] = [];
+  callback: IntersectionObserverCallback;
+  constructor(callback: IntersectionObserverCallback) {
+    this.callback = callback;
+    MockIntersectionObserver.instances.push(this);
+  }
+  observe() {}
   unobserve() {}
   disconnect() {}
 }
@@ -32,6 +50,8 @@ function mockMatchMedia(reducedMotion: boolean) {
 
 beforeEach(() => {
   vi.stubGlobal('ResizeObserver', MockResizeObserver);
+  MockIntersectionObserver.instances = [];
+  vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
   mockMatchMedia(false);
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
     clearRect: vi.fn(),
@@ -113,5 +133,43 @@ describe('StoryTree', () => {
   it('does not throw when the canvas context is unavailable', () => {
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null as unknown as CanvasRenderingContext2D);
     expect(() => render(<StoryTree story={story} />)).not.toThrow();
+  });
+
+  it('pauses the animation when scrolled out of view, and resumes when visible again', () => {
+    const rafSpy = vi.spyOn(window, 'requestAnimationFrame');
+    const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame');
+    render(<StoryTree story={story} />);
+    expect(rafSpy).toHaveBeenCalled();
+
+    const observer = MockIntersectionObserver.instances.at(-1)!;
+    cancelSpy.mockClear();
+    observer.callback([{ isIntersecting: false } as IntersectionObserverEntry], observer as unknown as IntersectionObserver);
+    expect(cancelSpy).toHaveBeenCalled();
+
+    rafSpy.mockClear();
+    observer.callback([{ isIntersecting: true } as IntersectionObserverEntry], observer as unknown as IntersectionObserver);
+    expect(rafSpy).toHaveBeenCalled();
+  });
+
+  it('throttles draws to roughly 30fps instead of drawing on every animation frame', () => {
+    let rafCallback: FrameRequestCallback | null = null;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      rafCallback = callback;
+      return 1;
+    });
+    vi.mocked(renderTree).mockClear();
+
+    render(<StoryTree story={story} />);
+    expect(rafCallback).not.toBeNull();
+
+    // several frames land inside the same ~33ms throttle window
+    rafCallback!(0);
+    rafCallback!(10);
+    rafCallback!(20);
+    expect(renderTree).toHaveBeenCalledTimes(1);
+
+    // this one lands past the throttle window
+    rafCallback!(40);
+    expect(renderTree).toHaveBeenCalledTimes(2);
   });
 });

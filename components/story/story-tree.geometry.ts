@@ -10,7 +10,7 @@ export interface StoryTreeStory {
   root?: StoryTreeStory;
 }
 
-export const LEAF_SHAPES = ['diamond', 'circle', 'triangle', 'plus', 'hexagon', 'star'] as const;
+export const LEAF_SHAPES = ['diamond', 'circle', 'triangle', 'hexagon'] as const;
 export type LeafShape = (typeof LEAF_SHAPES)[number];
 
 export interface PaletteColor {
@@ -70,7 +70,11 @@ export interface TreeGeometry {
 
 const MIN_LEVELS = 3;
 const MAX_LEVELS = 7;
-const ANGLE_SPREAD = 0.95;
+const ANGLE_SPREAD = 1.8;
+// the render module needs this to normalize trunk length against level
+// count (see story-tree.render.ts) — kept here since it's this module's
+// constant to own
+export const LENGTH_RATIO_BASE = 0.82;
 // leaves only grow on the outermost three tiers of the canopy (this constant
 // plus the leaf level itself), sampled along each segment rather than only
 // at their tip, so a well-loved story reads as genuinely full rather than
@@ -90,7 +94,7 @@ function buildBranch(
     level,
     angleSlot: 0,
     jitter: (structureRand() - 0.5) * ANGLE_SPREAD * 0.5,
-    lengthRatio: level === 0 ? 1 : 0.82 * (0.85 + structureRand() * 0.3),
+    lengthRatio: level === 0 ? 1 : LENGTH_RATIO_BASE * (0.85 + structureRand() * 0.3),
     phase: structureRand() * Math.PI * 2,
     leaves: [],
     children: [],
@@ -98,18 +102,19 @@ function buildBranch(
 
   if (level >= levels - FOLIAGE_ANCHOR_LEVELS_FROM_TIP) {
     for (const fraction of FOLIAGE_ANCHOR_FRACTIONS) {
-      const guaranteed = foliageDensity >= 1;
-      if (!guaranteed && foliageRand() >= foliageDensity) continue;
-      const leafCount = guaranteed && foliageRand() < foliageDensity - 1 ? 2 : 1;
-      for (let i = 0; i < leafCount; i++) {
-        node.leaves.push({
-          fraction,
-          size: 2 + foliageRand() * 4,
-          rotation: foliageRand() * Math.PI,
-          offsetX: (foliageRand() - 0.5) * 10,
-          offsetY: (foliageRand() - 0.5) * 10,
-        });
-      }
+      // capped at one leaf per anchor (density beyond 1 no longer doubles
+      // up leaves at the same spot) -- at worst case this is ~1,000 eligible
+      // nodes x 3 anchors, each redrawn every animation frame, so halving
+      // the per-anchor ceiling is a real per-frame cost cut for a
+      // difference that reads as "very full" either way
+      if (foliageRand() >= Math.min(1, foliageDensity)) continue;
+      node.leaves.push({
+        fraction,
+        size: 2 + foliageRand() * 4,
+        rotation: foliageRand() * Math.PI,
+        offsetX: (foliageRand() - 0.5) * 10,
+        offsetY: (foliageRand() - 0.5) * 10,
+      });
     }
   }
 
@@ -141,8 +146,14 @@ export function buildTreeGeometry(story: StoryTreeStory): TreeGeometry {
     Math.min(MAX_LEVELS, Math.round(3 + Math.log2(1 + story.descendentsCount) * 1.3))
   );
   const branchFactor = Math.max(2, Math.min(3, 1 + Math.round(Math.log2(1 + story.childrenCount))));
-  const depthNorm = Math.max(0, Math.min(1, story.depth / 20));
-  const heightScale = 0.55 + 0.9 * depthNorm;
+  // this early in the product, most stories are only a few chapters deep at
+  // most, so depth rarely moves — reaching the cap by depth 8 (not 20) means
+  // depth still matters as sagas grow longer, without leaving nearly every
+  // tree pinned to the floor today. The bulk of a tree's size comes from
+  // render.ts's level-normalized trunk length, not from this range, which is
+  // why it's kept narrow rather than doing the heavy lifting itself.
+  const depthNorm = Math.max(0, Math.min(1, story.depth / 8));
+  const heightScale = 0.85 + 0.15 * depthNorm;
   const receptionRaw = Math.log(1 + story.likesCount) + Math.log(1 + story.commentsCount);
   const receptionNorm = Math.max(0, Math.min(1, receptionRaw / 9));
   const foliageDensity = 0.12 + 1.5 * Math.pow(receptionNorm, 0.6);
