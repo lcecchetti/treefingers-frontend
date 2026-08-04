@@ -19,3 +19,15 @@ export const { getClient, query } = registerApolloClient(() => {
     link: ApolloLink.from([authErrorLink, makeHttpLink()]),
   });
 });
+
+// Same as above but never reads next/headers' cookies(), so it doesn't
+// force routes using it into dynamic rendering. Use this for queries that
+// don't need the visitor's session (e.g. public metadata/existence checks
+// on ISR-cached pages) - reach for `query` instead if a route genuinely
+// needs authenticated data.
+export const { query: publicQuery } = registerApolloClient(() => {
+  return new ApolloClient({
+    cache: new InMemoryCache({ typePolicies }),
+    link: ApolloLink.from([authErrorLink, makeHttpLink({ forwardCookies: false })]),
+  });
+});

@@ -2,7 +2,7 @@ import { cache, Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { QUERY_STORY, StoryView } from '@/components/story';
 import { Spinner } from '@/components/ui';
-import { query } from '@/lib/apollo/client';
+import { publicQuery } from '@/lib/apollo/client';
 import type { Metadata } from 'next';
 
 export const revalidate = 1;
@@ -13,7 +13,7 @@ export function generateStaticParams() {
 
 const loadStory = cache(async (id: string) => {
   try {
-    const { data } = await query({
+    const { data } = await publicQuery({
       query: QUERY_STORY,
       variables: { filter: { id: { eq: id } } },
     });

@@ -46,25 +46,34 @@ export const typePolicies = {
   },
 };
 
-export function makeHttpLink() {
+// calling next/headers' cookies() marks the whole route dynamic, even if no
+// cookie ends up being sent - so this must stay opt-in per client rather
+// than always-on, or it silently breaks static/ISR rendering for any route
+// that happens to reuse the RSC client (see the story/forest/user pages)
+export function createServerFetch(forwardCookies: boolean): typeof fetch {
+  return async (uri, options = {}) => {
+    if (forwardCookies && typeof window === 'undefined') {
+      const { cookies } = await import('next/headers');
+      const cookieHeader = (await cookies()).toString();
+      if (cookieHeader) {
+        options.headers = { ...options.headers, cookie: cookieHeader };
+      }
+    }
+    return fetch(uri, options);
+  };
+}
+
+export function makeHttpLink({ forwardCookies = true }: { forwardCookies?: boolean } = {}) {
   return new HttpLink({
     uri: env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
     // the auth token lives in an httpOnly cookie set by the backend, sent
     // automatically by the browser; the frontend never reads or attaches it
     // itself. `credentials: 'include'` only means anything to a browser's
     // fetch though - it has no effect on Node's server-side fetch, which has
-    // no cookie jar of its own, so every SSR-side query must forward the
-    // visitor's session cookie explicitly or it's silently unauthenticated.
+    // no cookie jar of its own, so an SSR-side query needing auth must
+    // forward the visitor's session cookie explicitly or it's silently
+    // unauthenticated.
     credentials: 'include',
-    fetch: async (uri, options = {}) => {
-      if (typeof window === 'undefined') {
-        const { cookies } = await import('next/headers');
-        const cookieHeader = (await cookies()).toString();
-        if (cookieHeader) {
-          options.headers = { ...options.headers, cookie: cookieHeader };
-        }
-      }
-      return fetch(uri, options);
-    },
+    fetch: createServerFetch(forwardCookies),
   });
 }

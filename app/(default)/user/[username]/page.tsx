@@ -1,7 +1,7 @@
 import { cache, Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Container, Spinner } from '@/components/ui';
-import { query } from '@/lib/apollo/client';
+import { publicQuery } from '@/lib/apollo/client';
 import { QUERY_USER, UserView } from '@/components/user';
 import type { Metadata } from 'next';
 
@@ -12,7 +12,7 @@ export function generateStaticParams() {
 }
 
 const loadUser = cache(async (username: string) => {
-  const { data } = await query({
+  const { data } = await publicQuery({
     query: QUERY_USER,
     variables: { filter: { username: { eq: username } } },
   });
