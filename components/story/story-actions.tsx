@@ -9,7 +9,6 @@ import type { StoryTreeStory } from '@/components/story/story-tree';
 
 export interface StoryActionsStory extends Omit<StoryTreeStory, 'root'> {
   title: string;
-  commentsCount: number;
   currentUserLike?: { id: string } | null;
   __typename: 'Story';
   root?: (StoryTreeStory & { title: string }) | null;

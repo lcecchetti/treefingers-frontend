@@ -10,6 +10,8 @@ const story: StoryActionsStory = {
   id: 's1',
   title: 'A Tale',
   descendentsCount: 2,
+  childrenCount: 1,
+  depth: 0,
   likesCount: 3,
   commentsCount: 4,
   currentUserLike: null,

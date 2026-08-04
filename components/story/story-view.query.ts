@@ -25,6 +25,9 @@ export const QUERY_STORY = graphql(`
         title
         likesCount
         descendentsCount
+        childrenCount
+        commentsCount
+        depth
       }
       forest {
         id
@@ -34,6 +37,7 @@ export const QUERY_STORY = graphql(`
       commentsCount
       descendentsCount
       childrenCount
+      depth
       currentUserLike {
         id
       }

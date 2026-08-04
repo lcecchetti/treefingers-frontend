@@ -28,6 +28,7 @@ export const QUERY_STORIES = graphql(`
           likesCount
           commentsCount
           descendentsCount
+          childrenCount
           currentUserLike {
             id
           }
