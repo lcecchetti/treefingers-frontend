@@ -13,7 +13,7 @@ export interface ToastsProps {
 
 const toastClassNames = (type?: string) => ({
   toast: cn(
-    '!left-0 !right-0 !mx-auto !w-fit !bg-base !border-2 !px-md !py-sm !rounded-full !flex !items-center !justify-center !gap-md !max-w-xs !pointer-events-auto',
+    '!left-0 !right-0 !mx-auto !w-fit !bg-base !border-2 !px-md !py-sm !rounded-full !flex !items-center !justify-center !gap-md !max-w-(--container-xs) !pointer-events-auto',
     type === 'error' && '!text-error',
     type === 'success' && '!text-success',
   ),
