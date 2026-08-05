@@ -6,3 +6,4 @@ export { ForestList } from './forest-list';
 export { QUERY_FORESTS } from './forest-list.query';
 export { ForestActions } from './forest-actions';
 export { ForestMembership } from './forest-membership';
+export { ForestContent, ForestContent_ForestFragment } from './forest-content';

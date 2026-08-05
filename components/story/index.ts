@@ -6,5 +6,6 @@ export { QUERY_STORY } from './story-view.query';
 export { StoryChapters } from './story-chapters';
 export { StoryNew } from './story-new';
 export { StoryActions } from './story-actions';
+export { StoryContent, StoryContent_StoryFragment } from './story-content';
 export { StoryTree } from './story-tree';
 export type { StoryTreeStory } from './story-tree';

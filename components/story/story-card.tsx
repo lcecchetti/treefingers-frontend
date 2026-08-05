@@ -1,28 +1,53 @@
 'use client';
 
 import { Link, Text, Button } from '@/components/ui';
-import { useFormattedDate, DATE_SHORT } from '@/lib/helper/date';
+import { DATE_SHORT } from '@/lib/helper/date';
+import { useFormattedDate } from '@/lib/helper/use-formatted-date';
 import { getStoryUrl } from '@/lib/helper/story';
 import { Avatar } from '@/components/user';
-import { StoryActions, type StoryActionsStory } from '@/components/story/story-actions';
+import { StoryActions } from '@/components/story/story-actions';
 import { cn } from '@/lib/utils';
 import { TagList } from '@/components/tag';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { graphql, useFragment, type FragmentType } from '@/lib/graphql/generated';
 
-interface StoryCardStory extends StoryActionsStory {
-  parent?: { id: string } | null;
-  createdAt: string;
-  author: { id: string; username: string };
-  excerpt: string;
-  tags: string[];
-}
+// colocated with the component that owns it - see components/forest/forest-card.tsx
+// for why `useFragment` here is safe to call from either a Server or Client Component
+export const StoryCard_StoryFragment = graphql(`
+  fragment StoryCard_story on Story {
+    __typename
+    id
+    title
+    excerpt
+    createdAt
+    depth
+    parent {
+      id
+      likesCount
+      descendentsCount
+    }
+    author {
+      id
+      username
+    }
+    tags
+    likesCount
+    commentsCount
+    descendentsCount
+    childrenCount
+    currentUserLike {
+      id
+    }
+  }
+`);
 
 interface StoryCardProps {
   className?: string;
-  story: StoryCardStory;
+  story: FragmentType<typeof StoryCard_StoryFragment>;
 }
 
-export const StoryCard = ({ className, story }: StoryCardProps) => {
+export const StoryCard = ({ className, story: storyRef }: StoryCardProps) => {
+  const story = useFragment(StoryCard_StoryFragment, storyRef);
   const isChapter = !!story.parent;
   const createdAt = useFormattedDate(story.createdAt, DATE_SHORT);
 

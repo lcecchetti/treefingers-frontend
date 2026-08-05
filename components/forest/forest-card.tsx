@@ -1,19 +1,36 @@
-import { getForestUrl, type ForestRef } from '@/lib/helper/forest';
+import { getForestUrl } from '@/lib/helper/forest';
 import { Text, Link, Button } from '@/components/ui';
-import { ForestActions, type ForestActionsForest } from '@/components/forest/forest-actions';
+import { ForestActions } from '@/components/forest/forest-actions';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { graphql, useFragment, type FragmentType } from '@/lib/graphql/generated';
 
-interface ForestCardForest extends ForestActionsForest, ForestRef {
-  excerpt: string;
-}
+// colocated with the component that owns it, per Apollo's fragment
+// guidance - this is codegen's type-level fragment masking (not Apollo
+// Client's runtime dataMasking, which isn't enabled on any client in this
+// app), so `useFragment` below is a plain type-cast safe to call from any
+// component, RSC or client - see lib/graphql/generated/fragment-masking.ts
+export const ForestCard_ForestFragment = graphql(`
+  fragment ForestCard_forest on Forest {
+    id
+    name
+    excerpt
+    commentsCount
+    membersCount
+    currentUserMembership {
+      id
+    }
+  }
+`);
 
 interface ForestCardProps {
   className?: string;
-  forest: ForestCardForest;
+  forest: FragmentType<typeof ForestCard_ForestFragment>;
 }
 
-export const ForestCard = ({ className, forest }: ForestCardProps) => {
+export const ForestCard = ({ className, forest: forestRef }: ForestCardProps) => {
+  const forest = useFragment(ForestCard_ForestFragment, forestRef);
+
   return (
     <Card className={cn('border-2 bg-base', className)}>
       <CardContent>

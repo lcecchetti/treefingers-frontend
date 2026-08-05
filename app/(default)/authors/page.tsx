@@ -1,6 +1,7 @@
 import { Container, Text } from '@/components/ui';
-import { PageIntro } from '@/components/common';
+import { ClientOnly, PageIntro } from '@/components/common';
 import { UserList } from '@/components/user';
+import { UserListStatic } from '@/components/user/user-list-static';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
   description: 'A list of the most popular authors on Treefingers',
 };
 
-export const revalidate = 1;
+export const revalidate = 3600;
+
+const GRID_CLASS_NAME = 'grid gap-md xl:grid-cols-3 md:grid-cols-2 grid-cols-1';
 
 export default function AuthorsPage() {
   return (
@@ -21,7 +24,9 @@ export default function AuthorsPage() {
           Here is a list of popular authors.
         </Text>
       </PageIntro>
-      <UserList className="grid gap-md xl:grid-cols-3 md:grid-cols-2 grid-cols-1" filter={{ storiesCount: { gt: 0 } }} sort={{ followersCount: 'DESC' }} />
+      <ClientOnly fallback={<UserListStatic className={GRID_CLASS_NAME} filter={{ storiesCount: { gt: 0 } }} sort={{ followersCount: 'DESC' }} />}>
+        <UserList className={GRID_CLASS_NAME} filter={{ storiesCount: { gt: 0 } }} sort={{ followersCount: 'DESC' }} />
+      </ClientOnly>
     </Container>
   );
 }

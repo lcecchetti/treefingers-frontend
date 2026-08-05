@@ -1,62 +1,46 @@
 'use client';
 
-import { Text, Button, Link } from '@/components/ui';
+import { Text } from '@/components/ui';
 import { useSuspenseQuery } from '@apollo/client/react';
 import { StoryList } from '@/components/story';
-import { ApiError, PageIntro } from '@/components/common';
-import { Pencil, Sprout, X } from 'lucide-react';
-import { ForestActions } from '@/components/forest/forest-actions';
-import { getStoryNewUrl } from '@/lib/helper/story';
+import { ApiError } from '@/components/common';
+import { X } from 'lucide-react';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
 import { ForestNew } from './forest-new';
+import { ForestContent, ForestContent_ForestFragment } from './forest-content';
 import { QUERY_FOREST } from './forest-view.query';
+import { useFragment } from '@/lib/graphql/generated';
 
 interface ForestViewProps {
   className?: string;
-  forest: { id: string; storiesCount: number };
+  forestId: string;
 }
 
-export const ForestView = ({ className, forest }: ForestViewProps) => {
+export const ForestView = ({ className, forestId }: ForestViewProps) => {
   const { currentUser } = useCurrentUser();
   const [isEditing, setIsEditing] = useState(false);
 
   const { data, error } = useSuspenseQuery(QUERY_FOREST, {
     variables: {
-      filter: { id: { eq: forest.id } },
+      filter: { id: { eq: forestId } },
     },
     fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
     errorPolicy: 'all',
   });
 
+  const forest = useFragment(ForestContent_ForestFragment, data?.forest);
+
   return (
     <div className={className}>
       <ApiError error={error ?? false}/>
 
-      {data?.forest &&
+      {forest &&
         <>
           {!isEditing &&
             <>
-              <PageIntro>
-                <div className="flex justify-between gap-sm flex-col md:flex-row md:items-center">
-                  <div className="flex gap-md justify-start items-center">
-                    <Text variant="pageTitle" className="break-words">{data.forest.name}</Text>
-                    {data.forest.isEditable &&
-                      <Pencil className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(true)} />
-                    }
-                  </div>
-
-                  <div className="flex gap-md justify-between">
-                    <Button as={Link} icon={Sprout} href={getStoryNewUrl(data.forest)}>Plant</Button>
-                    <ForestActions forest={data.forest} />
-                  </div>
-                </div>
-                <Text variant="p" className="whitespace-pre-wrap break-words w-full">{data.forest.about}</Text>
-              </PageIntro>
-              {forest.storiesCount === 0 &&
-                <Text>I see too much blank space on this page, let's plant some stories!</Text>
-              }
-              <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" filter={{ forest: { eq: data.forest.id } }} sort={{ likesCount: 'DESC' }} setTotalCount={undefined} />
+              <ForestContent forest={forest} onEdit={() => setIsEditing(true)} />
+              <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" filter={{ forest: { eq: forest.id } }} sort={{ likesCount: 'DESC' }} setTotalCount={undefined} />
             </>
           }
 
@@ -66,7 +50,7 @@ export const ForestView = ({ className, forest }: ForestViewProps) => {
                 <Text variant="h2">Edit your forest</Text>
                 <X className="w-5 h-5 cursor-pointer" onClick={() => setIsEditing(false)} />
               </div>
-              <ForestNew className="w-full" forest={data.forest} callback={() => setIsEditing(false)} />
+              <ForestNew className="w-full" forest={forest} callback={() => setIsEditing(false)} />
             </div>
           }
         </>

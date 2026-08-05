@@ -10,7 +10,7 @@ import { authErrorLink, makeHttpLink, typePolicies } from '@/lib/apollo/config';
 // Component code that needs data before any Client Component exists to read
 // it. `registerApolloClient` only exists in the integration package's
 // react-server build, so this module must never be pulled into a Client
-// Component bundle - the SSR/browser factory lives in app/apollo-wrapper.tsx.
+// Component bundle - the SSR/browser factory lives in providers/apollo-provider.tsx.
 // Never share this client's data with the ApolloNextAppProvider client -
 // they're deliberately separate instances per Apollo's own Next.js guidance.
 export const { getClient, query } = registerApolloClient(() => {
@@ -25,7 +25,13 @@ export const { getClient, query } = registerApolloClient(() => {
 // don't need the visitor's session (e.g. public metadata/existence checks
 // on ISR-cached pages) - reach for `query` instead if a route genuinely
 // needs authenticated data.
-export const { query: publicQuery } = registerApolloClient(() => {
+//
+// `publicQuery` (the shortcut) is fine inside generateMetadata/page render,
+// which run within a proper per-request scope. generateStaticParams runs at
+// build time outside that scope, so it must use `getPublicClient().query()`
+// instead - the shortcut logs an Apollo warning there about spinning up a
+// fresh client per call rather than reusing one.
+export const { getClient: getPublicClient, query: publicQuery } = registerApolloClient(() => {
   return new ApolloClient({
     cache: new InMemoryCache({ typePolicies }),
     link: ApolloLink.from([authErrorLink, makeHttpLink({ forwardCookies: false })]),

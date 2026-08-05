@@ -25,7 +25,7 @@ describe('StoryView', () => {
       },
     ];
 
-    await renderWithProvidersAsync(<StoryView story={{ id: 'story-1' }} />, { mocks });
+    await renderWithProvidersAsync(<StoryView storyId="story-1" />, { mocks });
 
     expect(await screen.findByText('boom')).toBeInTheDocument();
   });

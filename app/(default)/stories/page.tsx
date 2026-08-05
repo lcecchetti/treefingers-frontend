@@ -1,6 +1,7 @@
 import { Container, Text, Button, Link } from '@/components/ui';
-import { PageIntro } from '@/components/common';
+import { ClientOnly, PageIntro } from '@/components/common';
 import { StoryList } from '@/components/story';
+import { StoryListStatic } from '@/components/story/story-list-static';
 import { getStoryNewUrl } from '@/lib/helper/story';
 import { TreePine } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
   description: 'A list of the most popular stories on Treefingers',
 };
 
-export const revalidate = 1;
+export const revalidate = 3600;
+
+const GRID_CLASS_NAME = 'grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md';
 
 export default function StoriesPage() {
   return (
@@ -24,7 +27,9 @@ export default function StoriesPage() {
           Here is a list of popular stories.
         </Text>
       </PageIntro>
-      <StoryList className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-md" filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }}/>
+      <ClientOnly fallback={<StoryListStatic className={GRID_CLASS_NAME} filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }} />}>
+        <StoryList className={GRID_CLASS_NAME} filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }}/>
+      </ClientOnly>
     </Container>
   );
 }

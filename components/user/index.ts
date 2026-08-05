@@ -4,6 +4,7 @@ export { QUERY_USER } from './user-view.query';
 export { UserList } from './user-list';
 export { QUERY_USERS } from './user-list.query';
 export { UserFollowership } from './user-followership';
+export { UserContent, UserContent_UserFragment } from './user-content';
 export { UserEditForm } from './user-edit-form';
 export { UserCard } from './user-card';
 export { CurrentUser } from './current-user';

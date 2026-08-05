@@ -9,7 +9,8 @@ import { z } from 'zod';
 import { Text, Button, FormField, Spinner } from '@/components/ui';
 import { ApiError } from '@/components/common';
 import { useCurrentUser } from '@/lib/auth/current-user';
-import { QUERY_USER } from '@/components/user';
+import { QUERY_USER, UserContent_UserFragment } from '@/components/user';
+import { useFragment } from '@/lib/graphql/generated';
 import * as analytics from '@/lib/analytics';
 
 const MUTATION_EDIT_USER = graphql(`
@@ -53,6 +54,7 @@ export const UserEditForm = () => {
     }
   });
   const { data, loading, error } = useQuery(QUERY_USER, { variables: { filter: { id: { eq: currentUser?.id } } }, skip: !currentUser });
+  const user = useFragment(UserContent_UserFragment, data?.user);
 
   const {
     control,
@@ -64,15 +66,15 @@ export const UserEditForm = () => {
     defaultValues: {
       password: '',
       confirmPassword: '',
-      bio: data?.user?.bio ?? '',
+      bio: user?.bio ?? '',
     },
   });
 
   useEffect(() => {
-    if (data?.user) {
-      reset({ password: '', confirmPassword: '', bio: data.user.bio ?? '' });
+    if (user) {
+      reset({ password: '', confirmPassword: '', bio: user.bio ?? '' });
     }
-  }, [data?.user?.bio]);
+  }, [user?.bio]);
 
   const onSubmit = ({ confirmPassword, password, ...values }: UserEditFormValues) =>
     // Apollo v4's execute promise rejects on error even when onError handles
@@ -83,7 +85,7 @@ export const UserEditForm = () => {
     <div className="flex flex-col gap-md">
       <ApiError error={error ?? false}/>
       <Spinner loading={loading}/>
-      {data?.user &&
+      {user &&
         <form noValidate className="flex flex-col gap-sm" onSubmit={handleSubmit(onSubmit)}>
           <Controller
             name="password"

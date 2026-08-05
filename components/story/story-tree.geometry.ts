@@ -8,7 +8,7 @@ export interface StoryTreeStory {
   likesCount: number;
   commentsCount: number;
   root?: StoryTreeStory;
-}
+} 
 
 export const LEAF_SHAPES = ['diamond', 'circle', 'triangle', 'hexagon'] as const;
 export type LeafShape = (typeof LEAF_SHAPES)[number];

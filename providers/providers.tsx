@@ -1,6 +1,6 @@
 'use client';
 
-import { ApolloWrapper } from '@/app/apollo-wrapper';
+import { ApolloProvider } from './apollo-provider';
 import { Flyout, Toasts } from '@/components/common';
 import { ThemeProvider } from 'next-themes';
 import { UIProvider } from '@/lib/ui/context';
@@ -12,7 +12,7 @@ interface ProvidersProps {
 
 export const Providers = ({ children }: ProvidersProps) => {
   return (
-    <ApolloWrapper>
+    <ApolloProvider>
       <ThemeProvider attribute="class">
         <UIProvider>
           {children}
@@ -20,6 +20,6 @@ export const Providers = ({ children }: ProvidersProps) => {
           <Toasts />
         </UIProvider>
       </ThemeProvider>
-    </ApolloWrapper>
+    </ApolloProvider>
   );
 };
