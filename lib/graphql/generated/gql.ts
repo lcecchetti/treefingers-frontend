@@ -41,6 +41,7 @@ type Documents = {
     "\n  query chooseForest($filter: FilterForestInput) {\n    forests(filter: $filter, first: 10, sort: { membersCount: DESC }) {\n      edges {\n        node {\n          id\n          name\n          storiesCount\n        }\n      }\n    }\n  }\n": typeof types.ChooseForestDocument,
     "\n  mutation createStory($input: CreateStoryInput!) {\n    createStory(input: $input) {\n      story {\n        id\n        author {\n          id\n          storiesCount\n        }\n      }\n    }\n  }\n": typeof types.CreateStoryDocument,
     "\n  mutation editStory($input: EditStoryInput!) {\n    editStory(input: $input) {\n      story {\n        id\n        title\n        content\n        tags\n      }\n    }\n  }\n": typeof types.EditStoryDocument,
+    "\n  query storyTreeShape($filter: FilterStoryInput!) {\n    story(filter: $filter) {\n      id\n      descendantsCount\n      childrenCount\n      depth\n      likesCount\n      commentsCount\n      root {\n        id\n        descendantsCount\n        childrenCount\n        depth\n        likesCount\n        commentsCount\n      }\n    }\n  }\n": typeof types.StoryTreeShapeDocument,
     "\n  query story($filter: FilterStoryInput!) {\n    story(filter: $filter) {\n      ...StoryContent_story\n    }\n  }\n": typeof types.StoryDocument,
     "\n  fragment UserCard_user on User {\n    id\n    excerpt\n    username\n    followersCount\n    currentUserFollowershipAsFollower {\n      id\n    }\n  }\n": typeof types.UserCard_UserFragmentDoc,
     "\n  fragment UserContent_user on User {\n    id\n    bio\n    username\n    followersCount\n    currentUserFollowershipAsFollower {\n      id\n    }\n  }\n": typeof types.UserContent_UserFragmentDoc,
@@ -79,6 +80,7 @@ const documents: Documents = {
     "\n  query chooseForest($filter: FilterForestInput) {\n    forests(filter: $filter, first: 10, sort: { membersCount: DESC }) {\n      edges {\n        node {\n          id\n          name\n          storiesCount\n        }\n      }\n    }\n  }\n": types.ChooseForestDocument,
     "\n  mutation createStory($input: CreateStoryInput!) {\n    createStory(input: $input) {\n      story {\n        id\n        author {\n          id\n          storiesCount\n        }\n      }\n    }\n  }\n": types.CreateStoryDocument,
     "\n  mutation editStory($input: EditStoryInput!) {\n    editStory(input: $input) {\n      story {\n        id\n        title\n        content\n        tags\n      }\n    }\n  }\n": types.EditStoryDocument,
+    "\n  query storyTreeShape($filter: FilterStoryInput!) {\n    story(filter: $filter) {\n      id\n      descendantsCount\n      childrenCount\n      depth\n      likesCount\n      commentsCount\n      root {\n        id\n        descendantsCount\n        childrenCount\n        depth\n        likesCount\n        commentsCount\n      }\n    }\n  }\n": types.StoryTreeShapeDocument,
     "\n  query story($filter: FilterStoryInput!) {\n    story(filter: $filter) {\n      ...StoryContent_story\n    }\n  }\n": types.StoryDocument,
     "\n  fragment UserCard_user on User {\n    id\n    excerpt\n    username\n    followersCount\n    currentUserFollowershipAsFollower {\n      id\n    }\n  }\n": types.UserCard_UserFragmentDoc,
     "\n  fragment UserContent_user on User {\n    id\n    bio\n    username\n    followersCount\n    currentUserFollowershipAsFollower {\n      id\n    }\n  }\n": types.UserContent_UserFragmentDoc,
@@ -212,6 +214,10 @@ export function graphql(source: "\n  mutation createStory($input: CreateStoryInp
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation editStory($input: EditStoryInput!) {\n    editStory(input: $input) {\n      story {\n        id\n        title\n        content\n        tags\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation editStory($input: EditStoryInput!) {\n    editStory(input: $input) {\n      story {\n        id\n        title\n        content\n        tags\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query storyTreeShape($filter: FilterStoryInput!) {\n    story(filter: $filter) {\n      id\n      descendantsCount\n      childrenCount\n      depth\n      likesCount\n      commentsCount\n      root {\n        id\n        descendantsCount\n        childrenCount\n        depth\n        likesCount\n        commentsCount\n      }\n    }\n  }\n"): (typeof documents)["\n  query storyTreeShape($filter: FilterStoryInput!) {\n    story(filter: $filter) {\n      id\n      descendantsCount\n      childrenCount\n      depth\n      likesCount\n      commentsCount\n      root {\n        id\n        descendantsCount\n        childrenCount\n        depth\n        likesCount\n        commentsCount\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

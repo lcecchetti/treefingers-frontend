@@ -7,7 +7,6 @@ import { useSuspenseQuery } from '@apollo/client/react';
 import { X } from 'lucide-react';
 import { StoryChapters } from '@/components/story/story-chapters';
 import { ApiError } from '@/components/common';
-import { StoryTree, type StoryTreeStory } from './story-tree';
 import { cn } from '@/lib/utils';
 import { useCurrentUser } from '@/lib/auth/current-user';
 import { useState } from 'react';
@@ -69,8 +68,6 @@ export const StoryView = ({ className, storyId }: StoryViewProps) => {
               }
             </div>
           </Container>
-
-          <StoryTree story={(story ?? undefined) as StoryTreeStory | undefined} className="hidden lg:block h-screen w-full lg:fixed top-0 left-0 lg:-left-1/4" />
         </div>
     </div>
   );

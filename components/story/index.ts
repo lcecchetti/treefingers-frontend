@@ -9,3 +9,4 @@ export { StoryActions } from './story-actions';
 export { StoryContent, StoryContent_StoryFragment } from './story-content';
 export { StoryTree } from './story-tree';
 export type { StoryTreeStory } from './story-tree';
+export { StoryTreeOverlay } from './story-tree-overlay';
