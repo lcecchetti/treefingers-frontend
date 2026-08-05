@@ -2,12 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Sheet, SheetContent } from './sheet';
 
-// Radix's Presence gates mounting in two independent places for a Dialog:
-// once on Dialog.Portal and once on Dialog.Content. A CSS-transition-based
-// slide animation needs the closed content to stay in the DOM (so it can
-// transition *into* view rather than popping in), which requires
-// forceMount on both. This regression was found via live-Playwright
-// debugging -- the first fix attempt only covered one of the two gates.
+// Radix's Presence gates mounting in two places for a Dialog (Portal and
+// Content), so a CSS slide-in animation needs forceMount on both to keep
+// closed content in the DOM.
 describe('SheetContent forceMount propagation', () => {
   it('keeps content and overlay mounted with data-state="closed" when forceMount is set and the sheet is closed', () => {
     render(

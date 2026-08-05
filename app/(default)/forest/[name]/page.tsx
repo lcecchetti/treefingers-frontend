@@ -10,12 +10,9 @@ import type { Metadata } from 'next';
 
 export const revalidate = 3600;
 
-// prebuild the most popular forests at build time; any other forest is
-// still reachable and gets generated on its first request, then cached for
-// `revalidate` seconds (dynamicParams defaults to true). A transient backend
-// error here must not fail the whole build - fall back to generating no
-// params up front and let every forest render on-demand instead (mirrors
-// loadForest's per-request error handling below)
+// Prebuilds the most popular forests; any other forest generates on first
+// request and gets cached. A transient backend error here must not fail the
+// whole build, so fall back to generating no params up front.
 export async function generateStaticParams() {
   try {
     const { data } = await getPublicClient().query({

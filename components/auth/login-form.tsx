@@ -93,10 +93,8 @@ export const LoginForm = () => {
     }
   });
 
-  // logged in users should not visit login/register page - skipped if we just
-  // logged in via this form, since onCompleted above already redirects (and
-  // respects ?redirect=); without this guard both pushes race and the landing
-  // page becomes nondeterministic
+  // Skipped right after logging in via this form since onCompleted above
+  // already redirects; otherwise both pushes race.
   useEffect(() => {
     if (currentUser && !justLoggedInRef.current) {
       router.push(getProfileMeUrl());

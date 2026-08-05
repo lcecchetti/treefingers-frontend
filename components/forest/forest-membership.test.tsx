@@ -7,9 +7,8 @@ import { renderWithProviders } from '@/test/test-utils';
 import { Toasts } from '@/components/common';
 import { ForestMembership } from './forest-membership';
 
-// The generated `graphql()` matches queries by exact source string against the
-// codegen'd document map, so these must be copied verbatim (whitespace and
-// all) from components/forest/forest-membership.tsx rather than reformatted.
+// Must match components/forest/forest-membership.tsx verbatim: graphql()
+// matches by exact source string against the codegen'd document map.
 const MUTATION_JOIN = graphql(`
   mutation join($input: JoinInput!) {
     join(input: $input) {

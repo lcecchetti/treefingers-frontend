@@ -10,16 +10,12 @@ interface StoryListStaticProps {
   first?: number;
 }
 
-// server-rendered, cookie-free counterpart to StoryList: used as ClientOnly's
-// SSR/first-paint fallback so crawlers and pre-hydration visitors see real
-// stories instead of a spinner, while staying ISR-safe (publicQuery never
-// calls next/headers cookies()). The live StoryList takes over on mount for
-// personalization and infinite scroll.
+// Server-rendered, cookie-free counterpart to StoryList, used as ClientOnly's
+// SSR fallback; StoryList takes over on mount for personalization/infinite scroll.
 //
-// Deliberately NOT exported from ./index - it pulls in the RSC-only
-// publicQuery/registerApolloClient chain, which breaks the client bundle if
-// re-exported through the same barrel as 'use client' components (see
-// lib/apollo/client.ts). Import this file directly from Server Components.
+// Deliberately not exported from ./index -- it pulls in the RSC-only
+// publicQuery chain, which breaks the client bundle if re-exported through
+// a barrel with 'use client' components. Import this file directly.
 export const StoryListStatic = async ({ className, filter, sort, first = 12 }: StoryListStaticProps) => {
   const edges = await publicQuery({ query: QUERY_STORIES, variables: { filter, sort, first } })
     .then(({ data }) => data?.stories.edges ?? [])

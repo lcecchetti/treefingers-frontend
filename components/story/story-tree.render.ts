@@ -1,54 +1,37 @@
 import { LENGTH_RATIO_BASE, type BranchNode, type LeafShape, type PaletteColor, type TreeGeometry } from './story-tree.geometry';
 
-// quiet wind: trunk barely moves, tips sway the most, each branch has its
-// own phase so the canopy doesn't move as one rigid unit
+// Quiet wind: trunk barely moves, tips sway most, each branch has its own phase.
 const SWAY_AMPLITUDE = 0.065;
 const SWAY_SPEED = 0.0006;
-// the validated mockup was tuned against a ~300px-tall canvas; every
-// pixel-based constant below is scaled from that baseline so the same
-// renderer looks proportionally right at both flyout and full-screen sizes
+// Pixel constants below are scaled from this baseline canvas height.
 const SIZE_SCALE_BASELINE = 300;
-// each level keeps only this fraction of its raw deviation from straight up,
-// pulling the rest back toward vertical. Without this, a chain of
-// same-direction angle offsets can compound over many levels into a branch
-// that runs sideways or even downward. A hard clamp stops that too, but
-// re-clamping at every level makes many outer branches in a deep tree pile
-// up on the exact same boundary angle instead of fanning out — this damps
-// the drift smoothly instead, so bushier trees stay a spread canopy rather
-// than a narrow, crowded cone.
+// Pulls each level's angle offset back toward vertical so deep chains of
+// same-direction jitter don't compound into sideways branches; damping
+// (vs. a hard clamp) keeps outer branches fanned out instead of piled on
+// the same boundary angle.
 const ANGLE_DAMPING = 0.85;
 const UP = -Math.PI / 2;
-// branch thickness tapers from trunk to tips as a fraction of the canopy's
-// depth (not the absolute level count) so a bushy, many-level tree doesn't
-// end up with systematically thicker branches than a small one at every
-// matching depth.
+// Tapers by fraction of canopy depth, not absolute level count, so a bushy
+// tree doesn't end up thicker than a small one at matching depths.
 const TRUNK_WIDTH = 4.5;
 const TIP_WIDTH = 1;
-// leaves bloom (scale up from their center point) starting the moment their
-// branch begins extending, not after it finishes -- otherwise a whole level's
-// worth of leaves pops in as one lockstep block right as its branches finish,
-// reading as "bare branches, then sudden leaves" instead of a continuous grow.
-// The span is capped to what's left before growth: 1 so a leaf on the
-// outermost level (whose window sits right against that ceiling) still
-// finishes blooming instead of getting stuck part-open forever.
+// Leaves start blooming as their branch extends, not after, so growth reads
+// continuous rather than "bare branches, then leaves pop in". Span is capped
+// to what's left before growth hits 1, so outermost-level leaves still finish.
 const LEAF_BLOOM_SPAN_MULTIPLIER = 2;
-// spreads a level's leaves' bloom starts within a fraction of their branch's
-// own window so they don't all bloom in visual unison
+// Spreads a level's leaf bloom starts within a fraction of the branch's own
+// window so they don't all bloom in unison.
 const LEAF_STAGGER_FRACTION = 0.5;
 
-// cheap deterministic pseudo-random hash of a leaf's existing (non-timing)
-// floats, used only to desynchronize bloom start -- no dedicated seed field
-// needed since the leaf is already unique via these values.
+// Deterministic pseudo-random hash of a leaf's own floats, used to
+// desynchronize bloom start without a dedicated seed field.
 function leafStagger(rotation: number, offsetX: number, offsetY: number): number {
   const mixed = rotation * 12.9898 + offsetX * 78.233 + offsetY * 37.719;
   return mixed - Math.floor(mixed);
 }
 
-// equivalent to ctx.translate(x, y) + ctx.rotate(rotation) applied to a
-// local point, computed by hand so drawLeaf never touches the canvas
-// transform stack -- with up to several thousand leaves redrawn every
-// animation frame, skipping save()/rotate()/restore() per leaf is a real
-// per-frame saving for identical output, not just a style preference.
+// Manual translate+rotate so drawLeaf skips the canvas transform stack --
+// meaningful savings with thousands of leaves redrawn per frame.
 function rotated(px: number, py: number, cosR: number, sinR: number, x: number, y: number): [number, number] {
   return [x + px * cosR - py * sinR, y + px * sinR + py * cosR];
 }
@@ -56,8 +39,7 @@ function rotated(px: number, py: number, cosR: number, sinR: number, x: number, 
 function drawLeaf(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, rotation: number, shape: LeafShape): void {
   ctx.beginPath();
   if (shape === 'circle') {
-    // rotation-invariant -- no point rotating a circle
-    ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+    ctx.arc(x, y, size / 2, 0, Math.PI * 2); // circle is rotation-invariant
   } else if (shape === 'diamond') {
     const cosR = Math.cos(rotation);
     const sinR = Math.sin(rotation);
@@ -107,11 +89,8 @@ function walkBranch(
   time: number | null,
   growth: number
 ): void {
-  // each depth level gets an equal-width slice of the [0, 1] growth range,
-  // so the tree visibly sprouts outward from trunk to tips rather than
-  // fading in all at once. A child's slice starts exactly where its
-  // parent's ends, so a still-growing parent's children are naturally
-  // untouched -- no need to special-case skipping their recursion below.
+  // Each depth level gets an equal slice of the [0, 1] growth range, trunk
+  // to tips, so a still-growing parent's children stay untouched naturally.
   const growthWindow = 1 / (levels + 1);
   const growthStart = node.level * growthWindow;
   if (growth <= growthStart) return;
@@ -167,12 +146,9 @@ export function renderTree(
 
   const sizeScale = height / SIZE_SCALE_BASELINE;
   const groundY = height - 6 * sizeScale;
-  // trunk length is normalized against the expected geometric falloff of
-  // LENGTH_RATIO_BASE over `levels` segments, so total reach stays roughly
-  // constant regardless of level count -- otherwise a bushier tree (more
-  // descendants -> more levels) compounds on top of a taller one, and the
-  // two multiply into wildly oversized trees instead of adding cleanly.
-  // Growth shows up as branchiness/density; height stays depth's job.
+  // Normalize trunk length against LENGTH_RATIO_BASE's geometric falloff over
+  // `levels` segments so total reach stays constant regardless of level count
+  // -- otherwise a bushier tree compounds on top of a taller one.
   const expectedReach = (1 - Math.pow(LENGTH_RATIO_BASE, geometry.levels)) / (1 - LENGTH_RATIO_BASE);
   const trunkLength = (groundY * geometry.heightScale) / expectedReach;
 

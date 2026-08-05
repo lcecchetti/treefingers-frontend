@@ -6,15 +6,12 @@ import { logoutSession } from '@/lib/auth/logout';
 import { getLoginUrl } from '@/lib/helper/auth';
 import { env } from '@/lib/env';
 
-// these mutations validate a one-off link token of their own (password reset,
-// account activation), independent of the session token, so an UNAUTHENTICATED
-// error from them doesn't mean the current session is invalid
+// These validate a one-off link token, not the session, so their
+// UNAUTHENTICATED errors don't mean the current session is invalid.
 const AUTH_MUTATIONS_WITH_OWN_TOKEN = ['changePassword', 'activateAccount'];
 
-// centralizes what individual components used to handle ad hoc: if the
-// backend rejects the session token itself (not a permission/ownership
-// error - those are FORBIDDEN, see backend), clear it and send the user
-// to log in again instead of leaving them stuck on broken queries
+// If the backend rejects the session token itself (not a permission error --
+// those are FORBIDDEN), clear it and send the user to log in again.
 export const handleAuthError: ErrorLink.ErrorHandler = ({ error, operation }) => {
   if (typeof window === 'undefined') return;
   if (AUTH_MUTATIONS_WITH_OWN_TOKEN.includes(operation.operationName ?? '')) return;
@@ -46,10 +43,8 @@ export const typePolicies = {
   },
 };
 
-// calling next/headers' cookies() marks the whole route dynamic, even if no
-// cookie ends up being sent - so this must stay opt-in per client rather
-// than always-on, or it silently breaks static/ISR rendering for any route
-// that happens to reuse the RSC client (see the story/forest/user pages)
+// cookies() marks the whole route dynamic even if unused, so this must stay
+// opt-in per client or it silently breaks static/ISR rendering elsewhere.
 export function createServerFetch(forwardCookies: boolean): typeof fetch {
   return async (uri, options = {}) => {
     if (forwardCookies && typeof window === 'undefined') {
@@ -66,13 +61,9 @@ export function createServerFetch(forwardCookies: boolean): typeof fetch {
 export function makeHttpLink({ forwardCookies = true }: { forwardCookies?: boolean } = {}) {
   return new HttpLink({
     uri: env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
-    // the auth token lives in an httpOnly cookie set by the backend, sent
-    // automatically by the browser; the frontend never reads or attaches it
-    // itself. `credentials: 'include'` only means anything to a browser's
-    // fetch though - it has no effect on Node's server-side fetch, which has
-    // no cookie jar of its own, so an SSR-side query needing auth must
-    // forward the visitor's session cookie explicitly or it's silently
-    // unauthenticated.
+    // Auth cookie is httpOnly and browser-sent automatically. `credentials:
+    // 'include'` only affects browser fetch though -- Node's server-side
+    // fetch has no cookie jar, so SSR needs createServerFetch above to forward it.
     credentials: 'include',
     fetch: createServerFetch(forwardCookies),
   });

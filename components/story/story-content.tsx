@@ -8,13 +8,9 @@ import { getForestUrl } from '@/lib/helper/forest';
 import { graphql } from '@/lib/graphql/generated';
 import type { ResultOf } from '@graphql-typed-document-node/core';
 
-// colocated with the component that owns it, per Apollo's fragment
-// guidance. Unlike StoryCard (fed a raw, still-masked query edge by list
-// components), StoryView and story/[id]/page.tsx both already have to
-// unmask this fragment themselves to read several of these fields directly
-// (createdAt, the StoryTreeStory-shaped fields, title/excerpt for
-// metadata) - so StoryContent just takes the already-unmasked, plain
-// result type instead of unmasking a second time
+// Unlike StoryCard (fed a raw, masked query edge), callers here already
+// unmask this fragment themselves, so StoryContent takes the plain result
+// type instead of unmasking a second time.
 export const StoryContent_StoryFragment = graphql(`
   fragment StoryContent_story on Story {
     __typename
@@ -62,12 +58,10 @@ interface StoryContentProps {
   onEdit?: () => void;
 }
 
-// pure/hook-free so it can be rendered from either the live, personalized
-// StoryView (client) or a Server Component's static fallback (story/[id]
-// page) using the already-fetched public story data - one markup source, no
-// risk of the two drifting apart. `createdAt` is passed in pre-formatted
-// since date formatting itself needs a client/server-specific strategy (see
-// useFormattedDate vs formatDate in lib/helper/date.ts)
+// Pure/hook-free so both the live StoryView (client) and story/[id]'s static
+// Server Component fallback can render it from one markup source. `createdAt`
+// comes pre-formatted since date formatting needs a client/server split
+// (see useFormattedDate vs formatDate in lib/helper/date.ts).
 export const StoryContent = ({ story, createdAt, onEdit }: StoryContentProps) => {
   return (
     <>

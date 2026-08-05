@@ -12,10 +12,7 @@ export interface UseTypewriterOptions {
 }
 
 // Types each segment's text one character at a time, optionally pauses and
-// backspaces it to empty, then moves to the next segment. Mirrors the
-// behavior the old react-typist usage relied on (type -> pause -> backspace
-// -> next), reimplemented as a small typed hook so we're not carrying an
-// unmaintained, React-16-only, untyped dependency.
+// backspaces it to empty, then moves to the next segment.
 export function useTypewriter(
   segments: TypewriterSegment[],
   options: UseTypewriterOptions = {}

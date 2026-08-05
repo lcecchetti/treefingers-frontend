@@ -30,11 +30,8 @@ function userQueryMock(bio: string) {
     request: { query: QUERY_USER, variables: { filter: { id: { eq: '1' } } } },
     result: {
       data: {
-        // __typename is required here (not just for realism): the query now
-        // spreads a `...UserContent_user on User` fragment, and Apollo's
-        // cache needs __typename to confirm the cached entity satisfies that
-        // type condition - without it, the fragment silently reads back as
-        // an empty object instead of erroring
+        // __typename is required: Apollo's cache needs it to confirm the
+        // entity satisfies the spread fragment's type condition.
         user: { __typename: 'User', id: '1', bio, username: 'alice', followersCount: 0, currentUserFollowershipAsFollower: null },
       },
     },

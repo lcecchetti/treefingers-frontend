@@ -15,11 +15,8 @@ function unauthenticatedError(operationName: string) {
   } as unknown as Parameters<typeof handleAuthError>[0];
 }
 
-// jsdom defines window.location.assign as a non-configurable own property,
-// so vi.spyOn(window.location, 'assign') throws "Cannot redefine property".
-// window.location itself is a configurable accessor though, so swap it for a
-// stand-in whose pathname delegates to the real (live) Location -- keeping it
-// in sync with history.pushState -- while assign is a plain mock.
+// window.location.assign is non-configurable (vi.spyOn would throw), so swap
+// the whole location object for a stand-in with a plain mock assign.
 const realLocation = window.location;
 const assign = vi.fn();
 

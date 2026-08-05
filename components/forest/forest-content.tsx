@@ -6,13 +6,9 @@ import { getStoryNewUrl } from '@/lib/helper/story';
 import { graphql } from '@/lib/graphql/generated';
 import type { ResultOf } from '@graphql-typed-document-node/core';
 
-// colocated with the component that owns it, per Apollo's fragment
-// guidance. Unlike ForestCard (fed a raw, still-masked query edge by list
-// components), every caller of ForestContent already has to unmask this
-// fragment itself to read its own fields directly (ForestView needs
-// forest.id, forest/[name]/page.tsx needs forest.name/.excerpt for
-// metadata) - so ForestContent just takes the already-unmasked, plain
-// result type instead of unmasking a second time
+// Unlike ForestCard (fed a raw, masked query edge), callers here already
+// unmask this fragment themselves, so ForestContent takes the plain result
+// type instead of unmasking a second time.
 export const ForestContent_ForestFragment = graphql(`
   fragment ForestContent_forest on Forest {
     id
@@ -34,10 +30,8 @@ interface ForestContentProps {
   onEdit?: () => void;
 }
 
-// pure/hook-free so it can be rendered from either the live, personalized
-// ForestView (client) or a Server Component's static fallback (forest/[name]
-// page) using the already-fetched public forest data - one markup source,
-// no risk of the two drifting apart
+// Pure/hook-free so both the live ForestView (client) and forest/[name]'s
+// static Server Component fallback can render it from one markup source.
 export const ForestContent = ({ forest, onEdit }: ForestContentProps) => {
   return (
     <>

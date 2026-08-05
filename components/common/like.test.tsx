@@ -7,9 +7,8 @@ import { renderWithProviders } from '@/test/test-utils';
 import { Toasts } from '@/components/common';
 import { Like } from './like';
 
-// The generated `graphql()` matches queries by exact source string against the
-// codegen'd document map, so these must be copied verbatim (whitespace and
-// all) from components/common/like.tsx rather than reformatted.
+// Must match components/common/like.tsx verbatim: graphql() matches by exact
+// source string against the codegen'd document map.
 const MUTATION_LIKE = graphql(`
   mutation like($input: LikeInput!) {
     like(input: $input) {
@@ -124,11 +123,8 @@ describe('Like', () => {
   });
 
   it('does not respond to clicks when viewOnly', async () => {
-    // An unmocked request doesn't throw or log - MockLink resolves it as a
-    // GraphQL error delivered to the mutation's onError, which like.tsx
-    // swallows silently. So a real mock + called flag is required here;
-    // otherwise this test would pass identically whether or not viewOnly
-    // actually blocks the click.
+    // like.tsx swallows unmocked-mutation errors silently, so a real mock +
+    // called flag is required here to actually assert viewOnly blocks the click.
     let called = false;
     const mocks = [
       loggedIn,

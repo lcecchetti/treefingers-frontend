@@ -73,20 +73,17 @@ describe('Toasts', () => {
     await screen.findByText('First');
     expect(screen.getByTestId('toast-count').textContent).toBe('1');
 
-    // The toast disappearing from context state (not merely from the DOM)
-    // is only possible if the bridge actually invoked dismissToast(id) --
-    // Sonner has no way to mutate our reducer state itself.
+    // Only possible if the bridge invoked dismissToast(id) -- Sonner can't
+    // mutate our reducer state itself.
     await waitFor(() => expect(screen.getByTestId('toast-count').textContent).toBe('0'), {
       timeout: 3000,
     });
-    // Sonner's exit animation can keep the node mounted briefly after
-    // onAutoClose (and thus dismissToast) has already fired.
+    // Sonner's exit animation can keep the node mounted briefly after onAutoClose.
     await waitFor(() => expect(screen.queryByText('First')).not.toBeInTheDocument(), {
       timeout: 1000,
     });
 
-    // Re-triggering the same label proves the id was properly retired (not
-    // just hidden) and a fresh toast with the same text can appear again.
+    // Proves the id was retired, not just hidden.
     await act(async () => {
       showButton.click();
     });
@@ -111,10 +108,8 @@ describe('Toasts', () => {
       });
       expect(await screen.findByText('Stick around')).toBeInTheDocument();
 
-      // Sonner's own default TOAST_LIFETIME is 4000ms (node_modules/sonner
-      // dist/index.mjs). A duration: 0 toast must not fall through to that
-      // default -- it should stay mounted until manually dismissed. Wait
-      // comfortably past 4000ms to prove it wasn't auto-dismissed.
+      // Sonner's default TOAST_LIFETIME is 4000ms; wait past it to prove a
+      // duration: 0 toast doesn't fall through to that default.
       await new Promise((resolve) => setTimeout(resolve, 4500));
       expect(screen.queryByText('Stick around')).toBeInTheDocument();
     },

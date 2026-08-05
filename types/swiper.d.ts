@@ -1,6 +1,3 @@
-// swiper@8's package.json "exports" maps the root "." entry to swiper.esm.js
-// without a matching swiper.esm.d.ts sibling, so under moduleResolution:
-// "bundler" TS can't discover the (otherwise valid) swiper.d.ts that ships
-// in the package. Ambient-shim the bare "swiper" specifier so imports like
-// `import { EffectCards, Navigation } from 'swiper'` type-check.
+// swiper@8's "exports" map hides its own .d.ts under moduleResolution:
+// "bundler"; ambient-shim the bare specifier so imports type-check.
 declare module 'swiper';

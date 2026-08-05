@@ -20,13 +20,8 @@ test('a user can follow another user and see them in followed-users', async ({ p
   await loginAs(page, follower);
   await page.goto(`/user/${followed.username}`);
 
-  // UserFollowership (components/user/user-followership.tsx) renders an icon-only
-  // toggle: the react-icons FaUserPlus/FaUserCheck svg itself carries the onClick,
-  // there's no wrapping <button>. In UserView's PageIntro, that component sits as a
-  // sibling of the username Text inside a shared flex div - `getByText(username)`
-  // resolves to the Text element, so going up one level to the shared flex div and
-  // finding its svg descendant lands on the followership icon. Verified against the
-  // real rendered markup (same pattern as ForestMembership/Like in prior E2E tasks).
+  // UserFollowership is an icon-only toggle with no wrapping <button>, sitting as
+  // a sibling of the username Text; go up one level to find its svg.
   await expect(page.getByText(followed.username)).toBeVisible();
   await page.getByText(followed.username).locator('..').locator('svg').click();
 

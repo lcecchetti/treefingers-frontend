@@ -5,11 +5,9 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { graphql, useFragment, type FragmentType } from '@/lib/graphql/generated';
 
-// colocated with the component that owns it, per Apollo's fragment
-// guidance - this is codegen's type-level fragment masking (not Apollo
-// Client's runtime dataMasking, which isn't enabled on any client in this
-// app), so `useFragment` below is a plain type-cast safe to call from any
-// component, RSC or client - see lib/graphql/generated/fragment-masking.ts
+// This is codegen's type-level fragment masking, not Apollo's runtime
+// dataMasking (not enabled here), so `useFragment` below is a plain
+// type-cast safe to call from any component, RSC or client.
 export const ForestCard_ForestFragment = graphql(`
   fragment ForestCard_forest on Forest {
     id

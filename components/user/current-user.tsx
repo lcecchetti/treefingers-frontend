@@ -12,11 +12,9 @@ interface CurrentUserProps {
   className?: string;
 }
 
-// rendered in the Header on every page, including the static/ISR-cached
-// forest, story and user routes - ClientOnly keeps the notification useQuery
-// from ever running during SSR, where it would either force those routes
-// dynamic or bake one visitor's badge count into the shared static cache
-// (see components/common/client-only.tsx for the general mechanism)
+// Rendered in the Header on every page, including static/ISR-cached routes;
+// ClientOnly keeps the notification query from running during SSR, where it
+// would bake one visitor's badge count into the shared static cache.
 export const CurrentUser = ({ className }: CurrentUserProps) => (
   <ClientOnly fallback={<div className={cn(className, 'relative')}><CircleUserRound className="w-6 h-6" /></div>}>
     <CurrentUserBadge className={className} />

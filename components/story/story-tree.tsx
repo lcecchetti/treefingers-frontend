@@ -10,12 +10,9 @@ export type { StoryTreeStory };
 // how long the tree takes to grow in from bare ground on first appearance
 const GROWTH_DURATION_MS = 2200;
 
-// tree ids that have already played their grow-in animation this session.
-// Navigating between chapters of the same story remounts this component
-// (it lives under a dynamic story/[id] route), which would otherwise replay
-// the animation even though story.root -- and so the tree itself -- hasn't
-// changed. A real page load starts with a fresh module, so the animation
-// still plays the first time a tree is seen.
+// Tree ids that already played their grow-in animation this session, so a
+// chapter switch (which remounts this component under story/[id]) doesn't
+// replay it when the tree itself hasn't changed.
 const grownTreeIds = new Set<string>();
 
 export function __resetGrowthCacheForTests(): void {
@@ -36,9 +33,7 @@ export const StoryTree = ({ story, className }: StoryTreeProps) => {
 
   const geometry = useMemo(
     () => (resolvedStory ? buildTreeGeometry(resolvedStory) : null),
-    // keyed on id only, matching the previous implementation's contract: the
-    // tree reflects a story's stats as of when it was resolved, not a live
-    // subscription to every subsequent stat change
+    // Keyed on id only: reflects stats as of resolution, not live updates.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [resolvedStoryId]
   );
@@ -56,22 +51,17 @@ export const StoryTree = ({ story, className }: StoryTreeProps) => {
 
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let animate = !reducedMotionQuery.matches;
-    // assume visible until the observer's first (async) callback says
-    // otherwise, so a story that's actually on screen doesn't sit blank
-    // waiting for that first report
+    // Assume visible until the IntersectionObserver's first async callback.
     let visible = true;
     let width = 0;
     let height = 0;
     let frameId: number | null = null;
-    // a "quiet wind" doesn't need 60 real draws a second to read as smooth
-    // -- this halves how often the (potentially several-thousand-call) draw
-    // actually runs, while requestAnimationFrame still gets scheduled every
-    // frame so pausing on hidden tabs keeps working
+    // Halves draw frequency (a "quiet wind" doesn't need 60fps); rAF still
+    // gets scheduled every frame so hidden-tab pausing keeps working.
     const FRAME_INTERVAL_MS = 33;
     let lastDrawTime = -Infinity;
-    // set on the first real animation frame, so growth is timed from when
-    // the tree actually starts animating rather than from mount (those can
-    // differ by a frame or two while layout/canvas sizing settles)
+    // Set on the first real frame so growth times from when animation
+    // actually starts, not from mount.
     let growthStartTime: number | null = null;
 
     const draw = (time: number | null) => {
@@ -82,10 +72,8 @@ export const StoryTree = ({ story, className }: StoryTreeProps) => {
         const linear = Math.min(1, (time - growthStartTime) / GROWTH_DURATION_MS);
         growth = 1 - Math.pow(1 - linear, 2); // ease-out: quick start, gentle settle
       }
-      // marked as grown only once actually fully grown (not at mount) --
-      // React Strict Mode's dev-only double-invoke would otherwise have the
-      // throwaway first effect run mark the id as grown before the real,
-      // persisting effect run ever gets to check it
+      // Marked grown only once fully grown, not at mount, so Strict Mode's
+      // throwaway double-invoke doesn't mark it before the real run checks it.
       if (growth >= 1 && resolvedStoryId !== undefined) grownTreeIds.add(resolvedStoryId);
       renderTree(ctx, geometry, width, height, time, growth);
     };

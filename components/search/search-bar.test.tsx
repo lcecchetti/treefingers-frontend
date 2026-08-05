@@ -40,10 +40,8 @@ describe('SearchBar', () => {
 
     const input = await screen.findByPlaceholderText('Search');
     await user.type(input, 'ab');
-    // FormField only renders its error text once the field is touched
-    // (form-field.tsx), which RHF marks on blur. Pressing Enter inside the
-    // input submits without blurring it, so click the submit button instead
-    // to both blur the input and trigger validation.
+    // Error text only renders once the field is touched (RHF marks on blur),
+    // so click the submit button to both blur and trigger validation.
     await user.click(screen.getByRole('button', { name: '' }));
 
     expect(await screen.findByText("C'mon, be more precise!")).toBeInTheDocument();

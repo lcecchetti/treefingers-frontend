@@ -6,11 +6,8 @@ import * as dotenv from 'dotenv';
 import path from 'path';
 import { existsSync } from 'fs';
 
-// activation links are JWTs the backend signs with its own JWT_SECRET and embeds in a
-// real email it sends - there's no dev inbox to read that email from, so this test mints
-// an identical token directly using the same secret, read from the sibling
-// treefingers-backend repo's .env (local-only setup). See e2e/support/test-user.ts for
-// the same pattern used by the API-driven fixtures.
+// See e2e/support/test-user.ts for why activation tokens are minted directly
+// rather than read from a real email.
 function findBackendEnvPath(): string {
   let dir = path.dirname(__dirname); // start above e2e/
   for (let i = 0; i < 8; i++) {

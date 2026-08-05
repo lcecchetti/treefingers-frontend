@@ -11,11 +11,8 @@ const loggedOutCurrentUser = {
 };
 
 describe('StoryView', () => {
-  // reproduces the prod crash (digest 496186267): errorPolicy: 'all' means
-  // Apollo resolves `data` as undefined (not throwing) when the query errors
-  // without partial data - code that reads `data!.story` instead of
-  // `data?.story` blows up with "Cannot read properties of undefined
-  // (reading 'story')" on the very first render of a real page
+  // Reproduces prod crash digest 496186267: errorPolicy: 'all' resolves
+  // `data` as undefined rather than throwing, so `data!.story` blows up.
   it('does not crash when the query errors with no data (errorPolicy: all)', async () => {
     const mocks = [
       loggedOutCurrentUser,

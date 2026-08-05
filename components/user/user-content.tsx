@@ -4,12 +4,9 @@ import { UserFollowership } from './user-followership';
 import { graphql } from '@/lib/graphql/generated';
 import type { ResultOf } from '@graphql-typed-document-node/core';
 
-// colocated with the component that owns it, per Apollo's fragment
-// guidance. Unlike UserCard (fed a raw, still-masked query edge by list
-// components), UserView and user/[username]/page.tsx both already have to
-// unmask this fragment themselves to read username/bio directly - so
-// UserContent just takes the already-unmasked, plain result type instead
-// of unmasking a second time
+// Unlike UserCard (fed a raw, masked query edge), callers here already
+// unmask this fragment themselves, so UserContent takes the plain result
+// type instead of unmasking a second time.
 export const UserContent_UserFragment = graphql(`
   fragment UserContent_user on User {
     id
@@ -26,10 +23,8 @@ interface UserContentProps {
   user: ResultOf<typeof UserContent_UserFragment>;
 }
 
-// pure/hook-free so it can be rendered from either the live, personalized
-// UserView (client) or a Server Component's static fallback (user/[username]
-// page) using the already-fetched public user data - one markup source, no
-// risk of the two drifting apart
+// Pure/hook-free so both the live UserView (client) and user/[username]'s
+// static Server Component fallback can render it from one markup source.
 export const UserContent = ({ user }: UserContentProps) => {
   return (
     <PageIntro>

@@ -6,10 +6,8 @@ async function loginAs(page: import('@playwright/test').Page, user: { username: 
   await page.getByLabel('Email').fill(user.email);
   await page.getByLabel('Password').fill(user.password);
   await page.getByRole('button', { name: 'Login' }).click();
-  // login-form.tsx has a pre-existing race between its own post-login router.push
-  // and a "logged in users get bounced off /auth/login" redirect effect - the exact
-  // landing URL is non-deterministic, so assert the welcome toast (proof the login
-  // mutation succeeded) and that we've left /auth/login rather than an exact URL.
+  // Landing URL is non-deterministic (login-form.tsx has a redirect race), so
+  // assert the welcome toast plus having left /auth/login instead.
   await expect(page.getByText(`Hey ${user.username}, welcome!`)).toBeVisible();
   await expect(page).not.toHaveURL(/\/auth\/login/);
 }
@@ -26,12 +24,8 @@ test('a user can search and land on results containing a story they created', as
   await expect(page).toHaveURL(new RegExp(`/forest/${forestName}$`));
 
   const uniqueTitle = `Findable${Date.now()}`;
-  // StoryNewPage passes the raw `forest` query param straight through to StoryNew,
-  // which filters QUERY_CHOOSE_FOREST by `{ id: { eq: forest } }` - since only the
-  // forest's name (not its id) is available here, that filter matches nothing and
-  // leaves the required "forest" field disabled forever. Skip the query param and
-  // use the visible "Search..." field instead, which filters by name (`ilike`) and
-  // auto-selects the first (only) match - see story-lifecycle.spec.ts.
+  // Skip the `forest` query param (filters by id, but we only have the name)
+  // and use the "Search..." field instead - see story-lifecycle.spec.ts.
   await page.goto('/story/new');
   await page.getByLabel('Title').fill(uniqueTitle);
   await page.getByLabel('Content').fill('Content for the search E2E test.');
@@ -41,10 +35,6 @@ test('a user can search and land on results containing a story they created', as
   await expect(page.getByText('Story planted!')).toBeVisible();
 
   await page.goto(`/search?q=${uniqueTitle}`);
-  // The search page's intro text ("Here is all we could find for {query}:") also
-  // contains uniqueTitle as a substring, so a page-wide getByText(uniqueTitle)
-  // matches two elements. Scope to the story card's own title, which renders as
-  // a Text variant="title" (an <h2>, i.e. ARIA role "heading") - confirmed against
-  // components/story/story-card.tsx and components/ui/text.tsx.
+  // The page's intro text also contains uniqueTitle, so scope to the card's heading.
   await expect(page.getByRole('heading', { name: uniqueTitle })).toBeVisible();
 });

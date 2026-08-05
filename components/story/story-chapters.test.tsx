@@ -25,11 +25,8 @@ const chapter = makeFragmentData({
 }, StoryCard_StoryFragment);
 
 describe('StoryChaptersView', () => {
-  // shared presentational carousel: used by both the live, query-backed
-  // chapters view and StoryChaptersStatic (the SSR/pre-hydration fallback).
-  // Regression coverage for the bug where the fallback rendered chapters as
-  // a plain stacked list instead of this carousel - see
-  // components/common/client-only.tsx for why the two must render identically.
+  // Regression coverage for the fallback rendering chapters as a plain
+  // stacked list instead of this carousel.
   it('renders chapters inside the swiper carousel', () => {
     const { container } = renderWithProviders(
       <StoryChaptersView parentId="root-1" edges={[{ cursor: 'c1', node: { id: 'chapter-1', ...chapter } }]} />,

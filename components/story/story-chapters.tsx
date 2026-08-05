@@ -31,11 +31,8 @@ interface StoryChaptersViewProps {
   onReachEnd?: () => void;
 }
 
-// Presentational carousel shared by the live, query-backed chapters view
-// (StoryChaptersContent below) and StoryChaptersStatic - the SSR/pre-hydration
-// fallback rendered by ClientOnly on the story page. Keeping this as the one
-// place that renders chapters means the two can never visually diverge - see
-// components/common/client-only.tsx for why that parity matters.
+// Presentational carousel shared by the live chapters view (StoryChaptersContent
+// below) and StoryChaptersStatic's SSR fallback, so the two can't diverge.
 export const StoryChaptersView = ({ className, parentId, edges, error, hasNextPage, onReachEnd }: StoryChaptersViewProps) => {
   const [isWriting, setIsWriting] = useState(false);
   const [suggestSwipe, setSuggestSwipe] = useState(true);

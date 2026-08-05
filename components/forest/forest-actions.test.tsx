@@ -11,9 +11,8 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
-// The generated `graphql()` matches queries by exact source string against the
-// codegen'd document map, so this must be copied verbatim (whitespace and all)
-// from components/comment/comment-list.tsx rather than reformatted.
+// Must match components/comment/comment-list.tsx verbatim: graphql() matches
+// by exact source string against the codegen'd document map.
 const QUERY_COMMENTS = graphql(`
   query comments($filter: FilterCommentInput, $sort: SortCommentInput, $last: Int, $before: String) {
     comments(filter: $filter, sort: $sort, last: $last, before: $before) {
@@ -59,8 +58,7 @@ const emptyComments = {
 };
 
 beforeEach(() => {
-  // CommentList (rendered inside Flyout once the comments flyout opens) wraps its
-  // content in InfiniteScroll(backwards), which needs both of these in jsdom.
+  // CommentList wraps its content in InfiniteScroll, which needs both in jsdom.
   vi.stubGlobal('IntersectionObserver', vi.fn().mockImplementation(function () {
     return { observe: vi.fn(), disconnect: vi.fn(), unobserve: vi.fn() };
   }));
@@ -77,21 +75,15 @@ describe('ForestActions', () => {
     renderWithProviders(<><ForestActions forest={forest} /><Flyout /></>, { mocks: [loggedOut, emptyComments] });
 
     const commentIcon = (await screen.findByText('2')).parentElement!.querySelector('svg')!;
-    // The click mounts CommentList, which suspends on useSuspenseQuery. As with
-    // renderWithProvidersAsync, the suspending mount and the MockLink resolution
-    // must happen inside one awaited act for the post-resolution retry to commit;
-    // otherwise the boundary stays stuck on its Spinner fallback.
+    // Click mounts CommentList, which suspends on useSuspenseQuery; the mount and
+    // MockLink resolution must happen inside one awaited act for the retry to commit.
     await act(async () => {
       fireEvent.click(commentIcon);
       await new Promise((resolve) => setTimeout(resolve, 100));
     });
 
-    // Real assertion (rather than "nothing threw"): the click drives openFlyout
-    // through UIProvider state into a mounted Flyout, whose title and CommentList
-    // content only appear once flyoutType/flyoutData match this forest.
-    // Queried by heading level (h3) rather than plain text, since SheetContent
-    // also renders a visually-hidden `<SheetTitle>` ("Comments" as an h2) for
-    // Radix a11y compliance alongside the real visible header.
+    // Heading level (h3), not plain text: SheetContent also renders a
+    // visually-hidden h2 SheetTitle for Radix a11y.
     expect(await screen.findByRole('heading', { level: 3, name: 'Comments' })).toBeInTheDocument();
     expect(await screen.findByText('This forest has no comments yet.')).toBeInTheDocument();
   });

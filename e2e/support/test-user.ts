@@ -5,16 +5,13 @@ import * as dotenv from 'dotenv';
 import path from 'path';
 import { existsSync } from 'fs';
 
-// activation/reset links are JWTs the backend signs with its own JWT_SECRET and
-// embeds in a real email it sends - there's no dev inbox to read that email from,
-// so these tests mint an identical token directly using the same secret, read
-// from the sibling treefingers-backend repo's .env (local-only setup).
+// Activation/reset links are JWTs the backend mints for a real email it sends;
+// with no dev inbox to read from, tests mint an identical token themselves
+// using the same secret, read from the sibling treefingers-backend repo's .env.
 //
-// This repo may be checked out directly (treefingers-frontend/e2e/support) or
-// inside a git worktree (treefingers-frontend/.worktrees/<name>/e2e/support),
-// which changes how many levels up the treefingers-backend sibling sits. Walk
-// upward from this file until a `treefingers-backend` directory turns up
-// rather than hardcoding a fixed number of `..` segments.
+// Walk upward from this file to find `treefingers-backend` rather than
+// hardcoding a `..` depth, since this repo may be checked out directly or
+// inside a git worktree.
 function findBackendEnvPath(): string {
   let dir = path.dirname(__dirname); // start above e2e/support
   for (let i = 0; i < 8; i++) {
@@ -31,9 +28,8 @@ function findBackendEnvPath(): string {
 }
 
 dotenv.config({ path: findBackendEnvPath(), quiet: true });
-// the app's own .env.local carries the GraphQL endpoint it's actually configured
-// to hit; load it too (without clobbering anything already set above) so this
-// fixture talks to the same backend the browser under test does.
+// Also load the app's own .env.local so this fixture talks to the same
+// backend the browser under test does.
 dotenv.config({ path: path.resolve(__dirname, '../../.env.local'), quiet: true });
 
 const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? 'http://localhost:3001/graphql';

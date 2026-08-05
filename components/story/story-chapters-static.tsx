@@ -8,18 +8,13 @@ interface StoryChaptersStaticProps {
   first?: number;
 }
 
-// server-rendered, cookie-free counterpart to StoryChapters: used as
-// ClientOnly's SSR/first-paint fallback on the story page so crawlers and
-// pre-hydration visitors see the same carousel as the live, hydrated view -
-// see StoryChaptersView (components/story/story-chapters.tsx) for the shared
-// presentation and components/common/client-only.tsx for why the two must
-// match exactly.
+// Server-rendered, cookie-free counterpart to StoryChapters, used as
+// ClientOnly's SSR fallback so it matches the hydrated view exactly (see
+// components/common/client-only.tsx).
 //
-// Deliberately NOT exported from ./index - it pulls in the RSC-only
-// publicQuery/registerApolloClient chain, which breaks the client bundle if
-// re-exported through the same barrel as 'use client' components (see
-// lib/apollo/client.ts and story-list-static.tsx). Import this file directly
-// from Server Components.
+// Deliberately not exported from ./index -- it pulls in the RSC-only
+// publicQuery chain, which breaks the client bundle if re-exported through
+// a barrel with 'use client' components. Import this file directly.
 export const StoryChaptersStatic = async ({ className, parent, first = 10 }: StoryChaptersStaticProps) => {
   const edges = await publicQuery({
     query: QUERY_STORIES,
