@@ -1,9 +1,11 @@
-@tailwind utilities;
-
-.min-h-screen-no-header {
-  min-height: calc(100vh - theme('spacing.header'));
+@utility bg-base {
+  background-color: var(--bg-color-base);
 }
 
-.h-screen-no-header {
-  height: calc(100vh - theme('spacing.header'));
+@utility min-h-screen-no-header {
+  min-height: calc(100vh - var(--spacing-header));
+}
+
+@utility h-screen-no-header {
+  height: calc(100vh - var(--spacing-header));
 }

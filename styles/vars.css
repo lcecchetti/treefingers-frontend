@@ -40,7 +40,7 @@
 }
 
 /* Desktop */
-@screen lg {
+@media (width >= 64rem) {
   :root {
     --header-height: 64px;
   }

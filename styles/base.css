@@ -1,10 +1,9 @@
-@tailwind base;
-
 @layer base {
   html,
   body {
-    @apply text-base bg-base;
-    
+    color: var(--text-color-base);
+    @apply bg-base;
+
     -webkit-tap-highlight-color: transparent;
   }
 }

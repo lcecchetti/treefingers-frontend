@@ -1,5 +1,5 @@
-@tailwind components;
-
-.drawer-open {
-  @apply overflow-hidden lg:overflow-auto;
+@layer components {
+  .drawer-open {
+    @apply overflow-hidden lg:overflow-auto;
+  }
 }
