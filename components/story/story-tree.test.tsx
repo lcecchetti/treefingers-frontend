@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { StrictMode } from 'react';
 import { render } from '@testing-library/react';
-import { StoryTree } from './story-tree';
+import { StoryTree, __resetGrowthCacheForTests } from './story-tree';
 import { renderTree } from './story-tree.render';
 
 vi.mock('./story-tree.render', async (importOriginal) => {
@@ -49,6 +50,7 @@ function mockMatchMedia(reducedMotion: boolean) {
 }
 
 beforeEach(() => {
+  __resetGrowthCacheForTests();
   vi.stubGlobal('ResizeObserver', MockResizeObserver);
   MockIntersectionObserver.instances = [];
   vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
@@ -77,7 +79,7 @@ afterEach(() => {
 
 const story = {
   id: 'story-1',
-  descendentsCount: 4,
+  descendantsCount: 4,
   childrenCount: 2,
   depth: 1,
   likesCount: 10,
@@ -149,6 +151,95 @@ describe('StoryTree', () => {
     rafSpy.mockClear();
     observer.callback([{ isIntersecting: true } as IntersectionObserverEntry], observer as unknown as IntersectionObserver);
     expect(rafSpy).toHaveBeenCalled();
+  });
+
+  it('grows the tree from bare ground on its first frame, reaching full growth once the duration elapses', () => {
+    let rafCallback: FrameRequestCallback | null = null;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      rafCallback = callback;
+      return 1;
+    });
+    vi.mocked(renderTree).mockClear();
+
+    render(<StoryTree story={story} />);
+    expect(rafCallback).not.toBeNull();
+
+    rafCallback!(0);
+    const [, , , , , firstGrowth] = vi.mocked(renderTree).mock.calls[0];
+    expect(firstGrowth).toBe(0);
+
+    rafCallback!(5000); // well past the growth duration
+    const lastCall = vi.mocked(renderTree).mock.calls.at(-1)!;
+    expect(lastCall[5]).toBe(1);
+  });
+
+  it('does not regrow a tree it has already grown, e.g. when navigating between chapters remounts the component', () => {
+    let rafCallback: FrameRequestCallback | null = null;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      rafCallback = callback;
+      return 1;
+    });
+
+    const { unmount } = render(<StoryTree story={story} />);
+    rafCallback!(0);
+    expect(vi.mocked(renderTree).mock.calls[0][5]).toBe(0); // grew from bare ground the first time
+    rafCallback!(5000); // let it finish growing before the "chapter switch"
+    unmount();
+
+    vi.mocked(renderTree).mockClear();
+    rafCallback = null;
+    // a different chapter of the same story: different id, but the same root
+    render(<StoryTree story={{ ...story, id: 'chapter-2', root: story }} />);
+    rafCallback!(0);
+    expect(vi.mocked(renderTree).mock.calls[0][5]).toBe(1); // same tree already grown, no replay
+  });
+
+  it('still grows on the first page view even under Strict Mode\'s dev-only double-invoke of effects', () => {
+    let rafCallback: FrameRequestCallback | null = null;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      rafCallback = callback;
+      return 1;
+    });
+    vi.mocked(renderTree).mockClear();
+
+    render(
+      <StrictMode>
+        <StoryTree story={story} />
+      </StrictMode>
+    );
+    // Strict Mode already ran setup -> cleanup -> setup synchronously before
+    // this; rafCallback now points at the surviving (second) effect run's loop
+    rafCallback!(0);
+    expect(vi.mocked(renderTree).mock.calls.at(-1)![5]).toBe(0); // still bare ground, not pre-marked grown
+  });
+
+  it('still grows a genuinely different tree normally', () => {
+    let rafCallback: FrameRequestCallback | null = null;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      rafCallback = callback;
+      return 1;
+    });
+
+    const { unmount } = render(<StoryTree story={story} />);
+    rafCallback!(0);
+    unmount();
+
+    vi.mocked(renderTree).mockClear();
+    rafCallback = null;
+    render(<StoryTree story={{ ...story, id: 'story-2' }} />);
+    rafCallback!(0);
+    expect(vi.mocked(renderTree).mock.calls[0][5]).toBe(0);
+  });
+
+  it('renders already fully grown when prefers-reduced-motion is set', () => {
+    mockMatchMedia(true);
+    vi.mocked(renderTree).mockClear();
+
+    render(<StoryTree story={story} />);
+
+    const call = vi.mocked(renderTree).mock.calls[0];
+    expect(call[4]).toBeNull(); // static frame, no animation time
+    expect(call[5]).toBe(1); // but fully grown, not bare
   });
 
   it('throttles draws to roughly 30fps instead of drawing on every animation frame', () => {

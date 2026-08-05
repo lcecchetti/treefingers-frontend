@@ -2,7 +2,7 @@ import seedrandom from 'seedrandom';
 
 export interface StoryTreeStory {
   id: string;
-  descendentsCount: number;
+  descendantsCount: number;
   childrenCount: number;
   depth: number;
   likesCount: number;
@@ -143,7 +143,7 @@ export function buildTreeGeometry(story: StoryTreeStory): TreeGeometry {
 
   const levels = Math.max(
     MIN_LEVELS,
-    Math.min(MAX_LEVELS, Math.round(3 + Math.log2(1 + story.descendentsCount) * 1.3))
+    Math.min(MAX_LEVELS, Math.round(3 + Math.log2(1 + story.descendantsCount) * 1.3))
   );
   const branchFactor = Math.max(2, Math.min(3, 1 + Math.round(Math.log2(1 + story.childrenCount))));
   // this early in the product, most stories are only a few chapters deep at

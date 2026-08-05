@@ -24,6 +24,25 @@ const UP = -Math.PI / 2;
 // matching depth.
 const TRUNK_WIDTH = 4.5;
 const TIP_WIDTH = 1;
+// leaves bloom (scale up from their center point) starting the moment their
+// branch begins extending, not after it finishes -- otherwise a whole level's
+// worth of leaves pops in as one lockstep block right as its branches finish,
+// reading as "bare branches, then sudden leaves" instead of a continuous grow.
+// The span is capped to what's left before growth: 1 so a leaf on the
+// outermost level (whose window sits right against that ceiling) still
+// finishes blooming instead of getting stuck part-open forever.
+const LEAF_BLOOM_SPAN_MULTIPLIER = 2;
+// spreads a level's leaves' bloom starts within a fraction of their branch's
+// own window so they don't all bloom in visual unison
+const LEAF_STAGGER_FRACTION = 0.5;
+
+// cheap deterministic pseudo-random hash of a leaf's existing (non-timing)
+// floats, used only to desynchronize bloom start -- no dedicated seed field
+// needed since the leaf is already unique via these values.
+function leafStagger(rotation: number, offsetX: number, offsetY: number): number {
+  const mixed = rotation * 12.9898 + offsetX * 78.233 + offsetY * 37.719;
+  return mixed - Math.floor(mixed);
+}
 
 // equivalent to ctx.translate(x, y) + ctx.rotate(rotation) applied to a
 // local point, computed by hand so drawLeaf never touches the canvas
@@ -85,8 +104,20 @@ function walkBranch(
   color: PaletteColor,
   shape: LeafShape,
   sizeScale: number,
-  time: number | null
+  time: number | null,
+  growth: number
 ): void {
+  // each depth level gets an equal-width slice of the [0, 1] growth range,
+  // so the tree visibly sprouts outward from trunk to tips rather than
+  // fading in all at once. A child's slice starts exactly where its
+  // parent's ends, so a still-growing parent's children are naturally
+  // untouched -- no need to special-case skipping their recursion below.
+  const growthWindow = 1 / (levels + 1);
+  const growthStart = node.level * growthWindow;
+  if (growth <= growthStart) return;
+  const growthEnd = growthStart + growthWindow;
+  const growthT = growth >= growthEnd ? 1 : (growth - growthStart) / growthWindow;
+
   const swayTerm = time === null
     ? 0
     : SWAY_AMPLITUDE * Math.pow(node.level / levels, 1.4) * Math.sin(time * SWAY_SPEED + node.phase);
@@ -96,23 +127,31 @@ function walkBranch(
   const nextX = x + Math.cos(segmentAngle) * segmentLength;
   const nextY = y + Math.sin(segmentAngle) * segmentLength;
   const ratio = node.level / levels;
+  const drawX = x + (nextX - x) * growthT;
+  const drawY = y + (nextY - y) * growthT;
 
   ctx.lineCap = 'butt';
   ctx.lineWidth = Math.max(1, (TRUNK_WIDTH - (TRUNK_WIDTH - TIP_WIDTH) * ratio) * sizeScale);
   ctx.strokeStyle = `hsl(${color.hue}, 14%, ${28 + 45 * (1 - ratio)}%)`;
   ctx.beginPath();
   ctx.moveTo(x, y);
-  ctx.lineTo(nextX, nextY);
+  ctx.lineTo(drawX, drawY);
   ctx.stroke();
 
   for (const leaf of node.leaves) {
+    const staggerOffset = leafStagger(leaf.rotation, leaf.offsetX, leaf.offsetY) * LEAF_STAGGER_FRACTION * growthWindow;
+    const bloomStart = growthStart + staggerOffset;
+    const bloomSpan = Math.min(LEAF_BLOOM_SPAN_MULTIPLIER * growthWindow, 1 - bloomStart);
+    const bloomT = Math.min(1, Math.max(0, (growth - bloomStart) / bloomSpan));
+    if (bloomT <= 0) continue;
+
     const leafX = x + (nextX - x) * leaf.fraction + leaf.offsetX * sizeScale;
     const leafY = y + (nextY - y) * leaf.fraction + leaf.offsetY * sizeScale;
-    drawLeaf(ctx, leafX, leafY, leaf.size * sizeScale, leaf.rotation, shape);
+    drawLeaf(ctx, leafX, leafY, leaf.size * sizeScale * bloomT, leaf.rotation, shape);
   }
 
   for (const child of node.children) {
-    walkBranch(ctx, child, nextX, nextY, segmentAngle + child.angleSlot, segmentLength, levels, color, shape, sizeScale, time);
+    walkBranch(ctx, child, nextX, nextY, segmentAngle + child.angleSlot, segmentLength, levels, color, shape, sizeScale, time, growth);
   }
 }
 
@@ -121,7 +160,8 @@ export function renderTree(
   geometry: TreeGeometry,
   width: number,
   height: number,
-  time: number | null
+  time: number | null,
+  growth: number = 1
 ): void {
   ctx.clearRect(0, 0, width, height);
 
@@ -138,5 +178,5 @@ export function renderTree(
 
   ctx.fillStyle = `hsla(${geometry.color.hue}, ${geometry.color.saturation}%, 58%, 0.85)`;
 
-  walkBranch(ctx, geometry.canopy, width / 2, groundY, -Math.PI / 2, trunkLength, geometry.levels, geometry.color, geometry.shape, sizeScale, time);
+  walkBranch(ctx, geometry.canopy, width / 2, groundY, -Math.PI / 2, trunkLength, geometry.levels, geometry.color, geometry.shape, sizeScale, time, growth);
 }

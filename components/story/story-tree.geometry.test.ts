@@ -3,7 +3,7 @@ import { buildTreeGeometry, type BranchNode, type StoryTreeStory } from './story
 
 const baseStory: StoryTreeStory = {
   id: 'story-alder',
-  descendentsCount: 4,
+  descendantsCount: 4,
   childrenCount: 1,
   depth: 3,
   likesCount: 8,
@@ -33,9 +33,9 @@ describe('buildTreeGeometry', () => {
   });
 
   it('grows more levels for more descendants, capped at 7', () => {
-    const quiet = buildTreeGeometry({ ...baseStory, descendentsCount: 0 });
-    const grown = buildTreeGeometry({ ...baseStory, descendentsCount: 3 });
-    const maxedOut = buildTreeGeometry({ ...baseStory, descendentsCount: 1000 });
+    const quiet = buildTreeGeometry({ ...baseStory, descendantsCount: 0 });
+    const grown = buildTreeGeometry({ ...baseStory, descendantsCount: 3 });
+    const maxedOut = buildTreeGeometry({ ...baseStory, descendantsCount: 1000 });
     expect(quiet.levels).toBeLessThan(grown.levels);
     expect(maxedOut.levels).toBe(7);
   });
@@ -69,8 +69,8 @@ describe('buildTreeGeometry', () => {
   });
 
   it('picks shape and color independently of stats, but consistently for the same id', () => {
-    const quiet = buildTreeGeometry({ ...baseStory, descendentsCount: 0, likesCount: 0, commentsCount: 0 });
-    const loud = buildTreeGeometry({ ...baseStory, descendentsCount: 50, likesCount: 500, commentsCount: 500 });
+    const quiet = buildTreeGeometry({ ...baseStory, descendantsCount: 0, likesCount: 0, commentsCount: 0 });
+    const loud = buildTreeGeometry({ ...baseStory, descendantsCount: 50, likesCount: 500, commentsCount: 500 });
     expect(quiet.shape).toBe(loud.shape);
     expect(quiet.color).toEqual(loud.color);
   });
