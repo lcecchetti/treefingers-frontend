@@ -1,6 +1,7 @@
 import { cache, Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { QUERY_STORIES, QUERY_STORY, StoryView, StoryContent, StoryContent_StoryFragment } from '@/components/story';
+import { StoryListStatic } from '@/components/story/story-list-static';
 import { ClientOnly } from '@/components/common';
 import { Container, Spinner } from '@/components/ui';
 import { getPublicClient, publicQuery } from '@/lib/apollo/client';
@@ -61,6 +62,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
           <div className="w-full lg:w-1/2 z-10 mb-xl">
             <div className="flex flex-col gap-md">
               <StoryContent story={story} createdAt={formatDate(story.createdAt, DATE_LONG, { timeZone: 'UTC' })} />
+              <StoryListStatic className="flex flex-col gap-md" filter={{ parent: { eq: id } }} sort={{ likesCount: 'DESC' }} first={10} />
             </div>
           </div>
         </Container>
