@@ -1,6 +1,6 @@
 import { Container, Text } from '@/components/ui';
 import { ClientOnly, PageIntro } from '@/components/common';
-import { UserList } from '@/components/user';
+import { UserListContent } from '@/components/user';
 import { UserListStatic } from '@/components/user/user-list-static';
 import type { Metadata } from 'next';
 
@@ -25,7 +25,7 @@ export default function AuthorsPage() {
         </Text>
       </PageIntro>
       <ClientOnly fallback={<UserListStatic className={GRID_CLASS_NAME} filter={{ storiesCount: { gt: 0 } }} sort={{ followersCount: 'DESC' }} />}>
-        <UserList className={GRID_CLASS_NAME} filter={{ storiesCount: { gt: 0 } }} sort={{ followersCount: 'DESC' }} />
+        <UserListContent className={GRID_CLASS_NAME} filter={{ storiesCount: { gt: 0 } }} sort={{ followersCount: 'DESC' }} />
       </ClientOnly>
     </Container>
   );

@@ -1,5 +1,5 @@
 import { Container, Text, Link, Button } from '@/components/ui';
-import { ForestList } from '@/components/forest';
+import { ForestListContent } from '@/components/forest';
 import { ForestListStatic } from '@/components/forest/forest-list-static';
 import { ClientOnly, PageIntro } from '@/components/common';
 import { TreePine } from 'lucide-react';
@@ -28,7 +28,7 @@ export default function ForestsPage() {
         </Text>
       </PageIntro>
       <ClientOnly fallback={<ForestListStatic className={GRID_CLASS_NAME} sort={{ membersCount: 'DESC' }} />}>
-        <ForestList className={GRID_CLASS_NAME} sort={{ membersCount: 'DESC' }} />
+        <ForestListContent className={GRID_CLASS_NAME} sort={{ membersCount: 'DESC' }} />
       </ClientOnly>
     </Container>
   );

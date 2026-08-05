@@ -1,6 +1,6 @@
 import { Container, Text, Button, Link } from '@/components/ui';
 import { ClientOnly, PageIntro } from '@/components/common';
-import { StoryList } from '@/components/story';
+import { StoryListContent } from '@/components/story';
 import { StoryListStatic } from '@/components/story/story-list-static';
 import { getStoryNewUrl } from '@/lib/helper/story';
 import { TreePine } from 'lucide-react';
@@ -28,7 +28,7 @@ export default function StoriesPage() {
         </Text>
       </PageIntro>
       <ClientOnly fallback={<StoryListStatic className={GRID_CLASS_NAME} filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }} />}>
-        <StoryList className={GRID_CLASS_NAME} filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }}/>
+        <StoryListContent className={GRID_CLASS_NAME} filter={{ parent: { eq: null } }} sort={{ likesCount: 'DESC' }}/>
       </ClientOnly>
     </Container>
   );

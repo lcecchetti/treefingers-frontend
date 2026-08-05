@@ -17,7 +17,13 @@ interface ForestListProps {
   setTotalCount?: (totalCount: number | undefined) => void;
 }
 
-const ForestListContent = ({ className, filter, sort, first = 12, setTotalCount }: ForestListProps) => {
+// exported unwrapped (no Suspense of its own) so ClientOnly can be the
+// Suspense boundary that catches its first-mount suspension, with the
+// pre-rendered static content as the fallback - see components/common/client-only.tsx.
+// Reach for this instead of the default `ForestList` export when rendering
+// directly as ClientOnly's children; keep using `ForestList` (Suspense +
+// generic spinner) for nested reuse away from a ClientOnly boundary.
+export const ForestListContent = ({ className, filter, sort, first = 12, setTotalCount }: ForestListProps) => {
   const { currentUser } = useCurrentUser();
   const [isPending, startTransition] = useTransition();
 

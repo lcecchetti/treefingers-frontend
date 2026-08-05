@@ -17,7 +17,8 @@ interface StoryListProps {
   setTotalCount?: (totalCount: number | undefined) => void;
 }
 
-const StoryListContent = ({ className, filter, sort, first = 12, setTotalCount }: StoryListProps) => {
+// exported unwrapped - see components/forest/forest-list.tsx (ForestListContent)
+export const StoryListContent = ({ className, filter, sort, first = 12, setTotalCount }: StoryListProps) => {
   const { currentUser } = useCurrentUser();
   const [isPending, startTransition] = useTransition();
 

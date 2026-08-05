@@ -1,5 +1,5 @@
 export { StoryCard } from './story-card';
-export { StoryList } from './story-list';
+export { StoryList, StoryListContent } from './story-list';
 export { QUERY_STORIES } from './story-list.query';
 export { StoryView } from './story-view';
 export { QUERY_STORY } from './story-view.query';
