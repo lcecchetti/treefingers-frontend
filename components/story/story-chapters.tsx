@@ -13,6 +13,8 @@ import { QUERY_STORIES } from '@/components/story/story-list.query';
 import { StoryCard } from '@/components/story/story-card';
 import * as analytics from '@/lib/analytics';
 import { useCurrentUser } from '@/lib/auth/current-user';
+import type { StoriesQuery } from '@/lib/graphql/generated/graphql';
+import type { ErrorLike } from '@apollo/client';
 
 interface StoryChaptersProps {
   className?: string;
@@ -20,21 +22,23 @@ interface StoryChaptersProps {
   first?: number;
 }
 
-const StoryChaptersContent = ({ className, parent, first = 10 }: StoryChaptersProps) => {
+interface StoryChaptersViewProps {
+  className?: string;
+  parentId: string;
+  edges?: StoriesQuery['stories']['edges'];
+  error?: ErrorLike | false;
+  hasNextPage?: boolean;
+  onReachEnd?: () => void;
+}
+
+// Presentational carousel shared by the live, query-backed chapters view
+// (StoryChaptersContent below) and StoryChaptersStatic - the SSR/pre-hydration
+// fallback rendered by ClientOnly on the story page. Keeping this as the one
+// place that renders chapters means the two can never visually diverge - see
+// components/common/client-only.tsx for why that parity matters.
+export const StoryChaptersView = ({ className, parentId, edges, error, hasNextPage, onReachEnd }: StoryChaptersViewProps) => {
   const [isWriting, setIsWriting] = useState(false);
   const [suggestSwipe, setSuggestSwipe] = useState(true);
-  const [, startTransition] = useTransition();
-  const { currentUser } = useCurrentUser();
-
-  const { data, error, fetchMore } = useSuspenseQuery(QUERY_STORIES, {
-    variables: {
-      filter: { parent: { eq: parent.id } },
-      first,
-      sort: { likesCount: 'DESC' },
-    },
-    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
-    errorPolicy: 'all',
-  });
 
   const toggleWriting = (show: boolean) => {
     analytics.event({
@@ -54,7 +58,7 @@ const StoryChaptersContent = ({ className, parent, first = 10 }: StoryChaptersPr
         <ChevronDown className="w-8 h-8 animate-bounce" />
       </div>
 
-      {!!data?.stories.edges?.length && // chapter list
+      {!!edges?.length && // chapter list
         <div className="flex gap-md justify-center items-center">
           <Button variant={isWriting ? 'outlined' : 'primary'} onClick={() => toggleWriting(false)}>Read</Button>
           <Text>Or</Text>
@@ -63,9 +67,9 @@ const StoryChaptersContent = ({ className, parent, first = 10 }: StoryChaptersPr
       }
 
       <div className="flex flex-col gap-md">
-        {!!data?.stories.edges?.length && !isWriting &&
+        {!!edges?.length && !isWriting &&
           <Swiper
-            key={parent?.id}
+            key={parentId}
             className="w-full"
             modules={[EffectCards, Navigation]}
             effect="cards"
@@ -74,9 +78,9 @@ const StoryChaptersContent = ({ className, parent, first = 10 }: StoryChaptersPr
               slideShadows: false,
             }}
             navigation={{ nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev', }}
-            onReachEnd={() => data?.stories.pageInfo.hasNextPage && startTransition(() => { fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } }); })}
+            onReachEnd={() => hasNextPage && onReachEnd?.()}
             >
-            {data.stories.edges.map(({ node }, index) => (
+            {edges.map(({ node }, index) => (
               <SwiperSlide key={node.id} virtualIndex={index}>
                 <StoryCard story={node} className="border-2"/>
               </SwiperSlide>
@@ -86,17 +90,43 @@ const StoryChaptersContent = ({ className, parent, first = 10 }: StoryChaptersPr
           </Swiper>
         }
 
-        {!data?.stories.edges?.length &&
+        {!edges?.length &&
           <div className="text-center flex flex-col gap-xs">
             <Text variant="title" as="span" className="">The end...?</Text>
           </div>
         }
 
-        {(isWriting || !data?.stories.edges?.length) &&
-          <StoryNew parent={parent} />
+        {(isWriting || !edges?.length) &&
+          <StoryNew parent={{ id: parentId }} />
         }
       </div>
     </div>
+  );
+};
+
+const StoryChaptersContent = ({ className, parent, first = 10 }: StoryChaptersProps) => {
+  const [, startTransition] = useTransition();
+  const { currentUser } = useCurrentUser();
+
+  const { data, error, fetchMore } = useSuspenseQuery(QUERY_STORIES, {
+    variables: {
+      filter: { parent: { eq: parent.id } },
+      first,
+      sort: { likesCount: 'DESC' },
+    },
+    fetchPolicy: currentUser ? 'cache-and-network' : 'cache-first',
+    errorPolicy: 'all',
+  });
+
+  return (
+    <StoryChaptersView
+      className={className}
+      parentId={parent.id}
+      edges={data?.stories.edges}
+      error={error}
+      hasNextPage={data?.stories.pageInfo.hasNextPage}
+      onReachEnd={() => startTransition(() => { fetchMore({ variables: { after: data?.stories.pageInfo.endCursor } }); })}
+    />
   );
 };
 
