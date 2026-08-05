@@ -24,7 +24,7 @@ export const StoryCard_StoryFragment = graphql(`
     parent {
       id
       likesCount
-      descendentsCount
+      descendantsCount
     }
     author {
       id
@@ -33,7 +33,7 @@ export const StoryCard_StoryFragment = graphql(`
     tags
     likesCount
     commentsCount
-    descendentsCount
+    descendantsCount
     childrenCount
     currentUserLike {
       id

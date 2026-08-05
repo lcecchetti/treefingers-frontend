@@ -9,7 +9,7 @@ const loggedOut = { request: { query: QUERY_CURRENT_USER }, result: { data: { cu
 const story: StoryActionsStory = {
   id: 's1',
   title: 'A Tale',
-  descendentsCount: 2,
+  descendantsCount: 2,
   childrenCount: 1,
   depth: 0,
   likesCount: 3,

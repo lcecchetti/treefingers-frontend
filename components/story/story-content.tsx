@@ -35,7 +35,7 @@ export const StoryContent_StoryFragment = graphql(`
       id
       title
       likesCount
-      descendentsCount
+      descendantsCount
       childrenCount
       commentsCount
       depth
@@ -46,7 +46,7 @@ export const StoryContent_StoryFragment = graphql(`
     }
     likesCount
     commentsCount
-    descendentsCount
+    descendantsCount
     childrenCount
     depth
     currentUserLike {

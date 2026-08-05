@@ -117,7 +117,7 @@ export const UserFollowership = ({ user, viewOnly }: UserFollowershipProps) => {
     user.currentUserFollowershipAsFollower ? await unfollow() : await follow();
   }
 
-  // pick icon accoridng to user followership
+  // pick icon according to user followership
   const Icon = user.currentUserFollowershipAsFollower ? UserCheck : UserPlus;
 
   return (
